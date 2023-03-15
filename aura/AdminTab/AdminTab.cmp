@@ -3,13 +3,13 @@
     <aura:attribute name="objLabels" type="Map" default="" />
     <aura:attribute name="pageReference" type="Object"/>  
     <lightning:navigation aura:id="navService"/>
-    <lightning:card title="">
+    <lightning:card title="Uday">
         <ul class="slds-has-dividers_bottom-space">
             <div class="c-container">
                 
                 <lightning:layout multipleRows="true">
                     
-                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small" >
                         <div class="custom-box">
                             <li class="slds-item">
                                 <a onclick="{!c.GLDep}" class="slds-app-launcher__tile slds-text-link--reset ">
