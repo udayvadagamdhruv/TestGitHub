@@ -1,0 +1,9 @@
+<aura:documentation>
+    <aura:description>
+        <p>An <code>c:Add_Edit_Staff_Task</code> component used for <b>Add/Edit Job Team Members </b> as Staff Mebers for the task with Quick Action Under the Job Task Section 
+            and also Assign Staff Button Under the Job Task Detail Page. </p>
+    </aura:description>
+    <aura:example name="Add/Edit Staff Members" ref="c:Add_Edit_Staff_Task" label="Add/Edit Staff to the Task">
+        <p>This example shows a simple setup of <code>c:Add_Edit_Staff_Task</code>.</p>
+    </aura:example>
+</aura:documentation>

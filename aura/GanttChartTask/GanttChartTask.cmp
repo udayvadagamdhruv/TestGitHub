@@ -1,0 +1,20 @@
+<aura:component controller="googlegantchart" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+     <ltng:require styles="{!join(',',
+                          $Resource.DhtmlGanttCss,
+                          $Resource.DhtmlGanttControlCss
+                          )}"
+                  scripts="{!join(',',
+                           $Resource.DhtmlGanttJs 
+                           )}"
+                  afterScriptsLoaded="{!c.doInit}"
+                  /> 
+    
+    
+    <lightning:card>
+        <!--************************************ Title **************************************-->
+        <aura:set attribute="title">
+            test
+        </aura:set>
+    </lightning:card>
+</aura:component>

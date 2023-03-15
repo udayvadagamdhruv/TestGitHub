@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cost_of_Inventory__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL( Calc_Unit__c ,&quot;Size&quot;), 
+
+IF(ISNULL( Qty_On_Hand_Roll__c ),0, 
+
+Qty_On_Hand_Roll__c ) *  Total_Cost_Each__c 
+, 
+
+IF( ISPICKVAL(Calc_Unit__c ,&quot;Each&quot;),
+
+( Qty_On_Hand__c * ( IF(ISNULL( Price_Per_Unit__c ),0,Price_Per_Unit__c ) )) 
+, 
+
+IF(ISPICKVAL(Calc_Unit__c ,&quot;Sheet&quot;),
+
+ (  Qty_On_Hand_Case__c * ( IF(ISNULL(    Price_Per_Case__c ),0,Price_Per_Case__c )))
+
+,null)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Cost of Inventory</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>3</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

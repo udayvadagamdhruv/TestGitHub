@@ -1,0 +1,12 @@
+<apex:page standardController="Job__c" extensions="JobListViewSwitchPageExt" sidebar="{!isLtng}" docType="html-5.0" applyBodyTag="{!isLtng}" applyHtmlTag="{!isLtng}" showHeader="{!isLtng}">
+
+     <apex:outputPanel id="cls" rendered="{! !isLtng}">
+        <apex:include pageName="JobListView"/>
+    </apex:outputPanel> 
+    <apex:outputPanel id="ltng" rendered="{!isLtng}">
+         <apex:include pageName="JobdetailpageLightening07"/>
+    </apex:outputPanel>
+  
+
+
+</apex:page>

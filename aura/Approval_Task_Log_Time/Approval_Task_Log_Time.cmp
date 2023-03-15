@@ -1,0 +1,151 @@
+<aura:component controller="ApprovalJobTaskExt" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="taskId" type="String" default="" />
+    <aura:attribute name="actionFrom" type="String" default="Task" />
+    <aura:attribute name="taskInfo" type="Object" />
+    
+    <aura:attribute name="TotalHours" type="Decimal"/>
+    <aura:attribute name="RemainHours" type="Decimal"/>
+    <aura:attribute name="isStartEnd" type="Boolean" default="false"/>
+    <aura:attribute name="TotalHoursWorked" type="Decimal"/>
+    <aura:attribute name="LogTimeactiveSections" type="List" default="['WatchSection','EntrySection']" />
+    <aura:attribute name="LogTimePopUp" type="boolean" default="true"/>
+    
+    <aura:attribute name="today" type="Date" default=""/>
+    <aura:attribute name="loginUserId" type="String" default=""/>
+    
+    <aura:method name="refreshTaskData" action="{!c.refreshTaskData}" access="public">
+    </aura:method>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{!v.LogTimePopUp}" >
+        <lightning:recordEditForm aura:id="LogTimeEditForm" density="comfy" objectApiName="Timesheet_Entries__c"  onsubmit="{!c.LogTimeSubmit}"   onsuccess="{!c.LogTimeSucess}" >
+            
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeLogTimeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Approval Task Log Time</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages />
+                        <div class="showScroll">
+                            <ui:scrollerWrapper class="scrollerSizecart"> 
+                                <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.LogTimeactiveSections}"> 
+                                    <lightning:accordionSection name="WatchSection" label="Watch Section"  class="slds-card" >    
+                                        <lightning:layout multipleRows="true">  
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small" >
+                                                <lightning:inputField fieldName="Start_Watch__c" aura:id="STWatch"  onchange="{!c.TotalHrs}"/> 
+                                            </lightning:layoutItem>
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small" >
+                                                <lightning:inputField fieldName="End_Watch__c" aura:id="ETWatch"  onchange="{!c.TotalHrs}"/> 
+                                            </lightning:layoutItem>
+                                        </lightning:layout>   
+                                    </lightning:accordionSection>  
+                                    
+                                    <lightning:accordionSection name="EntrySection" label="Entry Section"  class="slds-card" >    
+                                        <lightning:layout multipleRows="true">  
+                                            
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> Job Name</label>
+                                                <div class="slds-form-element__control slds-form-element">
+                                                    <ui:outputText value="{!v.taskInfo.Job__r.Name}" />
+                                                </div>
+                                            </lightning:layoutItem>
+                                            
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> Task Name</label>
+                                                <div class="slds-form-element__control slds-form-element">
+                                                    <ui:outputText value="{!v.taskInfo.Name}" />
+                                                </div>
+                                            </lightning:layoutItem>
+                                            
+                                            <!--lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> GL Code </label>
+                                                <div class="slds-form-element__control slds-form-element">
+                                                    <ui:outputText value="{!v.taskInfo.GL_Code__r.Name}"  />
+                                                </div>
+                                            </lightning:layoutItem>
+                                            
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> Total Hours Estimated </label>
+                                                <div class="slds-form-element__control slds-form-element">
+                                                    <ui:outputText value="{!v.TotalHours}" />
+                                                </div>
+                                            </lightning:layoutItem-->
+                                            
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="Date__c" aura:id="DT" class="slds-form-element frequired" value="{!v.today}" /> 
+                                            </lightning:layoutItem>
+                                            
+                                            <!--lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> Total Hours Remaining </label>
+                                                <div class="slds-form-element__control slds-form-element">
+                                                    <ui:outputText value="{!v.RemainHours}" />
+                                                </div>
+                                            </lightning:layoutItem-->
+                                            
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">   
+                                                <lightning:inputField fieldName="Notes__c" aura:id="Note" class="slds-form-element"/> 
+                                            </lightning:layoutItem>
+                                            
+                                            <lightning:layoutItem size="12"  smallDeviceSize="12"  mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">    
+                                                <aura:if isTrue="{!!v.isStartEnd}" >    
+                                                    <lightning:inputField fieldName="Hours_Worked__c" aura:id="THW" class="slds-form-element" />
+                                                    <aura:set attribute="else">   
+                                                        <label class="slds-form-element__label" for="text-input-id-1"> Total Hours Worked </label>
+                                                        <div class="slds-form-element__control slds-form-element">
+                                                            <ui:outputText  value="{!v.TotalHoursWorked}"/>
+                                                        </div>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </lightning:layoutItem>
+                                            
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">   
+                                                <!--c:customLookup aura:id="uCstLookup" objectAPIName="User" selectedRecord='{!v.selectedLookUpRecord_User}'  IconName="standard:user" label="User" IsDependent='false'/-->
+                                                <label class="slds-form-element__label" for="text-input-id-1"> User </label>
+                                                <div class="slds-form-element__control slds-form-element">
+                                                    <ui:outputText  aura:id="auraLogInUserId" value="{!v.loginUserId[1]}"/>
+                                                </div>
+                                                
+                                                <!--lightning:inputField fieldName="User__c" aura:id="auraLogInUserId" class="slds-form-element"  value="{!v.loginUserId}"/--> 
+                                            </lightning:layoutItem>
+                                        </lightning:layout>
+                                    </lightning:accordionSection>
+                                </lightning:accordion>
+                            </ui:scrollerWrapper>
+                        </div>
+                    </div>
+                    
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeLogTimeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+                
+            </section>
+            
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

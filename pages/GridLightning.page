@@ -1,0 +1,51 @@
+<!-- This page is used to create New Campaign. This page is used override the standard Campaign page-->
+<apex:page standardController="Campaign__c" tabStyle="Campaign__c" extensions="createnewCampaignExtensions" id="pgId" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="False">
+         <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            
+             <body>
+                       <!-- REQUIRED SLDS WRAPPER -->
+                     <div class="slds">
+                         <ul class="slds-list--vertical slds-has-dividers">
+                              <li class="slds-list__item slds-large-size">  
+                                  <div class="slds-text-heading--large"><center>Campaign Details</center></div> 
+                              </li>
+                         </ul><br/>
+    
+                     <apex:form html-novalidate="novalidate">
+                       
+                          <apex:pageBlock mode="edit">
+                              
+                             
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+
+ <div class="slds-grid slds-wrap">
+  <nav class="slds-col slds-size--1-of-1">Header</nav>
+  <main class="slds-col slds-size--1-of-2 slds-medium-size--5-of-6 slds-large-size--8-of-12">Main</main>
+  <aside class="slds-col slds-size--1-of-2 slds-medium-size--1-of-6 slds-large-size--4-of-12">Aside</aside>
+  <section class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">Complementary</section>
+  <section class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">Complementary</section>
+  <footer class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-3">
+    <div class="slds-grid slds-wrap">
+      <div class="slds-col slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--6-of-12">Content Info</div>
+      <div class="slds-col slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--6-of-12">Content Info</div>
+    </div>
+  </footer>
+</div>                                      
+                  
+                   
+                        </apex:pageBlock>
+                        
+                        
+                  </apex:form>
+                  </div> 
+                  
+                 
+                  
+          </body>
+      </html>
+     
+</apex:page>
+<!-- End of Page -->

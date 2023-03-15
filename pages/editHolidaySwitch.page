@@ -1,0 +1,18 @@
+<apex:page standardController="Holiday__c" extensions="editHolidaySwitchExt" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="true" showHeader="false" >
+
+<script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/editHoliday?id="+'{!holyid}', "_self");
+         }
+        
+    </script>
+  
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="editHolidayLightning"/>
+    </apex:outputPanel>
+
+
+</apex:page>

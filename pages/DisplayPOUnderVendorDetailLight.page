@@ -1,0 +1,272 @@
+<apex:page controller="DisplayPOUnderVendorDetail" readOnly="true" sidebar="false"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true"    >
+<apex:slds />
+<head>
+<style>
+        
+        .slds-scope .slds-cell-fixed {
+    position: absolute;
+    top: 7px;
+    min-height: 2rem;
+  
+   }
+  
+   .slds .slds-card__body {
+    margin-bottom: 0.1rem !important;
+    margin-top: -0.15rem !important;
+}
+
+ @media only screen and (min-width:0px) and (max-width:1000px){
+   .slds-scope .slds-table--header-fixed tbody tr:first-child td{
+    border: 0;
+    border-bottom: 1px solid #d8dde6;
+    }  
+}
+        
+        
+        
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        
+     </style>
+
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    </head>
+    
+    
+    <div class="slds-scope" >
+      <apex:form >
+      
+    <apex:outputPanel layout="block"  rendered="{!purchaseorder.size > 0}">
+       <div class="slds-card" >
+         <div class="slds-table--header-fixed_container" style="height:{!IF(purchaseorder.size>=5,'300px','')};background-color:#f4f6f9;">
+              <div class="slds-scrollable--y" style="height:100%;"> 
+       
+         <table class="slds-table slds-table--bordered slds-table--header-fixed slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+         
+            <thead class="slds-truncate">
+
+                <tr class="slds-text-title">
+                    <th   scope="col" width="100px">
+                      <div class="slds-truncate slds-cell-fixed " title="{!$ObjectType.Purchase_Order__c.Fields.Name.Label}">{!$ObjectType.Purchase_Order__c.Fields.Name.Label}</div>
+                    </th>
+                    <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Job__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Job__c.Label}</div>
+                     </th>
+                     
+                     <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Approved_By_Staff__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Approved_By_Staff__c.Label}</div>
+                     </th>
+                     
+                     
+                     <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Invoice_Created__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Invoice_Created__c.Label}</div>
+                     </th>
+                     
+                     <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}</div>
+                     </th>
+                     
+                     
+                     
+                     <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}</div>
+                     </th>
+                     
+                     <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}</div>
+                     </th>
+                     
+                     <th   scope="col" >
+                     <div class="slds-truncate slds-cell-fixed" title="{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}">{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}</div>
+                     </th>
+                 
+                </tr>
+             </thead>   
+             
+               <tbody>
+               
+                  <apex:repeat value="{!purchaseorder}" var="po" rendered="{!purchaseorder.size>0}">
+                  
+                    <tr class="slds-hint-parent">
+                    
+                    <td   data-label="PO#">
+                     <apex:outputLink tabindex="tab1" value="/apex/PODetailpageLightning?id={!po.Id}">{!po.Name}</apex:outputLink>
+                    </td>
+                    
+                    <td   data-label="Job Name">
+                     <apex:outputField value="{!po.Job__r.Name}"/> 
+                    </td>
+                    
+                    <td   data-label="Approved By">
+                     <apex:outputField value="{!po.Approved_By_Staff__r.Name}"/>
+                    </td>
+                    
+                    
+                    <td   data-label="Invoice Created">
+                     <apex:outputField value="{!po.Invoice_Created__c}"/> 
+                    </td>
+                    
+                     <td   data-label="Issued Date">
+                     <apex:outputField value="{!po.Issue_Date__c}"/>
+                    </td>
+                    
+                     <td   data-label="Due Date">
+                     <apex:outputField value="{!po.Due_Date__c}"/>
+                    </td>
+                    
+                     <td   data-label="Total Amount">
+                    <apex:outputField value="{!po.Total_Amount__c}"/>
+                    </td>
+                    
+                     <td   data-label="Status">
+                    <apex:outputField value="{!po.Status__c}"/>
+                    </td>
+                    
+                    </tr>
+                  
+                      
+                  
+                  </apex:repeat>
+               
+               </tbody>
+    
+        
+        </table>
+        
+        </div>
+        </div>
+        </div>
+      
+      </apex:outputpanel>
+    <apex:outputpanel rendered="{!purchaseorder.Size == 0}">
+     
+     <b> No records to display </b>
+     
+     
+    </apex:outputpanel>
+    
+  
+ </apex:form>
+ </div>
+</apex:page>
+<!-- End of Page -->

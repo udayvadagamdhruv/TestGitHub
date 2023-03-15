@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Material Order</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Material Orders</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Material_Order</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Vendor_MI</name>
+    </fieldSets>
+    <layouts>
+        <layout>Material Order Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>MO_Delete</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Print_MO</name>
+    </webLinks>
+</CustomObjectTranslation>

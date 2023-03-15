@@ -1,0 +1,32 @@
+<apex:page standardController="Job_Task__c" extensions="TaskRoleAddEditStaffExtension" tabStyle="Job__c" action="{!SerachStaff}">
+ <apex:form >
+    <apex:pageBlock >
+        <apex:pageMessages ></apex:pageMessages>
+
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!Addstaff}" value="Add To Task" rendered="{!AllstaffWrappers.size > 0}"></apex:commandButton>
+                 <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+             
+             <apex:pageBlockSection rendered="{!AllstaffWrappers.size > 0}">
+                    <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="Select Staff"/>
+                                  <apex:dataTable value="{!AllstaffWrappers}" var="s" id="cTable" >
+                                             <apex:column >
+                                                           <apex:inputCheckbox value="{!s.selection}"  />  
+                                             </apex:column>
+                                             <apex:column >
+                                                        <apex:outputField value="{!s.staff.Staff__c}"/>
+                                             </apex:column>
+                                   </apex:dataTable>
+                    </apex:pageBlockSectionItem>
+                   </apex:pageBlockSection>
+                   
+                    <Apex:pageBlockSection >
+                    <apex:pageBlockSectionItem rendered="{!AllstaffWrappers.size <= 0}">
+                         <b>No records to display</b>
+                    </apex:pageBlockSectionItem>
+                    </Apex:pageBlockSection>     
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

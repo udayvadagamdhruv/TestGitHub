@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Quote</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Quotes</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>QuoteFieldset</name>
+    </fieldSets>
+    <layouts>
+        <layout>Quote Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Quote Layout When Approved</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Delete_Quote_Action</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>UnApprove</name>
+    </quickActions>
+    <recordTypes>
+        <label></label>
+        <name>Quote_Approved</name>
+    </recordTypes>
+    <recordTypes>
+        <label></label>
+        <name>Quote_unApprove</name>
+    </recordTypes>
+    <recordTypes>
+        <label></label>
+        <name>When_Quote_Approved</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Due_Date_cannot_be_before_Request_Date</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Quotes_View</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>UnApprove</name>
+    </webLinks>
+</CustomObjectTranslation>

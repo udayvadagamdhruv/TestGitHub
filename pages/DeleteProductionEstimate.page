@@ -1,0 +1,13 @@
+<apex:page standardController="Production_Estimate__c" extensions="DeleteProductionEstimateExtension" sidebar="false" showHeader="false">
+<script>
+           window.onload=function()
+           {
+             doInit();
+           };
+       </script>   
+      
+       <apex:form >
+         <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+       </apex:form> 
+
+</apex:page>

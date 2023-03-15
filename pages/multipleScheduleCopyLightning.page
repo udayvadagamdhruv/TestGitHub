@@ -1,0 +1,148 @@
+<apex:page controller="multipleScheduleCopyController" tabStyle="Job__c" sidebar="true" docType="html-5.0"  showHeader="false" standardStylesheets="true" >
+   
+      <style>
+           .slds .slds-dropdown-trigger .slds-dropdown
+           {
+               margin-left: -54px;
+    
+           }
+           .slds .slds-card__footer 
+           {
+               padding: 0px 16px 0px 0px;
+           }
+           .slds .slds-card__header 
+           {
+              padding: 0px 10px 0px 0px;
+           }
+           .slds .slds-card__body 
+           {
+                padding: 0px ;
+           }
+           .slds .slds-card 
+           {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+           }
+           .slds .slds-table--bordered 
+           {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+           }
+           .slds .slds-card__body 
+           {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+           }
+           .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+           {
+              border-bottom: 0px solid #d8dde6; 
+           }
+           
+           .slds .slds-checkbox .slds-checkbox--faux
+           {
+               border: 2px solid #98bfe0; 
+           }
+           
+        </style>
+        
+        
+        <script type="text/javascript">
+            function checkWithUser(){
+                if(confirm('This will replace all tasks on selected jobs with current job\'s task. Do you want to proceed ?')){
+                  //alert("Proceed.");
+                  saveRsc();
+                }
+            } 
+        </script>
+        
+        
+   
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+        <div class="slds">
+    
+          <apex:form id="fm1" html-novalidate="novalidate">
+   
+            <apex:actionFunction action="{!saveRsc}" name="saveRsc" reRender="pgb">
+            </apex:actionFunction>
+        
+        
+            <br/>
+            
+            <div align="center">
+               <apex:commandButton onclick="checkWithUser();" value="Save" reRender="fm1" rendered="{!jbWrap.size  > 0}" styleClass="slds-button slds-button--brand"></apex:commandButton>
+               <apex:commandButton action="{!cancel}" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+            </div>
+            <br/>
+            <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+              <apex:pageMessages ></apex:pageMessages>
+            </div> 
+            <br/>
+            
+            <div id="headerid" style="background-color:SteelBlue;color:white;">
+                 <h3 class="slds-section-title"><b>&nbsp;Jobs</b></h3>
+            </div>
+            
+             <br/>
+             <div class="slds-card">
+                            
+                      <div class="slds-card__body">
+
+                        <apex:outputPanel layout="block" rendered="{!jbWrap.size  > 0}">
+
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-6" scope="col"> 
+                                            Action
+                                        </th>
+                                        <th class="slds-size--1-of-6" scope="col">
+                                            Job Name
+                                        </th>
+                                        <th class="slds-size--1-of-6" scope="col">
+                                           Job #
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <apex:repeat value="{!jbWrap}" var="jbw" rendered="{!jbWrap.size  > 0}" >
+                                        <tr class="slds-hint-parent">
+                                            <td class="slds-size--1-of-6" data-label="Job Name">
+                                                <div>
+                                                   <label class="slds-checkbox"> 
+                                                          <apex:inputCheckbox value="{!jbw.varJbSelect}" onclick="deSelectOthers(this)"/> 
+                                                          <span class="slds-checkbox--faux"></span>
+                                                   </label>
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-6" data-label="Job Name">
+                                                <div>
+                                                   <apex:outputField value="{!jbw.varJb.Name}" />
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-6" data-label="Job Name">
+                                                <div>
+                                                    <apex:outputField value="{!jbw.varJb.Job_Auto_Number__c}" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </apex:outputpanel>
+                    </div>
+                    </div>
+            
+            
+              
+                <apex:outputPanel rendered="{!jbWrap.size  <= 0}">
+                    <apex:outputText value="No Active jobs for this Schedule Template"></apex:outputText>
+                </apex:outputPanel>
+          </apex:form>
+      </div>
+    </html>
+</apex:page>

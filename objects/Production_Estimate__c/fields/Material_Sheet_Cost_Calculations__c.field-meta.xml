@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Material_Sheet_Cost_Calculations__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( AND(ISPICKVAL( Color__c ,&quot;Color&quot;),ISPICKVAL( Sided__c 
+
+,&quot;Single&quot;)),(Qty_Used__c  *
+
+(IF(ISNULL(Material_Item__r.Machine_Click_Charge__c),0,Material_Item__r.Machine_Click_Charge__c) + 
+
+IF(ISNULL(Material_Item__r.Labor_Click_Charge__c) ,0,Material_Item__r.Labor_Click_Charge__c )+ 
+
+IF(ISNULL(Material_Item__r.Color_Click_Charge__c),0,Material_Item__r.Color_Click_Charge__c)  + 
+
+IF(ISNULL(Material_Item__r.Price_Per_Sheet__c),0,Material_Item__r.Price_Per_Sheet__c) )
+), 
+
+IF(AND(ISPICKVAL( Color__c ,&quot;Color&quot;),ISPICKVAL( Sided__c 
+
+,&quot;Double&quot;)), (Qty_Used__c   * 
+( (2 *(IF(ISNULL(Material_Item__r.Machine_Click_Charge__c),0,Material_Item__r.Machine_Click_Charge__c) + 
+
+IF(ISNULL(Material_Item__r.Color_Click_Charge__c),0,Material_Item__r.Color_Click_Charge__c)) +
+
+IF(ISNULL(Material_Item__r.Labor_Click_Charge__c),0,Material_Item__r.Labor_Click_Charge__c)+
+
+  
+
+IF(ISNULL(Material_Item__r.Price_Per_Sheet__c),0,Material_Item__r.Price_Per_Sheet__c) 
+
+))
+
+), 
+
+IF(AND(ISPICKVAL( Color__c ,&quot;B&amp;W&quot;),ISPICKVAL( Sided__c 
+
+,&quot;Single&quot;)), ( Qty_Used__c  * 
+( IF(ISNULL(Material_Item__r.Machine_Click_Charge__c),0,Material_Item__r.Machine_Click_Charge__c) + 
+
+IF(ISNULL(Material_Item__r.Labor_Click_Charge__c),0,Material_Item__r.Labor_Click_Charge__c) + 
+
+IF(ISNULL(Material_Item__r.B_W_Click_Charge__c),0,Material_Item__r.B_W_Click_Charge__c) + 
+
+IF(ISNULL(Material_Item__r.Price_Per_Sheet__c),0,Material_Item__r.Price_Per_Sheet__c))),
+
+
+IF(AND(ISPICKVAL( Color__c ,&quot;B&amp;W&quot;),ISPICKVAL( Sided__c ,&quot;Double&quot;)), 
+(Qty_Used__c   * ((
+(2*(IF(ISNULL(Material_Item__r.Machine_Click_Charge__c),0,Material_Item__r.Machine_Click_Charge__c) + 
+IF(ISNULL(Material_Item__r.B_W_Click_Charge__c),0,Material_Item__r.B_W_Click_Charge__c)))+ 
+
+
+IF(ISNULL(Material_Item__r.Labor_Click_Charge__c),0,Material_Item__r.Labor_Click_Charge__c) + 
+
+
+
+IF(ISNULL(Material_Item__r.Price_Per_Sheet__c),0,Material_Item__r.Price_Per_Sheet__c) 
+
+))),null))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Material Sheet Cost Calculations</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>3</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

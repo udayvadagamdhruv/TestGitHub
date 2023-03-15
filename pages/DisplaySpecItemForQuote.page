@@ -1,0 +1,73 @@
+<!-- This page is used to Display Spec Item for Quote. -->
+<apex:page standardController="Quote__c" extensions="DisplaySpecItemForQuote">
+     <head>
+        <style>
+            #table_Description td
+            {
+                border:0px;
+            }
+          
+           .labelCol2{font-size:1.0em};
+        </style>
+     </head>
+     
+     <apex:pageMessages id="hiddenBlock3"/>
+
+     <apex:form id="pb">
+          <apex:pageBlock tabStyle="Quote__c" title="Spec Items">
+                <apex:pageBlockButtons location="top">
+                    <apex:commandButton value="Create Spec" action="{!addNewQuoteSpec}" id="addspec"/>
+                    <apex:commandButton value="Import Template" action="{!ImportProductionSpec}" id="ImportSpecs"/>
+                    <apex:commandButton value="Save" action="{!save}" id="saveButton1" style="display: none;"/>  
+                    <apex:commandButton value="Cancel" id="cancelButton1" style="display: none;" onclick="window.location.reload();" reRender="pb"/> 
+                </apex:pageBlockButtons>
+                
+                <div>
+                <apex:pageBlockTable value="{!qsi}" var="qsitem" rendered="{!qsi.size > 0}"> <br/><br/><br/> 
+                    
+                    <apex:column headerValue="Action" width="10%" style="vertical-align:top;">
+                         
+                         <apex:commandButton value="Edit" action="{!editQuoteSpec}" reRender="hiddenBlock1">
+                             <apex:param name="param1" value="{!qsitem.id}" assignTo="{!specId}"></apex:param>
+                         </apex:commandButton> &nbsp;
+                         
+                         <apex:commandButton value="Delete" action="{!deleteQuoteSpec}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2">
+                             <apex:param name="param2" value="{!qsitem.id}" assignTo="{!specId}"> </apex:param>
+                         </apex:commandButton>   
+                    
+                    </apex:column>
+                  
+                    <apex:column headerValue="{!$ObjectType.Quote_Spec_Item__c.Fields.Name.Label}" style="vertical-align:top;">
+                        
+                         <apex:outputLink tabindex="tab1" value="/apex/QuoteSpecItemDetailPage?id={!qsitem.id}">{!qsitem.name}</apex:outputLink>
+         
+                    </apex:column>
+          
+                     <apex:column headerValue="{!$ObjectType.Quote_Spec_Item__c.Fields.Description__c.Label}">
+                         <apex:actionRegion >
+                           <table border="0" id="table_Description">
+                             <tr>
+                                 <td border="0" >
+                                    <apex:outputField value="{!qsitem.Description__c}">
+                                        <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" hideOnEdit="addspec,ImportSpecs"/>  </apex:outputfield> 
+                                 </td> 
+                                 <td> 
+                                    <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Description"/>  
+                                 </td>
+                             </tr>
+                           </table>
+                        </apex:actionRegion>
+                     </apex:column> 
+                     
+                </apex:pageBlockTable>
+                              
+                <apex:pageBlockSection rendered="{!qsi.size <= 0}">
+                   <apex:pageBlockSectionItem >
+                       <b>No records to display.</b>
+                   </apex:pageBlockSectionItem>              
+                </apex:pageBlockSection> 
+            </div>  
+         </apex:pageBlock> 
+      </apex:form> 
+</apex:page>
+<!-- End of Page -->

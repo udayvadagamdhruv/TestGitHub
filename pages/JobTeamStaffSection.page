@@ -1,0 +1,35 @@
+<apex:page standardController="Job__c" extensions="JobTeamStaffSectionExtension" id="thePage">
+
+<apex:form id="theForm">
+      <apex:pageBlock id="thePageBlock" title="Team">
+         
+         <div>
+          <apex:pageBlockTable value="{!lstJobTeam}" var="lst" id="thePageBlockable" rendered="{!lstJobTeam.size > 0}">
+              <apex:column headerValue="{!$ObjectType.Job_Team__c.Fields.Role__c.Label}">
+               <apex:outputField value="{!lst.Role__c}" />    
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Job_Team__c.Fields.Staff__c.Label}">
+                    <apex:outputField value="{!lst.Staff__c}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+           
+                    </apex:pageBlockTable>
+             </div> 
+          
+           <apex:pageBlockSection rendered="{!lstJobTeam.size <= 0}">
+               <apex:pageBlockSectionItem >
+                   <b>No records to display</b>
+               </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection>  
+         
+           <apex:pageBlockButtons location="top">
+              <apex:commandButton value="Add/Edit Staff" action="{!AddStaffs}"/> 
+         </apex:pageBlockButtons>
+      </apex:pageBlock>
+  </apex:form>
+
+
+
+
+</apex:page>

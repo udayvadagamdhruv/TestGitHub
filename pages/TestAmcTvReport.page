@@ -1,0 +1,162 @@
+<apex:page controller="TestAmcTvReportExt">
+  <apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockSection title="Campaign Status Report" columns="3">
+            
+           <apex:pageBlockSectionItem >
+               <apex:outputText >Campaign</apex:outputText>
+                   <apex:selectList id="campg" value="{!strCampaignName}" multiselect="true" size="3" >
+                       <apex:selectOptions value="{!Campaigns}"></apex:selectOptions>
+                   </apex:selectList>
+            </apex:pageBlockSectionItem>
+            
+           <apex:pageBlockSectionItem >
+               <apex:outputText >job</apex:outputText>
+                   <apex:selectList value="{!strJobname}" multiselect="true" size="3" >
+                       <apex:selectOptions value="{!jobs}"></apex:selectOptions>
+                   </apex:selectList>
+            </apex:pageBlockSectionItem>  
+            
+               <apex:pageBlockSectionItem >
+             <apex:outputText >Task</apex:outputText>
+                 <apex:inputText value="{!strTaskName}"/>
+            </apex:pageBlockSectionItem>
+            
+        </apex:pageBlockSection>
+       
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton value="Search" action="{!search}"/>
+            <apex:commandButton value="Clear" action="{!Clear}"/>
+           
+            
+              <apex:commandlink target="_blank" action="{!printpdf}" style="text-decoration: none;" >
+                 <apex:commandButton value="Print" action="{!printpdf}" />
+             </apex:commandlink>  
+            
+        </apex:pageBlockButtons>
+        
+    </apex:pageBlock>
+    
+    <apex:pageBlock >
+    
+    
+           <div> 
+                  <table width="100%">
+
+                        <tr >
+                          <th width="25%" style="text-align:justify;padding-left:60px;"><b>Task Name</b></th>
+                          <th width="15%" style="text-align:justify;padding-left:60px;"><b>Due Date</b></th>
+                          <th width="35%" style="text-align:justify;padding-left:60px;"><b>Staff</b></th> 
+                          <th width="25%" style="text-align:justify;padding-left:60px;"><b>Task Status</b></th>
+                        </tr>
+                        <tr>
+                             <td colspan="7">
+                                 <hr color="black"/>
+                             </td>
+                        </tr>
+                        
+                        <apex:repeat value="{!MapCampaign}" var="c">
+                        
+                            <table width="100%" style = "margin-bottom:-10px;">
+                                    <tr style="page-break-inside: avoid;">
+                                        <td width = "20%" style="page-break-inside: avoid;">
+                                        
+                                            <b>  <apex:outputText value="{0,date,MM/dd/yy}"  style="font-size:12px;font-weight:bold;font-color:#0000FF;" >
+                                                      <apex:param value="{!c}"/>
+                                                  </apex:outputText>
+                                                  
+                                                  
+                                                  </b>
+                                                  
+                                        
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr width="100%">
+                                        <td>
+                                            <hr color="black" />
+                                        </td>
+                                    </tr>
+                                    
+                            </table>
+                            <br/>
+                            <apex:repeat value="{!MapCampaign[c]}" var="cname">
+                                <table width="100%" style = "margin-bottom:-10px;">
+                                        <tr style="page-break-inside: avoid;">
+                                            <td width = "20%" style="page-break-inside: avoid;">
+                                                <b> <apex:outputtext value="{!CampNames[cname]}" style="font-size:12px;font-weight:bold;font-color:#0000FF;margin-left:15px;"/>  </b>
+                                            </td>
+                                        </tr>
+                                        <tr width="100%">
+                                            <td>
+                                                <hr color="black" style="margin-left:15px;"/>
+                                            </td>
+                                        </tr>
+                                        
+                                </table>
+                              <br/>
+                              
+                              <apex:repeat value="{!CampJobMap[cname]}" var="T">
+                              <apex:outputPanel rendered="{!IF(JobTaskMap[T.id] != '0', true, false)}">
+                                  <table width="100%">
+                                        <tr style="page-break-inside: avoid;">
+                                            <td width = "20%" style="page-break-inside: avoid;">
+                                                <b> <apex:outputText value="{!T.name}" style="font-size:12px;font-weight:bold;font-color:#0000FF;margin-left:30px;"/> 
+                                                    <apex:outputText value="# {!T.Job_Auto_Number__c}" style="font-size:12px;font-weight:bold;font-color:#0000FF;margin-left:30px;"/>
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        <tr width="100%">
+                                            <td>
+                                                <hr color="black" style="margin-left:30px;"/>
+                                            </td>
+                                        </tr>
+                                        
+                                 </table>
+                               </apex:outputPanel>  
+                               
+                               
+                               <apex:outputPanel rendered="{!IF(JobTaskMap[T.id] != '0', true, false)}">   
+                                <table style="margin-left:60px;" width="100%" >
+                                      <apex:repeat value="{!TaskMap[T.id]}" var="TName">
+                                             <tr >
+                                                  <td width="25%" >
+                                                    <apex:outputtext value="{!TName.name}" />  
+                                                  </td>
+                                                   <td width="15%">
+                                                      <apex:outputText value="{0,date,MM/dd/yy}"  >
+                                                              <apex:param value="{!TName.Revised_Due_Date__c}"/>
+                                                          </apex:outputText>  
+                                                  </td>
+                                                   <td width="35%" >
+                                                    <apex:outputtext value="{!TName.Assigned_Users__c}" />  
+                                                  </td>
+                                                   <td width="25%" >
+                                                        <apex:outputtext value="{!TName.Status__c}" />  
+                                                  </td>
+                                               </tr>
+                                           </apex:repeat>
+                                        <tr width="60%">
+                                            <td colspan="4">
+                                                <hr color="black"/>
+                                            </td>
+                                        </tr>
+                                       
+                                       </table>
+                                  </apex:outputPanel>  
+                              
+                              </apex:repeat>
+                              
+                            </apex:repeat>
+                        </apex:repeat>
+                        
+                    
+                    
+                         
+                  </table>    
+                  </div>
+                         
+     </apex:pageBlock>
+    
+    </apex:form>
+</apex:page>

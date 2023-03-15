@@ -1,0 +1,69 @@
+<apex:page standardController="Job_Task__c" extensions="TaskRoleStaffSectionExtension" id="thePage" sidebar="false" showHeader="false" standardStylesheets="true"  applyBodyTag="false" applyHtmlTag="false" docType="html-5.0" >
+ 
+ 
+ <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+  
+  <div class="slds">
+ 
+
+  <apex:form id="theForm">
+  
+                      <div>
+                   <center>     <apex:commandButton value="Add/Edit Staff" action="{!AddStaffs}" styleClass="slds-button slds-button--neutral"/> </center>
+                       </div>
+    <br/>
+    
+    
+    <apex:outputPanel rendered="{!lstTR.size > 0}" >
+            <div class="slds-box">  
+                                 
+                <div class="slds-grid slds-wrap">
+         
+                       
+         
+           <apex:repeat value="{!lstTR}" var="lst"  rendered="{!lstTR.size > 0}" id="thePageBlockable">
+                               <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12" style="z-index:1 !important;">
+                                   <div class="demo-only" style="width: 30rem;">
+                                        <article class="slds-tile slds-media">
+                                        <div class="slds-media__figure">
+                                        <span class="slds-avatar slds-avatar_circle slds-avatar--medium" style="border-radius: 50%;">
+                                        <img alt="" src="{!URLFOR($Resource.SLDS0122, '/assets/images/avatar2.jpg')}" title="{!lst.Name}" />
+                                        </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                        <h1 class="slds-tile__title slds-truncate" title="Staff Name">{!lst.User__c}</h1>
+                                        <div class="slds-tile__detail">
+                                        <dl class="slds-list_horizontal slds-wrap">
+                                        
+                                        <dd class="slds-item_detail slds-truncate" title="Role" >{!lst.Name }</dd>
+                                        
+                                        </dl>
+                                        </div>
+                                        </div>
+                                        </article>
+                                       </div>  <hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;"/>
+                                   </div>
+                        </apex:repeat>
+         
+      </div>
+      </div>
+      
+       </apex:outputPanel>  
+                <apex:outputPanel rendered="{!lstTR.size <= 0}">
+               
+                   <p>No records to display</p>
+                         
+                </apex:outputPanel>  
+         
+      
+      
+      
+      
+  </apex:form>
+  
+ </div>
+ 
+ </html>
+ 
+</apex:page>

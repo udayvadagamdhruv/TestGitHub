@@ -1,0 +1,231 @@
+<aura:component controller="Material_Items_Controller" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,force:lightningQuickAction" access="global" >
+   
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="today" type="string" default=""/>
+    
+    <aura:attribute name="MaterialUsageItems" type="Object" />
+    <aura:attribute name="MIUIColumns" type="List" />  
+    <aura:attribute name="MIUIFieldSet" type="List" />
+    <aura:attribute name="isMIUIOpen" type="boolean" />
+    
+    <aura:attribute name="MaterialInventory" type="Object" />
+    <aura:attribute name="MInvColumns" type="List" />
+    <aura:attribute name="MInvFieldSet" type="List" />
+    <aura:attribute name="isMInvOpen" type="boolean" />
+    
+    
+    <aura:attribute name="errors" type="Object" default="[]"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    
+     <aura:attribute name="MaterialUsageItemsSection" type="String" default="Material Usage Items" required="true" access="global" />
+     <aura:attribute name="MaterialInventorySection" type="String" default="Material Inventory" required="true" access="global" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                       fields="Id,Name,Calc_Unit__c,Roll_LF__c,Case_Pack__c"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>  
+    
+     <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MaterialUsageItems">
+        <lightning:accordionSection name="MaterialUsageItems" label="{!v.MaterialUsageItemsSection}"  class="slds-card" >
+           <center>
+                <lightning:button variant="neutral" label="Add Material Usage" title="Add Material Usage" onclick="{!c.addMaterailUsageLineItem}"/> 
+            </center>
+            <br/>
+            <aura:if isTrue="{!empty(v.MaterialUsageItems)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >    
+                    <div style="height:420px;">
+                    <lightning:datatable class="MIUItablecss"
+                                         aura:id="MIUITable"
+                                         columns="{!v.MIUIColumns}"
+                                         data="{! v.MaterialUsageItems }"
+                                         keyField="Id"
+                                         hideCheckboxColumn="true"
+                                         showRowNumberColumn="true"
+                                         errors="{!v.errors}"
+                                         onsort="{!c.updateColumnSorting}"
+                                         sortedBy="{!v.sortedBy}"
+                                         sortedDirection="{!v.sortedDirection}" 
+                                         onrowaction="{!c.handleRowActionForMIUI}" />
+                    </div>
+                </aura:set>
+            </aura:if>
+            
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MaterialInventory">
+        <lightning:accordionSection name="MaterialInventory" label="{!v.MaterialInventorySection}"  class="slds-card" >
+            <center>
+                <lightning:button variant="neutral" label="Add Material Inventory" title="Add Material Inventory" onclick="{!c.addMaterailInventory}"/> 
+            </center>
+            <br/>
+            <aura:if isTrue="{!empty(v.MaterialInventory)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" > 
+                    <div style="height:420px;">
+                    <lightning:datatable class="MIUItablecss"
+                                         aura:id="MInvTable"
+                                         columns="{!v.MInvColumns}"
+                                         data="{!v.MaterialInventory }"
+                                         keyField="Id"
+                                         hideCheckboxColumn="true"
+                                         showRowNumberColumn="true"
+                                         errors="{!v.errors}"
+                                         onsort="{!c.updateColumnSortingForMInventory}"
+                                         sortedBy="{!v.sortedBy}"
+                                         sortedDirection="{!v.sortedDirection}" 
+                                         onrowaction="{!c.handleRowActionMInv}" />
+                        </div>
+                </aura:set>
+            </aura:if>
+            
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+     <aura:if isTrue="{!v.isMIUIOpen}" >
+       <lightning:recordEditForm aura:id="MIUIEditform" density="comfy" objectApiName="Material_Usage_line_item__c"   onsubmit="{!c.MIUIOnSubmit}" onsuccess="{!c.MIUIOnSuccess}">
+             <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModelMIUI }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Material Usage Line Item</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                       
+                        <aura:iteration items="{!v.MIUIFieldSet}" var="field">
+                            <aura:if isTrue="{!(field=='Material_Item__c')}">    
+                                <aura:set attribute="else">   
+                                    <lightning:inputField fieldName="{!field}" aura:id="MIUIField" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"   /> 
+                                </aura:set>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Material_Item__c'}"> 
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> Material Item</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                    </div>
+                                </div>
+                            </aura:if>
+                          
+                        </aura:iteration>
+                 
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModelMIUI }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    
+    
+    
+    
+    <aura:if isTrue="{!v.isMInvOpen}" >
+       <lightning:recordEditForm aura:id="MInvEditform" density="comfy"  objectApiName="Material_Inventory_Item__c"   onsubmit="{!c.MInvOnSubmit}" onsuccess="{!c.MInvOnSuccess}">
+             <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModelMInv }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Material Inventory</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                       
+                        <aura:iteration items="{!v.MInvFieldSet}" var="field">
+                            <aura:if isTrue="{!(field=='Material_Item__c') || (field=='Mfg_Item_Number__c') || (field=='Name')}">    
+                                <aura:set attribute="else">   
+                                    <lightning:inputField fieldName="{!field}" aura:id="MInvField" class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='Name' || field=='Qty_On_Shelf__c') ? 'frequired' :' ')}"   /> 
+                                </aura:set>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Material_Item__c'}"> 
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> Material Item</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Mfg_Item_Number__c'}"> 
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1">Manufacturer Item Number</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Manufacturer_Item_No__c}"  />
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Name'}"> 
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1">Inventory Item Name</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!'Inventory-('+(v.today)+')'}"/>
+                                    </div>
+                                </div>
+                            </aura:if>
+                          
+                        </aura:iteration>
+                 
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModelMInv }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

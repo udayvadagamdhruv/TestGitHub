@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Amount_will_be_0</fullName>
+        <field>Amount__c</field>
+        <formula>0</formula>
+        <name>Amount will be 0</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Page_Layout_will_be_changed_to_Editable</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>Quote_unApprove</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Page Layout will be changed to Editable</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Record_Type_will_be_updated</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>When_Quote_Approved</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Record Type will be updated</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>When Quote is Approved</fullName>
+        <actions>
+            <name>Record_Type_will_be_updated</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Quote__c.Approved__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>if Quote is approved,then it will be read only.(this workflow rule is updating record type).</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>When Quote is unapproved</fullName>
+        <actions>
+            <name>Amount_will_be_0</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Page_Layout_will_be_changed_to_Editable</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Quote__c.Approved__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>if Quote is unapproved then it will be editable and its Amount field will be set to 0.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

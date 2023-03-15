@@ -1,0 +1,497 @@
+<apex:page standardController="Job__c" tabStyle="Job__c" extensions="EditJobExtensionNew" id="Page1">
+
+    <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-1.5.1.min.js')}" type="text/javascript" />
+    <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-ui-1.8.13.custom.min.js')}" type="text/javascript" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryScheduleUpadate,'/css/ui-lightness/jquery-ui-1.8.13.custom.css')}" />
+
+         <script> 
+         <!--  for task marked done-->
+         
+         var j$ = jQuery.noConflict();
+         
+            var strst,st,org,PEboo;
+         j$(document).ready(function(){
+         j$( "#dialog-confirm1").dialog({
+            autoOpen: false,
+            resizable: false,
+            height:150,
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    
+                     
+                    document.getElementById('{!$Component.frm1.hidden}').value = 'true';
+                    //alert('u selected yes'+document.getElementById('{!$Component.frm1.hidden}').value);                    
+                    
+                    j$( this ).dialog( "close" );
+                },
+                "No": function() {
+                 
+                    j$( this ).dialog( "close" );
+                }
+            }
+        });
+        
+        
+        j$( "#dialog-confirm2").dialog({
+            autoOpen: false,
+            resizable: false,
+            height:150,
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    
+                     
+                    document.getElementById('{!$Component.frm1.hidden1}').value = 'true';
+                    //alert('u selected yes'+document.getElementById('{!$Component.frm1.hidden1}').value);                    
+                    
+                    j$( this ).dialog( "close" );
+                },
+                "No": function() {
+                 
+                    j$( this ).dialog( "close" );
+                }
+            }
+        });
+        
+        
+        
+        
+        });
+        function statusCompleted(st,peboo)
+            {
+               
+                strst = st.value;  
+               
+                if(strst == "Completed")
+                {
+                  document.getElementById('{!$Component.frm1.hidden}').value = 'true';
+                 
+                }
+                
+                if(strst == "Completed" && peboo==true)
+                {
+                    j$( "#dialog-confirm2" ).dialog( "open" ); 
+                }    
+            }
+        
+         <!--  for task marked done-->
+         var newValue='';  
+               /* function scheduleCalcUpdate(strvalue,scheduleCalc)
+                {  
+                    var x;
+                    var r=confirm(" This will update all existing tasks on the schedule. Do you want to continue?");
+                    if (r==false)
+                      {
+                       // var theText = scheduleCalc; 
+                        scheduleCalc.value = strvalue;                       
+                      }
+                      else
+                      {
+                       // newValue= scheduleCalc.value;
+                        alert(scheduleCalc.value);
+                      }
+                }*/
+                
+                                         //this,value
+                 function scheduleUpdate(schedule,str)
+                {  
+              
+                    var r=confirm("  This will delete all existing tasks on the schedule. Do you want to continue?");
+                     
+                     
+                    if (r==false)
+                     {
+                   // alert('schedule.value Before : '+schedule.value);
+                     schedule.value = str;     
+                  //   alert('schedule.value After: '+schedule.value);                  
+                     }
+                }
+            
+            //Added By Navaneeth  : Start  
+                                                      //value,this
+                function scheduleUpdateWhenDatesChanges(schedule,str)
+                {  
+                    var inpele = j$("input[id$='SchedUpdateCheck1']");
+                    var r=confirm("  scheduleUpdateWhenDatesChanges : This will Update all existing tasks on the schedule. Do you want to continue?");
+                     alert('Schedule : '+schedule+'    Str(This) : '+str);                  
+                    if (r==false)
+                     {
+                         alert('Str.value Before : '+str.value);
+                         
+                         str.value = schedule;                       
+                         alert('Str.value After : '+str.value);
+                          if(schedule == true)
+                          inpele.attr('checked', true);
+                          else
+                          inpele.attr('checked', false);
+                         
+                         //inpele.checked[0] = true; 
+                     
+                     }
+                    
+                }
+                
+                function alertWhenDateChanges(num,val)
+                {
+                    if(num == 1)
+                        alert('Note : If you want to update the Schedule also, please Check the below Check Box \"UpdateSchedDateFieldCheck\"');
+                    else if(num == 2)
+                    {
+                      //  alert('Value : '+val);
+                        var inpele = j$("input[id$='SchedUpdateCheck1']");
+                      //  alert('inpele.value  : '+inpele.val());
+                        if(val == 'false')
+                            alert('Checking this makes update to the Scheduled Dates when dates are changed ');
+                        else
+                            alert('UnChecking this doesnt make update to the Scheduled Dates when dates are changed');
+                    }
+                }
+                
+             //Added By Navaneeth  : End 
+                 
+                 function ConfirmWindow(optionalvalue,strvalue,control, confirmcall)
+                {  
+                // alert('in 5');
+                    var x;
+                    var r;
+                    
+                    if(confirmcall == 1 )//schedule  update
+                    {
+                        r = confirm(" This will delete all existing tasks on the schedule. Do you want to continue?");
+                    }
+                    else if(confirmcall == 2 )//schedule calc update
+                    {
+                        r = confirm("  This will update all existing tasks on the schedule. Do you want to continue?");                   
+                    }
+                    else if(confirmcall == 3 )//start date update
+                    {
+                      if(optionalvalue == 'Start Date' || newValue == 'Start Date')
+                        {
+                            r = confirm("  This will update all existing tasks on the schedule. Do you want to continue?");       
+                        }
+                    }
+                    else if(confirmcall == 4 )//due date update
+                    {
+                     if(optionalvalue == 'End Date' ||  newValue == 'End Date')
+                        {                          
+                           r = confirm("  This will update all existing tasks on the schedule. Do you want to continue?");        
+                        }
+                    }
+                    else if(confirmcall == 5 )//media type update
+                    {
+                    alert('in 5');
+                        r = confirm(" This will delete all existing tasks on the schedule. Do you want to continue?");      
+                    }
+                  
+                    if (r==false)
+                      {
+                        control.value = strvalue; 
+                        if(confirmcall == 1)
+                        {
+                          RevertMediaType();
+                        }  
+                        if(confirmcall == 2)   
+                        {
+                          newValue = '';
+                        }                 
+                      }
+                      else if(confirmcall == 2 && r==true)
+                      {
+                        newValue= control.value;                      
+                      }
+                }
+               </script>
+<apex:pagemessages id="frm"/>
+<apex:sectionHeader title="Job Details"/>
+ <apex:form id="frm1">
+    <!--<apex:actionFunction name="updateTaskDone"  rerender="pgSection">
+            <apex:param name="markDone" value="" assignTo="{!markDone}"/>             
+        </apex:actionFunction> -->
+    <apex:actionFunction name="RevertMediaType" action="{!revertMediaType}" rerender="MtName,ST">            
+             </apex:actionFunction>
+     <apex:pageBlock id="pb">
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+                 <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+            
+             <apex:actionRegion id="actregion">
+                 <apex:pageBlockSection title="Information" columns="2" collapsible="true" id="pgSection"> 
+                        <apex:pageBlockSectionItem id="pgSectionItem1">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}"/>
+                                  <apex:outputField value="{!Job__c.Job_Auto_Number__c}"/>
+                        </apex:pageBlockSectionItem>
+                     
+                         <apex:pageBlockSectionItem id="pgSectionItem2">  
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" for="Campaign" rendered="{!($ObjectType.Job__c.fields.Campaign__c.accessible)}"></apex:outputLabel>
+                                  <apex:selectList id="CampName" value="{!CampaignName}" size="1" rendered="{!($ObjectType.Job__c.fields.Campaign__c.accessible)}">
+                                      <apex:selectOptions value="{!Campaigns}"></apex:selectOptions>
+                                      </apex:selectList> 
+                         </apex:pageBlockSectionItem>
+              
+                         <apex:pageBlockSectionItem id="pgSectionItem3" rendered="{!AND(Not(ShowNotrequiredJob),$ObjectType.Job__c.Fields.Name.accessible)}">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}"/>
+                                  <apex:inputField value="{!Job__c.Name}" required="true"/>
+                         </apex:pageBlockSectionItem>
+                         
+                         
+                         
+                         <apex:pageBlockSectionItem id="pgSectionItem15" rendered="{!AND(ShowNotrequiredJob,$ObjectType.Job__c.Fields.Name.accessible)}"> 
+                         
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}"/>
+                                  <apex:inputField value="{!Job__c.Name}" />
+                         </apex:pageBlockSectionItem>
+                         
+                         
+                          <apex:pageBlockSectionItem id="pgSectionItem4" rendered="{!$ObjectType.Job__c.Fields.Schedule_Calc__c.accessible}">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Calc__c.Label}" /> 
+                              <apex:inputField id="ScheduleCalcu" value="{!Job__c.Schedule_Calc__c}" onchange="ConfirmWindow('','{!Job__c.Schedule_Calc__c}',this,2);" />
+                           
+                               <!--  <apex:selectList id="ScheduleCalc" value="{!ScheduleCalc}" size="1" >
+                              
+                                          <apex:selectOptions value="{!ScheduleCalcList}"/>
+                                 </apex:selectList> -->
+                         </apex:pageBlockSectionItem>
+                         
+            
+                         <apex:pageBlockSectionItem id="pgSectionItem5"  rendered="{!$ObjectType.Job__c.Fields.Status__c.accessible}">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}"  />
+                                    <apex:inputField value="{!Job__c.Status__c}" onchange="statusCompleted(this,{!ShowPELI});"/>
+                         </apex:pageBlockSectionItem>
+                         
+                          <apex:pageBlockSectionItem id="pgSectionItem6" rendered="{!$ObjectType.Job__c.fields.Start_Date__c.accessible}">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}"/>
+                                <!--  <apex:inputField value="{!Job__c.Start_Date__c}" required="true"/>-->
+                                   <apex:inputField value="{!Job__c.Start_Date__c}" />
+                                   
+                                   <!-- onchange="alertWhenDateChanges(1,'');" -->
+                         </apex:pageBlockSectionItem>
+             
+                       
+                          <apex:pageBlockSectionItem id="pgSectionItem7">                  
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Media_Types__c.Label}" for="MediaTypeName" rendered="{!$ObjectType.Job__c.fields.Media_Types__c.accessible}"></apex:outputLabel>
+                                      <apex:actionRegion >
+                                          <apex:outputPanel rendered="{!($ObjectType.Job__c.fields.Media_Types__c.accessible)}">
+                                              <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                                  <div class="requiredBlock"> </div>
+                                                       <apex:selectList id="MtName" value="{!MTName}" size="1" rendered="{!($ObjectType.Job__c.fields.Media_Types__c.accessible)}">
+                                                              <apex:actionSupport event="onchange" onsubmit="scheduleUpdate(this,'{!MTName}'); " rerender="ST"/>
+                                                                  <apex:selectOptions value="{!MediaTypes}"></apex:selectOptions> 
+                                                              </apex:selectList>
+                                              </span>
+                                          </apex:outputPanel> 
+                                      </apex:actionRegion> 
+                          </apex:pageBlockSectionItem>
+                         <apex:pageBlockSectionItem id="pgSectionItem8" rendered="{!$ObjectType.Job__c.fields.Due_Date__c.accessible}">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" rendered="{!$ObjectType.Job__c.fields.Due_Date__c.accessible}"/>
+                                <apex:inputField value="{!Job__c.Due_Date__c}" />
+                                <!-- onchange="alertWhenDateChanges(1,'');" -->
+                         </apex:pageBlockSectionItem>      
+              
+                  
+                         
+                  
+                          <apex:pageBlockSectionItem id="pbs">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}" for="JT" rendered="{!($ObjectType.Job__c.fields.Schedule_Template__c.accessible)}"></apex:outputLabel>
+                                  <apex:outputPanel rendered="{!($ObjectType.Job__c.fields.Schedule_Template__c.accessible)}">
+                                      <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                          <div class="requiredBlock"> </div>
+                                             <!-- <apex:selectList id="ST" value="{!ScheduleTemp}" size="1" onselect="{!Job__c.Schedule_Template__c}" onchange="window.confirm('This will delete all existing tasks on the schedule, and import the tasks from the new template. Do you want to continue?');">-->
+                                              <apex:selectList id="ST" value="{!ScheduleTemp}" size="1" onselect="{!Job__c.Schedule_Template__c}" onchange="ConfirmWindow('','{!Job__c.Schedule_Template__c}',this,1);" rendered="{!($ObjectType.Job__c.fields.Schedule_Template__c.accessible)}">
+                                                      <apex:selectOptions value="{!ScheduleTemplates}"></apex:selectOptions>
+                                              </apex:selectList>
+                                       </span>
+                                  </apex:outputPanel>  
+                         </apex:pageBlockSectionItem> 
+                         
+                       <!--  <apex:pageBlockSectionItem id="SchedUpdateCheck" rendered="{!$ObjectType.Job__c.fields.UpdateSchedDateFieldCheck__c.accessible}">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.UpdateSchedDateFieldCheck__c.Label}" rendered="{!$ObjectType.Job__c.fields.UpdateSchedDateFieldCheck__c.accessible}"/>
+                              <apex:outputPanel rendered="{!$ObjectType.Job__c.fields.UpdateSchedDateFieldCheck__c.accessible}" >
+                                <apex:inputField id="SchedUpdateCheck1" value="{!Job__c.UpdateSchedDateFieldCheck__c}" onchange="alertWhenDateChanges(2,'{!Job__c.UpdateSchedDateFieldCheck__c}');"/>
+                                
+                              </apex:outputPanel>
+                         </apex:pageBlockSectionItem> -->
+                          
+                         
+                         
+                         <apex:pageBlockSectionItem >                  
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Specification_Template__c.Label}" for="SpecTemp" rendered="{!($ObjectType.Job__c.fields.Specification_Template__c.accessible)}"></apex:outputLabel>
+                                  <apex:selectList id="SpecTempName" value="{!SpecTempName}" size="1" rendered="{!($ObjectType.Job__c.fields.Specification_Template__c.accessible)}">
+                                        <apex:selectOptions value="{!SpecificationTemplates}"></apex:selectOptions>
+                                  </apex:selectList>  
+                          </apex:pageBlockSectionItem>
+                       
+                      
+                
+                        <apex:pageBlockSectionItem rendered="{!displayclient_contact}">                  
+                            <apex:outputLabel value="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}" for="ClientName" rendered="{!($ObjectType.Job__c.fields.JS_Client__c.accessible)}"></apex:outputLabel>
+                                  <apex:actionRegion >
+                                      <apex:selectList id="ClientName" value="{!ClientName}" size="1" rendered="{!($ObjectType.Job__c.fields.JS_Client__c.accessible)}">
+                                           <apex:actionSupport event="onchange" rerender="CC"/>
+                                                <apex:selectOptions value="{!Clients}"></apex:selectOptions>
+                                      </apex:selectList>  
+                                  </apex:actionRegion>
+                      </apex:pageBlockSectionItem>
+                      
+                     <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.fields.Budgeted_Cost__c.accessible}">
+                           <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Budgeted_Cost__c.Label}" />
+                                    <apex:inputField value="{!Job__c.Budgeted_Cost__c}"/>
+                        </apex:pageBlockSectionItem>
+                  
+                      <apex:pageBlockSectionItem id="pbsCC" rendered="{!displayclient_contact}">
+                          <apex:outputLabel value="{!$ObjectType.Job__c.Fields.JS_Client_Contact__c.Label}" for="CC" rendered="{!($ObjectType.Job__c.fields.JS_Client_Contact__c.accessible)}"></apex:outputLabel>
+                              <apex:selectList id="CC" value="{!CCName}" size="1" rendered="{!($ObjectType.Job__c.fields.JS_Client_Contact__c.accessible)}">
+                                  <apex:selectOptions value="{!ClientContacts}"></apex:selectOptions>
+                              </apex:selectList>
+                      </apex:pageBlockSectionItem> 
+                      
+             <!--          <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                      
+                       <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Job_Description__c.accessible}">  
+                           <apex:outputLabel value="Job Description"/>
+                               <apex:inputTextarea value="{!Job__c.Job_Description__c}" rows="3" cols="55"  style="resize:none"/>
+                       </apex:pageBlockSectionItem>  
+                       
+                      <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+               
+      
+              <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Status_Notes__c.accessible}">  
+                      <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status_Notes__c.Label}" />
+                      <apex:inputTextarea value="{!Job__c.Status_Notes__c}" rows="8" cols="90" style="resize:none"/>
+               </apex:pageBlockSectionItem>
+               
+              <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Traffic_Notes__c.accessible}">
+                      <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Traffic_Notes__c.Label}" />
+                      <apex:inputTextarea value="{!Job__c.Traffic_Notes__c}" rows="8" cols="90" style="resize:none"/>
+              </apex:pageBlockSectionItem>
+
+                      
+                      <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1'}">
+                        <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_1__c.Label}"/>
+                            <apex:inputField value="{!Job__c.Dummy_Text_1__c}"/>
+                      </apex:pageBlockSectionItem>    
+                
+                      <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1'}">
+                            <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Date_1__c.Label}"/>
+                                <apex:inputField value="{!Job__c.Dummy_Date_1__c}"/>
+                        </apex:pageBlockSectionItem>    
+                
+                     <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2'}">
+                            <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_2__c.Label}"/>
+                                <apex:inputField value="{!Job__c.Dummy_Text_2__c}"/>
+                     </apex:pageBlockSectionItem>  
+                
+                     <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2'}">
+                            <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Date_2__c.Label}"/>
+                                <apex:inputField value="{!Job__c.Dummy_Date_2__c}"/>
+                     </apex:pageBlockSectionItem>   
+                
+                     <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3'}">
+                            <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_3__c.Label}"/>
+                                <apex:inputField value="{!Job__c.Dummy_Text_3__c}"/>
+                    </apex:pageBlockSectionItem>  
+                
+                    <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3'}">
+                            <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Date_3__c.Label}"/>
+                                <apex:inputField value="{!Job__c.Dummy_Date_3__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Text_4__c.Label!='Dummy Text 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_4__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Text_4__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Date_4__c.Label!='Dummy Date 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Date_4__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Date_4__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Text_5__c.Label!='Dummy Text 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_5__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Text_5__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Date_5__c.Label!='Dummy Date 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Date_5__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Date_5__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Text_6__c.Label!='Dummy Text 6'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_6__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Text_6__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Date_6__c.Label!='Dummy Date 6'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Date_6__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Date_6__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_1__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Picklist_1__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_2__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Picklist_2__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+               <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_3__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Picklist_3__c}"/> 
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Picklist_4__c.Label!='Dummy Picklist 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_4__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Picklist_4__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+               <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Picklist_5__c.Label!='Dummy Picklist 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_5__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Picklist_5__c}"/> 
+                </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.Fields.Dummy_Picklist_6__c.Label!='Dummy Picklist 6'}">
+                    <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_6__c.Label}"/>
+                    <apex:inputField value="{!Job__c.Dummy_Picklist_6__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+               
+          -->
+    
+          </apex:pageblocksection>
+         </apex:actionRegion><br/>
+         
+          <apex:pageBlockSection collapsible="false">
+               
+               <apex:repeat value="{!$ObjectType.Job__c.fieldsets.Job_Field_sets}" var="fieldValue">
+                 <apex:Inputfield value="{!Job__c[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="height:100px;width:400px" rendered="{!OR(CONTAINS(LOWER(fieldValue) , LOWER('Job_Description__c')),CONTAINS(LOWER(fieldValue) , LOWER('Traffic_Notes__c')),CONTAINS(LOWER(fieldValue) , LOWER('Status_Notes__c'))) }"/>
+                 
+                 <apex:Inputfield value="{!Job__c[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}"  rendered="{!NOT(OR(CONTAINS(LOWER(fieldValue) , LOWER('Job_Description__c')),CONTAINS(LOWER(fieldValue) , LOWER('Traffic_Notes__c')),CONTAINS(LOWER(fieldValue) , LOWER('Status_Notes__c'))))}"/>  
+               
+                 </apex:repeat>
+               
+               
+               </apex:pageBlockSection>
+         
+         
+       </apex:pageBlock>
+       <br/>
+       <div id="dialog-confirm1" title="Status complete" style="display:none">
+            <p>
+                Do you want to mark  all Tasks done?
+            </p>
+        </div>
+         <div id="dialog-confirm2" title="Status complete" style="display:{!if(ShowPELI==true,"block","none")}">
+            <p>
+                Do you want to Aprrove  all Production Estimate Line Items?
+            </p>
+        </div>
+        <apex:inputhidden value="{!markDone}" id="hidden" />
+        <apex:inputhidden value="{!ApprovePe}" id="hidden1" />
+        <!--apex:inputhidden value="{!HDorg}" id="orgId" / -->
+       
+     
+    </apex:form>
+</apex:page>

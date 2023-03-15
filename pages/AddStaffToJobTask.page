@@ -1,0 +1,34 @@
+<!-- This page is used to add extra Staff member to Job Task.(this page is used to ovveride Add_Staff Button (Command button) under job task detail page). -->
+<apex:page standardController="Job_Task__c" extensions="AddStaffToJobTaskExtension" tabStyle="Job__c">
+<apex:form >
+    <apex:pageBlock >
+        <apex:pagemessages />
+
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!save}" value="Save" rendered="{!staffWraps.size > 0}"></apex:commandButton>
+                 <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+             
+             <apex:pageBlockSection rendered="{!staffWraps.size > 0}">
+                    <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="Select Staff"/>
+                                  <apex:dataTable value="{!staffWraps}" var="s" id="cTable" >
+                                             <apex:column >
+                                                           <apex:inputCheckbox value="{!s.Checked}" onclick="deSelectOthers(this)" />  
+                                             </apex:column>
+                                             <apex:column >
+                                                        <apex:outputField value="{!s.st.Staff__c}"/>
+                                             </apex:column>
+                                   </apex:dataTable>
+                    </apex:pageBlockSectionItem>
+                   </apex:pageBlockSection>
+                   
+                    <Apex:pageBlockSection >
+                    <apex:pageBlockSectionItem rendered="{!staffWraps.size <= 0}">
+                         <b>No records to display</b>
+                    </apex:pageBlockSectionItem>
+                    </Apex:pageBlockSection>     
+    </apex:pageBlock>
+</apex:form>
+</apex:page>
+<!-- End of Page -->

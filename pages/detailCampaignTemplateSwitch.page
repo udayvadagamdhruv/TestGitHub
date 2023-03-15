@@ -1,0 +1,13 @@
+<apex:page standardController="Campaign_Template__c" tabStyle="MyAdmin__tab" extensions="editcampaignTemplateSwitchExt"  sidebar="false"   showHeader="false" standardStylesheets="false"  applyBodyTag="false" docType="html-5.0">
+ 
+   <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/detailCampaignTemplate?id="+'{!CTempId}', "_self");
+     }
+    
+    </script>
+   
+    <apex:include pageName="detailCampaignTemplateLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+</apex:page>

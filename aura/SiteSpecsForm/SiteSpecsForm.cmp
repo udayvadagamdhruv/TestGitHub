@@ -1,0 +1,24 @@
+<aura:component controller="SiteJobRequestForm" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="SpecRecords" type="Object" default=""/>
+    <aura:attribute name="SpecId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+     <aura:registerEvent name="SpecEvent" type="c:SpecRecordPassedtoSiteJobForm" />
+    
+    <aura:method name="FetchSpecRecs" action="{!c.FetchSpecs}" access="public">
+    </aura:method>
+   
+    <aura:iteration items="{!v.SpecRecords}" var="item">
+        <lightning:layout multipleRows="true">  
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="4" padding="around-small">    
+                <ui:outputText value="{!item.Name}" />
+            </lightning:layoutItem>     
+            
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="8" padding="around-small">    
+                <ui:inputTextArea value="{!item.Description__c}" placeholder="Enter Description here"/> 
+            </lightning:layoutItem>  
+               
+        </lightning:layout>
+    </aura:iteration>
+    
+</aura:component>

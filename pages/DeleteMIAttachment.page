@@ -1,0 +1,16 @@
+<!-- This Page is used for delete functionality of MI Attachement -->
+<apex:page standardController="Attachment" extensions="DeleteMIAttachmentExtension" showHeader="false" sidebar="false">
+
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- End of Page -->

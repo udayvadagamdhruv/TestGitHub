@@ -1,0 +1,23 @@
+.THIS  .tablecss {
+    line-height: 40px;
+}
+
+.THIS .slds-form--stacked{
+    width: 90% !important;  
+    height:400px !important;
+}
+
+
+.THIS .slds-textarea{
+    height:75px !important;
+}
+
+@media (min-width: 48em){
+.THIS .slds-modal__container {
+    overflow-y: auto !important;      
+    margin: 0 auto;
+    width: 50%;
+    max-width: 40rem;
+    min-width: 49rem;
+    min-height: 49rem;
+}}

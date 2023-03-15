@@ -1,0 +1,18 @@
+<apex:page standardController="Staff__c" tabStyle="MyAdmin__tab" extensions="StaffDetailPageSwitchExt" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+
+    <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/StaffDetailPage?id="+'{!StaffId}', "_self");
+     }
+    
+    </script>
+   
+      <!--   <apex:include pageName="JobRequestFormdetailpageMobile" rendered="{!$User.UITheme == 'Theme4t'}"/>-->
+          <apex:include pageName="StaffDetailPageLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+    
+   
+
+
+</apex:page>

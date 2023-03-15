@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Purchase Order</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Purchase Orders</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>PO_FieldSets</name>
+    </fieldSets>
+    <layouts>
+        <layout>Purchase Order Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>When PO Status Is Sent and Invoice is not created</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Delete</name>
+    </quickActions>
+    <recordTypes>
+        <description></description>
+        <label></label>
+        <name>When_PO_Status_is_Sent</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Issue_Date_must_be_less_than_Due_Date</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Estimate</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Log_Invoice</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>PO_List_View</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Print_PO</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Production_Estimate</name>
+    </webLinks>
+</CustomObjectTranslation>

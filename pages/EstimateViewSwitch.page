@@ -1,0 +1,4 @@
+<apex:page standardController="Estimate_Line_Items__c" extensions="EstimateViewSwitchExt" tabStyle="Job__c" sidebar="true" docType="html-5.0" applyBodyTag="False" action="{!pagedir}" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+   
+</apex:page>

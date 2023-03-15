@@ -1,0 +1,12 @@
+<!-- This page is used to to override Vendor Detail -->
+<apex:page standardController="Vendor__c" extensions="VendorListViewExt" readOnly="true" >
+   
+   
+   <apex:detail relatedList="true" showChatter="true" title="true"/>
+   <apex:include pageName="displayVendorQuoteUnderVendorDetail"/>
+   <apex:include pageName="DisplayPOUnderVendorDetail"/>
+   <apex:include pageName="DisplayInvoicesUnderVendorDetail"/> 
+   <apex:include pageName="DisplayBillboardUnderVendor" rendered="{!ShowBBS}"/>
+   <apex:include pageName="DisplayBBInvoiceUnderVendor" rendered="{!ShowBBS}"/>
+</apex:page>
+<!-- End of Page -->

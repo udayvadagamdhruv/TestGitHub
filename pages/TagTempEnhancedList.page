@@ -1,0 +1,42 @@
+<!-- This page is used to display Tag Template records in enhanced list of Tag Template tab under Admin Tab -->
+<apex:page standardController="Tag_Template__c" extensions="displayTagTemplateInAdminTab">
+    <head>
+        <style>
+         .actionLink 
+        {
+            color: #015BA7 !important;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        </style>
+    </head>
+<apex:form >
+<apex:pageMessages ></apex:pageMessages>
+ <table>
+          <tr>
+              <td align="left"> <apex:image url="{!$Resource.BigTop}" width="40" height="40" /> </td>
+              <td valign="bottom"><apex:commandButton action="{!createNewTagTemplate}" value="New {!$ObjectType.Tag_Template__c.Label}" /></td>
+          </tr>
+      </table>
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!lstTagTemplate}" var="tagTemplate" rendered="{!lsttagtemplate.size > 0}">
+            <apex:column headerValue="Action" width="6%">
+                <apex:commandLink value="Edit" action="{!editTagTemplate}" styleClass="actionLink">
+                      <apex:param id="param1" name="param1" assignTo="{!strTagTemplate}" value="{!tagTemplate.Id}"/>  
+                </apex:commandLink>
+                &nbsp; | &nbsp;
+                <apex:commandLink action="{!deleteTagTemplate}" onclick="return confirm(' Are You sure? You Want to delete this tag Template.');" styleClass="actionLink">Del
+                    <apex:param id="param2" name="param2" assignTo="{!strTagTemplate}" value="{!tagTemplate.Id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="{!$ObjectType.Tag_Template__c.Fields.Name.Label}" width="80%">
+                <apex:outputLink value="/apex/TagTemplatedetailpage?id={!tagTemplate.Id}">{!tagTemplate.Name}</apex:outputLink>
+            </apex:column>
+        </apex:pageBlockTable>
+        <apex:outputPanel rendered="{!lsttagTemplate.size <= 0}">
+            <b> No records to display</b>
+        </apex:outputPanel>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

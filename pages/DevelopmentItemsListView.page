@@ -1,0 +1,30 @@
+<apex:page standardController="Development_Item__c" showHeader="true" tabStyle="Development_Item__c" >
+<head>
+   <style>
+     
+      
+      
+      .activeTab {font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #3090C7; color:white;width:110px;height:20px;background-image:none;border:0}
+      .inactiveTab { font-size:1.25em;font-style:bold;font-family: 'Calibri';font-weight:normal;background-color: #E0FFFF; color:black;width:100px;height:20px;background-image:none;border:0}
+     
+   </style>
+</head>
+   
+   <apex:tabPanel switchType="client" selectedTab="Details" id="JobTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab"> 
+                  
+      <apex:tab label="Details" name="Details" id="tabdetails" style="background-color:#FFF" styleClass="labelCol">
+         <apex:detail relatedList="false" title="true" inlineEdit="true" showChatter="true"/>
+      </apex:tab>
+      
+      <apex:tab label="{!$ObjectType.Item_Tracking__c.label}" name="Item_Tracking" id="tabItemTracking" style="background-color:#FFF" styleClass="labelCol">
+         <apex:relatedList subject="{!Development_Item__c}" list="Item_Tracking__r"/>
+      </apex:tab>
+      
+      
+      <apex:tab label="Notes and Attachments" name="NotesAndAttachments" id="tabNoteAtt" style="background-color:#FFF;width:170px" styleClass="labelCol">
+          <apex:relatedList subject="{!Development_Item__c}" list="NotesAndAttachments" />
+      </apex:tab>
+      
+     
+   </apex:tabPanel>
+ </apex:page>

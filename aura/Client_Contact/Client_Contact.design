@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="ClientContactSec" label="Client Contact Label"  description="This will reflect the Client Contact Label"/>
+</design:component>

@@ -1,0 +1,253 @@
+<apex:page standardController="Job__c" extensions="JobTeamAddEditStaffExtension" sidebar="false" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="False">
+
+     <script src="{!URLFOR($Resource.JQuery)}"> </script>
+           <script>
+                   var j$ = jQuery.noConflict();
+           </script>
+        
+           <style>
+           
+        html,html body
+        {
+              overflow: auto;
+              -webkit-overflow-scrolling:touch;
+        }
+        body
+        {
+          position:absolute;left:0;right:0;top:0;bottom:0;
+          margin:0;
+        }
+           
+           
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 24px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   
+                   .slds .slds-table .slds-truncate 
+                  {
+                        min-width: 52px !important;
+                        max-width: 125px !important;
+                  }
+                  
+                  .slds .slds-table--bordered
+                  {
+                          border-bottom: none;
+                  }
+                  
+                 .slds .slds-p-left--medium {
+                  padding-left: 0px;
+                    }
+             .slds .slds-p-top--medium {
+                 padding-top: 10px;
+            }
+           .slds .slds-box {
+            padding: 0px;
+            }
+            
+            .slds .slds-button {
+               padding: 0px 12px 0px 12px;
+               line-height: 30px;
+             }
+            .slds .slds-text-heading--small {
+              line-height: 1.8 !important;
+             }
+    
+    
+    
+    
+    </style>   
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+       
+     
+           <body>
+     
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+              <!---
+                  <ul class="slds-list--vertical slds-has-dividers">
+                       <li class="slds-list__item slds-large-size">  
+                            <div class="slds-text-heading--large"><center>Add Team Members</center></div> 
+                       </li>
+                  </ul><br/> --->
+    
+                  <apex:form html-novalidate="novalidate">
+                  
+                  
+                  
+                       <div class="slds slds-page-header" style="position:fixed;z-index:999;width:100% !important;border-bottom: 3px solid #ccc !important;padding: 0px 0px 0px 0px !important;">
+                        <div class="slds-media__body pageHeader">
+                            <div class="slds-grid" style="width:100%;">
+                                <div class="slds-size--5-of-12" style="padding: 8px;">
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                       <div class="slds-media slds-no-space slds-grow">
+                                       
+                                          <div class="slds-media__figure" style="margin-right: 7px;">
+                                              <svg class="slds-icon slds-icon-standard-user" aria-hidden="true" style="background-color:#65A0E5!important;">
+                                                  <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#groups')}" ></use>
+                                              </svg>
+                                          </div>
+                                          <div class="slds-media__body">
+                                            
+                                             <h1  style="color:#333;height: 14px;font-size: 11px;">Job Team</h1>
+                                             <p style="font-size: 14px;" class="slds-truncate"><b>Add/Edit Team</b></p>
+                                           
+                                          </div>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size--7-of-12" style="padding: 8px;">
+                                    <apex:commandButton action="{!cancel}" value="Cancel" style="float:right ! important;margin-left:3px;"  immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                    <apex:commandButton value="Add To Team" action="{!Addstaff}" style="float:right ! important;" styleClass="slds-button slds-button--brand"></apex:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                  
+                  
+                  
+                  
+                
+                  
+                   <div class="slds">
+                    <br/>
+                    <br/> <br/> <br/>
+                </div>
+                  
+                       
+                      <apex:pageBlock mode="edit" id="block">
+                      
+                         <!-- <apex:pageblockButtons location="top" style="margin-left:20%">
+                            <center>   <apex:commandButton value="Add To Team" action="{!Addstaff}" styleClass="slds-button slds-button--neutral"/>
+                               <apex:commandButton action="{!cancel}" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton></center>
+                         </apex:pageblockButtons>-->
+                          
+                          
+                          
+                          <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                <apex:pageMessages />
+                           </div>
+                                
+                           
+                           <div class="slds-grid slds-wrap">
+                                 
+                             <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--2-of-2 slds-large-size--12-of-12" >
+                                            
+                                 <div class=" slds-grid slds-wrap">  
+                                             
+                                    <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                        <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                             
+                                                  <table style="width:100%" class=" slds-table slds-table--bordered">
+                                                      <tr>
+                                                          <td  width="10%;" class="slds-truncate_75">
+                                                               <b> <apex:outputLabel value="Select Member Type" /> </b>
+                                                          </td>
+                                                          
+                                                          <td style="margin-right:5px;" class="slds-truncate">&nbsp;&nbsp; 
+                                                               <apex:selectList id="StatusList" value="{!StatusString}" size="1" >                              
+                                                                  <apex:selectOptions value="{!StatusList}"/>
+                                                                  <apex:actionSupport event="onchange" rerender="block" action="{!SerachStaff}"/>
+                                                               </apex:selectList>
+                                                          </td>
+                                                     </tr>
+                                                 </table>   
+                                                 <br/>
+                                               </div>
+                                         </aside>    
+                                         
+                                        
+                                        
+                                         
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                           <div class="slds-box slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                 
+                                               <table style="width:100%" class="slds-table slds-table--bordered">
+                                                   <tr  class="slds-text-heading--label">
+                                                       <th style="width:10%;text-align:left;padding-left:5px;" class="slds-truncate"></th>
+                                                       <th style="width:50%;text-align:left;padding-left:25px;" class="slds-truncate"><b>Staff</b></th>
+                                                       <th style="width:40%;text-align:left;padding-left:5px;" class="slds-truncate"><b>Roles</b></th>
+                                                   </tr>
+                                                   <apex:repeat value="{!AllstaffWrappers}" var="staffwrap">
+                                                   <tr>
+                                                       <td style="width:10%;text-align:left;padding-left:5px;" class="slds-truncate">
+                                                           <apex:inputCheckbox value="{!staffwrap.selection}"/>
+                                                       </td>
+                                                       <td style="width:50%;text-align:left;padding-left:5px;" class="slds-truncate">
+                                                           {!staffwrap.Sojw.Staffname}
+                                                       </td>
+                                                       <td style="width:40%;text-align:left;padding-left:5px;{!IF(staffwrap.sroles, 'color:red;font-weight:bold;','')}" class="slds-truncate">
+                                                           {!staffwrap.Sojw.RoleName}
+                                                       </td>
+                                                       
+                                                   </tr>
+                                                   </apex:repeat>
+                                               </table>
+                                        </div>
+                                     </aside> 
+                                                 
+                                             
+                                             
+                                              </div> 
+                                         </main>
+                                  </div>  
+                          
+                        </apex:pageBlock>    
+                    </apex:form> 
+                 </div>      
+              </body>
+       </html>
+        
+        
+        
+</apex:page>

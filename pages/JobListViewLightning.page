@@ -1,0 +1,767 @@
+<apex:page standardController="Job__c" extensions="testTabController" tabStyle="Job__c" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+    
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+     <apex:stylesheet value="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.css')}"/>
+    
+     <script>
+     
+             $( document ).ready(function() {
+                 $('.btn').addClass('slds-button slds-button--neutral');
+                 $('.btn').removeClass('btn');
+                 
+                 
+              
+                 
+             });
+             
+             
+              
+             
+     
+            function selectTab(elmnt) 
+            {
+                // slds-active
+                $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+                $(elmnt).parent("li").addClass("slds-active");
+                
+                // tabindex
+                $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+                $(elmnt).attr("tabindex", 0);
+                
+                // aria-selected
+                $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+                $(elmnt).attr("aria-selected", true);
+                
+                // hiding previously selected tab (slds-show/slds-hide)
+                $(elmnt).closest(".slds-tabs--default").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+                $(elmnt).closest(".slds-tabs--default").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+               
+                // displaying newly selected tab (slds-show/slds-hide)
+                $(elmnt).closest(".slds-tabs--default").children("div[aria-labelledby='"+elmnt.id+"']").addClass("slds-show");
+                $(elmnt).closest(".slds-tabs--default").children("div[aria-labelledby='"+elmnt.id+"']").removeClass("slds-hide");
+            }
+            
+            
+              function selectTaboverflow(elmnt) 
+              { 
+                  var x = $(elmnt).attr('class');
+                
+                  if(x.includes('slds-is-open')){
+                      $(elmnt).removeClass('slds-dropdown-trigger slds-is-open ');
+                      $(elmnt).addClass("slds-dropdown-trigger slds-is-close "); 
+                  }
+                  else if(x.includes('slds-is-open')){
+                      $(elmnt).removeClass('slds-dropdown-trigger slds-is-close ');
+                      $(elmnt).addClass("slds-dropdown-trigger slds-is-open "); 
+                  }
+                  else{
+                      $(elmnt).addClass("slds-dropdown-trigger slds-is-open "); 
+                  }
+                  
+              }
+              
+              function closeMore(){
+               var x = document.getElementById('dropdown');
+               var x1 = $(x).attr('class');
+               if(x1.includes('slds-is-open')){
+                      $(x).removeClass('slds-dropdown-trigger slds-is-open ');
+                      $(x).addClass("slds-dropdown-trigger slds-is-close "); 
+                  }
+              }
+              
+           
+            
+            
+            
+      </script>
+      
+      
+      
+   
+          <style>
+                   .EditDeleDupCls ul 
+                   {
+                      list-style: none;
+                      width: 100%;
+                       
+                        height: 20px;
+                        text-align: center;
+                    }
+                    .EditDeleDupCls ul li 
+                    { 
+                        display: inline-block;
+                        margin-right:10px;
+                    }
+                    
+                    .EditDeleDupCls ul li span 
+                    {
+                        color: black;
+                    }
+                    .EditDeleDupCls ul li
+                    {
+                        margin-left: 10%;
+                    }
+                    .EditDeleDupCls ul li span 
+                    {
+                       display: block;
+                       -webkit-transition: all 0.3s linear;
+                       -moz-transition: all 0.3s linear;
+                       transition: all 0.3s linear;
+                    }
+                    div.EditDeleDupCls
+                    {
+                        border-top:1px solid #CCC;
+                        padding-top: 6px;
+                        background-color:white !important;
+                        position:fixed !important;
+                        bottom:0 !important;
+                        width:100% !important;
+                        margin-left: -30px !important;
+                        height: 60px;
+                    }
+                                         
+                   
+                    #chatterFindExistingContent
+                    {
+                       width:95% !important; 
+                    }
+           
+                    .feedSearch a,.feedcontainer .comboMenu.feedsupermenu input 
+                    {    
+                           display: none; 
+                    }
+                  
+                    .feedcommentactions .commentActionMenu .zen-options
+                    {
+                       width:auto; 
+                    }
+                    
+                    .publishercontainer .LinkPost .postInput input[type="text"] 
+                    {
+                        width:auto;     
+                    }
+                    
+                    .publishercontainer input[type="text"] 
+                    {
+                        width:auto;     
+                    }
+                    
+                    .publishercontainer .contentPublisherSlideDown table.postInput  
+                    {
+                        width:auto;    
+                    }
+                    
+                    .feedpage
+                    {
+                        width:auto !important;   
+                    }
+                    
+                    .feedmain
+                    {
+                        width:auto !important;   
+                    }
+                                       
+                     .feeditemActionMenu .zen-options
+                    {
+                        margin:-1px;
+                        margin-left:-83px;  
+                    }
+                    
+                    .feeditemActionMenuButton
+                    {
+                       margin: -11px;
+                    }
+                    
+                     
+                    .publishercontainer .bottomBar
+                    {
+                        height: 49px;
+                    }
+                    
+                    .slds .slds-table--bordered td, .slds .slds-table--bordered th
+                    {
+                        border-top: none;
+                    }
+                      
+                    
+                    .customImage
+                    { 
+                        height: 10px; width: 10px; 
+                    }
+                    #rcorners1 
+                    {
+                            border-radius:0%;
+                            border: 1px solid #cccccc;
+                            padding: 0px; 
+                            width: 100%;
+                            height: 0%;
+                    }
+                    #pagemessage
+                    {
+                         color:blue;
+                    }
+                   .required:after 
+                   { 
+                       content:" *";  color: Red;font:bold;
+                   }
+                   
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                  
+                  .slds .slds-table--bordered td, .slds .slds-table--bordered th
+                  {
+                      border-top: none;
+                  }
+                  .ui-state-default
+                  {
+                       background: #c6c6c5 !important;
+                  }
+                  .ui-state-active 
+                  {
+                    
+                       border: 1px solid #BA7B7B !important;
+                       background: #BA7B7B !important;
+                  }
+               
+                
+                 .chatterPublisherFileActionContainerLeft
+                 {
+                     display:none !important;
+                 }
+                 
+                 #InlineEditDialog
+                 {
+                     //margin-left: -209.5px !important;
+                     max-width: Auto !important;
+                     width : 80%
+                 }
+                 
+                 .inlineEditCompoundDiv > textarea
+                 {
+                     width:80% !important;
+                 }
+                 
+                 .feedcontainer .feeditemfooter, .feedcontainer .feedcommentfooter  
+                 {
+                     border-top : 1px solid #ededed;
+                      line-height: 39px !important;
+                 }
+                 
+                 .feedcontainer .feeditemfooter 
+                 {
+                    margin-bottom: -54px;
+                 }
+                 
+                 .feeditemtimestamp 
+                 {
+                    display: table-row-group !important;
+                 }  
+
+                 
+                 .feedcontainer .feeditem  
+                 {
+                     border : 1px solid #ededed;
+                         line-height: 2em;
+
+                 }
+                 
+                 .feeditembody
+                 {
+                  margin-top : 16px !important;
+                 }
+                 
+                 .chatter-photo
+                 {
+                     border-radius : 50% !important;
+                 }
+                 
+                 
+                 
+                  .feeditemclientinfo
+                  {
+                          display: none !important;
+                  }
+                  
+                  
+                  .feeditemactionlink.cxaddcommentaction 
+                  {
+                       float: right !important;
+                       padding-right : 19px;
+                   }
+                  
+                 .chatter-avatarRegular, .chatter-avatarRegular .chatter-photo, .chatter-avatarRegular .chatter-avatarStyle 
+                 {
+                    width: 40px;
+                    height: 40px;
+                    line-height: 48px;
+                    margin: 4px;
+                 }
+                 
+                 .cxfeeditemlikedot.feeditemseparatingdot
+                 {
+                         display: none !important;
+                 }
+                 .cxfeeditemcommentdot.feeditemseparatingdot
+                 {
+                    display: none !important;
+                 }
+                 
+                 .feedcontainer .feeditemcontent
+                 {
+                     margin-left: 2px;
+                 }
+                 
+                 .feeditemactionlink.cxlikeitemaction
+                 {
+                         padding-left: 31px;
+                 }
+                 
+                 .feeditemattachments.cxfeeditemattachments
+                 {
+                     margin: 22px;
+                 }
+                 
+                 .feeditemaux.cxfeeditemaux.FilesCapabilityAuxBody
+                 {
+                     margin-right: 0px;
+                 }
+                 
+                 .zen-smlineSep
+                 {
+                       display: none !important;
+                 }
+                 
+                 .feedcontainer .zen-select .feeditemActionMenuButton, .feedcontainer .zen-select .commentActionMenuButton
+                 {
+                     padding: 6px 6px 6px 7px;
+                 }
+                 
+                 .comboMenu.zen-line.feedsupermenu 
+                 {
+                     display : none;
+                 }
+                 
+                 .publishercontainer
+                 {
+                         padding-top: 20px;
+                         padding-bottom:29px;
+
+                 }
+                 
+                 .chatterexpando .feedpage 
+                 {
+                    padding-left: 6px;
+                 }
+                 
+                 .actionsOnHoverEnabled .feeditembody 
+                 {
+                    padding-right: 34px  !important;
+                    padding-left: 50px  !important;
+                }
+               .chatter-avatar .chatter-avatarStyle 
+               {
+                        position: absolute;
+                        left: 0px;
+                        z-index: 1;
+                        background: url(/img/chatter/avatar-sprite.png?v=182-1) 0px -9999px no-repeat;
+               }  
+               
+            
+               
+               .slds-tabs--default__item,slds-text-heading--label,slds-active
+               {
+                   border-top-left-radius: 20px !important;
+                   border-top-right-radius: 20px !important;
+               }
+               
+             
+                
+                
+                .slds .slds-table tr > th:first-child, .slds .slds-table tr > td:first-child
+                {
+                        padding-left: 0px !important;
+                
+                }
+                
+                .ui-helper-reset
+                {
+                    line-height: 0.9 !important;
+                }
+                
+               
+                
+                .ui-accordion,.ui-accordion-content
+                {
+                    padding: 1em 1.2em 1em 1.2em !important;
+                }
+                
+                .slds .slds-tabs--default__content
+                {
+                    padding: 1px;
+                }
+                
+                .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
+                {
+                    font-size: 0.8em !important;
+                }
+                
+                .slds-grid, .slds-wrap
+                {
+                       background: white !important;
+                }
+                
+                .slds-tabs--default__link
+                {
+                    overflow:visible;
+                   
+                } 
+                
+                .feedrightbar
+                {
+                    display: none !important;
+                }
+                 
+                 
+                .slds-button
+                {
+                    font-size: 12px;
+                }
+                 
+                .body, .bPageBlock, .pbTitle h2
+                {
+                     font-size: 18px;
+                }
+                 
+                .cxfeeditem, .feeditem, .publishercontainer, ul.publisherFeedItemTypeChoices
+                {
+                     font-size: 14px;
+                }
+                 
+                  
+                .dataCol
+                {
+                     color: #54698d;
+                     font-size: 15px;
+                     line-height: 1.5;
+                     font-weight:light;
+                }
+                 
+                .bPageBlock .labelCol
+                {
+                     color: #54698d;
+                     font-size: 16px;
+                     line-height: 1.5;
+                     font-weight:Bold;
+                }
+              
+                .field
+                {
+                 font-size: 15px;
+                 font-weight:light;
+                }  
+                 
+                .label
+                {
+                 font-size: 18px;
+                 font-weight:Bold;
+                }   
+                         
+         </style>  
+      
+      
+      
+      
+
+  
+       <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       
+       <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system.css')}" />
+       
+       <body >
+            
+           <div class="slds">
+                 <ul class="slds-list--vertical slds-has-dividers">
+                     <li class="slds-list__item slds-large-size">  
+                     <div  style="margin-left:35px;">Job</div>
+                       <div> <img src="/img/icon/custom51_100/gears32.png" class="pageTitleIcon" style="width:30px; display:block; margin-left:0;" /></div>
+                            <div class="slds-text-heading--medium slds-m-tope--none"> 
+                               {!Job__c.name}
+                            </div> 
+                     </li>
+                 </ul>    
+             <br/>
+             
+            <div width="100%">
+                 <div style="float:left; width:60%;">
+                                         
+                      <apex:form html-novalidate="novalidate">
+                          
+                           <apex:pageBlock mode="edit">
+                                   
+                                <apex:pageMessages id="msg"></apex:pageMessages>
+                                          
+                                    <div class="slds-tabs--default">
+          
+                                         <ul class="slds-tabs--default__nav" role="tablist">
+                                             <li class="slds-tabs--default__item slds-text-heading--label slds-active" title="Details" role="presentation" ><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item" onclick="selectTab(this);"><b>Details</b></a></li>
+                                             <li class="slds-tabs--default__item slds-text-heading--label" title="Schedule" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="False" aria-controls="tab-default-2" id="tab-default-2__item" onclick="selectTab(this);"><b>Schedule</b></a></li>
+                                             <li class="slds-tabs--default__item slds-text-heading--label" title="Creative Brief" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item" onclick="selectTab(this);" ><b>Creative Brief</b></a></li>
+                                             <li class="slds-tabs--default__item slds-text-heading--label" title="Quotes" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="False" aria-controls="tab-default-4" id="tab-default-4__item" onclick="selectTab(this);"><b>Quotes</b></a></li>
+                                             <li class="slds-tabs--default__item slds-text-heading--label" title="Estimate" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-5" id="tab-default-5__item" onclick="selectTab(this);"><b>Estimate</b></a></li>
+                                             <li class="slds-tabs--default__item slds-text-heading--label" title="Purchase Orders" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="False" aria-controls="tab-default-6" id="tab-default-6__item" onclick="selectTab(this);"><b>Purchase Orders</b></a></li>
+                                           <!--  <li class="slds-tabs--default__item slds-text-heading--label" title="Vendor Invoices" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-7" id="tab-default-7__item" onclick="selectTab(this);"><b>Vendor Invoices</b></a></li>
+                                             <li class="slds-tabs--default__item slds-text-heading--label" title="Client Invoices" role="presentation" onclick="closeMore();"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="False" aria-controls="tab-default-8" id="tab-default-8__item" onclick="selectTab(this);"><b>Client Invoices</b></a></li> -->
+                                          
+                                             <li class="slds-dropdown-trigger--click slds-tabs--default__item slds-text-heading--label slds-tabs__item--overflow slds-text-title--caps "  title="More tabs" role="presentation" onclick="selectTaboverflow(this);"  id='dropdown'>
+                                                <a class="slds-tabs--default__link" href="javascript:void(0);" aria-haspopup="true" id='dropdown'>
+                                                    <span  id='dropdown'>  More
+                                                          <span class="slds-assistive-text">tabs</span>
+                                                    </span>
+                                                    <svg class="slds-button__icon slds-button__icon--x-small" aria-hidden="true">
+                                                      <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}" ></use>
+                                                    </svg>
+                                                </a>
+                                                
+                                                <div class="slds-dropdown slds-dropdown--right" id='droping' >
+                                                  <ul class="slds-dropdown__list slds-dropdown--length-with-icon-10" role="menu">
+                                                  
+                                                   <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-9" id="tab-default-9__item" onclick="selectTab(this,'tab-default-9__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                             Vendor Invoices
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                       <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-9" id="tab-default-9__item" onclick="selectTab(this,'tab-default-9__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                               Client Invoices
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                      <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-9" id="tab-default-9__item" onclick="selectTab(this,'tab-default-9__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                               NOTES AND FILES
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                       <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-10" id="tab-default-10__item" onclick="selectTab(this,'tab-default-10__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                               Job Tags
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                       <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-11" id="tab-default-11__item" onclick="selectTab(this,'tab-default-11__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                               Session
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                       <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-12" id="tab-default-12__item" onclick="selectTab(this,'tab-default-12__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                               Graphics Deliverable
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                       <li class="slds-dropdown__item" role="presentation">
+                                                         <a class="slds-tabs--default__link " href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-13" id="tab-default-13__item" onclick="selectTab(this,'tab-default-13__item','overflow');">
+                                                            <span class="slds-truncate">
+                                                               Music Usage
+                                                            </span>
+                                                         </a>
+                                                      </li>
+                                                      
+                                                  </ul>
+                                                </div>
+                                                
+                                                
+                                                
+                                                
+                                            </li>
+                                          
+                                          
+                                          
+                                         </ul>
+                                      
+                                         
+                                      
+                                          <div id="tab-default-1" class="slds-tabs--default__content slds-active " role="tabpanel" aria-labelledby="tab-default-1__item">
+                                          
+                                        
+                                               
+                                             <div class="slds-grid slds-wrap">  
+                                                  
+                                                  <div class="slds-form--vertical">
+                                                            <apex:detail inlineEdit="true" relatedList="false" title="False" showChatter="false"  oncomplete="parent.location.href = '/{!Job__c.Id}'" /> 
+                                                    </div>
+                                                                
+                                                      
+                                                   </div> 
+                                               </div> 
+                                       
+                               
+                                          <div id="tab-default-2" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-2__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                             Schedule Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-3__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Creative Brief Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                            <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-4__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Quotes Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                           <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-5__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Estimate Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          
+                                            <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-6__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Purchase Order Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          
+                                            <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-7__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Vendor Invoice Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          
+                                            <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-8__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Client Invoice Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          
+                                           <div id="tab-default-3" class="slds-tabs--default__content slds-hide slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-2" role="tabpanel" aria-labelledby="tab-default-9__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Notes and Files Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          <div id="tab-default-3" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-10__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Job Tags Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          
+                                          <div id="tab-default-3" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-11__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Session Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                          <div id="tab-default-3" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-12__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Graphic Deliverables Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                           <div id="tab-default-3" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-13__item">
+                                               <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                        <div class="slds-grid slds-wrap">  
+                                                              Music Usage Details
+                                                        </div>           
+                                                    </main>
+                                               </div> 
+                                          </div>
+                                          
+                                    </div>  
+                                    
+                                      
+                             </apex:pageBlock>  
+                         </apex:form> 
+                          </div>
+                         
+                     </div>  
+                
+                             <div width="20%"  >
+                                <apex:outputPanel >
+                                   <div id="chattertest" style="display:inline;" class="feed-container">
+                                       <chatter:feedWithFollowers entityId="{!Job__c.Id}"/> 
+                                    </div>
+                              </apex:outputPanel> 
+                           </div> 
+                    
+                          
+              </div>
+              
+               
+          </body>
+
+    </html>
+
+</apex:page>

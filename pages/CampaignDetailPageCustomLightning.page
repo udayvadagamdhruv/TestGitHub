@@ -1,0 +1,902 @@
+<!-- This page is used to display Detail and related jobs of Campaign (Custom Campaign) -->
+<apex:page standardController="Campaign__c"  showHeader="false" sidebar="false" standardStylesheets="true" applyHtmlTag="false"  applyBodyTag="false" docType="html-5.0">
+
+<apex:slds />
+ 
+ 
+  <script>
+        window.onload = function() {
+         setTimeout (function ()
+          scrollTo(0,0);
+         }, 100); //100ms for example
+        }
+    </script>
+
+    <style>
+    
+        .individualPalette, .lookupHoverDetail, .lookupHoverDetailOverridable{
+          z-index:-10 !important;
+          display:none !important;
+      }
+    
+       .slds .slds-tabs--scoped__nav 
+        {
+        background-color: #e2e4e6 !important;
+        font-size: 15px;
+        }
+        
+        body
+        {
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed; 
+                margin:0px !important;
+        }
+        
+        
+        .errorM3 .msgIcon, .errorMedium 
+        {
+            background-image: url(); 
+            background-position: 0 0;
+            width:0px;
+            height: 0px;padding-left: 4px;
+        }
+    
+    
+          
+          .bPageBlock .requiredInput .requiredBlock {
+                   background-color: white;
+    
+          }
+    
+    
+    
+       .slds .slds-dropdown-trigger .slds-dropdown
+       {
+            margin-left: -37px;
+       }
+       
+       body .bDetailBlock.bPageBlock, body .individualPalette .bDetailBlock.bPageBlock
+       {
+           margin-top: 1px;
+       }
+              
+              
+                .slds-scope .slds-button--neutral, .slds-scope .slds-button_neutral {
+                position:realative;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                text-align: center;
+                vertical-align: left;
+                border: 1px solid #d8dde6;
+                background-color: #f4f6f9;
+            }
+    
+      
+      
+      
+           body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label
+            {
+               font-size: 1.4em; font-weight: normal;color: darkslategrey;    
+            }
+            
+            .slds-scope .slds-section__title
+            {
+                font-size: 1.3em;font-weight: normal;color: darkslategrey;
+            }
+                
+    
+    
+          .slds-scope .slds-tabs--scoped__content, .slds-scope .slds-tabs_scoped__content
+          {
+              padding: 1.3rem;
+          }
+          
+         
+      
+            body .bDetailBlock.bPageBlock .pbBody .pbSubheader, body.FindSimilarOppsSearchUi .bPageBlock .pbBody .pbSubheader
+            {
+                    background-color: #f4f6f9;
+                       
+            }
+            
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label
+            {
+                color: #54698d;font-size: 1.2em;
+            }
+                 
+        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody
+        {
+            margin:0px 0px 0px;
+        }
+        
+        .ui-dialog-buttonset > button {
+            background: white !important;
+            color: #088de7 !important;
+        }
+        
+        .ui-state-hover {
+            border: 1px solid #088de7 !important;
+            background: white !important;
+            color: #088de7 !important;
+        }
+        
+        .EditDeleDupCls ul {
+            list-style: none;
+            width: 100%;
+            height: 20px;
+            text-align: center;
+        }
+        
+        .EditDeleDupCls ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .EditDeleDupCls ul li span {
+            color: black;
+        }
+        
+        .EditDeleDupCls ul li {
+            margin-left: 10%;
+        }
+        
+        .EditDeleDupCls ul li span {
+            display: block;
+            -webkit-transition: all 0.3s linear;
+            -moz-transition: all 0.3s linear;
+            transition: all 0.3s linear;
+        }
+        
+        div.EditDeleDupCls {
+            border-top: 1px solid #CCC;
+            padding-top: 6px;
+            background-color: white !important;
+            position: fixed !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            margin-left: -30px !important;
+            height: 60px;
+        }
+        
+        #chatterFindExistingContent {
+            width: 95% !important;
+        }
+        
+        .feedSearch a,
+        .feedcontainer .comboMenu.feedsupermenu input {
+            display: none;
+        }
+        
+        .feedcommentactions .commentActionMenu .zen-options {
+            width: auto;
+        }
+        
+        .publishercontainer .LinkPost .postInput input[type="text"] {
+            width: auto;
+        }
+        
+        .publishercontainer input[type="text"] {
+            width: auto;
+        }
+        
+        .publishercontainer .contentPublisherSlideDown table.postInput {
+            width: auto;
+        }
+        
+        .feedpage {
+            width: auto !important;
+        }
+        
+        .feedmain {
+            width: auto !important;
+        }
+        
+        .feeditemActionMenu .zen-options {
+            margin: -1px;
+            margin-left: -83px;
+        }
+        
+        .feeditemActionMenuButton {
+            margin: -11px;
+        }
+        
+        .publishercontainer .bottomBar {
+            height: 49px;
+        }
+        
+        .customImage {
+            height: 10px;
+            width: 10px;
+        }
+        
+        #rcorners1 {
+            border-radius: 0%;
+            border: 1px solid #cccccc;
+            padding: 0px;
+            width: 100%;
+            height: 0%;
+        }
+        
+        #pagemessage {
+            color: blue;
+        }
+        
+        .required:after {
+            content: " *";
+            color: Red;
+            font: bold;
+        }
+        
+        .detailPage .bPageBlock,
+        .editPage .bPageBlock {
+            border-top-width: 0px;
+        }
+        
+        .ui-state-default {
+            background: gray !important;
+        }
+        
+        .ui-state-active {
+            border: 1px solid #2a61f3 !important;
+            background: #2a61f3 !important;
+        }
+        
+        .ui-accordion-header-icon,
+        .ui-icon ui-icon-triangle-1-e {
+            background-color: white !important;
+        }
+        
+        .chatterPublisherFileActionContainerLeft {
+            display: none !important;
+        }
+        
+        #InlineEditDialog {
+            //margin-left: -209.5px !important;
+            max-width: Auto !important;
+            width: 80%
+        }
+        
+        .inlineEditCompoundDiv > textarea {
+            width: 80% !important;
+        }
+        
+        .feedcontainer .feeditemfooter,
+        .feedcontainer .feedcommentfooter {
+            border-top: 1px solid #ededed;
+            line-height: 39px !important;
+        }
+        
+        .feedcontainer .feeditemfooter {
+            margin-bottom: -54px;
+        }
+        
+        .feeditemtimestamp {
+            display: table-row-group !important;
+        }
+        
+        .feedcontainer .feeditem {
+            border: 1px solid #ededed;
+            line-height: 2em;
+        }
+        
+        .feeditembody {
+            margin-top: 16px !important;
+        }
+        
+        .chatter-photo {
+            border-radius: 50% !important;
+        }
+        
+        .feeditemclientinfo {
+            display: none !important;
+        }
+        
+        .feedrightbar {
+            display: none !important;
+        }
+        
+        .feeditemactionlink.cxaddcommentaction {
+            float: right !important;
+            padding-right: 19px;
+        }
+        
+        .chatter-avatarRegular,
+        .chatter-avatarRegular .chatter-photo,
+        .chatter-avatarRegular .chatter-avatarStyle {
+            width: 40px;
+            height: 40px;
+            line-height: 48px;
+            margin: 4px;
+        }
+        
+        .cxfeeditemlikedot.feeditemseparatingdot {
+            display: none !important;
+        }
+        
+        .cxfeeditemcommentdot.feeditemseparatingdot {
+            display: none !important;
+        }
+        
+        .feedcontainer .feeditemcontent {
+            margin-left: 2px;
+        }
+        
+        .feeditemactionlink.cxlikeitemaction {
+            padding-left: 31px;
+        }
+        
+        .feeditemattachments.cxfeeditemattachments {
+            margin: 22px;
+        }
+        
+        .feeditemaux.cxfeeditemaux.FilesCapabilityAuxBody {
+            margin-right: 0px;
+        }
+        
+        .zen-smlineSep {
+            display: none !important;
+        }
+        
+        .feedcontainer .zen-select .feeditemActionMenuButton,
+        .feedcontainer .zen-select .commentActionMenuButton {
+            padding: 6px 6px 6px 7px;
+        }
+        
+        .comboMenu.zen-line.feedsupermenu {
+            display: none;
+        }
+        
+        .publishercontainer {
+            padding-top: 20px;
+            padding-bottom: 29px;
+        }
+        
+        .chatterexpando .feedpage {
+            padding-left: 6px;
+        }
+        
+        .actionsOnHoverEnabled .feeditembody {
+            padding-right: 34px !important;
+            padding-left: 50px !important;
+        }
+        
+        .chatter-avatar .chatter-avatarStyle {
+            position: absolute;
+            left: 0px;
+            z-index: 1;
+            background: url(/img/chatter/avatar-sprite.png?v=182-1) 0px -9999px no-repeat;
+        }
+        
+        .ui-helper-reset {
+            line-height: 0.9 !important;
+        }
+        
+        .ui-accordion,
+        .ui-accordion-content {
+            padding: 1em 1.2em 1em 1.2em !important;
+        }
+        
+        .ui-widget input,
+        .ui-widget select,
+        .ui-widget textarea,
+        .ui-widget button {
+            font-size: 0.8em !important;
+        }
+        
+        .bPageTitle,
+        .metadata {
+            display: none !important;
+        }
+        
+        .btn {
+            font-weight: normal !important;
+        }
+    </style>
+    
+    
+    <style>
+        
+ 
+        
+        
+  body{
+    background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+    background-repeat: repeat-x;
+    background-position: left top;
+    background-attachment: fixed;
+    }
+    
+    .slds .slds-tabs--scoped {
+    display: block;
+    width: 100%;
+    background-color: white;
+     margin-top: 2px;
+    border-radius: 10px;
+}    
+  
+ 
+    
+</style>
+    
+ 
+
+
+ <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+ 
+ <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ 
+  <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head> 
+    
+      <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+    
+    <script>
+        
+        function selectTab(elmnt) {
+            // slds-active
+            $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+            $(elmnt).parent("li").addClass("slds-active");
+
+            // tabindex
+            $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+            $(elmnt).attr("tabindex", 0);
+
+            // aria-selected
+            $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+            $(elmnt).attr("aria-selected", true);
+
+            // hiding previously selected tab (slds-show/slds-hide)
+
+            $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+            $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+            // displaying newly selected tab (slds-show/slds-hide)
+            $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='" + elmnt.id + "']").addClass("slds-show");
+            $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='" + elmnt.id + "']").removeClass("slds-hide");
+        }
+
+       
+    </script>
+    
+    
+    
+    <div class="slds">
+    
+    
+     
+      
+ <!-- --------------------------------------------------------------------Header Starting ------------------------------------------------------------------------------->
+        
+        <div class="slds-page-header " style="width:100%;{!if($User.UITheme == 'Theme1' || $User.UITheme == 'Theme2' || $User.UITheme == 'Theme3','', 'width:100%;position:fixed;z-index:2;')};background-color:#851225;position:fixed;z-index:999;width:100% !important;margin:0px !important;    border-bottom: 3px solid #851255 !important;" >
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media slds-no-space slds-grow">
+                        <div class="slds-media__figure">
+                            
+                            <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/standard-sprite/svg/symbols.svg#campaign"></use>
+                            </svg>
+                            
+                            
+                            
+                        </div>                        
+                        <div class="slds-media__body">
+                            <p class="slds-text-title slds-line-height--reset" style="color:white">JS Campaign</p>
+                            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"  style="color:white"><apex:outputField value="{!Campaign__c.Name}"/> </h1>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              </div>
+              <br/><br/><br/><br/>
+                
+            <!--    <div class="slds-col slds-no-flex slds-grid slds-align-top">
+                    <div class="desktop">
+                        <div class="slds-button-group" role="group">
+                              <button id="myBtn" class="slds-button slds-button--neutral">Edit</button>   
+                            <button class="slds-button slds-button--neutral">Delete</button>
+                            <button class="slds-button slds-button--neutral">Quotes View</button>
+                        </div>
+
+                    </div>
+
+                </div>-->
+            
+               
+           <!-- <div class="mobile">
+                <div class="slds-grid" style="padding-top:20px;float:right;">
+                    <div class="slds-media__figure mobile" onclick="showChattterMobile();">
+                        <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#chat"></use>
+                        </svg>
+                    </div>
+                    <div role="group">
+                       <button id="myBtn1" class="slds-button slds-button--neutral">Edit</button>
+                        <button class="slds-button slds-button--neutral">Delete</button>
+                        <button class="slds-button slds-button--neutral">Quotes View</button>
+                    </div>
+               </div>
+           </div>
+ -->          
+     
+ 
+        
+        
+        
+        <div class="slds-grid" >
+              <div class="slds-col" style="padding-left:10px;padding-right:10px;width:100% !important;" id="details">
+              
+              
+                  <div class="slds-tabs--scoped" style="padding-top:17px;padding-left:17px;padding-right:17px;">
+                     <ul class="slds-tabs--scoped__nav" role="tablist">
+                        <li class="slds-tabs--scoped__item slds-active" title="Item One" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item" style="text-decoration: none !important;" onclick="selectTab(this);">DETAILS</a></li>
+                    <!---      <li class="slds-tabs--scoped__item" title="Item Two" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2" id="tab-scoped-2__item" style="text-decoration: none !important;" onclick="selectTab(this);">RELATED</a></li>
+                     <li class="slds-tabs--scoped__item" title="Item Three" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3" id="tab-scoped-3__item" style="text-decoration: none !important;" onclick="selectTab(this);">NEWS</a></li>---->
+                     </ul>
+                     
+                      <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item" >
+                         <apex:detail id="DetailsSection" inlineEdit="true" relatedList="false" title="true" showChatter="false"  /> 
+                          </div><br/>
+                          
+                          
+                          
+                          
+                           <br/>
+                      
+                      
+                      <div class="slds-box" id="NAAtt">   
+                          <apex:include pageName="CampaignNote_AttachmentLightning"/>
+                      </div>
+                      
+                      <br/>
+                      
+                      
+                     
+                      
+                       <apex:outputPanel rendered="{!$Setup.Campaign_Controls__c.Enable_Workdocs__c}" >
+                                <div class="slds-section slds-is-open" id="WDFiles">
+                                    <h3 class="slds-section__title">
+                                        <button class="slds-button slds-section__title-action" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; font-weight: normal;color: darkslategrey;line-height: 1.875rem;">
+                                            <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                                <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                            </svg>
+                                            
+                                            <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;width:35px !important;height:35px !important;">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#note')}"></use>
+                                            </svg>
+                                            
+                                           WorkDocs
+                                           
+                                               <!-- <div class="slds-popover slds-popover--tooltip slds-nubbin_bottom-left slds-fall-into-ground" role="tooltip" id="spechelp" style="position: absolute; background-color:#FEFDCC;border:1px solid #FFB73F;margin-right: 31px;right: 1px;">
+                                                   <div class="slds-popover__body" style="line-height: 1.5;color:white !important"> <apex:outputField value="{!TTP[0].Workdocs__c}" rendered="{!TTP.size>0}"/>
+                                                   </div>
+                                                </div>
+                                                
+                                                <svg id="helpicon" aria-hidden="true"  class="slds-button__icon slds-button__icon__hint slds-button__icon--large slds-align__right helpiconclass" style="width: 15px;fill:#333;margin-left: auto !important;float:right;margin-top: 6px;">
+                                                  <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#help')}"></use>
+                                                </svg> --->
+                                        </button>
+                                    </h3>
+                                     <div  class="slds-section__content">
+                                        <apex:include pageName="WorkdocsSectionInCampaignDetailPage" /><br/><br/> 
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                            
+        
+        
+                          
+                          <div class="slds-section slds-is-open">
+                             <h3 class="slds-section__title">       
+                 
+                                 <button class="slds-button slds-section__title-action" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; font-weight: normal;color: darkslategrey;line-height: 1.875rem;">
+                                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                  </svg>
+                                   <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;width:35px !important;height:35px !important;" >
+                                      <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/custom-sprite/svg/symbols.svg#custom93')}"></use>
+                                   </svg>
+                                   
+                                  
+                                  
+                                  Jobs
+                                </button>
+                                
+                             </h3>
+                             <div class="slds-section__content">                               
+                                       
+                                  <apex:include pageName="DisplayJobsUnderCampaignLightning" />  
+                                  
+                                     
+                             </div>
+                                
+                          </div>
+        
+                        <br/>
+        
+        
+        
+        
+              </div>
+        
+        
+        </div>
+      </div>
+      </div>    
+ 
+  <script>
+   
+        
+        
+        function getParameterByName(name, url) {
+        //alert(url);
+            if (!url) url = window.location.href;
+            //alert(url);
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        
+        
+        
+        
+        $(document).ready(function () {
+            // Handler for .ready() called. 
+            if(getParameterByName('section') != null){
+          //alert(getParameterByName('section'));
+                
+                  //alert(getParameterByName('section'));
+                
+                $('html, body').animate({
+              
+                    scrollTop: $('#'+getParameterByName('section')).offset().top-240
+                }, 'fast');
+            }
+            
+           
+            
+        });
+        
+    
+     </script>
+ 
+  <script>
+   
+   
+    
+        var j$ = jQuery.noConflict();
+        
+   
+   
+        /*SLDS Sections*/
+        //j$('.slds-section__content').hide();
+        j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+        j$('.slds-section__title').click(function() {
+            
+                j$(this).parent().toggleClass('slds-is-open');
+                if (j$(this).parent().hasClass('slds-is-open')) {
+                    j$(this).parent().find('.slds-section__content').show();
+                } else {
+                    j$(this).parent().find('.slds-section__content').hide();
+                }
+            
+        });
+        /*SLDS Sections*/
+
+        //j$('table.list').addClass('slds-table');
+        /* Detail Section Styles */
+        j$('td.labelCol').removeClass('labelCol');
+        j$('td.last').removeClass('last');
+        //j$('td.pbButton').addClass('slds-button-group');
+        var pbButton = j$('td.pbButton').html();
+        j$('td.pbButton').html("");
+        j$('td.pbButton').html("<center><div>" + pbButton + "</div></center>");
+        //j$('td.pbButtonb').addClass('slds-button-group');
+        var pbButtonb = j$('td.pbButtonb').html();
+        j$('td.pbButtonb').html("");
+        j$('td.pbButtonb').html("<center><div>" + pbButtonb + "</div></center>");
+        j$('input.btn').addClass('slds-button slds-button--neutral');
+        var trList = j$('.detailList > tbody > tr');
+         for (var i = 0; i < trList.length; i++) {
+            var tdList = trList[i].getElementsByTagName('td');
+            
+            var label1 = tdList[0].innerHTML;
+            
+            tdList[0].innerHTML = '';
+            
+            j$(tdList[0]).append("<label class='slds-form-element__label mobileSeperator' style='width:30%'>" + label1 + "</label>" +"<span   style='display: inline-flex;'>"+tdList[1].innerHTML+"</span>");
+            
+            
+            if (tdList.length >= 3) {
+                var label2 = tdList[2].innerHTML;
+                tdList[2].innerHTML = '';
+                j$(tdList[2]).append("<label class='slds-form-element__label ' style='width:30%'>" + label2 + "</label>" + "<span  style='display: inline-flex;'>"+tdList[3].innerHTML)+"</span>"; 
+                
+                tdList[0].innerHTML = '';
+                j$(tdList[0]).append("<div class='mobileSeperator'><label class='slds-form-element__label ' style='width:30%'>" + label1 + "</label>" +"<span  style='display: inline-flex;'>"+tdList[1].innerHTML+"</span></div>");
+                j$(tdList[0]).append("<div class='mobile' style='padding-top: 10px !important'><div class='mobileSeperator'>" + tdList[2].innerHTML+"</div></div>");
+                
+            }
+            
+        }
+        
+        
+        
+        
+         // j$('.pbBody').prepend("<br/>");
+          // j$('.pbButton').prepend("<br/>");
+          // j$('td.dataCol').hide();
+           j$('td.data2Col').hide();
+             j$('td.pbTitle').hide();
+            j$('.detailList > tbody > tr > td').width('50%');
+ 
+              
+     
+        
+    
+        
+    // j$("input[value='Edit']").hide();
+      // j$("input[value='Delete']").hide();
+      // j$("input[value='Duplicate']").hide();
+      //  j$('.btn slds-button slds-button--neutral').hide();
+       /* Detail Section Styles End */
+        
+          j$("input[value='Quotes View']").prepend("<br/>");
+        j$(document).ready(function() {
+            j$("#myModal").scroll(function() {
+                j$(".datePicker").hide();
+            });
+        });
+    </script>
+ 
+ 
+ <style>
+        h3 {
+            display: inline !important;
+        }
+        
+        .brandTertiaryBrd {
+            border: none !important;
+        }
+        
+        .mainTitle {
+            display: none !important;
+        }
+        
+        .detailList > tbody > tr > td {
+            padding-top: 15px !important;
+            padding-bottom: 7px !important;
+            padding-left:10px !important;
+            border-bottom: 1px solid lightgray !important;
+        }
+        
+        .pbBody td {
+            color:black;
+            }
+        
+        .pbSubsection {
+            padding-left: 20px;
+            padding-right: 10px;
+        }
+        
+        .pbBottomButtons {
+            display: none;
+        }
+        
+        .publishercontainer,
+        .cxfeedinnerwrapper {
+            padding-left: 20px !important;
+        }
+        
+        .bPageBlock,
+        .brandSecondaryBrd,
+        .bDetailBlock,
+        .secondaryPalette,
+        .pbHeader,
+        .pbBody,
+        .pbError,
+        .pbBottomButtons,
+        .pbFooter,
+        .secondaryPalette,
+        .brandTertiaryBrd,
+        .first pbSubheader,
+        .tertiaryPalette {
+            border: 0px solid white !important;
+        }
+        
+        .pbButton,
+        .pbBody {
+            background: white !important;
+        }
+        
+        .pbError {
+            display: none !important;
+        }
+        
+        @media only screen and (min-width:0px) and (max-width:1000px) {
+            .mobile {
+                display: block;
+            }
+            .desktop {
+                display: none;
+            }
+            .detailList > tbody > tr > td:nth-child(2),.detailList > tbody > tr > td:nth-child(3),.detailList > tbody > tr > td:nth-child(4) {
+               display:none !important;
+               
+            }
+            .mobileSeperator {
+                border-bottom: 1px solid lightgray;
+                padding-bottom: 7px;
+            }
+            .detailList > tbody > tr > td {
+               // padding-top: 20px !important;
+                padding-bottom: 0px !important;
+                padding-left: 10px !important;
+                border-bottom: 0px solid lightgray !important;
+                color:black;
+            }
+            .slds-button--neutral {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+            .slds-scope .slds-button {
+                line-height: 25px !important;
+            }
+            .mobile > .slds-icon {
+                width: 25px !important;
+                height: 25px !important;
+            }
+            .detailList > tbody > tr > td > div:hover {
+                cursor: pointer;
+                background: #f1f1f1;
+                
+            }
+            
+        }
+        
+        @media only screen and (min-width:1001px) and (max-width:6000px) {
+            .mobile {
+                display: none;
+            }
+            .desktop {
+                display: block;
+            }
+            .detailList > tbody > tr > td:hover {
+                cursor: pointer;
+                background: #f1f1f1;
+            }
+           .detailList > tbody > tr > td:nth-child(2),.detailList > tbody > tr > td:nth-child(4) {
+                display:none !important;
+            }
+             .detailList > tbody > tr > td:nth-child(1),.detailList > tbody > tr > td:nth-child(3) {
+                width:50% !important;
+                color:black;
+            }
+            
+            .pbBody td {
+            color:black;
+            }
+        }
+    </style>
+    
+ 
+ 
+ </html>
+
+
+  
+<!--<apex:relatedList list="ProcessSteps" ></apex:relatedList>-->
+</apex:page>
+<!-- End of Page -->

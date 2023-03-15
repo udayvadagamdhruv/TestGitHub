@@ -1,0 +1,221 @@
+<aura:component controller="LDS_Controller" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="startDate" type="String" />
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="recordError" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="fieldSet" type="List"/>
+    <aura:attribute name="fieldtoQuery" type="String[]" default="['Id','Name','Job_Auto_Number__c','Campaign__c','Campaign__r.Name','Media_Types__c','Media_Types__r.Name','Schedule_Template__c','Schedule_Template__r.Name','JS_Client__c','JS_Client__r.Name','JS_Client_Contact__c','JS_Client_Contact__r.Name','Specification_Template__c','Specification_Template__r.Name']" />
+    <aura:attribute name="Labelname" type="string"  />
+    <aura:attribute name="PECustomSetting" type="Object" />
+    <aura:attribute name="OrgInfo" type="Object" />
+    <aura:attribute name="ProInfo" type="Object" />
+    <aura:attribute name="ClientInfo" type="Object" />
+    <aura:attribute name="ObjectFieldLabels" type="Object"/>
+    
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:attribute name="CampPopulate" type="sObject" />
+    
+    <aura:attribute name="selectedLookUpRecord_CMP" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_MT" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_ST" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_C" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_CC" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_CT" type="sObject" default="{}"/>
+    
+    <aura:attribute name="CampaignRecords" type="List" />
+    <aura:attribute name="CreativeRecords" type="List" />
+    
+    <aura:attribute name="MediaRecords" type="Object" />
+    <aura:attribute name="ScehduleRecords" type="Object" />
+    <aura:attribute name="ClientRecords" type="Object" />
+    <aura:attribute name="ClientContactsRecords" type="Object" />
+    
+    <aura:attribute name="SelectedCampaignId" type="String" />
+    <aura:attribute name="changeCampaignId" type="String" />
+    
+    <aura:attribute name="SelectedJobSTempId" type="String" />
+    <aura:attribute name="changeJobSTempId" type="String" />
+    
+    <aura:attribute name="CampRecord" type="String" default="" />  
+    <aura:attribute name="CTRecord" type="String" default="" />  
+    <aura:attribute name="MTRecord" type="String" default="" />
+    <aura:attribute name="CRecord" type="String" default="" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <force:recordData aura:id="Jobrecord"
+                      recordId="{!v.recordId}"
+                      fields="{!v.fieldtoQuery}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+    
+    
+    <lightning:recordEditForm aura:id="createEditForm" density="comfy" objectApiName="Job__c" recordId="{!v.recordId}" onsubmit="{!c.RecordSubmit}" onload="{!c.onloadrecord}"  onsuccess="{!c.onRecordSuccess}" >
+        <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+            
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium"> 
+                         New {!v.Labelname}
+                    </h2>
+                </div>
+                
+                
+                <div class="slds-modal__content slds-p-around--medium slds-grid slds-wrap ">
+                    <lightning:messages /> 
+                    <div class="showScroll">
+                        <ui:scrollerWrapper class="scrollerSizecart"> 
+                            <div aura:id="errorMsgs"></div>
+                           
+                            <lightning:layout multipleRows="true"> 
+                                <aura:iteration items="{!v.fieldSet}" var="ff" indexVar="indx">
+                                    
+                                    <aura:if isTrue="{! (ff=='Name') || (ff=='Status__c') || (ff=='Start_Date__c') ||(ff=='Due_Date__c') || (ff=='Start_Time__c') || (ff=='End_Time__c') || (ff=='Schedule_Calc__c') || (ff=='Campaign__c') || (ff=='Media_Types__c') || (ff=='Schedule_Template__c') || (ff=='JS_Client__c') || (ff=='JS_Client_Contact__c') || (ff=='Specification_Template__c') || (ff=='UpdateSchedDateFieldCheck__c') || (ff=='Creative_Overview__c') }">
+                                        <aura:set attribute="else"> 
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="{!ff}" aura:id="fsOne" class="{!' slds-p-horizontal_x-small' +(ff=='Name' ? ' frequired' :' ')}"  /> 
+                                            </lightning:layoutItem>
+                                        </aura:set>
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='Name'}">
+                                        <aura:if isTrue="{!(v.PECustomSetting.Remove_Required_of_Job_name__c) || ((v.OrgInfo.Id =='00DG0000000k48JMAQ' || v.OrgInfo.Id =='00DJ000000371J9MAI' ))}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="{!ff}" aura:id="NotNameRequiredId" class=" slds-p-horizontal_x-small"  /> 
+                                            </lightning:layoutItem>
+                                            <aura:set attribute="else">   
+                                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                    <lightning:inputField fieldName="{!ff}" aura:id="NameRequiredId" class="{!' slds-p-horizontal_x-small' +(ff=='Name' ? ' frequired' :' ')}" /> 
+                                                </lightning:layoutItem>
+                                            </aura:set>
+                                            
+                                        </aura:if>
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='Start_Time__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:input type="time" aura:id="StartTime" label="{!v.ObjectType.Job__c.Start_Time__c.label}" name="{!ff}"/> 
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!ff=='End_Time__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:input type="time" aura:id="EndTime" label="{!v.ObjectType.Job__c.End_Time__c.label}" name="{!ff}"/> 
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!ff=='Start_Date__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="{!ff}" aura:id="StartDateVal" class=" slds-p-horizontal_x-small" /> 
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!ff=='Due_Date__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="{!ff}" aura:id="DueDateVal" class=" slds-p-horizontal_x-small" /> 
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!ff=='Schedule_Calc__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="{!ff}" aura:id="schuleCalauraId" class=" slds-p-horizontal_x-small frequired" /> 
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='Status__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="{!ff}" aura:id="StatusauraId" class="slds-p-horizontal_x-small" /> 
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                    
+                                    <aura:if isTrue="{!ff=='Campaign__c'}">
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <c:customLookup aura:id="CampauraId" objectAPIName="Campaign__c" DepobjectAPIName="" IconName="standard:campaign" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_CMP}" 
+                                                            DepenselectedRecord="" label="{!V.ObjectType.Job__c.Campaign__c.label}" Depelabel="" RelationShipName="" ParentFilter="Status__c='Active'"  ChildFilter=""
+                                                            ParentRecId="{!v.CampRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                                        </lightning:layoutItem>
+                                        
+                                        
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='Media_Types__c'}">
+                                        <div class="slds-size--1-of-1 slds-p-horizontal_x-small" >
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                                <c:customLookup aura:id="MT_STempId"  objectAPIName="Media_Type__c" DepobjectAPIName="Schedule_Template__c" IconName="custom:custom99" DepIconName="custom:custom40" selectedRecord="{!v.selectedLookUpRecord_MT}" 
+                                                                DepenselectedRecord="{!v.selectedLookUpRecord_ST}" label="{!V.ObjectType.Job__c.Media_Types__c.label}" Depelabel="{!V.ObjectType.Job__c.Schedule_Template__c.label}" RelationShipName="Media_Types__c" ParentFilter=""  ChildFilter="Active__c=True"
+                                                                ParentRecId="{!v.MTRecord}" ParentSortBy="Order By Name" ChildSortBy="Order By Name" IsParentReq="true" IsChildReq="true" />
+                                            </lightning:layoutItem>
+                                        </div> 
+                                    </aura:if> 
+                                    
+                                    
+                                    <aura:if isTrue="{!ff=='Schedule_Template__c'}">
+                                        
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='JS_Client__c'}">
+                                        <div class="slds-size--1-of-1 slds-p-horizontal_x-small" >       
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                                <c:customLookup aura:id="C_CConId"  objectAPIName="Client__c" DepobjectAPIName="Client_Contact__c" IconName="standard:client" DepIconName="standard:groups" selectedRecord="{!v.selectedLookUpRecord_C}" 
+                                                                DepenselectedRecord="{!v.selectedLookUpRecord_CC}" label="{!V.ObjectType.Job__c.JS_Client__c.label}" Depelabel="{!V.ObjectType.Job__c.JS_Client_Contact__c.label}" RelationShipName="Client__c" ParentFilter="Active__c=true"  ChildFilter="Active__c=True"
+                                                                ParentRecId="{!v.CRecord}"  ParentSortBy="Order By Name" ChildSortBy="Order By Name" /> 
+                                            </lightning:layoutItem>
+                                        </div>  
+                                        
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='JS_Client_Contact__c'}">
+                                        
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='Specification_Template__c'}">
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <c:customLookup aura:id="STempId" objectAPIName="Specification_Template__c" DepobjectAPIName="" IconName="custom:custom91" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_CT}" 
+                                                            DepenselectedRecord="" label="{!V.ObjectType.Job__c.Specification_Template__c.label}" Depelabel="" RelationShipName="" ParentFilter=""  ChildFilter=""
+                                                            ParentRecId="{!v.CTRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                                        </lightning:layoutItem>
+                                        
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='UpdateSchedDateFieldCheck__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="{!ff}" aura:id="RecaluauraId" class=" slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    <aura:if isTrue="{!ff=='Creative_Overview__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                            <lightning:inputField fieldName="{!ff}" aura:id="StatusNotes" class=" slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                </aura:iteration>
+                            </lightning:layout>
+                            
+                        </ui:scrollerWrapper>
+                    </div>
+                </div>
+                <div class="slds-modal__footer">                
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.doCancel}" />
+                    <lightning:button  variant="brand"  label="Save" type="submit" />
+                </div>              
+            </div>
+        </div>
+    </lightning:recordEditForm> 
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop--open"></div>
+    
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            {!v.recordError}</div>
+    </aura:if>   
+    
+</aura:component>

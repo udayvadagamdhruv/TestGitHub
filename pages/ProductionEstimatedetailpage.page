@@ -1,0 +1,5 @@
+<apex:page standardController="Production_Estimate__c" tabStyle="Job__c">
+ <apex:detail showChatter="true" /> 
+     <!--apex:include pageName="DisplayProdEstSpecInProdEstimateTab"/-->
+ 
+</apex:page>

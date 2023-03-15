@@ -1,0 +1,57 @@
+<!-- This page is used to display associated Role and selected staff for job task under its Detail Page. -->
+<apex:page controller="DisplayRole_User">
+  <head>
+   <style>
+    .labelCol2{font-size:1.0em};
+   </style>
+  </head>
+ 
+  <apex:form >
+    <apex:pageBlock tabStyle="Job_Task_Role__c">
+      <div>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+     <apex:commandButton action="{!AddNewRole}" value="Add Role" id="btn1"/>
+     &nbsp;
+     <apex:commandButton action="{!addNewStaff}" value="Add Job Team Staff" id="btn2"/> 
+     </div>
+     &nbsp;
+     
+     <div>
+     <apex:pageBlockTable value="{!lstJTR}" var="jt" rendered="{!lstJTR.Size > 0}"> <br/><br/><br/> 
+        <apex:column headerValue="Action">
+           <apex:commandButton value="Edit Staff" action="{!assignTheUser}" reRender="hiddenBlock">
+                <apex:param name="param1" value="{!jt.Id}" assignTo="{!strJTRID}"> </apex:param>
+           </apex:commandButton>
+
+<!--added delete button by rahul -->
+           <apex:commandButton value="Delete Role" action="{!DeleteTheUser}" reRender="hiddenBlock">
+                <apex:param name="param2" value="{!jt.Id}" assignTo="{!strJTRID}"> </apex:param>
+           </apex:commandButton>
+<!-- button ends here -->           
+
+           <apex:pageBlock id="hiddenBlock" rendered="false"></apex:pageBlock>
+        </apex:column>
+        
+        <apex:column headerValue="{!$ObjectType.Job_Task_Role__c.Fields.Name.Label}" value="{!jt.Name}">
+        </apex:column> 
+          
+        <apex:column headerValue="{!$ObjectType.Job_Task_Role__c.Fields.User__c.Label}" value="{!jt.User__c}">
+        </apex:column>
+     </apex:pageBlockTable>
+      
+     <apex:pageBlockSection rendered="{!lstJTR.size <= 0}">
+         <apex:pageBlockSectionItem >
+             <b>No records to display</b>
+         </apex:pageBlockSectionItem>              
+     </apex:pageBlockSection> 
+     </div>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

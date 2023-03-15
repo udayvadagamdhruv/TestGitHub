@@ -1,0 +1,330 @@
+<aura:component controller="AdminController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="objLabels" type="Map" default="" />
+    <aura:attribute name="pageReference" type="Object"/>  
+    <lightning:navigation aura:id="navService"/>
+    <lightning:card title="">
+        <ul class="slds-has-dividers_bottom-space">
+            <div class="c-container">
+                
+                <lightning:layout multipleRows="true">
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.GLDep}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.GL_Department__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom94"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.GL_Department__c}</li>
+                                            </ul>
+                                            <p>Broad categories for expense line items. Parent of {!v.objLabels.GL_Code__c}.<br/><br/></p>
+                                        </lightning:tile>
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.Mediatype}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Media_Type__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom99"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Media_Type__c}</li>
+                                            </ul>
+                                            <p>Broad categories to label {!v.objLabels.Job__c}, parent of Schedule Types.<br/><br/></p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.Role}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Role" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom111"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Role</li>
+                                            </ul>
+                                            <p>The function a team member plays on a team (Art Director, Designer, etc.)</p>
+                                        </lightning:tile>
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.GLCode}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.GL_Code__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom24"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.GL_Code__c}</li>
+                                            </ul>
+                                            <p>Individual line items on job cost forms ({!v.objLabels.Quote__c}s, {!v.objLabels.Estimate_Line_Items__c}s, {!v.objLabels.Purchase_Order__c}s, and {!v.objLabels.Invoice__c}s).</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.SchTemp}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Schedule_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom40"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Schedule_Template__c}</li>
+                                            </ul>
+                                            <p>Used to define the job type, and import a {!v.objLabels.Schedule_Template__c} into a job schedule.</p>
+                                        </lightning:tile>
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.Staff}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Staff__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom103"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Staff__c}</li>
+                                            </ul>
+                                            <p>People that play a role on your {!v.objLabels.Job__c} teams.<br/><br/></p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.CreativeBrief}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Specification_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="standard:record"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Specification_Template__c}</li>
+                                            </ul>
+                                            <p>A template used to pull a group of {!v.objLabels.Specification_Template__c} into a {!v.objLabels.Job__c}.</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.AppSchTemp}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Approval_Schedule_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom40"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Approval_Schedule_Template__c}</li>
+                                            </ul>
+                                            <p>Used to define the job type, and import a {!v.objLabels.Approval_Schedule_Template__c} into a job Approval Process.</p>
+                                        </lightning:tile>
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.ProductionSpec}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Production_Spec_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom62"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Production_Spec_Template__c}</li>
+                                            </ul>
+                                            <p>A template used to pull a group of production specs into estimates.</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.Holiday}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Holiday__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom60"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Holiday__c}</li>
+                                            </ul>
+                                            <p>Enter your holidays so auto schedules skip weekends and holidays.</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.ProductionEst}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Production_Estimate_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom18"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Production_Estimate_Template__c}</li>
+                                            </ul>
+                                            <p>A template used to pull a group of {!v.objLabels.Production_Estimate_Template__c}.<br/><br/></p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.InvAllTemp}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Invoice_Allocation_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar fallbackIconName="custom:custom45"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Invoice_Allocation_Template__c}</li>
+                                            </ul>
+                                            <p>A template to divide the line items on an invoice among a batch of pre defined {!v.objLabels.Client__c}s.</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.CampTemp}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Campaign_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar  fallbackIconName="custom:custom55"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Campaign_Template__c}</li>
+                                            </ul>
+                                            <p>A template used to pull a group of {!v.objLabels.Job__c} to the {!v.objLabels.Campaign__c}<br/><br/></p>
+                                        </lightning:tile>
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.TagTemp}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="{!v.objLabels.Tag_Template__c}" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar  fallbackIconName="custom:custom62"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">{!v.objLabels.Tag_Template__c}</li>
+                                            </ul>
+                                            <p>A template used to pull a group of Tag Line Items into {!v.objLabels.Job__c}.<br/><br/></p>
+                                        </lightning:tile>
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                </lightning:layout>
+            </div>
+        </ul>
+        
+    </lightning:card>
+</aura:component>

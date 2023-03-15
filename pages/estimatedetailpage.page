@@ -1,0 +1,10 @@
+<apex:page standardController="Estimate_Line_Items__c" tabStyle="Job__c" extensions="estimatedetailpageExt" >
+ <apex:detail showChatter="true" relatedList="false"/> 
+  
+
+ <apex:include pageName="DisplayEstimateLIWhenApproved" rendered="{!estlineitem.Restrict__c|| estlineitem.Approved__c}"  />
+ <br/>
+ 
+ <apex:include pageName="DisplayProductionEstSpecInEstimateTab"/>
+
+</apex:page>

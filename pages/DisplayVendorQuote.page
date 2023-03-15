@@ -1,0 +1,109 @@
+<!-- This page is used to Display Vendor Quote. -->
+<apex:page Controller="DisplayVendorQuoteExtension" id="page">
+    <head>
+        <style>
+            #table_date td
+            {
+                border:0px;
+            }
+            #table_amount td
+            {
+                border:0px;
+            }
+            #table_restrict td
+            {
+                border:0px;
+            }
+
+            .labelCol2{font-size:1.0em};
+        </style>
+    </head>
+     <apex:pageMessages id="hiddenBlock3"/>
+
+     <apex:form id="pb">
+          <apex:pageBlock tabStyle="Job__c" title="Vendors">
+                <apex:pageBlockButtons location="top" >
+                     <apex:commandButton action="{!CreateVQ}" value="Add Vendor" id="btn1"/>
+                     <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  
+                     <apex:commandButton value="Cancel" id="cancelButton" style="display: none;" onclick="window.location.reload();" reRender="pb"/> 
+                </apex:pageBlockButtons>
+               <div>
+                  <apex:pageBlockTable value="{!vq}" var="vquote" rendered="{!vq.size > 0}" width="100%"> <br/><br/><br/> 
+      
+                  <apex:column headerValue="Action" width="10%">
+                       <apex:commandButton value="Print Quote" id="pq" onClick="window.open('/apex/PrintQuote?id={!vquote.id}');" reRender="page" title="Press to view Quote"/>  
+          
+                   <!--
+                      <apex:commandButton value="Send PDF" action="{!sendPdf}" reRender="hiddenBlock3">
+                           <apex:param name="param3" value="{!vquote.id}" assignTo="{!strVQID}"></apex:param>
+                       </apex:commandButton> 
+                   -->
+          
+                  </apex:column>
+         
+                  <apex:column headerValue="{!$ObjectType.Vendor_Quote__c.Fields.Name.Label}">
+                      <apex:outputLink value="/apex/VendorQuoteDetailPage?id={!vquote.id}" tabindex="tab1">{!vquote.Name}</apex:outputLink>
+                  </apex:column> 
+          
+                  <apex:column headerValue="{!$ObjectType.Vendor_Quote__c.Fields.Vendor__c.Label}">
+                      <apex:outputLink tabindex="tab1" value="/apex/VendorListView?id={!vquote.Vendor__r.Id}">{!vquote.Vendor__r.Name}</apex:outputLink> 
+                  </apex:column> 
+          
+                  <apex:column headerValue="{!$ObjectType.Vendor_Quote__c.Fields.Date__c.Label}">
+                   <apex:actionRegion >
+                       <table border="0" id="table_date">
+                           <tr>
+                               <td border="0">
+                                  <apex:outputfield value="{!vquote.Date__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" hideOnEdit="btn1"/>  </apex:outputfield> 
+                               </td> 
+                               <td> 
+                                    <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Date"/>  
+                               </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+                  </apex:column> 
+          
+                  <apex:column headerValue="{!$ObjectType.Vendor_Quote__c.Fields.Amount__c.Label}">
+                    <apex:actionRegion >
+                         <table border="0" id="table_amount">
+                             <tr>
+                                 <td border="0">
+                                    <apex:outputField value="{!vquote.Amount__c}"> 
+                                        <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" hideOnEdit="btn1"/>  </apex:outputfield> 
+                                 </td>
+                                 <td>
+                                      <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Amount"/>  
+                                 </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+                 </apex:column> 
+            
+                  <apex:column headerValue="{!$ObjectType.Vendor_Quote__c.Fields.Restrict__c.Label}">
+                        <apex:actionRegion >
+                             <table border="0" id="table_restrict">
+                                 <tr>
+                                     <td border="0">
+                                        <apex:outputField value="{!vquote.Restrict__c}"> 
+                                            <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" hideOnEdit="btn1"/>  </apex:outputfield> 
+                                      </td>
+                                      <td>
+                                           <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Approve Vendor"/>  
+                                      </td>
+                                </tr>
+                            </table>
+                    </apex:actionRegion>
+                </apex:column> 
+              </apex:pageBlockTable>
+         <apex:pageBlockSection rendered="{!vq.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+      </div>
+   </apex:pageBlock>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

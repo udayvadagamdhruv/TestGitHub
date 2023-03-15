@@ -1,0 +1,8 @@
+<aura:documentation>
+    <aura:description>
+        <p>An <code>c:LDS_JobteamRecords</code> component used for the displaying Job Team and Job Tasks and Job Spec</p>
+    </aura:description>
+    <aura:example name="Team and Task and Job Spec Name" ref="c:LDS_JobteamRecords" label="Team and Task and Job Spec">
+        <p>This example shows a simple setup of <code>Sample</code>.</p>
+    </aura:example>
+</aura:documentation>

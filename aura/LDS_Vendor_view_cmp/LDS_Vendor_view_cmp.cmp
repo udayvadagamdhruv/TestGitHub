@@ -1,0 +1,15 @@
+<aura:component controller="LDS_Controller" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div style="height: 300px" >
+        <lightning:datatable columns="{! v.columns }"
+                             data="{! v.data }"
+                             keyField="id"
+                             onrowaction="{! c.handleRowAction }"
+                             hideCheckboxColumn="true"                
+                             />
+    </div>
+    
+</aura:component>

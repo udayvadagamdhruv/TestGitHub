@@ -1,0 +1,8 @@
+<!-- This Page is Used to display List of Client Invoices  -->
+<apex:page showHeader="true" sidebar="true" tabStyle="Client_Invoice__c">
+
+    <!-- To display Enhanced list of Client Invoices --> 
+         <apex:enhancedList type="Client_Invoice__c" height="1000" rowsPerPage="50" id="Accountlist" customizable="True" />  
+    <!-- End of Enhanced List -->
+ 
+ </apex:page>

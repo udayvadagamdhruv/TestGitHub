@@ -1,0 +1,3 @@
+<apex:page standardController="Invoice__c" extensions="InvoiceViewSwitchExt" action="{!pagedir}" tabStyle="Job__c" sidebar="true"  docType="html-5.0" applyBodyTag="False"  standardStylesheets="true" applyHtmlTag="False"  showHeader="false">
+  
+</apex:page>

@@ -1,0 +1,4 @@
+<apex:page standardController="Billboard_Contract__c" extensions="BillboardContractListViewSwitchExt" tabStyle="Billboard_Contract__c" sidebar="true" docType="html-5.0" applyBodyTag="False" action="{!pagedir}" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+ 
+</apex:page>

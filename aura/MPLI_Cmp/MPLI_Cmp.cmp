@@ -1,0 +1,406 @@
+<aura:component controller = "Vendor_MO_Controller"  implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="ObjectType" type="Object"/> 
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="fieldset" type="List"/>
+    
+    <aura:attribute name="MPLISec" type="String" default="Material Order Line Items" required="true" access="global"/>
+    <aura:attribute name="isAccess" type="list" /><!-- to check  permissions(creatable,editable)-->
+    
+    <aura:attribute name="isMPLIOpen" type="boolean" default="false"/>
+    <aura:attribute name="MPLIRecordid" type="String" />
+    <aura:attribute name="MPLIRecordidNew" type="String" />
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    
+    <aura:attribute name="DynamicLabels" type="list"/>
+    <aura:attribute name="TotalAmount" type="double" />
+    
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="materialitemfieldvalues" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="record" type="Object" />
+    
+    <aura:attribute name="isCalUnitEach" type="boolean"  default="false"/>
+    <aura:attribute name="isCalUnitSheet" type="boolean" default="false"/>
+    <aura:attribute name="isCalUnitSize" type="boolean"  default="false"/>
+    
+    <aura:attribute name="MItem_Records" type="Object"/>
+    
+    <!--   MOLI receipt -->
+    <aura:attribute name="MPLIReceiptRecordid" type="String" />
+    <aura:attribute name="MPLIReceiptObjectType" type="Object"/> 
+    <aura:attribute name="MPLIReceiptLabelname" type="string" default="Material Order Line Item Receipt"/>
+    <aura:attribute name="MPLIReceiptfieldset" type="List"/>
+    <aura:attribute name="MOLIReceiptSec" type="String" default="Material Order Line Item Receipt" required="true" access="global"/>
+    <aura:attribute name="isMOLIReceiptOpen" type="boolean" default="false"/>
+     <aura:attribute name="NewrcdOrEditrcd" type="boolean" default="false"/>
+    
+    <aura:attribute name="MPLIRowId" type="String" />
+    <aura:attribute name="MPLIName" type="String" />
+    <aura:attribute name="MOLIReceiptObjectType" type="Object"/> 
+    <aura:attribute name="MOLIReceiptLabelname" type="string"/>    
+    <aura:attribute name="MOLIReceiptdata" type="Object"/>
+    <aura:attribute name="MOLIReceiptcolumns" type="List"/>
+    <aura:attribute name="MOLIReceiptdatalenght" type="boolean" default="false"/>
+    <aura:attribute name="MOLIReceipterrors" type="Object"/>
+    <aura:attribute name="MOLIReceiptsortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="MOLIReceiptsortedDirection" type="String" default="desc" />
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MPLI">
+        <lightning:accordionSection name="MPLI" label="{!v.MPLISec}"  class="slds-card" >
+            <br/>
+            <div align="center">
+                <lightning:button variant="neutral" label="New" title="New" onclick="{!c.MPLICreate}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                
+                <aura:set attribute="else">
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="POtablecss"
+                                                 aura:id="PODataTable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="false"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}" />
+                        </div>
+                        <br/>
+                        
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    <aura:if isTrue="{!v.isMPLIOpen}">
+        <lightning:recordEditForm aura:id="JobMPLIEditform" density="comfy" objectApiName="Material_Purchase_Line_Item__c" recordId="{!v.MPLIRecordid}" onload="{!c.MPLIload}"  onsubmit="{!c.MPLIOnsubmit}" onsuccess="{!c.onMPLIRecordSuccess}"  >
+            <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.MPLIRecordid==null?'New ':'Edit '} {!v.Labelname}</h2>
+                    </header>
+                    
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:layout multipleRows="true">  
+                            <aura:iteration items="{!v.fieldset}" var="field">
+                                
+                                <aura:if isTrue="{!field == 'Calc_Unit__c' || field == 'Material_Item__c' || field == 'Material_Order__c' || field == 'MPLI_Status__c'}"> 
+                                    <aura:set attribute="else">
+                                        <lightning:inputField fieldName="{!field}" aura:id="MPLIQty"  class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='Qty__c' || field=='MPLI_Status__c') ? 'frequired' :' ')}"  />
+                                    </aura:set>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field == 'Material_Order__c'}"> 
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                            <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Material_Purchase_Line_Item__c.Material_Order__c.label} </label>
+                                            <div class="slds-form-element__control">
+                                                <ui:outputText value="{!v.simpleRecord.Name}"  /> 
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                
+                                <aura:if isTrue="{!field == 'MPLI_Status__c'}"> 
+                                    <lightning:inputField fieldName="{!field}" aura:id="statusFieldId" onchange="{!c.statuschange}" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small frequired"/>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Calc_Unit__c'}">
+                                    <aura:if isTrue="{!v.MPLIRecordid!=null}">
+                                        <lightning:outputField fieldName="{!field}"  class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                                        <aura:set attribute="else">   
+                                            <lightning:inputField fieldName="{!field}" aura:id="CalUnitFieldId" onchange="{!c.CalUnitChange}" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small frequired"/>
+                                        </aura:set>
+                                    </aura:if> 
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Material_Item__c'}">
+                                    <aura:if isTrue="{!v.MPLIRecordid!=null}">
+                                        <lightning:outputField fieldName="{!field}" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                                        <aura:set attribute="else">   
+                                            <div class="slds-size--1-of-2 slds-p-horizontal_x-small">
+                                                <lightning:select  name="MaterialItemSelect" aura:id="MISelectId" onchange="{!c.materialitemchange}" label="{!v.ObjectType.Material_Purchase_Line_Item__c.Material_Item__c.label}"  class="frequired">
+                                                    <option text="--None--" value="" /> 
+                                                    <aura:iteration items="{!v.MItem_Records}" var="mi">
+                                                        <option text="{!mi.Name}" value="{!mi.Id}" />
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>       
+                                </aura:if>
+                            </aura:iteration>
+                            
+                            <aura:if isTrue="{!v.materialitemfieldvalues.Calc_Unit__c == 'Sheet'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1"> Case Pack </label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Case_Pack__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">Qty On Hand</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Qty_On_Hand__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <span></span>
+                                </aura:set>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.materialitemfieldvalues.Calc_Unit__c == 'Size'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1"> Roll LF </label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Roll_LF__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">Qty On Hand</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Qty_On_Hand__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <span></span>
+                                </aura:set>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.materialitemfieldvalues.Calc_Unit__c == 'Each'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">Qty On Hand</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Qty_On_Hand__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <span></span>
+                                </aura:set>
+                            </aura:if>
+                            
+                        </lightning:layout>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MOLIReceipt">
+        <lightning:accordionSection name="MOLIReceipt" label="{!v.MOLIReceiptSec}"  class="slds-card" >
+            <br/>
+            <aura:if isTrue="{!empty(v.MOLIReceiptdata)}">
+                <b>No records to display</b>
+                
+                <aura:set attribute="else">
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="POtablecss"
+                                                 aura:id="PODataTable"
+                                                 columns="{!v.MOLIReceiptcolumns}"
+                                                 data="{!v.MOLIReceiptdata}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="false"
+                                                 errors="{!v.MOLIReceipterrors}"
+                                                 onrowaction="{!c.handleRowActionReceipt}" />
+                        </div>
+                        <br/>
+                        
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    <aura:if isTrue="{!v.isMOLIReceiptOpen}">
+        <lightning:recordEditForm aura:id="JobMPLIReceiptEditform" density="comfy" objectApiName="Material_Order_Line_Item_Receipt__c" recordId="{!v.MPLIReceiptRecordid}" onload="{!c.MPLIReceiptload}"  onsubmit="{!c.MPLIReceiptOnsubmit}" onsuccess="{!c.onMPLIReceiptRecordSuccess}"  >
+            <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.MPLIReceiptRecordid==null?'New ':'Edit '} {!v.MPLIReceiptLabelname}</h2>
+                    </header>
+                    
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:layout multipleRows="true">  
+                            <aura:iteration items="{!v.MPLIReceiptfieldset}" var="field">
+                                
+                                <aura:if isTrue="{!field == 'Material_Purchase_Line_Item__c' || field == 'MPLI_Receipt_Status__c'}"> 
+                                    <aura:set attribute="else">
+                                        <lightning:inputField fieldName="{!field}" aura:id="MPLIReceiptQty"  class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='MOLI_Receipt_Date__c' || field=='MOLI_Receipt_Qty__c') ? 'frequired' :' ')}"  />
+                                    </aura:set>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field == 'Material_Purchase_Line_Item__c'}"> 
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                            <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Material_Order_Line_Item_Receipt__c.Material_Purchase_Line_Item__c.label} </label>
+                                            <div class="slds-form-element__control">
+                                                <ui:outputText  value="{!v.MPLIName}"  /> 
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field == 'MPLI_Receipt_Status__c'}"> 
+                                    <lightning:inputField fieldName="{!field}" aura:id="statusFieldReceiptId" onchange="{!c.statuschange}" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small frequired"/>
+                                </aura:if>
+                                
+                                
+                            </aura:iteration>
+                            
+                            <!--    <aura:if isTrue="{!v.materialitemfieldvalues.Calc_Unit__c == 'Sheet'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1"> Case Pack </label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Case_Pack__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">Qty On Hand</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Qty_On_Hand__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <span></span>
+                                </aura:set>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.materialitemfieldvalues.Calc_Unit__c == 'Size'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1"> Roll LF </label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Roll_LF__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">Qty On Hand</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Qty_On_Hand__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <span></span>
+                                </aura:set>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.materialitemfieldvalues.Calc_Unit__c == 'Each'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                        <label class="slds-form-element__label" for="text-input-id-1">Qty On Hand</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.materialitemfieldvalues.Qty_On_Hand__c}"  /> 
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <span></span>
+                                </aura:set>
+                            </aura:if>-->
+                            
+                        </lightning:layout>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+</aura:component>

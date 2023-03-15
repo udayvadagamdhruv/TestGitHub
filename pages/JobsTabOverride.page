@@ -1,0 +1,8 @@
+<!-- This page is used to display list of all jobs -->
+<apex:page showHeader="true" tabStyle="Job__c" sidebar="true" controller="testListPage" lightningStylesheets="true">
+    <!--  <apex:listViews type="Job__c" rendered="true" id="Joblist"/>   -->
+  
+  <apex:enhancedList type="Job__c" height="2000" rowsPerPage="50" customizable="true"/>
+    
+</apex:page>
+<!-- End of Page -->

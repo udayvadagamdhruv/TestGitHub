@@ -1,0 +1,155 @@
+<apex:page standardController="Job__c" extensions="emailWorkorderTeam" action="{!send}" sidebar="false" showHeader="false">
+<apex:slds />
+<style>
+       
+         .messageText
+         {
+                 padding: 8px;
+                 color: white;
+         }
+         
+         
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+      
+         .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+        
+        
+                  
+       
+           <!--- error Mesgg-------------------------------------->
+       
+         <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:white !important;
+             }
+             .messageText {
+                padding: 3px;
+            }
+            
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white;
+                }
+                
+                .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                                
+                            <!--- error Mesgg-------------------------------------->
+                                
+                 .slds select {  color: black !important; }
+       
+       
+                
+    </style>  
+
+  <apex:form >
+      <!--Your mail id Sent Successfully
+      <!--apex:commandButton value="Send" action="{!send}"/ rendered="{!(isError!=False)}"-->
+      <!--
+       <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+           <apex:pageMessages id="msg"></apex:pageMessages>
+        </div> <br/>-->
+      <br/>
+      <apex:pageMessages id="msg"></apex:pageMessages>
+         <br/>
+            <apex:outputPanel id="po">
+                <center> <apex:outputLink value="/apex/DetailJobSwitchPage?id={!jobid}">Click here to navigate to Job</apex:outputLink> </center>
+            </apex:outputPanel>
+     
+  </apex:form>
+</apex:page>

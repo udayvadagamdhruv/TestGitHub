@@ -1,0 +1,28 @@
+.THIS .leftPaddingClass {
+    padding-left: 2rem;
+}
+ 
+.THIS .pillSize{
+ width:100%;
+}
+
+
+.THIS .paddingclass{
+    /*added for edit layout fields alignment*/
+    /*padding: 0px 14px 0px 3px !important;*/
+    padding:0px 9px 8px 3px!important;
+}
+
+.THIS .Deppaddingclass{
+    /*added for edit layout fields alignment*/
+    padding:0 0px 0 10.5px!important;
+   /* padding: 0px 0px 0px 14.5px !important;*/
+}
+
+.THIS .frequired:after { 
+    content:" *";
+    color: #e32;
+}
+.THIS .slds-pill__label{
+    white-space: pre-wrap !important;
+}

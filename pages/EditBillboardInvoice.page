@@ -1,0 +1,57 @@
+<apex:page standardController="Billboard_Invoice__c" tabStyle="Billboard__c" extensions="EditBillboardInvoiceExtension">
+
+<apex:sectionHeader title="Billboard Details"/>
+  <apex:pagemessages id="pgMsg"/>
+   <apex:form >
+      <apex:pageBlock id="pb">
+          
+         <apex:pageBlockButtons >
+            <apex:commandButton value="Save" action="{!saveme}"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" ></apex:commandButton>
+         </apex:pageBlockButtons>
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+             
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.Name.Label}"  />
+                  <apex:inputField value="{!Billboard_Invoice__c.Name}"  />
+               </apex:pageBlockSectionItem> 
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.Billboard__c.Label}" /> 
+                  <apex:inputfield value="{!Billboard_Invoice__c.Billboard__c}" />
+                  
+               </apex:pageBlockSectionItem>
+         
+              
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.Billboard_Vendor__c .Label}" /> 
+                  <apex:selectList id="VendorName" value="{!VendorName}" size="1" >
+                     <apex:selectOptions value="{!Vendors}"></apex:selectOptions>
+                  </apex:selectList> 
+                  
+               </apex:pageBlockSectionItem>
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.Location__c.Label}"  />
+                  <apex:outputField value="{!Billboard_Invoice__c.Location__c}"  />
+               </apex:pageBlockSectionItem>
+               
+               
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.BB_Invoice_Due_Date__c.Label}"  />
+                  <apex:inputField value="{!Billboard_Invoice__c.BB_Invoice_Due_Date__c}"  />
+               </apex:pageBlockSectionItem>
+               
+               
+               
+        </apex:pageBlockSection> 
+      </apex:pageBlock>
+   </apex:form>
+
+
+
+</apex:page>

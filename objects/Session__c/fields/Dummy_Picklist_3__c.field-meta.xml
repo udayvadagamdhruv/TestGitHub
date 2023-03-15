@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dummy_Picklist_3__c</fullName>
+    <externalId>false</externalId>
+    <label>Dummy Picklist 3</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Dummy 1</fullName>
+                <default>false</default>
+                <label>Dummy 1</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

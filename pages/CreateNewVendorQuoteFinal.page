@@ -1,0 +1,46 @@
+<!-- This page is used to create vendor quotes for particuale quote under a job (assigning vendor for a Quote) -->
+<apex:page standardController="Vendor_Quote__c" tabstyle="Job__c" extensions="CreateNewVendorQuoteFinalExtension">
+   <apex:form >
+      <apex:sectionHeader title="Vendor Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+      
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+           
+            <apex:pageBlockSectionItem id="pbs">
+               <apex:outputLabel value="{!$ObjectType.Vendor_Quote__c.Fields.Vendor__c.Label}" for="JT"></apex:outputLabel>
+               <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                     <div class="requiredBlock"> </div>
+                     <apex:selectList id="ST" value="{!vendorName}" size="1" title="Trader ID" onselect="{!Vendor_Quote__c}">
+                        <apex:selectOptions value="{!Vendor}"></apex:selectOptions>
+                     </apex:selectList>
+                  </span>
+               </apex:outputPanel>  
+            </apex:pageBlockSectionItem>
+             
+            <apex:pageBlockSectionItem > 
+               <apex:outputLabel value="{!$ObjectType.Vendor_Quote__c.Fields.Quote__c.Label}"></apex:outputLabel>
+               <apex:outputField value="{!Vendor_Quote__c.Quote__c}"/>  
+            </apex:pageBlockSectionItem>    
+                
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Vendor_Quote__c.Fields.Date__c.Label}"/>
+               <apex:inputField value="{!Vendor_Quote__c.Date__c}" required="true"/>
+            </apex:pageBlockSectionItem>
+             
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Vendor_Quote__c.Fields.Amount__c.Label}"/>
+               <apex:inputField value="{!Vendor_Quote__c.Amount__c}"/>
+            </apex:pageBlockSectionItem>
+             
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

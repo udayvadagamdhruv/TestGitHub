@@ -1,0 +1,11 @@
+<apex:page standardController="Production_Estimate_Temp_Line_Items__c" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+     
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="CreatePETLINewpageLightning"/>
+    </apex:outputPanel>
+    
+     <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+         <apex:include pageName="CreatePETLINewpage"/>
+    </apex:outputPanel>
+     
+</apex:page>

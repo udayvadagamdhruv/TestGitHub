@@ -1,0 +1,7 @@
+<apex:page showHeader="false" sidebar="false" tabStyle="Job__c">
+  <apex:pageBlock >
+  <apex:pageBlockSection title="JobSuite Jobs" columns="1"  >
+  <apex:include pageName="JobslistView"/>
+  </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

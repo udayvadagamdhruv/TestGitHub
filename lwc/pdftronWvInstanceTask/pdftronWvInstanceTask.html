@@ -1,0 +1,19 @@
+<template>
+        <lightning-card>
+            <template if:true={error}>
+                <!-- conditional error rendering-->
+                <lightning-card>
+                    <p style="color: red">Error: {error.body.message}</p>
+                </lightning-card>
+            </template>
+            <div class="pdf_Tskviewer slds-p-around_small slds-grid slds-grid--vertical-stretch" id='pdf_Tskviewer' onmouseout={mouseOut} onmouseover={mousein}>
+                <div if:true={FileLoading} class="slds-spinner_inline spinner-padding" style="margin-left:50%;margin-right:50%;margin-bottom:50%" >
+                    <lightning-spinner variant="brand" 
+                                       alternative-text="Loading.."     
+                                       size="medium" >
+                    </lightning-spinner>
+                    
+                   </div>
+            </div>
+        </lightning-card>
+</template>

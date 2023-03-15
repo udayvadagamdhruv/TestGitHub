@@ -1,0 +1,21 @@
+<!-- This page is used to Override the delete button of GL Department -->
+<apex:page standardController="GL_Department__c" extensions="DeleteGLDepartmentExtension" showHeader="false" sidebar="false">
+
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:pageMessages id="msg"/>
+        
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}" rerender="msg,po"/>
+           <apex:outputPanel id="po">
+              <center>     <apex:commandLink action="{!gldpageBack}" value="Click here to Go Back" rendered="{!(isError!=False)}" /></center>
+           </apex:outputPanel>
+        </apex:form>
+  
+</apex:page>
+<!-- End of Page -->

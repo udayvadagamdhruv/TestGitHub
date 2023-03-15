@@ -1,0 +1,278 @@
+<aura:component controller="calendarCmpController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    
+    <!-- *************************************** Calendar Attributes *****************************************************-->
+    <aura:attribute name="ShowJobCal" type="boolean" default="true" description="Show/Hide the Job Calendar"/>
+    <aura:attribute name="ShowCampCal" type="boolean" default="false" description="Show/Hide the Campaign Calendar"/>
+    <aura:attribute name="ShowTaskCal" type="boolean" default="false" description="Show/Hide the Task Calendar"/>
+    <aura:attribute name="selectedCal" type="string" default="Job Calendar" description="Fetch the Selected values from the left hand pannel"/>
+    <aura:attribute name="ObjectType" type="Object[]"/>
+    <aura:attribute name="Labelname" type="Object[]"/>    
+    
+    
+    <!-- *************************************** Job Calendar criteria Attributes *****************************************************-->
+    <aura:attribute name="CampaignRec" type="String[]" description="It stores the All Campaign records"/>
+    <aura:attribute name="ClientRec" type="String[]" description="It stores the All Active Client records"/>
+    <aura:attribute name="MediaTypeRec" type="String[]" description="It stores the All Active Media Type records"/>
+    <aura:attribute name="SchedTempRec" type="String[]" description="It stores the All Active Schedule Template records"/>
+    <aura:attribute name="JobstatusPicklist" type="String[]" default="Active" description="It stores the Job Status values"/>
+    <aura:attribute name="JobRec" type="String[]" description="It stores the All Job records"/>
+    
+    <!-- *************************************** Selected Values of Job Calendar criteria Attributes *****************************************************-->
+    <aura:attribute name="SelectedCampaignRec" type="String" description="It store selected Campaign records"/>
+    <aura:attribute name="SelectedClientRec" type="String" description="It store selected Client records"/>
+    <aura:attribute name="SelectedMediatypeRec" type="String" description="It store selected Media type records"/>
+    <aura:attribute name="SelectedScheduleTempRec" type="String" description="It store selected Schedule Temp records"/>
+    <aura:attribute name="SelectedStatus" type="String" default="Active" description="It store selected Job Status records"/>
+    <aura:attribute name="SelectedJobRec" type="String" description="It store selected Job records"/>
+    
+    <!-- *************************************** Campaign Calendar criteria Attributes *****************************************************-->
+    <aura:attribute name="CampstatusPicklist" type="String[]" default="Active" description="It stores the Campaign Status values"/>
+    <aura:attribute name="CampaignNameRec" type="String[]" description="It stores the All Campaign records based on camp status"/>
+    <aura:attribute name="CampaignCreatedby" type="String" description="It store All active user names"/>
+    
+    <!-- *************************************** Selected Values of Campaign Calendar criteria Attributes *****************************************************-->
+    <aura:attribute name="SelectedCampStatus" type="String" default="Active" description="It store selected Camp Status records"/>
+    <aura:attribute name="SelectedCampName" type="String" description="It store selected Camp Name records"/>
+    <aura:attribute name="SelectedCampcreatedby" type="String" description="It store selected user Name records"/>
+    
+    <!-- *************************************** Job Task Calendar criteria Attributes *****************************************************-->
+    <aura:attribute name="TaskNames" type="String[]" description="It stores the Tasks records"/>
+    <aura:attribute name="TaskRoles" type="String[]" description="It stores the Roles records"/>
+    <aura:attribute name="TaskStaff" type="String[]" description="It stores the Staff records"/>
+    
+    <!-- *************************************** Selected Values of Task Calendar criteria Attributes *****************************************************-->
+    <aura:attribute name="SelectedtskCampaignRec" type="String" description="It store selected Campaign records"/>
+    <aura:attribute name="SelectedtskClientRec" type="String" description="It store selected Client records"/>
+    <aura:attribute name="SelectedtskMediatypeRec" type="String" description="It store selected Media type records"/>
+    <aura:attribute name="SelectedtskScheduleTempRec" type="String" description="It store selected Schedule Temp records"/>
+    <aura:attribute name="SelectedtskStatus" type="String" default="Active" description="It store selected Job Status records"/>
+    <aura:attribute name="SelectedtskJobRec" type="String" description="It store selected Job records"/>
+    <aura:attribute name="SelectedTask" type="String" description="It store selected Task records"/>
+    <aura:attribute name="SelectedRole" type="String" description="It store selected Role records"/>
+    <aura:attribute name="SelectedStaff" type="String" description="It store selected staff records"/>
+    
+    <ltng:require styles="{!join(',',
+                          $Resource.FullCalendar380 + '/fullcalendar-3.8.0/fullcalendar.css',
+                          $Resource.Calendar_Print_Css
+                          )}"
+                  scripts="{!join(',',
+                           $Resource.FullCalendar380 + '/fullcalendar-3.8.0/moment.min.js',
+                           $Resource.FullCalendar380  + '/fullcalendar-3.8.0/jquery.min.js',
+                           $Resource.FullCalendar380  + '/fullcalendar-3.8.0/jquery-ui.min.js',
+                           $Resource.FullCalendar380  + '/fullcalendar-3.8.0/fullcalendar.min.js'
+                           
+                           )}"
+                  afterScriptsLoaded="{!c.doInit}"
+                  /> 
+    
+    <body>
+        
+        <lightning:card>
+            
+            <!--************************************ Title **************************************-->
+            <aura:set attribute="title">
+                <lightning:icon iconName="standard:event" size="medium"/>
+                <label  style="font-size:25px !important;font-weight:bold !important;margin-top:55px !important;margin-left: 5px;">Jobsuite Calendars</label>
+            </aura:set>
+            <!--************************************ side Pannel **************************************-->
+            <div id="" >
+                <table>
+                    <tbody style="width:100% important;">
+                        <tr>
+                            <td id="searchLeftPanel" style="vertical-align:top;"> 
+                                <lightning:verticalNavigation selectedItem="{!v.selectedCal}"  onselect="{!c.handleOnSelect}">
+                                    <div id="sidepannel">
+                                        <lightning:verticalNavigationSection label="Calendar List">
+                                            
+                                            <lightning:verticalNavigationItemIcon label="{!v.Labelname[0]}" name="Campaign Calendar" iconName="utility:campaign" />
+                                            
+                                            <lightning:verticalNavigationItemIcon label="{!v.Labelname[1]}" name="Job Calendar" iconName="utility:overflow" />
+                                            
+                                            <lightning:verticalNavigationItemIcon label="{!v.Labelname[2]}" name="Task Calendar" iconName="utility:richtextbulletedlist" />
+                                            
+                                            <!--************************************ Job Search options **************************************-->
+                                            <aura:if isTrue="{!v.ShowJobCal}">
+                                                <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Search">   
+                                                    <lightning:accordionSection name="Search" label="Search">
+                                                        
+                                                        <lightning:select name="Campaign" aura:id="Camp" label="{!v.ObjectType[0].Job__c.Campaign__c.label}" onchange="{!c.CampChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.CampaignRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>  
+                                                        
+                                                        <lightning:select name="Client" aura:id="Client" label="{!v.ObjectType[0].Job__c.JS_Client__c.label}" onchange="{!c.ClientChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.ClientRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Media" aura:id="Media" label="{!v.ObjectType[0].Job__c.Media_Types__c.label}" onchange="{!c.MediaChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.MediaTypeRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Schedule" aura:id="Schedule" label="{!v.ObjectType[0].Job__c.Schedule_Template__c.label}" onchange="{!c.SchedChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.SchedTempRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Status" aura:id="JobStatus" label="{!v.ObjectType[0].Job__c.Status__c.label}" onchange="{!c.JobStatusChange}">
+                                                            <aura:iteration items="{!v.JobstatusPicklist}" var="option">
+                                                                <option text="{!option}" value="{!option}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Jobs" aura:id="Jobs" label="{!v.ObjectType[0].Job__c.Name.label}" onchange="{!c.JobChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.JobRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select> 
+                                                        <br/>
+                                                        <lightning:button label="Refresh" variant="brand" onclick="{!c.ClearsJobCriteria}" class="clearbtn"/>
+                                                    </lightning:accordionSection>
+                                                </lightning:accordion>
+                                            </aura:if>
+                                            
+                                            <!--************************************ Campaign Search options **************************************-->
+                                            <aura:if isTrue="{!v.ShowCampCal}">
+                                                <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Search">   
+                                                    <lightning:accordionSection name="Search" label="Search"  class="slds-card">
+                                                        <lightning:select name="Status" aura:id="CampStatus" label="{!v.ObjectType[0].Campaign__c.Status__c.label}" onchange="{!c.CampStatusChange}">
+                                                            <aura:iteration items="{!v.CampstatusPicklist}" var="option">
+                                                                <option text="{!option}" value="{!option}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        <lightning:select name="Campaign" aura:id="CampName" label="{!v.ObjectType[0].Campaign__c.Name.label}" onchange="{!c.CampNameChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.CampaignNameRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Created By" aura:id="Campcreateby" label="{!v.ObjectType[0].Campaign__c.CreatedById.label}" onchange="{!c.CampCreatedbyChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.CampaignCreatedby}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Id}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <br/>
+                                                        <lightning:button label="Refresh" variant="brand" onclick="{!c.ClearsCmpCriteria}" class="clearbtn"/>
+                                                    </lightning:accordionSection>
+                                                </lightning:accordion>
+                                            </aura:if>
+                                            
+                                            <!--************************************ Task Search options **************************************-->
+                                            <aura:if isTrue="{!v.ShowTaskCal}">
+                                                <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Search">   
+                                                    <lightning:accordionSection name="Search" label="Search"  class="slds-card" >
+                                                        <lightning:select name="Campaign" aura:id="tskCamp" label="{!v.ObjectType[0].Job__c.Campaign__c.label}" onchange="{!c.tskCampChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.CampaignRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>  
+                                                        
+                                                        <lightning:select name="Client" aura:id="tskClient" label="{!v.ObjectType[0].Job__c.JS_Client__c.label}" onchange="{!c.tskClientChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.ClientRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Media" aura:id="tskMedia" label="{!v.ObjectType[0].Job__c.Media_Types__c.label}" onchange="{!c.tskMediaChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.MediaTypeRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Schedule" aura:id="tskSchedule" label="{!v.ObjectType[0].Job__c.Schedule_Template__c.label}" onchange="{!c.tskSchedChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.SchedTempRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Status" aura:id="tskJobStatus" label="{!'Job ' + v.ObjectType[0].Job__c.Status__c.label}" onchange="{!c.tskJobStatusChange}">
+                                                            <aura:iteration items="{!v.JobstatusPicklist}" var="option">
+                                                                <option text="{!option}" value="{!option}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        
+                                                        <lightning:select name="Jobs" aura:id="tskJobs" label="{!v.ObjectType[0].Job__c.Name.label}" onchange="{!c.tskJobChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.JobRec}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select> 
+                                                        
+                                                        <lightning:select name="Tasks" aura:id="Task" label="{!v.Labelname[2]}" onchange="{!c.TaskChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.TaskNames}" var="option">
+                                                                <option text="{!option}" value="{!option}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>  
+                                                        
+                                                        <lightning:select name="Role" aura:id="Role" label="{!v.ObjectType[0].Job_Task__c.Schedule_Roles__c.label}" onchange="{!c.RoleChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.TaskRoles}" var="option">
+                                                                <option text="{!option.Name}" value="{!option.Name}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>  
+                                                        
+                                                        <lightning:select name="Staff" aura:id="Staff" label="{!v.ObjectType[0].Job_Task__c.Assigned_Users__c.label}" onchange="{!c.StaffChange}">
+                                                            <option text="--None--" value=""/>
+                                                            <aura:iteration items="{!v.TaskStaff}" var="option">
+                                                                <option text="{!option}" value="{!option}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                        <br/>
+                                                        <lightning:button label="Refresh" variant="brand" onclick="{!c.ClearstaskCriteria}" class="clearbtn"/>
+                                                        
+                                                    </lightning:accordionSection>
+                                                </lightning:accordion>
+                                            </aura:if>
+                                            
+                                        </lightning:verticalNavigationSection> </div>
+                                </lightning:verticalNavigation>
+                                
+                            </td>
+                            <!--************************************ Calendar **************************************-->
+                            
+                            
+                            <td  style="width:80% !important;vertical-align:top;padding-left: 10px;padding-right: 10px;">
+                                <div id="calendarRightPanel">
+                                    <div class="slds-card calnderName" style="background-color:SteelBlue;color:white;margin-bottom:15px;width:100%;">
+                                        <aura:if isTrue="{!v.ShowJobCal}">
+                                            <h3 class="slds-section-title"><b>&nbsp;{!v.Labelname[1]} Calendar</b></h3>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.ShowCampCal}">
+                                            <h3 class="slds-section-title"><b>&nbsp;{!v.Labelname[0]} Calendar</b></h3>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.ShowTaskCal}">
+                                            <h3 class="slds-section-title"><b>&nbsp;{!v.Labelname[2]} Calendar</b></h3>
+                                        </aura:if>
+                                    </div>
+                                    <c:JobCalendar aura:id="JobCal" ShowJobCal="{!v.ShowJobCal}" ShowCampCal="{!v.ShowCampCal}" ShowTaskCal="{!v.ShowTaskCal}" CampStatusVal="{!v.SelectedCampStatus}" CampNameVal="{!v.SelectedCampName}" Campcreatedbyval="{!v.SelectedCampcreatedby}" 
+                                                   CampaignVal="{!v.SelectedCampaignRec}" ClientVal="{!v.SelectedClientRec}" MediaVal="{!v.SelectedMediatypeRec}" SchedVal="{!v.SelectedScheduleTempRec}" JobStatusVal="{!v.SelectedStatus}" JobVal="{!v.SelectedJobRec}" 
+                                                   tskCampaignVal="{!v.SelectedtskCampaignRec}" tskClientVal="{!v.SelectedtskClientRec}" tskMediaVal="{!v.SelectedtskMediatypeRec}" tskSchedVal="{!v.SelectedtskScheduleTempRec}" tskJobStatusVal="{!v.SelectedtskStatus}" tskJobVal="{!v.SelectedtskJobRec}" 
+                                                   taskval="{!v.SelectedTask}" roleval="{!v.SelectedRole}" staffval="{!v.SelectedStaff}" />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>  
+                </table>
+            </div>
+            
+        </lightning:card>
+    </body>
+</aura:component>

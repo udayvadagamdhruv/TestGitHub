@@ -1,0 +1,174 @@
+<apex:page controller="printStatusReport" renderAs="PDF" >
+<head>
+    
+<!--[if IE]>
+   <style>
+      .rotate_text
+      {
+         writing-mode: tb-rl;
+         filter: flipH() flipV();
+      }
+   </style>
+<![endif]-->
+    <!--[if !IE]><!-->
+    <style type="text/css">
+       
+    </style>
+    <!--<![endif]-->
+    <style type="text/css">
+     table
+      {
+       
+         table-layout: fixed;
+         width: 100%; /*Table width must be set or it wont resize the cells*/
+      }
+      
+    </style>
+    <style type="text/css">
+       td .b
+        {
+            text-align: left;
+            vertical-align: bottom;
+            font-weight: bold;
+        }
+    </style>    
+    
+    
+    
+   
+<style type="text/css"> 
+
+
+
+
+
+<!--
+.box_rotate 
+{
+         
+        -moz-transform: rotate(-50deg);  /* FF3.5+ */
+       -o-transform: rotate(-50deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-50deg);  /* Saf3.1+, Chrome */
+             filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+}
+-->
+
+.a
+{
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+text-align:left;
+Padding-left:30px;
+
+
+}
+ 
+   
+<!--
+#a
+{
+position:relative;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+}
+-->
+</style>
+</head>
+ <body>
+            
+           
+          <table width="100%">
+            <tr>
+            <td style="width:46%;"><apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+            <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/> </td>
+            <td style="width:54%;font-size:1.5em;font-style:normal;font-family: 'Calibri';font-weight:bold;text-align:right"> 
+               Print Status Report       <br/></td>
+            </tr>
+            </table>
+<apex:form >
+  <apex:pageBlock id="results">
+                    
+ <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              
+                    <tr>
+            <td width="30px;" class="b">
+             <b>  {!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}</b>
+            </td>
+            
+            
+            <td width="430px" class="b">
+              <b> {!$ObjectType.Job__c.Fields.Name.Label}</b>
+            </td>
+            
+                       
+            <td width="180px" class="b">
+                <b>{!$ObjectType.Job__c.Fields.Dummy_Text_1__c.Label}</b>
+            </td>
+       
+        </tr>
+                   
+                   <tr>
+                         <td colspan="3"><hr color="black"/></td>
+                   </tr>
+                  </table>   
+                    
+                    
+                      <apex:dataTable value="{!cWrapper }" var="w" id="repeat1" width="100%" columnsWidth="100%">
+                      <apex:column style="padding-top:15px;">
+                 <div style="background-color:#DFDFDF;width:100%;">    <b> <apex:outputText value="{!w.strClient}" style="font-size:14px;padding:left:2px;" /> </b> </div>
+                          <hr color="black" style="height:.1px;"/>
+                          
+                           <apex:repeat value="{!w.jobWrapper}" var="jobr"  >
+                             <table border="0" style="padding-top:6px;font-size:12px; " width="100%" ><tr><td >
+                                       <b> <apex:outputText value="{!jobr.job.Job_Auto_Number__c}"  style="vertical-align:top;padding-right:8px;font-size:14px;"/> </b>
+                                     
+                                       <b> <apex:outputText value=" AS {!jobr.job.Name}"  style="vertical-align:top; font-size:14px;;font-weigth:bold;"> </apex:outputText></b>                                
+                            </td></tr>
+                          <tr ><td> <table> <tr>
+                            <td width="30%">  
+                            <table style="font-size:11px;valign:top"  border="0"><tr><td  width="20%">
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_2__c.Label}  " />  </td><td  width="40%">
+                               <apex:outputText value="{!jobr.job.Dummy_Text_2__c}"  style="vertical-align:top;padding-right:8px;font-size:10px;"/> </td></tr>
+                                <tr><td  width="20%"> 
+                                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Text_5__c.Label}  " /></td><td  width="60%">  <apex:outputText value=" {!jobr.job.Dummy_Text_5__c}"  style="vertical-align:top; font-size:12px;"> </apex:outputText>   
+                                 </td></tr></table> 
+                                  
+                            </td>
+                            <td width="50%">
+                                         <table border="0" width="100%" style="font-size:10px;">
+                                          <apex:repeat value="{!jobr.jobTasksWrapper}" var="jtaskWrapper">
+                                          <tr><td  width="30%">
+                                            <b> <apex:outputText value="{!jtaskWrapper.jobTasks.Name}">
+                                              
+                                             </apex:outputText></b></td>
+                                           <td width="15%">  <apex:outputText value="{0,date,MM'/'dd'/'yy}" >
+                                                <apex:param value="{!jtaskWrapper.jobTasks.Revised_Due_Date__c}"/> 
+                                             </apex:outputText></td>  
+                                           <td width="15%">        
+                                              <apex:outputText value="{!jtaskWrapper.jobTasksRole.User__c}" ></apex:outputText>
+                                             </td>
+                                             <td width="18%">        
+                                                    <apex:outputText value="{!jtaskWrapper.jobTasksRole.Name}" ></apex:outputText>
+                                             </td></tr>
+                                          </apex:repeat></table>
+                                       </td><td width="30%" style="font-size:10px;">
+                                           <apex:outputField value="{!jobr.job.Dummy_Text_1__c}" />
+                                        </td> </tr></table>
+                         </td></tr></table>
+                         </apex:repeat>
+                      </apex:column>       
+                    </apex:dataTable>
+                     
+                    
+                    <apex:outputPanel rendered="{!(cWrapper.size == 0) && (isTrue == True)}">
+                        <b>No records to display </b>
+                    </apex:outputPanel>
+                    
+                    <div align="right"  style="padding-top:20px;padding-right:32px;">
+                       <apex:commandButton value="Print" action="{!exportToPDF}" rendered="{!(cWrapper.size > 0)}" tabindex="12"/>
+                    </div>
+                           
+           </apex:pageBlock> 
+           </apex:form> </body>
+</apex:page>

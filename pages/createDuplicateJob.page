@@ -1,0 +1,21 @@
+<!-- This page is used to create Duplicate Job -->
+<apex:page standardController="Job__c" tabStyle="Job__c" extensions="DuplicateJobExtension" sidebar="false" showHeader="false">
+
+  <script>
+    window.onload=function()
+    {
+     doInit();
+    };
+  </script> 
+  
+  <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!duplicateJob}" reRender="msg,po"/> 
+            <apex:outputPanel id="po">
+                <center> <apex:outputLink value="/apex/DetailJobSwitchPage?id={!oldJobId}" rendered="{!(isError!=False)}" target="_top">Click here to navigate to old Job</apex:outputLink> </center>
+            </apex:outputPanel>
+        </apex:form>
+
+</apex:page>
+<!-- End of Page -->

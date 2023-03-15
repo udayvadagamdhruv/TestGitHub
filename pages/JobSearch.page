@@ -1,0 +1,283 @@
+<apex:page standardController="Job__c" extensions="JobSearchController" recordSetVar="job" tabStyle="Job__c" docType="html-5.0">
+ <head>
+ <style>
+      .actionLink 
+        {
+            color: #015BA7 !important;
+            font-weight: normal;
+            text-decoration: none;
+        }
+ </style>
+    
+ </head>
+ <apex:form >
+  <apex:pageMessages id="errors" />
+  
+  
+  <apex:pageBlock mode="edit" tabStyle="Job__c" id="pageBlockMain">
+<img src="{!$Resource.JobLogo}"/> <h1>Jobs</h1><br/>
+  <table width="100%" border="0">
+  <tr>  
+    <td width="200" valign="top">
+ 
+    <apex:pageBlock mode="edit" id="criteria">
+    <br/>
+    <h2>Search</h2>
+    <script type="text/javascript">
+      function doSearch() {
+        searchServer
+        (
+          document.getElementById("jobName").value,
+          document.getElementById("clientName").value,
+          document.getElementById("campaignName").value,
+          document.getElementById("startdt1").value,
+          document.getElementById("startdt2").value,
+          document.getElementById("duedt1").value,
+          document.getElementById("duedt2").value,
+          document.getElementById("compdt1").value,
+          document.getElementById("compdt2").value,
+          document.getElementById("status").options[document.getElementById("status").selectedIndex].value,
+          document.getElementById("jobDescription").value
+         );
+      }
+      </script>
+      
+      <script type="text/javascript">
+         // function f1(jobId,ip)
+          //{
+         //     follow(jobId,ip);
+         // }
+        //  function imageOverCross(id2)
+         // {
+         //     id2.src='{!$Resource.Cross}';
+       //   }
+        //  function imageNormal(id2)
+         // {
+        //      id2.src='{!$Resource.Follow}';
+         // }
+      </script>
+      
+     
+     
+   <!-- <apex:actionFunction name="follow" action="{!followRecord}" rerender="theTable">
+        <apex:param name="jobId" value="" /> 
+        <apex:param name="ip" value="" /> 
+    </apex:actionFunction>-->
+      
+     <apex:actionFunction name="searchServer" action="{!runSearch}" rerender="results,debug,errors,id1">
+          <apex:param name="jobName" value="" />
+           <apex:param name="clientName" value="" />
+           <apex:param name="campaignName" value="" />
+           <apex:param name="startdt1" value=""/>
+           <apex:param name="startdt2" value=""/>
+           <apex:param name="duedt1" value=""/>
+           <apex:param name="duedt2" value=""/>
+           <apex:param name="compdt1" value=""/>
+           <apex:param name="compdt2" value=""/>
+           <apex:param name="status" value="" />
+           <apex:param name="jobDescription" value="" />
+      </apex:actionFunction>
+ 
+      <table cellpadding="2" cellspacing="2">
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Name.Label}<br/>
+        <input type="text" id="jobName" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.JS_Client__c.Label}<br/>
+        <input type="text" id="clientName" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+     
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Campaign__c.Label}<br/>
+        <input type="text" id="campaignName" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Status__c.Label}<br/>
+          <select id="status" onchange="doSearch();">
+            <option value=""></option>
+            <apex:repeat value="{!status}" var="st">
+              <option value="{!st}">{!st}</option>
+            </apex:repeat>
+          </select>
+        </td>
+      </tr>
+      
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Job_Description__c.Label}<br/>
+        <input type="text" id="jobDescription" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      
+      <tr>
+          <td style="font-weight:bold;">
+              {!$ObjectType.Job__c.Fields.Start_Date__c.Label}<br/>
+              <input type="text" id="startdt1" name="sdt1"   onfocus="DatePicker.pickDate(false,'startdt1', false);"  onblur="doSearch();" size="10"/> &nbsp; >= <br/><br/>
+              <input type="text" id="startdt2" name="sdt2"  onfocus="DatePicker.pickDate(false,'startdt2', false);" onblur="doSearch();" size="10" /> &nbsp; <apex:outputLabel value="<="/><br/>
+          </td>
+      </tr>
+      
+       <tr>
+          <td style="font-weight:bold;">
+              {!$ObjectType.Job__c.Fields.Due_Date__c.Label}<br/>
+              <input type="text" id="duedt1" name="ddt1" onfocus="DatePicker.pickDate(false,'duedt1', false);" size="10" onblur="doSearch();"/> &nbsp; >=<br/><br/>
+              <input type="text" id="duedt2" name="ddt2" onfocus="DatePicker.pickDate(false,'duedt2', false);" size="10" onblur="doSearch();"/> &nbsp; <apex:outputLabel value="<="/><br/>
+          </td>
+      </tr>
+      
+      <tr>
+          <td style="font-weight:bold;">
+              {!$ObjectType.Job__c.Fields.Completion_Date__c.Label}<br/>
+              <input type="text" id="compdt1" name="cdt1" onfocus="DatePicker.pickDate(false,'compdt1', false);" size="10" onblur="doSearch();"/> &nbsp; >= <br/><br/>
+              <input type="text" id="compdt2" name="cdt2" onfocus="DatePicker.pickDate(false,'compdt2', false);" size="10" onblur="doSearch();"/> &nbsp; <apex:outputLabel value="<="/> <br/>
+          </td>
+      </tr>
+      
+      </table>
+ 
+      </apex:pageBlock>
+ 
+    </td>
+    <td valign="top">
+     
+    <apex:pageBlock mode="edit" id="results"> <br/>
+              <apex:commandButton action="{!createNewJob}" value="New Job" rendered="{!$ObjectType.Job__c.Createable}"/>
+       &nbsp;
+   <apex:commandButton value="Export To PDF" action="{!CreatePDF}"  rendered="{!jobs.size > 0}"/>
+       
+     
+              <br/><br/>
+        <apex:pageBlockTable value="{!jobsW}" var="j" rendered="{!NOT(ISNULL(jobsW))}" rows="{!PageSize}" id="theTable">
+        <br/>
+         
+            <apex:column width="8%">
+                    <apex:facet name="header">Action</apex:facet>
+                        <apex:commandLink action="{!editJob}" rendered="{!$ObjectType.Job__c.updateable}" styleClass="actionLink">
+                            <apex:outputText value="Edit" />
+                                <apex:param name="editId" value="{!j.objJOb.Id}" assignTo="{!strId}"/>
+                        </apex:commandLink>
+                        <apex:outputText value=" | " rendered="{!$ObjectType.Job__c.updateable && $ObjectType.Job__c.deletable}"/>
+                        <apex:commandLink action="{!deleteJob}" rendered="{!$ObjectType.Job__c.deletable}" onclick="return confirm('Are you sure?');" styleClass="actionLink">
+                        <apex:outputText value="Del" />
+                            <apex:param name="deleteId" value="{!j.objJob.Id}" assignTo="{!strId}"/>
+                        </apex:commandLink>
+                       <!-- <apex:outputText value=" | "/>
+                          <apex:commandLink id="a1" title="Follow this job to receive updates in your Chatter feed." reRender="id1">
+                             <apex:image id="id1" value="{!$Resource.UnFollow}" onClick="f1('{!j.objJob.Id}', this.checked);" rendered="{!IF(j.checked, false, true)}"></apex:image>
+                          </apex:commandLink>
+                          <apex:commandLink id="a2" title="Stop following this job to stop receiving updates in your Chatter feed." reRender="id2">   
+                             <apex:image id="id2" value="{!$Resource.Follow}" onClick="f1('{!j.objJob.Id}', this.checked);" rendered="{!IF(j.checked, true, false)}" onmouseover="imageOverCross(this);" onmouseout="imageNormal(this);"></apex:image>
+                          </apex:commandLink>   -->
+             </apex:column>           
+                   
+             <apex:column style="text-align:left;" width="6%">
+                    <apex:facet name="header">
+                        <apex:commandLink value="{!$ObjectType.Job__c.fields.Job_Auto_Number__c.label}" action="{!toggleSort}" rerender="results,debug">
+                            <apex:param name="sortField" value="Job_Auto_Number__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                <apex:commandLink /><apex:outputField value="{!j.objJob.Job_Auto_Number__c}" id="i1"/>
+            </apex:column>
+         
+            <apex:column width="19%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Name.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Name" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+  
+                <apex:commandLink target="_top" action="{!navigate}" ><apex:param assignTo="{!strId}" name="param1" id="p1" value="{!j.objJob.Id}"/><apex:outputField value="{!j.objJob.Name}" /></apex:commandLink>
+             </apex:column>
+            
+             <apex:column width="8%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Status__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Status__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Status__c}"/>
+            </apex:column>
+
+            <apex:column width="19%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Job_Description__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Job_Description__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Job_Description__c}"/>
+            </apex:column>
+
+            <apex:column width="15%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.JS_Client__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Client__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:commandLink /><apex:outputField value="{!j.objJob.JS_Client__r.Name}"/>
+            </apex:column>
+
+            <apex:column width="15%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Campaign__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Campaign__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Campaign__r.Name}"/>
+            </apex:column>
+
+            <apex:column style="text-align:right;" width="6%">
+                <apex:facet name="header" >
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Start_Date__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Start_Date__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Start_Date__c}"/>
+            </apex:column>
+            
+            <apex:column style="text-align:right;" width="6%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Due_Date__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Due_Date__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Due_Date__c}"/>
+            </apex:column>
+            
+             <apex:column style="text-align:right;padding-right:20px;" width="6%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Job__c.fields.Completion_Date__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Completion_Date__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Completion_Date__c}"/>
+            </apex:column>
+
+        </apex:pageBlockTable>
+        
+       <apex:outputPanel rendered="{!jobsW.size <= 0}">
+            <br/><b><p>No records to display</p></b>
+        </apex:outputPanel>
+       <br/> 
+     
+    </apex:pageBlock>
+    <apex:pageBlock rendered="{!NOT(ISNULL(jobsW))}" id="id1">
+        <font size="1pt">Page #:&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;out of&nbsp;<apex:outputLabel value="{!totalPageNumber}"/>&nbsp;&nbsp;&nbsp;&nbsp;</font>
+            <apex:commandButton value="Previous" action="{!previousBtnClick}" disabled="{!PreviousButtonEnabled}" reRender="results,id1"></apex:commandButton>
+            <apex:commandButton value="Next" action="{!nextBtnClick}" disabled="{!nextButtonDisabled}" reRender="results,id1" ></apex:commandButton>
+    </apex:pageBlock>
+    </td>
+  </tr>
+</table>
+
+    <!--
+      <apex:pageBlock title="Debug - SOQL" id="debug">
+          <apex:outputText value="{!debugSoql}" />           
+      </apex:pageBlock>    
+     -->
+</apex:pageBlock>
+</apex:form>
+</apex:page>

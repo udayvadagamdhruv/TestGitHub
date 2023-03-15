@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Not_Editable_when_Approved</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>Read_Only_Approved</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Not Editable when Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Quote_field_will_be_updated</fullName>
+        <field>Amount__c</field>
+        <formula>Amount__c</formula>
+        <name>Quote field will be updated</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+        <targetObject>Quote__c</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Quote_status_field_changed</fullName>
+        <field>Approved__c</field>
+        <literalValue>1</literalValue>
+        <name>Quote status field changed</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+        <targetObject>Quote__c</targetObject>
+    </fieldUpdates>
+    <rules>
+        <fullName>vendor quote is approved and quote status will change</fullName>
+        <actions>
+            <name>Quote_status_field_changed</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Vendor_Quote__c.Restrict__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>When any Vendor Quote is approved for any Quote,then that quotes Approved checkbox will be enabled.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>when Vendor Quote is Approved</fullName>
+        <actions>
+            <name>Not_Editable_when_Approved</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Vendor_Quote__c.Restrict__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>when vendor quote is approved it will be non editable.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>when vendor quote is Approved new</fullName>
+        <actions>
+            <name>Quote_field_will_be_updated</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Vendor_Quote__c.Restrict__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>when vendor quote is approved its amount will be copied into respected quotes Amount field.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

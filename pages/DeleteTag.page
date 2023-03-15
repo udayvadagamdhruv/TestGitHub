@@ -1,0 +1,16 @@
+<!-- This Page is used to override the delete button of Tag Object -->
+<apex:page standardcontroller="Tag__c" extensions="DeleteTagExtension" showHeader="false" sidebar="false">
+
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form> 
+
+</apex:page>
+<!-- End of Page -->

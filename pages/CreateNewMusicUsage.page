@@ -1,0 +1,158 @@
+<!-- This page is used to create new Music Usage -->
+<apex:page standardController="Music_Usage__c" extensions="CreateNewMusicUsage" tabStyle="Job__c">
+      <head>
+          <style> </style>
+      </head>
+    
+     <apex:form >
+     <apex:sectionHeader title="{!$ObjectType.Music_Usage__c.Label} Details"/>
+           <apex:pageBlock >
+            <apex:pagemessages id="msg1"/>
+             <apex:pageBlockButtons >
+                     <apex:commandButton value="Save" action="{!save}"/>
+                     <apex:commandButton value="Cancel" action="{!cancel}" immediate="true"/>
+                 </apex:pageBlockButtons>
+                    
+                 <apex:pageBlockSection columns="2" title="Information" collapsible="false">
+                 <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Name.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Name}" required="true"/>   
+                 </apex:pageBlockSectionItem>
+             
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Job__c.Label}"/>
+                         <apex:outputField value="{!Music_Usage__c.Job__c}"></apex:outputField>
+                 </apex:pageBlockSectionItem>
+             
+                 <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Library__c.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_Library__c}"/>   
+                 </apex:pageBlockSectionItem>
+             
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Track__c.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_Track__c}"/>   
+                 
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Promo_Length__c.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_Promo_Length__c}"/>   
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Track_Info__c.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_Track_Info__c}"/>   
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Start_Date__c.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_Start_Date__c}"/>   
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_End_Date__c.Label}"/>
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_End_Date__c}"/>   
+                 </apex:pageBlockSectionItem>
+                                
+                 <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Note__c.Label}"/>
+                         <apex:inputtextarea value="{!Music_Usage__c.Music_Usage_Note__c}" rows="3" cols="55" style="resize:none"/>   
+                 </apex:pageBlockSectionItem>
+                
+                 <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Drop__c.Label!='Music Usage Drop'}">
+                         <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Drop__c.Label}" />
+                         <apex:inputField value="{!Music_Usage__c.Music_Usage_Drop__c}"/>   
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                 </apex:pageBlockSectionItem>
+                  
+    <!-- Added 4 Dummy Text Fields,4 Dummy Date and 8 Dummy Picklist Fields -->
+                  
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_1__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Text_1__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_1__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Date_1__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_2__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Text_2__c}"/>
+                </apex:pageBlockSectionItem>  
+                            
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_2__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Date_2__c}"/>
+                </apex:pageBlockSectionItem>   
+                    
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_3__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Text_3__c}"/>
+                </apex:pageBlockSectionItem>  
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_3__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Date_3__c}"/>
+                </apex:pageBlockSectionItem>   
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_4__c.Label!='Dummy Text 4'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Text_4__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Text_4__c}"/>
+                </apex:pageBlockSectionItem>  
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_4__c.Label!='Dummy Date 4'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Date_4__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Date_4__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_1__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_1__c}"/>
+                </apex:pageBlockSectionItem>   
+             
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_2__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_2__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3'}">
+                       <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_3__c.Label}"/>
+                       <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_3__c}"/>
+                </apex:pageBlockSectionItem>
+                
+               <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_4__c.Label!='Dummy Picklist 4'}">
+                      <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_4__c.Label}"/>
+                      <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_4__c}" required="true"/>
+               </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_5__c.Label!='Dummy Picklist 5'}">
+                      <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_5__c.Label}"/>
+                      <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_5__c}"/>
+               </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_6__c.Label!='Dummy Picklist 6'}">
+                      <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_6__c.Label}"/>
+                      <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_6__c}"/>
+               </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_7__c.Label!='Dummy Picklist 7'}">
+                      <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_7__c.Label}"/>
+                      <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_7__c}"/>
+               </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_8__c.Label!='Dummy Picklist 8'}">
+                      <apex:outputLabel value="{!$ObjectType.Music_Usage__c.Fields.Dummy_Picklist_8__c.Label}"/>
+                      <apex:inputField value="{!Music_Usage__c.Dummy_Picklist_8__c}"/>
+               </apex:pageBlockSectionItem>
+                
+ <!-- End Of "Added 4 Dummy Text Fields and 4 Dummy Date Fields and 8 dummy picklist fields" -->
+               </apex:pageBlockSection>
+         </apex:pageBlock>
+     </apex:form>
+</apex:page>
+<!-- End of Page -->

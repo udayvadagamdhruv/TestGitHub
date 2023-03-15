@@ -1,0 +1,550 @@
+<!-- This page is used as inline VF page. It is displayed under Schedule SubTab in Job Tab -->
+<apex:page standardController="Job__c" extensions="RetrieveTaskNewTesting" id="frm">
+
+     <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-1.5.1.min.js')}" type="text/javascript" />
+     <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-ui-1.8.13.custom.min.js')}" type="text/javascript" />
+     <!-- <script src="{!URLFOR($Resource.jQueryDCS,'/tablesorter/jquery.tablesorter.min.js')}" type="text/javascript" /> -->
+    
+     <apex:stylesheet value="{!URLFOR($Resource.jQueryScheduleUpadate,'/css/ui-lightness/jquery-ui-1.8.13.custom.css')}" />
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.jQueryDCS,'/tablesorter/style.css')}" /> -->
+        <script>
+            .mainTitle
+            {
+                overflow: hidden;
+                width: 200px;
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+                -ms-text-overflow: ellipsis;
+                -moz-binding:url("/sync/ellipsis.xml#ellipsis");
+            }
+        </script> 
+       
+        <script  type="text/javascript">
+            function InlineSave()
+            {
+              window.location.reload();
+            }
+        </script>
+      <!-- 
+        <script type="text/javascript">
+            function f1(taskId,dt)
+            {
+                var r = confirm('Do you want to update rest of the schedule?');
+                if(r == true)
+                {
+                    updateSchedule(taskId,dt.value,r);
+                }
+                else
+                {   
+                    updateSchedule(taskId,dt.value,r);
+                }
+            }
+        </script>
+        -->
+        
+        <!--
+         <script type="text/javascript">
+            function f2(taskId1,days)
+            {
+                var r1 = confirm('Do you want to update rest of the schedule?');
+                if(r1 == true)
+                {
+                   updateScheduleOnDaysChange(taskId1,days.value,r1);
+                }
+                else
+                {   
+                    updateScheduleOnDaysChange(taskId1,days.value,r1);
+                }
+            }
+        </script>
+        -->
+        
+        
+        <script>
+            var j$ = jQuery.noConflict();
+            var strTaskId1, strdt, strr,strr1,strDays, strTaskId2,strTaskId3,strHours,strIndex;
+            j$(document).ready(function(){
+                 j$( "#dialog-confirm1" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:150,
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    
+                    // Call ActionFunction to update Rest of the Schedule
+
+                   updateSchedule(strTaskId1,strdt,true);
+                    
+                    j$( this ).dialog( "close" );
+                },
+                "No": function() {
+                
+                   // Call ActionFunction to update only the current Tasks Revised Due Date
+                   
+                    updateSchedule(strTaskId1,strdt,false);
+                    j$( this ).dialog( "close" );
+                }
+            }
+        });
+        j$( "#dialog-confirm2" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:150,
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    
+                    // Call ActionFunction to update Rest of the Schedule
+
+                    updateScheduleOnDaysChange(strTaskId2,strDays,true);
+                    
+                    j$( this ).dialog( "close" );
+                },
+                "No": function() {
+                
+                   // Call ActionFunction to update only the current Tasks Revised Due Date
+                   
+                     updateScheduleOnDaysChange(strTaskId2,strDays,false);
+                    j$( this ).dialog( "close" );
+                }
+            }
+        });
+            }); 
+            function moveUp()
+            { 
+            //alert("hello");
+            updateScheduleOnDaysChange(strJTUID);
+            var id1="{!taskId3}";
+                alert(id1);
+            }
+            function scheduleUpdateRevDate(taskId,dt)
+            {
+                strTaskId1 = taskId;
+                strdt = dt.value;
+               // alert(strdt);
+                if(strdt=="")
+                {
+                    alert('Please select date');
+                    return false;
+                }
+                else
+                {
+                    j$( "#dialog-confirm1" ).dialog( "open" );
+                }    
+            }
+            
+            function scheduleUpdateRevHours(taskId,Hr,index)
+            {
+                strTaskId3 = taskId;
+                strHours = Hr.value;
+                strIndex = index;
+                updateHours(strTaskId3,strIndex);
+             //   j$( "#dialog-confirm3" ).dialog( "open" );
+                   
+            }
+            function scheduleUpdateDays(taskId,days)
+            {
+                strTaskId2 = taskId;
+                strDays = days.value;
+                if(isNaN(strDays) || strDays < 0)
+                {
+                    alert('Please enter valid number for days');
+                    return false;
+                }
+                if(strDays > 1000)
+                {
+                    alert('Please enter days less than 1000');
+                    return false;
+                }
+                if(strDays=="")
+                {
+                    alert('Please enter value for days');
+                    return false;
+                }
+                else
+                {
+                     j$( "#dialog-confirm2" ).dialog( "open" );
+                }    
+            }
+            
+            
+             function createSchedule(isNew)
+                { 
+                 var x;
+                 var r; 
+                    if(isNew)
+                    {                       
+                        r =confirm("This will create new schedule. Do you want to continue ?");    
+                         alert(r);
+                          if (r==true)
+                          {
+                            alert('in true');
+                            return true;   
+                                                
+                          }
+                          else
+                          {
+                           alert('in false');
+                            return false;
+                          }                    
+                    }
+                    else
+                    {
+                        r =confirm(" This will delete tasks on current schedule and recreate new schedule. Do you want to continue ?");    
+                         if (r==true)
+                          {
+                            alert('in true');
+                            return true;   
+                                                
+                          }
+                          else
+                          {
+                           alert('in false');
+                            return false;
+                          }                   
+                    }                        
+                }
+        </script>
+        <style>
+            #table_days td
+            {
+                border:0px;
+            }
+            #table_rd td
+            {
+                border:0px;
+            }
+            #table_rd1 td
+            {
+                border:0px;
+            }
+            #table_compdate td
+            {
+                border:0px;
+            }
+            
+            #table_to td
+            {
+                border:0px;
+            }
+        </style>
+        
+        
+         
+        <apex:form id="formID1">
+         <apex:actionFunction name="updateSchedule" action="{!updateRestSchedule}" rerender="pagemsgId,pb">
+            <apex:param name="strTaskId1" value="" assignTo="{!taskId}"/>
+            <apex:param name="strdt" value="" assignTo="{!dt}"/>
+            <apex:param name="r" value="" assignTo="{!updateRestScheduleRevDt}"/>
+        </apex:actionFunction>
+        <apex:actionFunction name="updateHours" status="Processing" action="{!updateScheduleHours}" rerender="pagemsgId,pb">
+            <apex:param name="strTaskId3" value="" assignTo="{!taskId}"/>
+            <apex:param name="index" value=""/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="updateScheduleOnDaysChange" action="{!updateScheduleOnDays}" rerender="pagemsgId,pb">
+            <apex:param name="strTaskId2" value="" assignTo="{!taskId1}"/>
+            <apex:param name="strDays" value="" assignTo="{!days1}"/>
+            <apex:param name="r1" value="" assignTo="{!updateRestScheduleDays}"/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="MoveUpandDown" action="{!moveUpandDown}" reRender="pgb">
+        <apex:param name="strJTUID" value="" assignTo="{!taskId3}"/>
+        </apex:actionFunction>
+      
+        
+          <apex:pageMessages id="pagemsgId"></apex:pageMessages>
+             <apex:pageBlock id="pb">
+                  <table>
+                      <tr>
+                          <td> <apex:image url="{!$Resource.JobScheduleLogo}" width="40" height="40" /> </td>
+                          <td>  <h1 class="mainTitle">Schedules</h1></td>               
+                      </tr>
+                 </table> 
+     
+                 <center>
+                   <apex:commandButton value="Create Schedule" action="{!createSchedule}" id="btncs1" rendered="{!lstJT.size==0 && isHD && scheduletemp != null}"   />&nbsp;
+                      
+                      <apex:commandButton value="Create Schedule" action="{!createSchedule}" id="btncs2" rendered="{!lstJT.size>0 && isHD }"  onclick="if(!confirm('This will delete tasks on current schedule and recreate new schedule.')){return false;}" />&nbsp;
+                  <!--     <apex:commandButton value="Create Schedule" action="{!createSchedule}" id="btncs1" rendered="{!lstJT.size==0}" onclick="createSchedule(true)" />&nbsp;
+                      
+                      <apex:commandButton value="Create Schedule" action="{!createSchedule}" id="btncs2" rendered="{!lstJT.size>0}" onclick="createSchedule(false)"/>&nbsp;
+                     -->
+                      
+                      <apex:commandButton action="{!displayTasksInCalendar}" value="Calendar View" id="btn2" rendered="{!AND(Not(Showcalendarviewbutton),lstJT.Size>0)}"></apex:commandButton> &nbsp;
+               
+                      <apex:commandButton value="Print Schedule" id="btnR" rendered="{!AND(Not(showprintschedulebutton),lstJT.Size>0)}" onClick="window.open('/apex/ScheduleReport?id={!$CurrentPage.Parameters.Id}');" reRender="frm"/>    &nbsp;
+                      
+                      <apex:commandButton value="Print Client Schedule" id="btnR2" rendered="{!AND(Not(showprintclientschedulebutton),lstJT.Size>0)}" onClick="window.open('/apex/ClientScheduleReport?id={!$CurrentPage.Parameters.Id}');" reRender="frm"/>    &nbsp;
+                      
+                      <apex:commandButton value="Campaign Detail" id="btnCampaign" rendered="{!AND(Not(showcampaignbutton),lstJT.Size>0,campaignId!=NULL)}" onClick="window.open('/apex/CampaignDetailPageCustom?id={!campaignId}');" reRender="frm" />   &nbsp;
+                      
+                      <!-- Added this button by Rahul on 7th March 2014 for dev item 684 -->
+                      <apex:commandButton value="New TimeSheet" id="btnTimeSheet" rendered="{!AND(ShowoldTimesheetflow,lstJT.size > 0,Not(showoldtimesheetentrybutton))}"  onClick="window.open('/apex/enterJsTsDetail?jobId={!jobId}');" reRender="frm" /> &nbsp;
+                       
+                      <apex:commandButton value=" New TimeSheet Entry" id="btnTimeSheet1" rendered="{!AND(Not(ShowoldTimesheetflow),lstJT.size > 0,Not(showNewtimesheetentrybutton))}" onClick="window.open('/apex/TimesheetEntries?jobId={!jobId}');" reRender="frm" /> &nbsp;
+  
+                      <apex:commandButton value=" TimeSheet List" id="btnTimeSheet11" rendered="{!AND(Not(ShowoldTimesheetflow),lstJT.size > 0,Not(showNewtimesheetentrybutton))}" onClick="window.open('/apex/JobTimesheetView?jobId={!jobId}');" reRender="frm" /> &nbsp;
+
+                      <!-- Added this button by rahul on 7th May 2014 for dev item 665-->
+                      <apex:commandButton value="Copy Schedule" id="btnCpySch"  rendered="{!AND(Not(ShowCopySceduleButton),lstJT.size > 0,Not(showOldcopybutton))}"  onClick="window.open('/apex/multipleScheduleCopy?CpyId={!jobId}');" reRender="frm" /> &nbsp;
+                      
+                      
+                      <!-- Added this button by Subharnshu for Epson Copy Schedule Logic -->
+                      <apex:commandButton value="Copy Schedule " id="btnCpySch1"  rendered="{!AND(ShowCopySceduleButton,lstJT.size > 0,Not(showcopyschedulebutton))}" onClick="window.open('/apex/MultipleScheduleCopyNew?CpyId={!jobId}');" reRender="frm" /> &nbsp;
+                                                          
+                      <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>      &nbsp;
+        
+                      <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb1"/> 
+                     
+                  </center><br/>    
+                <apex:variable value="{!0}" var="index"/>
+
+      
+                  <apex:PageblockTable value="{!lstJT}" var="lst" rendered="{!lstJT.size>0}" id="pgb"> 
+                
+                       <apex:column headerValue="Action" width="17%">
+                   
+                             <apex:commandButton value="Edit" action="{!EditJobTask}" reRender="hiddenBlock3">
+                                   <apex:param name="param3" value="{!lst.id}" assignTo="{!strJTID}"></apex:param>
+                              </apex:commandButton> 
+    
+                              <apex:commandButton value="Delete" action="{!DeleteJobTask}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2">
+                                   <apex:param name="param2" value="{!lst.id}" assignTo="{!strJTID}"></apex:param>
+                              </apex:commandButton> 
+    
+                              <apex:commandButton value="Insert Above" action="{!insertNewTask}" reRender="hiddenBlock1">
+                                   <apex:param name="param1" value="{!lst.Id}" assignTo="{!strJTID1}"> </apex:param> 
+                              </apex:commandButton>
+                               <!-- Add/Edit Staff button added  by subhranshu --> 
+                              <apex:commandButton value="Add/Edit Staff" onClick="window.open('/apex/JobTaskScheduleAddEditStaff?id={!lst.Id}','_parent');" reRender="hiddenBlock1"/>
+                  
+                               <!-- <apex:outputLink tabindex="tab1" value="/apex/CreateNewJobTaskAbove?id={!lst.Id}">Insert Task</apex:outputLink> -->
+                      
+                       </apex:column>
+            
+                       <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Name.Label}" width="14%">
+                            <apex:outputLink tabindex="tab1" value="/apex/JobTaskDetailPage?id={!lst.Id}">{!lst.Name}</apex:outputLink>
+                       </apex:column> 
+          
+                        <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}" width="12%">
+                           <!---  {!lst.Assigned_Users__c} --->
+                          <apex:variable value="{!1}" var="a"/>
+                                <apex:repeat value="{!taskStaffMap[lst.id]}" var="ts" >
+                              
+                              {!ts}{!IF(AsignStaffNoMap[lst.id]==a,'',',')}
+                               <apex:variable value="{!a+1}" var="a"/>
+                               </apex:repeat> 
+                         </apex:column>
+            
+                     <!--   <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Days__c.Label}">
+                             <apex:actionRegion >
+                                   <table border="0" id="table_days">
+                                       <tr>
+                                           <td border="0">
+                                                <apex:outputField value="{!lst.Days__c}"> 
+                                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btncs1,btncs2,btn2,btnR,btnCampaign" rendered="{!lst.Marked_Done__c = false}"/>
+                                                </apex:outputfield>
+                                           </td>
+                                           <td>
+                                                <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Days" rendered="{!lst.Marked_Done__c = false}"/>  
+                                           </td>
+                                        </tr>
+                                    </table>
+                             </apex:actionRegion>
+                     </apex:column> -->
+                     
+                        <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Days__c.Label}" width="5%">
+                        <apex:actionRegion >
+                           <table border="0" id="table_rd">
+                               <tr>
+                                   <td border="0">
+                                      <!--   <apex:inputField id="DaysID" value="{!lst.Days__c}" rendered="{!lst.Marked_Done__c == False}" style="width:30px"/>  -->
+                                        <apex:inputField id="DaysID" value="{!lst.Days__c}" rendered="{!lst.Marked_Done__c == False}" style="width:30px" onchange="scheduleUpdateDays('{!lst.id}',this)"/>  
+                                       <apex:outputField value="{!lst.Days__c}" rendered="{!lst.Marked_Done__c == True}"/> 
+                                   </td>
+                                    <td>
+                                        <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Days" rendered="{!lst.Marked_Done__c == False}"/>  
+                                   </td>
+                               </tr>
+                         </table>
+                        </apex:actionRegion>
+                     </apex:column>
+        <!--
+                <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Start_Date__c.Label}" width="8%">
+                         <apex:outputField value="{!lst.Start_Date__c}"/>
+                    </apex:column>  
+               
+                    <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Due_Date__c.Label}" width="8%">
+                         <apex:outputField value="{!lst.Due_Date__c}"/>
+                    </apex:column>
+             ------>
+                    <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}" width="15%">
+                        <apex:actionRegion >
+                           <table border="0" id="table_rd">
+                               <tr>
+                                   <td border="0">
+                                        <apex:inputField id="reviseDt" value="{!lst.Revised_Due_Date__c}" onchange="scheduleUpdateRevDate('{!lst.Id}',this);" rendered="{!lst.Marked_Done__c==False}"></apex:inputField>
+                                        <apex:outputField value="{!lst.Revised_Due_Date__c}" rendered="{!lst.Marked_Done__c == True}"/>
+                                   </td>
+                                   <td>
+                                        <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Revised Due Date" rendered="{!lst.Marked_Done__c == False}"/>  
+                                   </td>
+                              </tr>
+                         </table>
+                        </apex:actionRegion>
+                     </apex:column>
+                        <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Hours__c.Label}" width="4%" rendered="{!$ObjectType.Job_Task__c.fields.Hours__c.Accessible}">
+                        <apex:actionRegion >
+                           <table border="0" id="table_rd">
+                               <tr>
+                                   <td border="0">
+                                        <apex:inputText id="hours" value="{!lst.Hours__c}" size="3" maxlength="3"  onchange="scheduleUpdateRevHours('{!lst.Id}',this,'{!index}');"  rendered="{!lst.Marked_Done__c==False}" />
+                                        <apex:outputField value="{!lst.Hours__c}" rendered="{!lst.Marked_Done__c == True}"/>
+                                   </td>
+                                 
+                              </tr>
+                         </table>
+                        </apex:actionRegion>
+                        <apex:variable value="{!index+1}" var="index"/>
+                     </apex:column>
+                    
+                     <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Completion_Date__c.Label}" width="8%">
+                             <apex:actionRegion >
+                                   <table border="0" id="table_compdate">
+                                       <tr>
+                                           <td border="0">
+                                                <apex:outputField value="{!lst.Completion_Date__c}"> 
+                                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btncs1,btncs2,btn2,btnR,btnCampaign" rendered="{!lst.Marked_Done__c = true}"/>
+                                                </apex:outputfield>
+                                           </td>
+                                           <td>
+                                                <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Completion Date" rendered="{!lst.Marked_Done__c = true}"/>  
+                                                
+                                           </td>
+                                        </tr>
+                                    </table>
+                             </apex:actionRegion>
+                     </apex:column>
+                     
+ <!-- End of Appended Code -->  
+             
+                   
+             
+                    <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}" width="5%">
+                         <apex:actionRegion >
+                              <table border="0" id="table_rd1">
+                                   <tr>
+                                       <td border="0">    
+                                        
+                                        <!--<apex:inputField value="{!lst.Marked_Done__c}">
+                                               <apex:actionSupport event="onchange" action="{!save}"/>
+                                           </apex:outputField>-->
+                                           
+                                           <apex:outputField value="{!lst.Marked_Done__c}">
+                                               <apex:inlineEditSupport event="onmouseover" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btncs1,btncs2,btn2,btnR,btnCampaign"/>
+                                           </apex:outputField> 
+                                       </td>
+                                                    <td>
+                                                         <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Marked Done"/>  
+                                                    </td>
+                                   </tr>
+                              </table>
+                         </apex:actionRegion>
+                 </apex:column>
+                 
+          
+          
+       <!--   <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Task_Order__c.Label}" width="3%">
+                         <apex:outputField value="{!lst.Task_Order__c}"/>
+                    </apex:column>-->
+                      <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Task_Order__c.Label}" width="8%">
+                         <apex:actionRegion >
+                              <table border="0" id="table_to">
+                                   <tr>
+                                       <td border="0">    
+                                           <apex:outputField value="{!lst.Task_Order__c}">
+                                                <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btncs1,btncs2,btn2,btnR,btnCampaign"/></apex:outputfield> </td>
+                                                    <td>
+                                                        <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Task Order"/>
+                                                        <!-- <apex:commandbutton image="{!$Resource.Up_Arrow}" title="Move Task Up" style="width:12px;height:12px;" reRender="pgb" onclick="moveUp()" >
+                                                             <apex:param name="paramU" value="{!lst.id}" assignTo="{!strJTUID}"></apex:param>
+                                                         </apex:commandButton>
+                                                         <apex:commandButton image="{!$Resource.Down_Arrow}" title="Move Task Down" style="width:12px;height:12px;" reRender="pgb">
+                                                             <apex:param name="paramD" value="{!lst.id}" assignTo="{!strJTDID}"></apex:param> 
+                                                         </apex:commandbutton> -->
+                                                    </td>
+                                   </tr>
+                              </table>
+                         </apex:actionRegion>
+                   </apex:column>
+                    
+             
+                 
+            </apex:PageblockTable>
+        
+           <apex:pageBlockSection rendered="{!lstJT.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+        <br/>
+
+        <div align="center">
+               <apex:commandButton action="{!addNewTask}" value="Insert at End" id="btn1" rendered="{!lstJT.Size>0}">  </apex:commandButton>   
+        </div>
+          </apex:pageBlock>
+          <div id="dialog-confirm1" title="Schedule Update" style="display:none"> 
+            <p>
+                Do you want to update rest of the schedule?
+            </p>
+        </div>
+        
+         <div id="dialog-confirm2" title="Schedule Update" style="display:none">
+            <p>
+                Do you want to update rest of the schedule?
+            </p>
+        </div>
+        <!------------- Start: Processing Div---------------------------------------->
+        <style>
+            .ProcessingBackground
+            {
+                background-color: black;
+                opacity: 0.50;
+                filter: alpha(opacity = 50);
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                z-index: 8551;
+                top:0;
+                left:0;
+            }
+            .Processing
+            {
+                z-index: 8552;
+                left: 50%;
+                top: 50%;
+                text-align: center;
+                position: fixed;
+            } 
+            .ProcessingImage
+            {
+                margin-top:-250;
+                z-index: 25;
+                text-align: center;
+                position: absolute;
+            }
+        </style>
+        <div id="divProcessing" style="display:none;">
+            <div class="ProcessingBackground"></div>
+            <div class="Processing">
+                <apex:image alt="ProcessingAutoSave" url="{!$Resource.LoadingImage}" />
+            </div>
+        </div>
+        <apex:actionStatus id="Processing" onstart="document.getElementById('divProcessing').style.display = '';" 
+                onstop="document.getElementById('divProcessing').style.display = 'none';">                            
+        </apex:actionStatus>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

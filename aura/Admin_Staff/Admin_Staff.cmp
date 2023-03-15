@@ -1,0 +1,303 @@
+<aura:component controller="AdminController"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,lightning:isUrlAddressable" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="record" type="Object"/>
+    
+    <aura:attribute name="Userdata" type="Object"/>
+    <aura:attribute name="Usercolumns" type="List"/>
+    <aura:attribute name="UsersortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="UsersortedDirection" type="String" default="DESC" />
+    
+    <aura:attribute name="Staffdata" type="Object"/>
+    <aura:attribute name="Staffcolumns" type="List"/>
+    <aura:attribute name="StaffsortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="StaffsortedDirection" type="String" default="DESC" />
+    
+    <aura:attribute name="errors" type="Object"/>
+    
+    <aura:attribute name="isStaffOpen" type="boolean" default="false"/>
+    <aura:attribute name="isUserOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    
+    <aura:attribute name="ProfileRec" type="Object" />
+    <aura:attribute name="RolesRec" type="Object" />
+    
+    <aura:attribute name="UserRecordid" type="Object"/>
+    <aura:attribute name="StaffRecordid" type="Object"/>
+    
+    <!-- This attribute will hold the update records from data table-->
+    <aura:attribute name="updatedRecord" type="Object[]" />
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <div class="slds-page-header" style="padding: 1.2rem 1.2rem;">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="standard:user" alternativeText="Staffs" />
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1 class="slds-page-header__title slds-truncate" style="padding-top:7px;">
+                                        Staffs
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <br/>
+    <!-- **************************************** User Table *************************************************** -->
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="LicensedUserList">
+        <lightning:accordionSection name="LicensedUserList" label="Licensed User List"  class="slds-card" >  
+            <div align="center">
+                <lightning:button variant="neutral" label="New User" title="New" onclick="{!c.UesrCreate}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.Userdata)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="Usertablecss"
+                                                 aura:id="UserDataTable"
+                                                 columns="{!v.Usercolumns}"
+                                                 data="{!v.Userdata}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.UserupdateColumnSorting}"
+                                                 sortedBy="{!v.UsersortedBy}"
+                                                 sortedDirection="{!v.UsersortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}" />
+                        </div>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    <!--************************************************ New User Page *********************************************************-->
+    <aura:if isTrue="{!v.isUserOpen}">
+        <lightning:recordEditForm aura:id="UserEditform" density="comfy" objectApiName="User" recordId="{!v.UserRecordid}" onsubmit="{!c.UserOnsubmit}" onsuccess="{!c.UserRecordSuccess}">
+           <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{!c.UsercloseModel}"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"> New User </h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages/>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="User_Types__c" value="Licensed User" disabled="true" aura:id="UserTypefields"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="IsActive" aura:id="UserActivefields"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="FirstName" aura:id="UserFName" class="frequired"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="LastName" aura:id="UserLName"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Email" aura:id="UserEmailfields"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Username" aura:id="UserNamefield"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Phone" aura:id="UserPhonefield"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Fax" aura:id="UserFaxfield"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Department" aura:id="UserDepartfield"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:select  name="Profile" aura:id="UserProfileId" label="Profile" class="frequired">
+                                <option text="--None--" value="" />
+                                <aura:iteration items="{!v.ProfileRec}" var="pro">
+                                    <option text="{!pro.value}" value="{!pro.key}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:select  name="Role" aura:id="URoleId" label="Role" class="frequired">
+                                <option text="--None--" value="" />
+                                <aura:iteration items="{!v.RolesRec}" var="rol">
+                                    <option text="{!rol.value}" value="{!rol.key}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{!c.UsercloseModel}"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->		
+            
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    <!--************************************************ Staff Table *********************************************************-->
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="UnlicensedStaffList">
+        <lightning:accordionSection name="UnlicensedStaffList" label="Unlicensed Staff List"  class="slds-card" >  
+            <div align="center">
+                <lightning:button variant="neutral" label="New Staff" title="New" onclick="{!c.StaffCreate}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.Staffdata)}">
+                <b>No recods to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="Stafftablecss"
+                                                 aura:id="StaffDataTable"
+                                                 columns="{!v.Staffcolumns}"
+                                                 data="{!v.Staffdata}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.StaffupdateColumnSorting}"
+                                                 sortedBy="{!v.StaffsortedBy}"
+                                                 sortedDirection="{!v.StaffsortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}" />
+                        </div>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+    <!--************************************************ New Staff Page *********************************************************-->
+    <aura:if isTrue="{!v.isStaffOpen}">
+        <lightning:recordEditForm aura:id="StaffEditform" density="comfy" objectApiName="Staff__c" recordId="{!v.StaffRecordid}"   onsubmit="{!c.StaffOnsubmit}" onsuccess="{!c.StaffRecordSuccess}"  >
+           <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{!c.StaffcloseModel}"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"> New Staff </h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages/>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="User_Type__c" value="Unlicensed Staff" disabled="true" aura:id="StaffType"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Active__c" aura:id="StaffActive"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="First_Name__c" aura:id="StaffFName" class="frequired"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Last_Name__c" aura:id="StaffLName" class="frequired"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Email__c" aura:id="StaffEmail" class="frequired"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Username__c" aura:id="StaffUName" class="frequired"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Phone_1__c" aura:id="StaffPhone"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Fax__c" aura:id="Stafffax"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Department__c" aura:id="StaffDep"/>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:select  name="Profile" aura:id="StaffProfileId" label="Profile" class="frequired">
+                                <option text="--None--" value="" />
+                                <aura:iteration items="{!v.ProfileRec}" var="pro">
+                                    <option text="{!pro.value}" value="{!pro.value}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:select  name="Role" aura:id="staffRoleId" label="Role" class="frequired">
+                               <option text="--None--" value="" />
+                                <aura:iteration items="{!v.RolesRec}" var="rol">
+                                    <option text="{!rol.value}" value="{!rol.value}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{!c.StaffcloseModel}"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->		
+            
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

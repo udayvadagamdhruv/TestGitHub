@@ -1,0 +1,263 @@
+<apex:page controller="addPOLineItem" tabStyle="Job__c" standardStylesheets="true" showHeader="false" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" >
+
+
+    <style>
+    
+    .pageHeader
+       {
+           color:white;
+           background-color:#851225;
+           height:70px;
+           padding-top:23px; 
+           position:fixed;
+           z-index:999;
+           width:100% !important;
+           padding-left:22px;
+       }
+   
+       .SectionHeader
+       {
+           background-color:Grey !important;
+           color:white;
+       }
+       
+       .bPageBlock 
+       {
+            margin: 20px 20px 20px 20px !important;
+       }
+       
+       
+       body
+       {
+               //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed; 
+               margin:0px !important;
+       }
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        #table_id td
+        {
+            border:0px;
+        }
+        #table_dd td
+        {
+            border:0px;
+        }
+        #table_s td
+        {
+            border:0px;
+        }
+         .hd
+             {
+             text-align:right;
+             padding-right:20px!important;
+             }
+             
+         .slds-scope .slds-card__body {
+            margin-bottom: 0rem;
+       }    
+       .slds .slds-card__body {
+            padding: 0px 0;
+      }
+       .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 35px;
+           
+    
+           }
+           
+           
+        @media (max-width: 48em){
+               
+     .slds .slds-max-medium-table--stacked-horizontal tr {
+     display: block;
+     border-top:1px ; 
+     text-transform: capitalize;
+}   
+           
+   }
+    
+      
+             
+    </style>
+
+
+ <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+     <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+     
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <body>
+  
+<div class="slds">
+      <apex:form html-novalidate="novalidate" >
+      
+                   <div class="slds-media__body pageHeader">
+              <span  class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" style="color:white;font-size:18px;"><b> Add Purchase Order Line Items</b></span>
+              <span style="float:right;padding-right:20px;">     
+                 <b>  
+                  
+                  <apex:commandButton action="{!Save}" value="Add" title="Click on the button to Add Estimate Line Items." styleClass="slds-button slds-button--neutral slds-button-group" rendered="{!roleWraps.size > 0}"/>&nbsp;&nbsp;
+                  <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back." styleClass="slds-button slds-button--neutral slds-button-group" />
+              
+           
+                       
+                 </b>
+              </span>
+            
+        </div> 
+        <br/><br/><br/><br/>
+      
+      
+      
+        <apex:pageMessages id="pdMSG" />
+         
+        <apex:outputPanel rendered="{!roleWraps.size >0}">
+                
+                 <div class="slds-card"  style="display:{!IF(roleWraps.Size> 0,'block','none')}">
+                               <div class="slds-card__body" >
+        
+        
+         
+          <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                       
+            
+                             <thead>
+                                   <tr class="slds-text-title">
+                                      <th class="slds-size--1-of-5" scope="col">Action</th>
+                                      <th class="slds-size--1-of-5" scope="col" style="display:{!IF(Not(ShowProductionEstimate),'block','none')}" >Line Item Name</th>
+                                      <th class="slds-size--1-of-5" scope="col" style="display:{!IF(ShowProductionEstimate,'block','none')}" >Production Estimate</th>
+                                       <th class="slds-size--1-of-5" scope="col">{!$ObjectType.Invoice_Line_Item__c.Fields.Amount__c.Label}</th>
+                                       <th class="slds-size--1-of-5" scope="col" >{!$ObjectType.Invoice_Line_Item__c.Fields.Quantity__c.Label}</th>
+                                        
+                                      
+                                      
+                                      
+                                    </tr>
+                                 </thead>
+                                 
+                                 <tbody>
+                                     <apex:repeat value="{!roleWraps}" var="p" id="ProductsTable" > 
+                                         <tr class="slds-hint-parent">
+                                         
+                                         <td  class="slds-size--1-of-5" data-label="Action">
+                                            
+                                            
+  
+                                           <label class="slds-checkbox"> 
+                                              <apex:inputCheckbox value="{!p.checked}" />
+                                          <span class="slds-checkbox--faux"></span>
+                                       </label>
+                                            
+                                          
+                                           
+                                             
+                                           
+                                         </td>
+                                         
+                                         
+                                            <td class="slds-size--1-of-5" data-label="{!IF(Not(ShowProductionEstimate),'Line Item Name','Production Estimate')}" >
+                                             <div class="slds-wrap">
+                                                    <apex:outputfield value="{!p.e.Estimate_Line_Item__c}" rendered="{!(Not(ShowProductionEstimate))}"/>
+                                                    <apex:outputfield value="{!p.e.Production_Estimate__c}" rendered="{!(ShowProductionEstimate)}" />
+                                              </div>
+                                          </td>
+                                           
+                                             
+                                     
+                                           
+                                         
+                                          <td class="slds-size--1-of-5" data-label="{!$ObjectType.Invoice_Line_Item__c.Fields.Amount__c.Label}">
+                                             <div class="slds-wrap">
+                                              <apex:outputText id="txt1" value="{!p.Calc_amnt}" /> 
+                                              </div>
+                                          </td>
+                                         
+                                         
+                                          <td class="slds-size--1-of-5"  data-label="{!$ObjectType.Invoice_Line_Item__c.Fields.Quantity__c.Label}"  >
+                                             <div class="slds-wrap">
+                                              <apex:outputText value="{!p.e.Quantity__c}"  rendered="{!(Not(ShowProductionEstimate))}"  /> 
+                                               <apex:outputText value="{!p.e.Quantity_production__c}"  rendered="{!(ShowProductionEstimate)}"/> 
+                                               
+                                              </div>
+                                          </td>
+                                         
+                                         </tr>
+                                     
+                                     
+                                      </apex:repeat>
+                                   
+                                 </tbody>
+                                 
+                                 </table>
+          
+        
+       
+        
+         </div>
+         
+         
+          
+            
+         
+         </div>
+        
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!roleWraps.size <= 0}">
+        
+              
+        
+       <div class="slds-card">
+        <div class="slds-card__footer">
+     <div>
+           &nbsp;&nbsp;  No PO Line Items are available for this Invoice. 
+        </div>  
+       </div>
+       </div>
+        
+      </apex:outputPanel>
+        
+        
+        
+      </apex:form>
+         
+
+</div>
+
+
+</body>
+</html>
+
+
+ 
+
+
+</apex:page>

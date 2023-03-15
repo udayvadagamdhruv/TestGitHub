@@ -1,0 +1,44 @@
+<apex:page standardController="Material_Inventory_Item__c" extensions="CreateMaterialInventoryExtension">
+
+<apex:form >
+      <apex:sectionHeader title="Material Usage Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Inventory_Item__c.Fields.Name.Label}"/>
+               <apex:inputfield value="{!Material_Inventory_Item__c.name}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Inventory_Item__c.Fields.Material_Item__c.Label}"/>
+               <apex:outputlabel value="{!MaterialName}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Inventory_Item__c.Fields.Mfg_Item_Number__c.Label}"/>
+               <apex:inputfield value="{!Material_Inventory_Item__c.Mfg_Item_Number__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Inventory_Item__c.Fields.Inventory_Date__c.Label}"/>
+               <apex:inputfield value="{!Material_Inventory_Item__c.Inventory_Date__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Inventory_Item__c.Fields.Qty_On_Shelf__c.Label}"/>
+               <apex:inputfield value="{!Material_Inventory_Item__c.Qty_On_Shelf__c}" />
+            </apex:pageBlockSectionItem>
+            
+     </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>               
+            
+
+</apex:page>

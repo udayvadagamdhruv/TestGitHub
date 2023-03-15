@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Spec  Item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Estimate Spec Items</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Est_Spec_fieldsets</name>
+    </fieldSets>
+    <layouts>
+        <layout>Estimate Line Item Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Estimate_Detail</name>
+    </webLinks>
+</CustomObjectTranslation>

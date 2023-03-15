@@ -1,0 +1,48 @@
+<apex:page controller="addPELineItemToCILineItem" sidebar="true"  showHeader="false">
+  <apex:slds />
+<style>
+ .lookupHoverDetail{
+                display: none !important;
+        }
+</style>
+  <apex:form >
+    <apex:outputPanel rendered="{!roleWraps.size > 0}">
+    <apex:pageMessages ></apex:pageMessages>
+    
+    <apex:repeat value="{!ELIGropuMap}" var="me">
+    <apex:outputPanel />
+    
+    
+        <apex:dataTable value="{!ELIGropuMap[me]}" var="p" id="ProductsTable" styleClass="slds-table slds-table_bordered">
+            <apex:column headerValue="Action">
+                <apex:inputCheckbox value="{!p.checked}"/>
+            </apex:column>
+            <apex:column value="{!p.e.Name}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}" />
+            <apex:column value="{!p.e.GL_Code__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label}" />
+            
+            <apex:column value="{!p.e.Quantity__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}" />
+            <apex:column value="{!p.e.Equipment_Type__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Equipment_Type__c.Label}" />
+            <apex:column value="{!p.e.Total_Cost__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}" />
+            <!--<apex:column value="{!p.e.PE_Template__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.PE_Template__c.Label}" />-->
+        </apex:dataTable>
+        
+     </apex:repeat>   
+        
+        <br/>
+        <apex:commandButton styleclass="slds-button slds-button_neutral" action="{!Save}" value="Add" title="Click on the button to Add Estimate Line Items."/>&nbsp;&nbsp;
+        <apex:commandButton styleclass="slds-button slds-button_neutral" action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+    </apex:outputPanel>
+    <br/>
+    
+    <apex:outputPanel rendered="{!roleWraps.size <= 0}"> 
+        <p>
+          <b> No Records to display.</b>
+        </p>       
+        <br/>
+        <apex:commandButton styleclass="slds-button slds-button_neutral" action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+   </apex:outputPanel> 
+</apex:form> 
+  
+  
+  
+</apex:page>

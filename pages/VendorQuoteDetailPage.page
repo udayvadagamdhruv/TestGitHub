@@ -1,0 +1,10 @@
+<apex:page standardController="Vendor_Quote__c" tabStyle="Job__c">
+
+ <apex:pageMessages />
+ <apex:detail relatedList="true"/>
+<!-- <apex:include pageName="DisplayVQLIwhenApproved"/> -->
+ 
+<!-- <center> <apex:commandButton value="Approve"/>  </center> -->
+
+ 
+</apex:page>

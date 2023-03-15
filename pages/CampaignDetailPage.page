@@ -1,0 +1,8 @@
+<!-- This page is used to display Detail and related jobs of Schedule Templates-->
+<apex:page standardController="Campaign__c" tabStyle="Campaign__c">
+ 
+    <apex:detail relatedList="false"/>
+    <apex:include pageName="DisplayJobsUnderCampaign"/>
+   
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,13 @@
+.THIS .slds-backdrop {
+    display:none !important;
+}
+
+.THIS .slds-fade-in-open {
+    display:none !important;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+      height:150px !important;
+}

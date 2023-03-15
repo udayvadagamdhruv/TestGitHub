@@ -1,0 +1,20 @@
+<apex:page standardController="Campaign__c" tabStyle="Campaign__c"  extensions="DuplicateCamaignExtension"  >
+
+
+<script>
+    window.onload=function()
+    {
+     doInit();
+    };
+  </script> 
+  
+  <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!DuplicateCampagin}" reRender="msg,po"/> 
+            <apex:outputPanel id="po">
+                <center> <apex:outputLink value="/{!OldcampId}" rendered="{!(isError!=False)}" target="_top">Click here to navigate to old Campaign</apex:outputLink> </center>
+            </apex:outputPanel>
+        </apex:form>
+
+</apex:page>

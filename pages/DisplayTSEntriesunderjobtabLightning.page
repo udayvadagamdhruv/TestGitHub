@@ -1,0 +1,295 @@
+<apex:page controller="DisplayTimesheetEntriesunderjobtabext" id="frm"  sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+
+    <head>
+        <style>
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+            {
+                 margin-left: 37px;
+    
+            }
+            #table_id td
+            {
+                border:0px;
+            }
+            #table_dd td
+            {
+                border:0px;
+            }
+            #table_s td
+            {
+                border:0px;
+            }
+            .hd
+            {
+               text-align:right;
+               padding-right:20px!important;
+            }
+            .slds .slds-card__footer 
+            {
+               padding: 0px 16px 0px 0px;
+            }
+            .slds .slds-card__header 
+            {
+                padding: 0px 10px 0px 0px;
+            }
+            .slds .slds-card__body 
+            {
+                padding: 0px ;
+            }
+            
+            .slds .slds-card 
+            {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+            }
+            
+            .slds .slds-table--bordered 
+            {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+            }
+                        
+            .slds .slds-card__body 
+            {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+            }
+            
+            .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+            
+        </style>
+    </head>
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+      <div class="slds">
+        <apex:form html-novalidate="novalidate" id="pb11">
+           
+            <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+                <apex:pageMessages id="pagemsgId4"></apex:pageMessages>
+            </div> 
+
+            <div align="center">
+            
+              <!--   <apex:commandlink target="_blank" action="{!CreateTsEntry}" style="text-decoration: none;" >-->
+                      <apex:commandButton value="Timesheet Entry" title="Press to create Timesheet Entry" action="{!CreateTsEntry}" id="btn1" styleClass="slds-button slds-button--neutral slds-button-group"/>
+               <!--  </apex:commandlink>-->
+                 <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;" styleClass="slds-button slds-button--neutral slds-button-group"/>  
+                 <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb1" styleClass="slds-button slds-button--neutral slds-button-group"/> 
+                    
+            </div>
+           
+            <br/>
+            
+            <apex:outputPanel id="dv" >
+             <apex:outputPanel rendered="{!TimeSheetList.Size > 0}">     
+             <div class="slds-card" >
+                            
+                      <div class="slds-card__body">
+
+                        <apex:outputPanel rendered="{!TimeSheetList.Size > 0}"  >
+
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                       
+                                        <th class="slds-size--1-of-7" scope="col">Action</th>
+                                        <th class="slds-size--1-of-7" scope="col">{!$ObjectType.Timesheet_Entries__c.Fields.Name.Label}</th>
+                                        <th class="slds-size--1-of-7" scope="col">{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.Label}</th>
+                                   <!--     <th class="slds-size--1-of-7" scope="col">{!$ObjectType.Timesheet_Entries__c.Fields.GL_Code__c.Label}</th>-->
+                                        <th class="slds-size--1-of-7" scope="col">{!$ObjectType.Timesheet_Entries__c.Fields.Hours_Worked__c.Label}</th>
+                                        <th class="slds-size--1-of-7" scope="col">{!$ObjectType.Timesheet_Entries__c.Fields.Date__c.Label}</th>
+                                        <th class="slds-size--1-of-7" scope="col">{!$ObjectType.Timesheet_Entries__c.Fields.User__c.Label}</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <apex:repeat value="{!TimeSheetList}" var="ci" rendered="{!TimeSheetList.Size > 0}">
+
+                                        <tr class="slds-hint-parent">
+                                        
+                                            <td class="slds-size--1-of-7" data-label="Action">
+                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                                     &nbsp;&nbsp;  
+                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                           <!---- &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Show More</span>
+                                                            ---->
+                                                             <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                        </div>
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                             
+                                                              <li class="slds-dropdown__item" role="presentation">
+                                                                    <a href="/apex/EditTimesheetEntrySwitch?id={!ci.Id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>&nbsp; &nbsp;&nbsp; 
+                                                                            
+                                                                            <!----
+                                                                             <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                            </svg>
+                                                                            ---->
+                                                                             &nbsp; &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                        </a>
+                                                             
+                                                             </li>
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Delete" action="{!del}" reRender="dv,norec" onclick="if(!confirm('Are you sure?')){return false;}" status="LoadingStatus">
+                                                                        <apex:param name="param1" value="{!ci.Id}" assignTo="{!ciid}"> </apex:param>
+                                                                       <!-----
+                                                                        <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                        </svg>--->  
+                                                                           &nbsp; &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                    </apex:commandLink> 
+                                                                                                                                  
+                                                                </li>
+                                                              
+                                                            </ul>
+                                                      </div> 
+                                               </div>
+                                            </td>
+                                      
+                                       
+                                        
+                                           
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Timesheet_Entries__c.Fields.Name.Label}">
+                                                <div>
+                                                     <apex:outputLink tabindex="tab1" value="/{!ci.Id}">{!ci.Name}</apex:outputlink>
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!ci.Task_Name__c}"/>
+                                                </div>
+                                            </td>
+                                         <!--   <td class="slds-size--1-of-7" data-label="{!$ObjectType.Timesheet_Entries__c.Fields.GL_Code__c.Label}">
+                                                <div>
+                                                     <apex:outputField value="{!ci.GL_Code__c}"/>
+                                                        <apex:facet name="footer">
+                                                                <apex:outputText value="Total Hours" style="float:right;">
+                                                                  </apex:outputText>
+                                                        </apex:facet>
+                                                </div>
+
+                                            </td>-->
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Timesheet_Entries__c.Fields.Hours_Worked__c.Label}">
+                                                <div>
+                                                     <apex:outputField value="{!ci.Hours_Worked__c}"/> 
+                    
+                                                        <apex:facet name="footer">
+                                                                <apex:outputText value="{0,Number, ##,##.00}">
+                                                                   &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumhrs}"/>
+                                                                </apex:outputText>
+                                                        </apex:facet>
+                                                        
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Timesheet_Entries__c.Fields.Date__c.Label}">
+                                                <div>
+                                                    <apex:outputField value="{!ci.Date__c}"/>
+                                                </div>
+                                            </td>
+
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Timesheet_Entries__c.Fields.User__c.Label}">
+                                                <div>
+                                                    <apex:outputField value="{!ci.User__c}"/>
+                                                </div>
+                                            </td>
+                                            
+                                            
+                                        </tr>
+
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                            
+                              <div  style="float:right;padding-right:2.5%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                 <apex:outputPanel rendered="{!TimeSheetList.Size > 0}">
+                                    <apex:outputLabel value="Total Hours" style="font-style:italic;" /> 
+                                    <apex:outputText value="{0,Number, ##,##,###.00}">
+                                       &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumhrs}"/>
+                                    </apex:outputText>
+                                 </apex:outputPanel>
+                              </div>  <br/><br/>
+                            
+                            
+                        </apex:outputpanel>
+                    </div>
+                      
+                      
+                      
+ 
+                    <apex:outputpanel id="dvpag">
+                    <div class="slds-button-group " role="group" >  
+                        <apex:commandButton value="<<First" rerender="dv,dvpag" action="{!setCon.First}" disabled="{!!setCon.hasPrevious}" title="First Page"  rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        <apex:commandButton value="<Previous" rerender="dv,dvpag" action="{!setCon.Previous}" disabled="{!!setCon.hasPrevious}" title="Previous Page"  rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        <apex:commandButton value="Next>" rerender="dv,dvpag" action="{!setCon.Next}" disabled="{!!setCon.hasNext}" title="Next Page" rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        <apex:commandButton value="Last>>" rerender="dv,dvpag" action="{!setCon.Last}" disabled="{!!setCon.hasNext}" title="Last Page" rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                   
+                   
+                 <!--  <apex:outputText >{!(setCon.pageNumber * size)+1-size}-{!IF((setCon.pageNumber * size)>noOfRecords, noOfRecords,
+                     (setCon.pageNumber * size))} of {!noOfRecords}
+                   </apex:outputText> 
+                   --->
+                   
+                   </div>
+                    </apex:outputpanel>
+    
+    
+                      
+                      
+                     <apex:actionStatus id="LoadingStatus111" >
+                         <apex:facet name="start">
+                              <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                                 <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                                   <span class="slds-assistive-text">Loading</span>
+                                   <div class="slds-spinner__dot-a"></div>
+                                   <div class="slds-spinner__dot-b"></div>
+                                 </div></div>
+                         </apex:facet>
+                     </apex:actionStatus>
+
+
+
+                   </div>
+                   </apex:outputpanel>
+                   </apex:outputpanel>
+                   
+                   <apex:outputpanel id="norec">
+                   <apex:outputpanel rendered="{!TimeSheetEnt.Size == 0}">
+                       <div>
+                          <b>No records to display</b>
+                       </div>
+                   </apex:outputpanel>
+                    </apex:outputpanel>
+                 
+        </apex:form>
+      </div>
+      
+
+    </html>
+
+
+</apex:page>

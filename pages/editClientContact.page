@@ -1,0 +1,137 @@
+<!-- This page is used to create Edit Client Contact. This page is used override the standard Contact page-->
+<apex:page standardController="Client_Contact__c" tabStyle="Client__c" extensions="editClientContact">
+
+
+      <apex:form >
+       <apex:sectionHeader title="{!$ObjectType.Client_Contact__c.Label} Details"/>
+        <apex:pageBlock >
+        <apex:pageMessages />
+
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save " ></apex:commandButton>
+                    <apex:commandButton action="{!cancel}" value="Cancel"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="Contact" columns="2" collapsible="true"> 
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.First_Name__c.Label}"/>
+                           <apex:inputfield value="{!Client_Contact__c.First_Name__c}" required="true"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionitem > 
+                            <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Client__c.Label}"/>
+                            <apex:inputfield value="{!Client_Contact__c.Client__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Last_Name__c.Label}"/>
+                           <apex:inputfield value="{!Client_Contact__c.Last_Name__c}" required="true"/>
+                       </apex:pageBlockSectionitem>
+                       
+                        <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Mobile_Phone__c.Label}"/>
+                           <apex:inputfield value="{!Client_Contact__c.Mobile_Phone__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Active__c.Label}"/>
+                           <apex:inputfield value="{!Client_Contact__c.Active__c}"/>
+                       </apex:pageBlockSectionitem>
+                      
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Business_Phone__c.Label}"/> 
+                           <apex:inputfield value="{!Client_Contact__c.Business_Phone__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Email__c.Label}"/> 
+                           <apex:inputfield value="{!Client_Contact__c.Email__c}" required="true"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Fax__c.Label}"/> 
+                           <apex:inputfield value="{!Client_Contact__c.Fax__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                        <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.UserName__c.Label}"/> 
+                        <apex:inputfield value="{!Client_Contact__c.UserName__c}" required="true"/>     
+                          <!--    <apex:inputText value="{!strUserName}"  />rendered="{!Client_Contact__c.UserName__c} = ''" -->
+                       </apex:pageBlockSectionitem>
+                         <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Department__c.Label}"/> 
+                           <apex:inputfield value="{!Client_Contact__c.Department__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                        <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Salesforce_User__c.Label}"/> 
+                           <apex:inputfield value="{!Client_Contact__c.Salesforce_User__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="Role" for="rl"></apex:outputLabel> 
+                           <apex:outputPanel >
+                              <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                 <div class="requiredBlock"> </div>
+                                 <apex:selectList value="{!RoleId}" multiselect="false" size="1" id="selectedRoleId">
+                                    <apex:selectOptions value="{!Role}"/>
+                                 </apex:selectList>
+                              </span>
+                           </apex:outputPanel>
+                       </apex:pageBlockSectionItem>
+                       
+                       <apex:pageBlockSectionItem >
+                           <p><b><font size="1.2px">Note : This Email will be used as your Username to login into the JobSuite App. Please provide unique Email.</font></b></p>
+                       </apex:pageBlockSectionItem>
+                       
+                       <!--
+                        <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="Username"/> <apex:inputfield value="{!Contact.Username__c}" required="true"/>
+                       </apex:pageBlockSectionitem>
+                       -->
+              </apex:pageBlockSection>
+              
+              
+              <apex:pageBlockSection title="Address" columns="2"  collapsible="true"> 
+              <apex:pageBlockSectionitem > 
+                 <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Shipping_Address__c.Label}"/> 
+                 <apex:inputField value="{!Client_Contact__c.Shipping_Address__c}"/>
+              </apex:pageBlockSectionitem>
+              
+              <apex:pageBlockSectionitem > 
+                 <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Shipping_Address_2__c.Label}"/> 
+                 <apex:inputField value="{!Client_Contact__c.Shipping_Address_2__c}"/>
+              </apex:pageBlockSectionitem>
+              
+              <apex:pageBlockSectionitem > 
+                 <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.City__c.Label}"/> 
+                 <apex:inputField value="{!Client_Contact__c.City__c}"/>
+              </apex:pageBlockSectionitem>
+              
+              
+              <apex:pageBlockSectionitem > 
+                 <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.State__c.Label}"/> 
+                 <apex:inputField value="{!Client_Contact__c.State__c}"/>
+              </apex:pageBlockSectionitem>
+              
+              <apex:pageBlockSectionitem > 
+                 <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Zip__c.Label}"/> 
+                 <apex:inputField value="{!Client_Contact__c.Zip__c}"/>
+              </apex:pageBlockSectionitem>
+              
+            
+           </apex:pageBlockSection> 
+              
+              
+              
+               <apex:pageBlockSection title="Description" columns="2" collapsible="true"> 
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Client_Contact__c.Fields.Description__c.Label}"/> 
+                           <apex:inputtextarea value="{!Client_Contact__c.Description__c}" cols="55" rows="5" style="resize:none"/>
+                       </apex:pageBlockSectionitem>
+                </apex:pageBlockSection> 
+              
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

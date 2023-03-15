@@ -1,0 +1,16 @@
+<apex:page standardController="Invoice__c" extensions="editinvoiceSwitchExt" tabStyle="Job__c" sidebar="true" docType="html-5.0">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/editinvoice?id="+'{!InvID}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="editinvoiceLightning"/>
+    </apex:outputPanel>
+</apex:page>

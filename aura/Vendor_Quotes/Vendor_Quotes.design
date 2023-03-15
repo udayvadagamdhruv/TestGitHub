@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="VendorQuoteSec" label="Vendor Quote Label"  description="This will reflect the Vendor Quote Label"/>
+</design:component>

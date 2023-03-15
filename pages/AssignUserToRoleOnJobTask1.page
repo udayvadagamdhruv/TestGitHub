@@ -1,0 +1,91 @@
+<!-- This page is used to Assign User for Role On Job Team at job detail level. (Overriding the Add_Staff Button under job Detail layout for each role of Job Team) -->
+<apex:page standardController="Job_Team__c" extensions="JobTeamAssignUser" tabStyle="Job__c">
+  <head>
+     <script>
+        var selectedChkbox;
+        var tableIdCount = 0;
+        function deSelectOthers(chkBox) 
+         {
+            if (chkBox.checked) 
+             {
+                if ((chkBox != selectedChkbox) && (selectedChkbox != null)) 
+                 {
+                    selectedChkbox.checked = false;
+                 }
+                selectedChkbox = chkBox;
+             }            
+         }
+     </script>
+  </head>
+  
+  <apex:form >
+     <apex:pageBlock >
+        <apex:pagemessages />
+        <apex:pageBlockButtons >
+           <apex:commandButton action="{!save}" value="Save" rendered="{!roleWraps.size > 0 }"></apex:commandButton>
+           <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+        </apex:pageBlockButtons>
+      
+        <apex:pageBlockSection >
+           
+           <apex:pageBlockSectionItem >
+              <apex:outputLabel value="{!$ObjectType.Job_Team__c.Fields.Role__c.Label}"/>
+              <apex:outputField value="{!Job_Team__c.Role__c}"/> 
+           </apex:pageBlockSectionItem>
+         
+           <apex:pageBlockSectionItem >
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem rendered="{!roleWraps.size  > 0}">
+              <apex:outputLabel value="{!$ObjectType.Job_Team__c.Fields.Staff__c.Label}"/>
+                 <apex:dataTable value="{!roleWraps}" var="r" id="cTable">
+                    <apex:column >
+                       <apex:inputCheckbox value="{!r.selected}" onclick="deSelectOthers(this)"/>  
+                    </apex:column>
+             
+                    <apex:column >
+                        <apex:outputField value="{!r.u.Name}" />
+                    </apex:column>
+                 </apex:dataTable>
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem rendered="{!roleWraps.size  > 0}">
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem rendered="{!CCntwraps.size  > 0}">
+              <apex:outputLabel value="Client Contact"/>
+                 <apex:dataTable value="{!CCntwraps}" var="cc" id="ccTable">
+                    <apex:column >
+                       <apex:inputCheckbox value="{!cc.selected}" onclick="deSelectOthers(this)"/>  
+                    </apex:column>
+             
+                    <apex:column >
+                        <apex:outputField value="{!cc.u.Name}" />
+                    </apex:column>
+                 </apex:dataTable>
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem rendered="{!CCntwraps.size  > 0}">
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem rendered="{!VenWraps.size  > 0}">
+              <apex:outputLabel value="Vendor Contact"/>
+                 <apex:dataTable value="{!VenWraps}" var="cc" id="ccTable">
+                    <apex:column >
+                       <apex:inputCheckbox value="{!cc.selected}" onclick="deSelectOthers(this)"/>  
+                    </apex:column>
+             
+                    <apex:column >
+                        <apex:outputField value="{!cc.u.Name}" />
+                    </apex:column>
+                 </apex:dataTable>
+           </apex:pageBlockSectionItem>
+                      
+             <apex:pageBlockSectionItem rendered="{!(roleWraps.size  <= 0) && (VenWraps.size  <= 0) && (CCntwraps.size  <= 0)}">
+                 <center><b>No records to display</b></center>
+               </apex:pageBlockSectionItem>  
+        </apex:pageBlockSection>
+     </apex:pageBlock>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

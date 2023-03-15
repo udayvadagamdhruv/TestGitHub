@@ -1,0 +1,25 @@
+<apex:page showHeader="false" docType="html-5.0" >
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+        <!--  <apex:slds />
+          
+          <br/>
+           <apex:OutputPanel >
+               <apex:outputlabel rendered="{!jWrapper.size == 0}">
+                   <b>No Active Jobs to display</b>
+               </apex:outputLabel>
+              <apex:dataTable value="{!jWrapper }" var="jobw" rendered="{!jWrapper.size > 0}" styleClass="slds-table">
+                 <apex:column value="{!jobw.job.Name}" headerValue="Job Name"/>
+                   <apex:column value="{!jobw.job.Job_Auto_Number__c}" headerValue="Job#"/>
+                   <apex:column value="{!jobw.job.JS_Client__c}" headerValue="Client"/>
+                
+                   <apex:column value="{!jobw.job.Due_Date__c}" headerValue="Due Date"/>
+               
+                  <apex:column value="{!jobw.jobTasks.Name}" headerValue="Job Task"/>
+                  <apex:column value="{!jobw.jobTasks.Revised_Due_Date__c}" headerValue="Due Date"/>
+               </apex:dataTable> 
+          </apex:OutputPanel>
+      
+         
+        -->
+   
+</apex:page>

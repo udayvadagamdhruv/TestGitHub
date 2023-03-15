@@ -1,0 +1,4 @@
+<apex:page standardController="Production_Estimate_Template__c" tabStyle="MyAdmin__tab">
+ <apex:detail relatedList="false"/>
+        <apex:include pageName="DisplayProductionEstimateSpecItems" />
+</apex:page>

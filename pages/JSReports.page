@@ -1,0 +1,27 @@
+<!-- This page is used for JS Report functionality, overriden with JS_Report_Tab-->
+<apex:page tabStyle="JS_Reports__tab" id="frm">
+   <apex:form >
+      <apex:pageBlock id="pb">
+          <table>
+              <tr>
+                  <td> <apex:image url="{!$Resource.BigTop}" width="25" height="25"/> </td>
+                   <td> <h3 style="color:#000000;font-size:1.2em;">Reports</h3> </td>
+              </tr>
+          </table> 
+          <br/>
+  
+          <apex:commandButton value="Job Log Sheet" onClick="window.open('/apex/JobLogSheetTest1');" reRender="frm"/>
+          <apex:commandButton value="Campaign Status Report" onClick="window.open('/apex/CampaignStatusReport');" reRender="frm"/>
+          <apex:commandButton value="Status Report" onClick="window.open('/apex/StatusReport');" reRender="frm"/>
+          <apex:commandButton value="Job Cost Report" onClick="window.open('/apex/JobCostReport');" reRender="frm"/>
+          <!-- Daily Hot Sheet Report is included After Package Version 1.2.0 -->
+          <apex:commandButton value="Daily Hot Sheet Report" onClick="window.open('/apex/DailyHotSheetReport');" reRender="frm"/> 
+          <apex:commandButton value="Upload CSV/XLS" onClick="window.open('/apex/FinalReportUpload');" reRender="frm"/> 
+          <apex:commandButton value="Status Report II" onClick="window.open('/apex/statusReportsearch');" reRender="frm"/> 
+          <apex:commandButton value="Daily Hot Sheet Report by Staff" onClick="window.open('/apex/DailyHotSheetReportByStaff');" reRender="frm"/>
+          <apex:commandButton value="Weekly Hot Sheet Report by Staff" onClick="window.open('/apex/WeeklyHotSheetReportByStaff');" reRender="frm"/>          
+
+     </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

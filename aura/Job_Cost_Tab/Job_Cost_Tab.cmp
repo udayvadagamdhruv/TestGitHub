@@ -1,0 +1,85 @@
+<aura:component controller="LDS_Controller" implements="force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes" access="global"  >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="record" type="Object" />
+    
+    <aura:attribute name="OrgInfo" type="Object" />
+    <aura:attribute name="PECustomSetting" type="Object" />
+    <aura:attribute name="JobCostAccessable" type="Object[]"/>  
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+     <aura:attribute name="helpText" type="List"/>
+     <aura:attribute name="QuoteSection" type="String" default="Quotes" required="true" access="global"/>
+     <aura:attribute name="EstimateSection" type="String" default="Estimates" required="true" access="global"/>
+     <aura:attribute name="ProdEstimateSection" type="String" default="Production Estimates" required="true" access="global"/>
+     <aura:attribute name="POSection" type="String" default="Purchase Orders" required="true" access="global"/>
+     <aura:attribute name="InvSection" type="String" default="Invoices" required="true" access="global"/>
+     <aura:attribute name="ShipmentSection" type="String" default="Shipments" required="true" access="global"/>
+    
+    
+    <aura:if isTrue="{!v.JobCostAccessable[0] &amp;&amp; (v.OrgInfo.Id !='00Di0000000YKOKEA4' || v.OrgInfo.Id != '00De0000001KaOkEAK')}">     
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="JobQuotes">   
+            <lightning:accordionSection name="JobQuotes" label="{!v.QuoteSection}"  class="slds-card" >
+                 <c:customHelpText text="{!v.helpText[0].Quotes__c}"/>
+                <lightning:card>
+                    <c:Job_Quotes jobrecordId="{!v.recordId}"  />
+                </lightning:card>  
+            </lightning:accordionSection>
+        </lightning:accordion>
+    </aura:if>    
+    
+    <aura:if isTrue="{!v.PECustomSetting.Active__c}">
+        <aura:if isTrue="{!v.JobCostAccessable[1]}">
+            <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="JobProEstimates">   
+                <lightning:accordionSection name="JobProEstimates" label="{!v.ProdEstimateSection}"  class="slds-card" > 
+                      <c:customHelpText text="{!v.helpText[0].Production_Estimate__c}" />
+                    <lightning:card>  
+                        <c:Job_Production_Estimates jobrecordId="{!v.recordId}" />
+                    </lightning:card>
+                </lightning:accordionSection>
+            </lightning:accordion>
+        </aura:if>
+        <aura:set attribute="else">
+            <aura:if isTrue="{!v.JobCostAccessable[2]}">
+                <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="JobEstimates">   
+                    <lightning:accordionSection name="JobEstimates" label="{!v.EstimateSection}"  class="slds-card" > 
+                       <c:customHelpText text="{!v.helpText[0].Estimate__c}" />
+                        <lightning:card>         
+                            <c:Job_Estimates jobrecordId="{!v.recordId}" />
+                        </lightning:card>  
+                    </lightning:accordionSection>
+                </lightning:accordion>
+            </aura:if> 
+        </aura:set>   
+    </aura:if> 
+    <aura:if isTrue="{!v.JobCostAccessable[3]}">  
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="JobPO">   
+            <lightning:accordionSection name="JobPO" label="{!v.POSection}"  class="slds-card" > 
+                <c:customHelpText text="{!v.helpText[0].Purchase_Order__c}"/>
+                <lightning:card>         
+                    <c:Job_Purchase_Orders jobrecordId="{!v.recordId}" />
+                </lightning:card>  
+            </lightning:accordionSection>
+        </lightning:accordion>
+    </aura:if> 
+    <aura:if isTrue="{!v.JobCostAccessable[4]}">  
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="JobInvoice">  
+            <lightning:accordionSection name="JobInvoice" label="{!v.InvSection}"  class="slds-card" > 
+                  <c:customHelpText text="{!v.helpText[0].Vendor_Invoice__c}"/>
+                <lightning:card>         
+                    <c:Job_Vendor_Invoices jobrecordId="{!v.recordId}" />
+                </lightning:card>  
+            </lightning:accordionSection>
+        </lightning:accordion>
+    </aura:if> 
+    
+    <aura:if isTrue="{!v.PECustomSetting.Shipment_Tab__c &amp;&amp; v.JobCostAccessable[5]}">
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ShipmentSection">  
+            <lightning:accordionSection name="ShipmentSection" label="{!v.ShipmentSection}"  class="slds-card" > 
+               <c:customHelpText text="{!v.helpText[0].Shipment__c}"/>
+                <lightning:card>         
+                    <c:Job_Shipments jobrecordId="{!v.recordId}" />
+                </lightning:card>  
+            </lightning:accordionSection>
+        </lightning:accordion>.
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,55 @@
+<!-- This page is used to create new Task above the earlier task (override the insert button used in the page which displays list of task under Schedule Tab for a Job) -->
+<apex:page controller="extension_JobTaskAboveNew" tabStyle="Job__c" id="pg"   >
+
+             
+  
+  <apex:form id="frm" html-novalidate="novalidate">
+      <apex:sectionHeader title="Task Details"/>
+     <apex:pageBlock mode="edit">
+        
+        <apex:pageBlockButtons >
+           <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+           <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+        </apex:pageBlockButtons>
+              
+              
+             
+        <apex:pageBlockSection title="Information" columns="2" collapsible="false"> 
+        
+           <apex:pageBlockSectionitem >   
+              <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Name.Label}"/> <apex:inputfield value="{!objJobTask.Name}" required="true"/>
+           </apex:pageBlockSectionitem> 
+               
+           <apex:pageBlockSectionItem >                  
+              <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.GL_Code__c.Label}" for="GLCName" ></apex:outputLabel>
+              <apex:outputPanel >
+                 <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                    <!-- <div class="requiredBlock"> </div> -- commented to make Gl code not mandatory  -->
+                    <apex:selectList id="glcName" value="{!GLCName}" size="1">
+                       <apex:selectOptions value="{!GLCodes}"></apex:selectOptions> 
+                    </apex:selectList>
+                 </span>
+              </apex:outputPanel>  
+           </apex:pageBlockSectionItem>
+              
+           <apex:pageBlockSectionitem > 
+              <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Days__c.Label}"/>
+              <apex:inputField value="{!objJobTask.Days__c}" required="true"/>
+           </apex:pageBlockSectionitem>
+                
+           <apex:pageBlockSectionItem >                  
+                <apex:outputLabel Value="Role" for="role" ></apex:outputLabel>
+              
+                  <apex:selectList id="rolename" value="{!RolesList}"  multiselect="true" size="5">
+                         <apex:selectOptions value="{!Roles}"></apex:selectOptions> 
+                  </apex:selectList>
+                 
+             </apex:pageBlockSectionItem>  
+                
+                
+        </apex:pageBlockSection>
+     </apex:pageblock>
+  </apex:form>
+   
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,490 @@
+<aura:component controller="taskstabcontroller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="activeSections" type="List" default="['MyTask']" />
+    <aura:attribute name="MyTaskDueSection" type="String" default="Tasks Due" required="true" access="global"/>
+    <aura:attribute name="isListview" type="boolean" default="true"/>
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <!-- Filters For Child Cmp-->
+    <!-- <aura:attribute name="stfvals" type="String"/>-->
+    
+    <!-- Filters attributes -->
+    <aura:attribute name="StaffsNames" type="String[]" description="It stores the All Staff Names"/>
+    <aura:attribute name="RolesNames" type="String[]" description="It stores the All Roles Names"/>
+    <aura:attribute name="ClientNames" type="String[]" description="It stores the All Client Names"/>
+    <aura:attribute name="JobNames" type="Job__c[]" description="It stores the All Job Names"/>
+    <!-- Filters attributes Ends Here -->
+    
+    <!-- Table attributes i.e., lightning datatable we are not using in this cmp -->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate"/>
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    <!-- Table attributes Ends Here-->
+    
+    <!-- Add Staff For task attributes -->
+    <aura:attribute name="isaddEditStaff" type="boolean" default="false"/>
+    <aura:attribute name="AddEditStaffTaskId" type="String" default=""/>
+    <!-- Ends Here -->
+    
+    <!-- Task Edit attributes -->
+    <aura:attribute name="EditTaskId" type="String" default=""/>
+    <aura:attribute name="isTaskEdit" type="boolean" default="false"/>
+    <aura:attribute name="isDaysChanged" type="boolean" default="false"/>
+    <aura:attribute name="isDueDateChanged" type="boolean" default="false"/>
+    <aura:attribute name="todayDate" type="Date" default="" />
+    <aura:attribute name="calDueDate" type="Date" default="" />
+    <aura:attribute name="isTaskLocked" type="boolean" default="false"/>
+    <aura:attribute name="selectedLookUpRecord_GLCode" type="sObject" default="{}" />
+    <!-- Ends Here -->
+    
+    <!-- File attach -->
+    <aura:attribute name="fileattach" type="boolean" default="false"/>
+    <aura:attribute name="fileattach1" type="boolean" default="false"/>
+    <aura:attribute name="JobTaskIdforApprovals" type="String" />
+    <aura:attribute name="JobFileList" type="Object" />
+    
+    <!-- Task log time -->
+    <aura:attribute name="isTaskLogTime" type="boolean" default="false"/>
+    <aura:attribute name="LogTaskId" type="String" />
+    
+    <!--Sorting attributes -->
+    <aura:attribute name="sortAsc" type="boolean"  />
+    <aura:attribute name="arrowDirection" type="string" default="arrowup" description="Use for change arrow sign direction on header based on click"/>
+    <aura:attribute type="String" name="sortField" />
+    <aura:attribute name="TaskName" type="boolean" default="true"/>
+    <aura:attribute name="StaffName" type="boolean" default="true"/>
+    <aura:attribute name="JobName" type="boolean" default="true"/>
+    <aura:attribute name="FinalDueDte" type="boolean" default="true"/>
+    <aura:attribute name="NextJobTaskDue" type="boolean" default="true"/>
+    
+    <aura:attribute name="overlayPanel" type="Aura.Component"  />
+    <lightning:overlayLibrary aura:id="overlayLib1" />
+    
+    <aura:attribute name="JobDetailAccessible" type="Object"/>
+    <aura:attribute name="ObjectType" type="String" />
+    <aura:attribute name="taskdata" type="List" />
+    <aura:attribute type="String" name="colorBackground" default='blue'/>
+    <aura:attribute name="helpText" type="List"/>
+    
+    <aura:attribute name="spinner" type="Boolean" default="false" />
+    
+    <!-- <aura:handler event="c.UpdateRecordsforChanges" action="{!c.refreshJobTasks}" /> -->
+    <aura:handler name="init"  value="{!this}" action="{!c.doInit}" />  
+    <aura:handler name="ComponentEventTasks" event="c:Tasks_Tab_AppEvt" action="{!c.handleComponentEvent}"/>
+    <div class = "slds-theme_default"> <!-- Here instead pg Lightning card -->
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.activeSections}">
+            <lightning:accordionSection name="MyTask" label="{!v.MyTaskDueSection}"  class="slds-card" >
+                <div class="slds-form-element" style="width:23%">
+                    <lightning:select aura:id="TaskVId" name="Tasks" label="Tasks" onchange="{! c.handleTasksViewSel }">
+                        <option selected="true" value="AllTasksDue">All Tasks Due</option>
+                        <option  value="AllTasksPastDue">All 'Past' Tasks Due</option>
+                        <option  value="NextAll">All 'Next' Tasks Due</option>
+                        <option  value="MyTasks">All My Tasks Due</option>
+                                                <option  value="MyTasksPastDue">My 'Past' Tasks Due</option>
+                        <option  value="MyNextTasks">My 'Next' Tasks Due</option>
+                        
+                    </lightning:select>
+                </div>
+                <br/>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_3-of-12">
+                        <lightning:select aura:id="Staffsval" name="Staffs" label="Staff" onchange="{!c.handlestaffViewSel}">
+                            <option text="--None--" value=""/>
+                            <aura:iteration items="{!v.StaffsNames}" var="option">
+                                <option text="{!option}" value="{!option}" />
+                            </aura:iteration>        
+                        </lightning:select>
+                    </div>
+                    <div class="slds-col slds-size_3-of-12">
+                        <lightning:select aura:id="rolesval" name="Role" label="Role" onchange="{!c.handleroleViewSel}">
+                            <option text="--None--" value=""/>
+                            <aura:iteration items="{!v.RolesNames}" var="option">
+                                <option text="{!option}" value="{!option}" />
+                            </aura:iteration>        
+                        </lightning:select>
+                    </div>
+                    <div class="slds-col slds-size_3-of-12">
+                        <lightning:select aura:id="clientval" name="Client" label="Client" onchange="{!c.handleclientViewSel}">
+                            <option text="--None--" value=""/>
+                            <aura:iteration items="{!v.ClientNames}" var="option">
+                                <option text="{!option}" value="{!option}" />
+                            </aura:iteration>        
+                        </lightning:select>
+                    </div>
+                    <div class="slds-col slds-size_3-of-12">
+                        <lightning:select aura:id="Jobval" name="Job" label="Job" onchange="{!c.handlejobViewSel}">
+                            <option text="--None--" value=""/>
+                            <aura:iteration items="{!v.JobNames}" var="option">
+                                <option text="{!option.Name}" value="{!option.Name}" />
+                            </aura:iteration>        
+                        </lightning:select>
+                    </div>
+                </div>
+                <br/>
+                <!--  <aura:if isTrue="{!empty(v.data)}">
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert" width="250px" style="margin-top:20px;">
+                        <span class="slds-icon_container slds-m-right_x-small">
+                            <lightning:icon iconName="utility:info" alternativeText="info" size="x-small" variant="inverse"/>
+                        </span>
+                        <h2>No results found.</h2>
+                    </div>
+                    <aura:set attribute="else" >
+                        <div style="height:420px;">
+                            <lightning:datatable aura:id="MyJobs"
+                                                 class="tablecss"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{! c.handleRowAction }" />
+                        </div>
+                    </aura:set>
+                </aura:if>   -->
+                
+                <!-- <div aura:id="mainDiv" style="height:auto;max-height:250px;overflow:auto;margin-top:10px;"
+                     class=" slds-m-right_small slds-m-left_small">-->
+                <aura:if isTrue="{!empty(v.taskdata)}">
+                    <aura:if isTrue="{! v.spinner }">
+                        <lightning:spinner alternativeText="Loading" />
+                        <aura:set attribute="else">
+                            <b>No records to display</b>
+                        </aura:set>
+                    </aura:if>
+                    
+                    <aura:set attribute="else">
+                        <div aura:id="mainDiv" style="height:550px;overflow:auto;margin-top:10px;"
+                             class=" slds-m-right_small slds-m-left_small"> 
+                            <table  class="slds-table slds-table_cell-buffer slds-table_bordered " aria-labelledby="element-with-table-label other-element-with-table-label">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="slds-cell_action-mode" scope="col" style="width:3.25rem" >
+                                            <div class="slds-truncate slds-assistive-text" title="Actions">Actions</div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="Job_Task__r.Name" style="cursor: pointer;">Task Name
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Name')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="User__c" style="cursor: pointer;">Staff Name
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'User__c')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="Job_Task__r.Job__r.Job_Auto_Number__c" style="cursor: pointer;">Job #
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Job__r.Job_Auto_Number__c')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="Job_Task__r.Job__r.Name" style="cursor: pointer;">Job Name
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Job__r.Name')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="Job_Task__r.Revised_Due_Date__c" style="cursor: pointer;">Final Due Date
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Revised_Due_Date__c')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="Job_Task__r.Job__r.Campaign__r.Name" style="cursor: pointer;">Campaign Name
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Job__r.Campaign__r.Name')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                            <div class="slds-truncate" title="Job_Task__r.Job__r.JS_Client__r.Name" style="cursor: pointer;">Client Name
+                                                <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Job__r.JS_Client__r.Name')}">
+                                                    <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </th>
+                                        <!--<th class="" scope="col" onclick="{!c.updateColumnSorting}">
+                                        <div class="slds-truncate" title="Job_Task__r.Job__r.Next_Tasks_Due__c">Next Job Task Due
+                                            <aura:if isTrue="{!and(v.arrowDirection == 'arrowdown', v.sortField == 'Job_Task__r.Job__r.Next_Tasks_Due__c')}">
+                                                <lightning:icon iconName="utility:arrowup"  size="xx-small" alternativeText="Indicates approval"/>
+                                                <aura:set attribute="else">
+                                                    <lightning:icon iconName="utility:arrowdown"  size="xx-small" alternativeText="Indicates approval"/>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <aura:iteration items="{!v.taskdata}" var="jtvalues" indexVar="indx">  
+                                        <tr>
+                                            <td width="5%" style="text-align:left;height:3px;" >
+                                                <lightning:buttonMenu name="{!jtvalues.Job_Task__c}" aura:id="taskItem" onselect="{! c.handleTaskQuickAction }">
+                                                    <lightning:menuItem value="Add_Team" label="Add/Edit Staff" iconName="utility:user_role"/>
+                                                    <!--  <lightning:menuItem value="Add_Jobteam" label="Add Jobteam" iconName="utility:user"/>-->
+                                                    <lightning:menuItem value="Task_Edit" label="Edit Task" iconName="utility:edit"/>
+                                                    <lightning:menuItem value="Task_Done" label="Task Done" iconName="utility:check"/>
+                                                    <lightning:menuItem value="Log_Time" label="LogTime" iconName="action:defer"/>
+                                                    <aura:if isTrue="{!v.fileattach}">
+                                                        <lightning:menuItem value="Task_FileAttach" label="Task File Attach" iconName="action:new_task"/>
+                                                    </aura:if>
+                                                    <lightning:menuItem value="Task_Delete" label="Delete" iconName="utility:delete"/>
+                                                </lightning:buttonMenu>
+                                            </td>
+                                            <td>
+                                                <lightning:formattedUrl value="{!'/' + jtvalues.Job_Task__c}"  label="{!jtvalues.Job_Task__r.Name}" target="_blank" />
+                                            </td>
+                                            <td style="{!'color:' + jtvalues.tdcolor}">
+                                                <b> {!jtvalues.User__c}  </b>
+                                            </td>
+                                            <td>
+                                                <lightning:formattedUrl value="{!'/' + jtvalues.Job_Task__r.Job__c}"  label="{!jtvalues.Job_Task__r.Job__r.Job_Auto_Number__c}" target="_blank" />
+                                            </td>
+                                            <td>
+                                                <lightning:formattedUrl value="{!'/' + jtvalues.Job_Task__r.Job__c}"  label="{!jtvalues.Job_Task__r.Job__r.Name}" target="_blank" />
+                                            </td>
+                                            <td> {!jtvalues.dteformat} </td>  
+                                            <td>
+                                                <aura:if isTrue = "{!not(empty(jtvalues.Job_Task__r.Job__r.Campaign__c))}">
+                                                    <lightning:formattedUrl value="{!'/' + jtvalues.campaignrcdid}" label="{!jtvalues.campaignrcd}" target="_blank" />
+                                                    <!--  <lightning:formattedUrl value="{!'/' + jtvalues.Job_Task__r.Job__r.Campaign__c}" label="{!jtvalues.Job_Task__r.Job__r.Campaign__r.Name}" target="_blank" />-->
+                                                </aura:if>
+                                            </td>
+                                            <td>
+                                                <aura:if isTrue = "{!not(empty(jtvalues.Job_Task__r.Job__r.JS_Client__c))}">
+                                                    <lightning:formattedUrl value="{!'/' + jtvalues.clientrcdid}" label="{!jtvalues.clientrcd}" target="_blank" />
+                                                </aura:if>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>  <br/> <br/> <br/>  <br/> <br/> <br/>  
+                    </aura:set>
+                </aura:if>
+                <!--     </div>-->
+                
+                <aura:if isTrue="{!v.isaddEditStaff}">
+                    <c:Add_Edit_Staff_TasksTab aura:id="AddEditStaffMembers" TaskId="{!v.AddEditStaffTaskId}"  />
+                </aura:if>
+                
+                <aura:if isTrue="{!v.isTaskLogTime}">
+                    <c:Task_Log_Time taskId="{!v.LogTaskId}" aura:id="LogTimeId" actionFrom="Task"  />  <!-- LogTimePopUp="{!v.LogTimeOpen}" -->
+                </aura:if>
+                
+                <aura:if isTrue="{!v.isTaskEdit}">
+                    <lightning:recordEditForm aura:id="TaskEditForm" density="comfy" objectApiName="Job_Task__c" recordId="{!v.EditTaskId}" onsubmit="{!c.TaskOnsubmit}" onload="{!c.TaskOnLoad}" onsuccess="{!c.TaskOnSuccess}"  >
+                        
+                        <!--************************************************  MODAL BOX Start *************************************************-->
+                        
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                                <header class="slds-modal__header">
+                                    <lightning:buttonIcon iconName="utility:close"
+                                                          onclick="{! c.closeTaskModel }"
+                                                          alternativeText="close"
+                                                          variant="bare-inverse"
+                                                          class="slds-modal__close"/>
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.EditTaskId==null?'New':'Edit'} Task</h2>
+                                </header>
+                                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                                
+                                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                                    
+                                    <lightning:messages />    
+                                    <lightning:layout multipleRows="true">
+                                        
+                                        <aura:if isTrue="{! !v.isTaskLocked}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="Name" aura:id="JobTaskFields"  class="er slds-p-horizontal_x-small frequired"/>
+                                            </lightning:layoutItem>
+                                            <aura:set attribute="else">
+                                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                    <lightning:outputField fieldName="Name" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"/>
+                                                </lightning:layoutItem>
+                                            </aura:set>
+                                        </aura:if>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <!--    <div class="slds-form-element slds-p-horizontal_x-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Job_Task__c.Job__c.label} </label>
+                                                <div class="slds-form-element__control">
+                                                    <ui:outputText value="{!v.record.fields.Name.value}"  />
+                                                </div>
+                                            </div>-->
+                                            <lightning:outputField fieldName="Job__c" aura:id="JobField"  class="slds-p-horizontal_x-small"  />
+                                            
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Status__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small frequired"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <div class="slds-p-horizontal_x-small">
+                                                <c:customLookup aura:id="GL_CodeId" objectAPIName="GL_Code__c" DepobjectAPIName="" IconName="custom:custom24" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_GLCode}"
+                                                                DepenselectedRecord="" label="{!v.ObjectType.Job_Task__c.GL_Code__c.label}" Depelabel="" RelationShipName="" ParentFilter=""  ChildFilter=""
+                                                                ParentRecId="" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                                            </div>  
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Start_Date__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Revised_Due_Date__c" aura:id="JobTaskFields" onchange="{!c.EditDueDateChanged}"  class="slds-p-horizontal_x-small frequired"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Task_Start_Time_Text__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Task_End_Time_Text__c"  html-placeholder="H:MM AM/PM" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Completion_Date__c"  html-placeholder="H:MM AM/PM" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:outputField fieldName="Marked_Done__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <aura:if isTrue="{! !v.isTaskLocked}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="Days__c" aura:id="JobTaskFields" onchange="{!c.EditDaysChanged}"  class="slds-p-horizontal_x-small"  />
+                                            </lightning:layoutItem>
+                                            <aura:set attribute="else">
+                                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                    <lightning:outputField fieldName="Days__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small "  />
+                                                </lightning:layoutItem>
+                                            </aura:set>
+                                        </aura:if>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:InputField fieldName="Task_Order__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:outputField fieldName="Locked__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />  
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">  
+                                            <lightning:outputField fieldName="Report__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Hours__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  />
+                                        </lightning:layoutItem>
+                                        
+                                        <br></br>
+                                        
+                                    </lightning:layout>
+                                </div>
+                                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                                <footer class="slds-modal__footer">
+                                    <lightning:button variant="neutral"
+                                                      label="Cancel"
+                                                      title="Cancel"
+                                                      onclick="{! c.closeTaskModel }"/>
+                                    <lightning:button variant="brand"
+                                                      label="Save"
+                                                      title="Save"
+                                                      type="submit" />
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                        <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+                    </lightning:recordEditForm>
+                </aura:if>
+                
+                <!-- ************************************************* File Attach *****************************************************-->
+                <aura:if isTrue="{!v.fileattach1}">
+                    
+                    <lightning:recordEditForm aura:id="TaskidRec" density="comfy" objectApiName="Approval_Job_Task__c"/>
+                    
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container TeamModalContainer">
+                            <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                            <header class="slds-modal__header">
+                                <lightning:buttonIcon iconName="utility:close"
+                                                      onclick="{!c.closeApprovalTaskFile}"
+                                                      alternativeText="close"
+                                                      variant="bare-inverse"
+                                                      class="slds-modal__close"/>
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Attach File</h2>
+                            </header>
+                            <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                            <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1" style="padding:0rem 1rem 1rem 1rem !important">
+                                <lightning:messages />
+                                <h1> <b> Please select the file. Note: Files must be attached to the files tab of the Job.</b> </h1><br/>
+                                <lightning:layout multipleRows="true">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                        <lightning:select name="Files" aura:id="FileId" label="Files"  class="slds-p-horizontal_x-small frequired">
+                                            <option text="--None--" value="" />
+                                            <aura:iteration items="{!v.JobFileList}" var="Temp">
+                                                <option text="{!Temp.value}" value="{!Temp.key}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </lightning:layoutItem>  
+                                    
+                                </lightning:layout>
+                            </div>
+                            <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                            <footer class="slds-modal__footer">
+                                <lightning:button variant="neutral"
+                                                  label="Cancel"
+                                                  title="Cancel"
+                                                  onclick="{!c.closeHandleFileAttach}"/>
+                                <lightning:button variant="brand"
+                                                  label="Attach"
+                                                  title="Attach"
+                                                  onclick="{!c.handleFileAttach}"/>
+                            </footer>
+                        </div>
+                    </section>
+                    
+                    <div class="slds-backdrop slds-backdrop_open"></div>        
+                    
+                </aura:if>
+                
+            </lightning:accordionSection>
+        </lightning:accordion>
+        
+    </div>
+</aura:component>

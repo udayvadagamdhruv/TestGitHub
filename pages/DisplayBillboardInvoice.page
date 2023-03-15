@@ -1,0 +1,68 @@
+<apex:page controller="DisplayBillboardInvoiceController">
+  
+  
+  <apex:form >
+  <apex:pageBlock >
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+       <apex:commandButton action="{!createBBI}" value="Add Billboard Invoice" id="btn2" rendered="{!$ObjectType.Billboard_Invoice__c.Createable}"/> 
+       
+       </span> 
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!BBI}" var="BBIItem" rendered="{!BBI.Size>0}">
+         <apex:column headerValue="Action" width="10%" rendered="{!$ObjectType.Billboard_Invoice__c.Deletable}">
+              <apex:commandButton value="Delete" action="{!deleteBBI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" >
+                  <apex:param name="param2" value="{!BBIItem.id}" assignTo="{!strBBI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+         
+        
+        <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c .Fields.Name.Label}">
+              <apex:outputLink value="/{!BBIItem.Id}">{!BBIItem.Name}</apex:outputlink>
+          </apex:column>
+          
+        <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c .Fields.Billboard_Vendor__c.Label}">
+              <apex:outputfield value="{!BBIItem.Billboard_Vendor__c}"/>
+          </apex:column>
+          
+          
+        <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c .Fields.Billboard__c.Label}">
+              <apex:outputfield value="{!BBIItem.Billboard__c}"/>
+          </apex:column>
+          
+         <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c .Fields.Location__c.Label}">
+              <apex:outputfield value="{!BBIItem.Location__c}"/>
+          </apex:column> 
+          
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c .Fields.BB_Invoice_Due_Date__c.Label}">
+              <apex:outputfield value="{!BBIItem.BB_Invoice_Due_Date__c}"/>
+          </apex:column>
+          
+         
+             
+          
+          
+          
+            
+     
+     </apex:pageBlockTable>
+     
+     
+   
+    
+   
+     
+        <apex:pageBlockSection rendered="{!BBI.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+  
+  
+</apex:page>

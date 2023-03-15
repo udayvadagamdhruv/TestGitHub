@@ -1,0 +1,518 @@
+<apex:page controller="statusReport" tabStyle="JS_Reports__tab" sidebar="true" docType="html-5.0" standardStylesheets="false"  showHeader="False" applyBodyTag="false" applyHtmlTag="false">
+    <apex:slds />
+     <style>
+     
+            .pageHeader
+            {
+                color:white;
+                background-color:#851225;
+                height:70px;
+                padding-top:23px; 
+                position:fixed;
+                z-index:999;
+                width:100% !important;
+                padding-left:22px;
+            }
+        
+            .SectionHeader
+            {
+                background-color:Grey !important;
+                color:white;
+            }
+            
+            .bPageBlock 
+            {
+                 margin: 20px 20px 20px 20px !important;
+            }
+            
+            
+            body
+            {
+                    //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                    background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                    //background-image:none !important;
+                    //background-color:#D7D7D7 !important;
+                    background-repeat: repeat-x;
+                    background-position: left top;
+                    background-attachment: fixed; 
+                    margin:0px !important;
+            }
+         
+          .customImage{ height: 10px; width: 10px; }
+          #rcorners1 
+          {
+                 border-radius:0%;
+                 border: 1px solid #cccccc;
+                 padding: 0px; 
+                 width: 100%;
+                 height: 0%;
+          }
+          #pagemessage
+          {
+              color:blue;
+          }
+          
+          .required:after { content:" *";  color: Red;font:bold;}
+           
+           .slds table
+           {
+                height: 50px;
+           }
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+           {
+               margin-top: -19px; 
+           }
+           .detailPage .bPageBlock, .editPage .bPageBlock
+           {
+               border-top-width: 0px;
+           }
+          
+           .slds .slds-text-heading--large
+           {
+                font-size: 27px;
+           }
+           
+           .pbHeader
+           {
+               background: white !important;
+           }
+           
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+           {
+               background: white;
+           }
+          
+           .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+           {
+               border:none;
+           }
+           
+           body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+           {
+               border:none;
+           }
+                       
+           .slds .slds-checkbox .slds-checkbox--faux 
+           {
+                width: 25px;
+                height: 25px;
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                border-width: 2px;
+                border-style: solid;
+                border-color: lightgrey;
+                border-image: initial;
+                border-radius: 2px;
+                background: white;
+                transition: border 0.1s linear, background-color 0.1s linear;
+           }
+            
+           .slds .slds-checkbox [type=checkbox]:checked > .slds-checkbox--faux:after, .slds .slds-checkbox [type=checkbox]:checked ~ .slds-checkbox--faux:after 
+           {
+                height: 6px;
+                width: 11px;
+           }
+           
+           .bPageBlock .requiredInput .requiredBlock 
+           {
+                background-color:white;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+           
+            errorM6, .errorM4, .errorM3, .errorM2, .errorS1 
+            {
+                  border-color: #c00;
+            }
+            .message 
+            {
+                background-color: #c00;
+                border-style: solid;
+                border-width: 0px;
+                color: #000;
+                padding: 0px 0px 0px 0px;
+                margin: 0px 0px;
+            }
+            .errorM3 .msgIcon, .errorMedium 
+            {
+                background-image: url(); 
+                background-position: 0 0;
+                width:0px;
+                height: 0px;
+                padding-left: 4px;
+            }
+            .pbBody td
+            {
+                color:white;
+            }
+            .message .messageText h4 
+            {
+                 font-weight: bold; 
+                 display:block;
+                 color:white;
+            }
+            
+            .messageText br
+            {
+               display:none !important;
+            }
+            .messageTable tr
+            {
+               padding-top:10px !important;
+               padding-bottom:10px !important;
+            }
+            .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+            {
+                border-radius: 15px !important;
+            }
+            .pbBody
+            {
+                padding:10px !important;
+            }
+            
+            
+            .slds td {
+                padding: 0;
+                padding-left: 5px;
+            }
+                
+            <!----------------------------------- error Mesgg-------------------------------------->
+       
+       
+    </style>  
+    
+    
+       <style>
+            .rotate {
+              float:left;
+              width: 50px;
+              height: 95px
+              top: 300px;
+              border-style: none;
+              valign : bottom;
+
+            /* Safari */
+            -webkit-transform: rotate(-90deg);
+            
+            /* Firefox */
+            -moz-transform: rotate(-90deg);
+            
+            /* IE */
+            -ms-transform: rotate(-90deg);
+            
+            /* Opera */
+            -o-transform: rotate(-90deg);
+            
+            /* Internet Explorer */
+            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+            
+            }
+            .pbBody td {
+                color: #333 !important;
+            }
+        </style>   
+    
+    
+        <script type="text/javascript">
+             function doSearch() {
+                 searchServer
+            (
+                 document.getElementById("CampaignList").options[document.getElementById("CampaignList").selectedIndex].value,
+                 document.getElementById("statusList").options[document.getElementById("statusList").selectedIndex].value,
+                 document.getElementById("clientList").options[document.getElementById("clientList").selectedIndex].value,
+                 document.getElementById("promoDueDt1").value,
+                 document.getElementById("promoDueDt2").value  
+            );
+             }
+
+             function clearFields() {
+                 document.getElementById("CampaignList").selectedIndex = 0;
+                 document.getElementById("statusList").selectedIndex = 0;
+                 document.getElementById("clientList").selectedIndex = 0;
+                 document.getElementById("promoDueDt1").value = "";
+                  document.getElementById("promoDueDt2").value = ""; 
+             }
+      </script>
+      
+     
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+       
+     
+           <body>
+     
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+              
+                  <apex:form html-novalidate="novalidate">
+                  
+                   <apex:actionFunction name="searchServer" action="{!searchJobs}" reRender="results,debug">
+                         <apex:param name="CampaignList" value=""/>
+                         <apex:param name="statusList" value=""/>
+                         <apex:param name="clientList" value=""/>
+                         <apex:param name="promoDueDt1" value=""/>
+                         <apex:param name="promoDueDt2" value=""/>
+                  </apex:actionFunction>
+                  
+                  
+                     <div class="slds-media__body pageHeader">
+                           <span  class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" style="color:white;font-size:18px;"><b>Status Report</b></span>
+                           <span style="float:right;padding-right:20px;">     
+                              <b>   
+                              </b>
+                           </span>
+                           
+                     </div> 
+                     <br/><br/><br/><br/>
+                       
+                      <apex:pageBlock mode="edit">
+         
+                           <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                               <apex:pageMessages />
+                           </div> <br/>
+                          
+                           <div class="SectionHeader" style="background-color:SteelBlue;color:white;">
+                               <h3 class="slds-section-title"><b>&nbsp;Status Report Search</b></h3>
+                           </div>
+                          
+                           <div class="slds-grid slds-wrap">
+                               <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                   <div class="slds-grid slds-wrap">  
+                                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--4-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Campaign__c.Label}</b></label>
+                                                <div class="slds-form-element__control" >
+                                                    <select id="CampaignList" tabindex="1" style="width:75%;white-space:nowrap" styleClass="slds-input">
+                                                        <apex:repeat value="{!CampaignList}" var="lst">
+                                                            <option value="{!lst}">{!lst}</option>
+                                                        </apex:repeat>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </aside>
+                                        
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--4-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Status__c.Label}</b></label>
+                                                <div class="slds-form-element__control" >
+                                                    <select id="statusList" tabindex="2"  style="width:75%;">
+                                                        <apex:repeat value="{!jobStatus}" var="status">
+                                                            <option value="{!status}">{!status}</option>
+                                                        </apex:repeat>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </aside>
+                                        
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--4-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.JS_Client__c.Label}</b></label>
+                                                <div class="slds-form-element__control" >
+                                                    <select id="clientList" tabindex="3" style="width:75%;">
+                                                        <apex:repeat value="{!clientList}" var="client">
+                                                            <option value="{!client}">{!client}</option>
+                                                        </apex:repeat>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </aside>
+                                        
+                                        
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--4-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Due_Date__c.Label} From</b></label>
+                                                <div class="slds-form-element__control" >
+                                                   <input type="date" id="promoDueDt1" name="promoduedt1" onfocus="DatePicker.pickDate(false,'promoDueDt1', false);" style="width: 75%;" size="10" tabindex="9" />
+                                                </div>
+                                            </div>
+                                        </aside>
+                                        
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--4-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Due_Date__c.Label} To</b></label>
+                                                <div class="slds-form-element__control" >
+                                                    <input type="text" id="promoDueDt2" name="promoduedt2" onfocus="DatePicker.pickDate(false,'promoDueDt2', false);" style="width:75%;" size="10" tabindex="9" />
+                                                </div>
+                                            </div>
+                                        </aside>
+                                        
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--4-of-12">
+                                            
+                                        </aside>
+                                           
+                                   </div> 
+                               </main>
+                               
+                          </div><br/><br/>
+                          <div align="center">
+                            <apex:commandbutton value="Search" onclick="if(!doSearch()) return false;" rerender="results" tabindex="10" status="status" styleClass="slds-button slds-button--neutral" />&nbsp;
+                            
+                            <apex:actionstatus id="status">
+                                <apex:facet name="start">
+                                    <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+                                           height: 100%;opacity:0.65;width:100%;"> 
+                                        <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                                            <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                                            <span class="waitingDescription">Loading...</span>
+                                        </div>
+                                    </div>
+                                </apex:facet>
+                            </apex:actionstatus>
+                            
+                            <apex:commandbutton value="Clear" onclick="clearFields();" rerender="results" action="{!clearForm}" styleClass="slds-button slds-button--neutral"/>
+                          </div>
+                          
+                          <br/>
+                          
+                          
+                          
+                          <apex:outputPanel id="results">
+                          
+                              <div class="SectionHeader" style="background-color:SteelBlue;color:white;">
+                                   <h3 class="slds-section-title"><b>&nbsp;Results</b></h3>
+                              </div>
+                              <br/>
+                              <div width="100%" align="right">  
+                                  <apex:commandButton action="{!exportToPDF}" value="Print Result" rendered="{!If(cWrapper.size = null ||schWrapper.size = 0 ,True,False)}" style="align:right;" styleClass="slds-button slds-button--neutral"/> 
+                              </div> 
+                            
+                                       <apex:repeat value="{!cWrapper}" var="cw">
+            
+                                            <apex:Repeat value="{!cw.sWrapper}" var="sw" >
+                                                 
+                                              <!-- div style="page-break-after: always;" id="div1" -->
+                                              <div   id="div1">             
+                                                <table width="100%" >
+                                                    
+                                                    <tr>
+                                                        <td width = "25%">
+                                                            
+                                                               
+                                                        </td>
+                                                        
+                                                        <td width = "75%">
+                                                           <table width="100%" >
+                                                           <tr>
+                                                                <td align="left" width = "100%" style ="vertical-align:bottom;">
+                                                                    <apex:repeat value="{!sw.tskST}" var="StTsk" > 
+                                                                        <div style="width:74px;float:left; align:center" align = "center">
+                                                                               <apex:outputText value="{!LEFT(StTsk.Name, 15)}" style="width:100%;font-size:10px;"/>
+                                                                         </div> 
+                                                                         
+                                                                              
+                                                                    </apex:repeat>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            </table>                
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                 <div style="background-color:#DFDFDF;width:100%;font-weight: bolder;width:100%">
+                                                            <b> <apex:outputText value="{!cw.strClient}" style="font-size:14px;font-weight:bold;"/> </b> <br/>
+                                                        </div>
+                                                 <table width="100%" >
+                                                        
+                                                        <tr>
+                                                            <td width = "25%">
+                                                                
+                                                                   <b> <apex:outputText value="{!sw.strschedule}" style="font-size:16px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                                            </td>
+                                                            
+                                                            <!-- td width = "75%">
+                                                               <table width="100%" >
+                                                               
+                                                                
+                                                                </table>                
+                                                            </td -->
+                                                        </tr>
+                                                    </table>
+                                               
+                                                 
+                                                        <apex:dataTable value="{!sw.jWrapper}" var="jw" width="100%">
+                                                        <apex:column >
+                                <!--                        <apex:repeat value="{!cw.jWrapper}" var="jw" >
+                                -->                            <table width="100%">
+                                                                <tr>
+                                                                    <td width="25%">
+                                                                        <table width="100%" style="float:left;">
+                                                                            <tr>
+                                                                                <td style="width:100%;vertical-align:top;" >
+                                                                                    <b><apex:outputText value="{!jw.job.Name} ({!jw.job.Job_Auto_Number__c})" style="font-size:14px;"/><br/>
+                                                                                    <apex:outputLabel value="Created :" style="float:left;font-size:10px;"></apex:outputLabel> <apex:outputText style="width:50px;float:left;font-size:10px;" value="{0,date,MM'/'dd'/'yy}">
+                                                                                    <apex:param value="{!JW.job.createdDate}"/> </apex:outputText><br/>
+                                                                                     <apex:variable var="count1" value="{!1}"/>
+                                                                                    <apex:repeat value="{!jw.lstStaff}" var="JTL">
+                                                                                    
+                                                                                        <apex:outputText value="{!JTL}" style="font-size:10px;"/><apex:outputLabel style="font-size:10px;" value=", " rendered="{!if(jw.lstStaff.size != count1,true, false)}"></apex:outputLabel>
+                                                                                       <apex:variable var="count1" value="{!count1 + 1}"/>
+                                                                                    </apex:repeat><br/></b>
+                                                                                    <apex:outputText value="{!jw.job.Status_Notes__c}" style="font-size:10px;"/>
+                                                                                </td>
+                                                                                <!-- td style="width:17%;vertical-align:top;">
+                                                                                    <apex:outputText value="{!jw.job.Job_Auto_Number__c}" style="font-size:10px;"/>&nbsp;&nbsp;&nbsp;<br/>
+                                                                                   
+                                                                                </td -->
+                                                                                
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                
+                                                                    <td width="75%" style="vertical-align:top;">
+                                                                        <table width="100%">
+                                                                            <tr>
+                                                                                <td width = "100%"   >
+                                                                                    <apex:repeat value="{!jw.jobTasks}" var="TSL">
+                                                                                        <div style="width:74px;float:left;" align = "center" >    
+                                                                                            <apex:outputText style="width:100%;float:left;font-size:10px;" value="{0,date,MM'/'dd}"  rendered="{!if(TSL.Revised_Due_Date__c !=null,true,false)}">
+                                                                                            <apex:param value="{!if(TSL.Revised_Due_Date__c !=null,TSL.Revised_Due_Date__c,'-')}"/> </apex:outputText>
+                                                                                            <apex:outputText style="width:100%;float:right; align:center;" value=" - - " rendered="{!if(TSL.Revised_Due_Date__c == null,true,false)}" ></apex:outputText> 
+                                                                                        </div>
+                                                                                    </apex:repeat>
+                                                                                    <br/><br/> 
+                                                                                </td>
+                                                                            </tr>
+                                                                             
+                                                                        </table>
+                                                                    </td>
+                                                                </tr><hr/>
+                                                                 
+                                                            </table> 
+                                <!--                        </apex:repeat>
+                                -->                        </apex:column><br/> 
+                                                        </apex:dataTable> 
+                                                        
+                                                    
+                                                <br/><br/>
+                                            </div>
+                                              
+                                        </apex:repeat>
+                                        </apex:repeat>
+                                        <div width="100%"  >  
+                                          <apex:outputText value="No Records to display" rendered="{!If(cWrapper.size = null ||cWrapper.size = 0 ,True,False)}" style="font-size:14px;font-weight:bold;font-color:#0000FF;"/>
+                                        </div>
+                                         <div width="100%" align="right">  
+                                          <apex:commandButton action="{!exportToPDF}" value="Print Result" rendered="{!If(cWrapper.size = null ||schWrapper.size = 0 ,True,False)}" style="align:right;" styleClass="slds-button slds-button--neutral"/> 
+                                        </div>    
+                                   
+                          
+                         </apex:outputPanel> 
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                    </apex:pageBlock>
+              </apex:form>     
+           </div> 
+        </body>
+    </html>
+</apex:page>

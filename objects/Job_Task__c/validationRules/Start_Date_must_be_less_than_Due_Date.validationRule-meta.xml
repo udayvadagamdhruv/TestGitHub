@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Start_Date_must_be_less_than_Due_Date</fullName>
+    <active>false</active>
+    <description>Final Due Date must be greater than Start Date</description>
+    <errorConditionFormula>Start_Date__c  &gt;  Revised_Due_Date__c</errorConditionFormula>
+    <errorDisplayField>Revised_Due_Date__c</errorDisplayField>
+    <errorMessage>Final Due Date must be greater than Start Date</errorMessage>
+</ValidationRule>

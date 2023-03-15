@@ -1,0 +1,7 @@
+<!-- This page is used to display PO Detail information.-->
+<apex:page standardController="Purchase_Order__c" tabStyle="Job__c" extensions="PODetailPageExtension">
+  <apex:detail relatedList="false" inlineEdit="false" showChatter="true"/>
+  <apex:include pageName="DisplayPOLI" rendered="{!po.Size == 0}"/>
+<apex:include pageName="DisplayPOLIWhenPOStatusIsSent" rendered="{!po.Size != 0}"/>
+</apex:page>
+<!--End of Page -->

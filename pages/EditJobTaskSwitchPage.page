@@ -1,0 +1,11 @@
+<apex:page standardController="Job_Task__c" extensions="EditJobTaskSwitchPageExtension" sidebar="false" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="False">
+   <apex:outputPanel rendered="{!if(isClassic,true,false)}">
+        <apex:include pageName="EditJobTask"/>
+    </apex:outputPanel> 
+    <apex:outputPanel rendered="{!if(isMobile,true,false)}">
+         <apex:include pageName="EditJobTaskMobile"/>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!if(isLight,true,false)}">
+         <apex:include pageName="EditJobTasklightning"/>
+    </apex:outputPanel>
+</apex:page>

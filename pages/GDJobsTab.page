@@ -1,0 +1,16 @@
+<apex:page standardcontroller="Graphics_Deliverables__c" extensions="Test_Class_Controller" sidebar="false">
+    <apex:form id="form1">
+        <apex:pageMessages id="msgs" />
+        <apex:repeat value="{!$ObjectType.Graphics_Deliverables__c.FieldSets.Graphics_Deliverables_Fieldset}" var="fs1">
+            <tr>
+                <td>
+                    <span> {!fs1.label} </span>
+                </td>
+                <td>
+                    <apex:outputfield value="{!obj[fs1]}" ></apex:outputfield>
+                </td>
+            </tr>
+        </apex:repeat>
+        <apex:commandButton value="Submit" action="{!save}" rerender="form1"/>
+    </apex:form>
+</apex:page>

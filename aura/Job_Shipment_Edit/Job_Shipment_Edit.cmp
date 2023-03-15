@@ -1,0 +1,65 @@
+<aura:component controller="job_Cost_Tab_cmp"  implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,lightning:actionOverride,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:hasSObjectName" access="global" >
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="fieldSet" type="List"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="sObjectName" type="string"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <lightning:recordEditForm aura:id="ShpEditform" density="comfy"  objectApiName="{!v.sObjectName}"  recordId="{!v.recordId}" onsubmit="{!c.RecordSubmit}" onload="{!c.onloadrecord}"  onsuccess="{!c.onRecordSuccess}" >
+        <lightning:messages /> 
+        <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+            <div aura:id="errorMsgs"></div>
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium"> 
+                        Edit {!v.simpleRecord.Name} 
+                    </h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium slds-grid slds-wrap ">
+                    <lightning:layout multipleRows="true">  
+                        <aura:iteration items="{!v.fieldSet}" var="field">
+                            <aura:if isTrue="{!(field=='Job__c')}">    
+                                <aura:set attribute="else">   
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="JobShpField"  class="{!'slds-form-element slds-p-horizontal_x-small' + ' ' +((field=='Shipment_Name__c') ? 'frequired' :' ')}"/> 
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Job__c'}"> 
+                                <div class="slds-form-element slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> Job Name</label>
+                                    <div class="slds-form-element__control">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <ui:outputText value="{!v.simpleRecord.Job__r.Name}"  />
+                                        </lightning:layoutItem>
+                                    </div>
+                                </div>
+                            </aura:if>
+                        </aura:iteration>
+                        <br></br>
+                    </lightning:layout>
+                    </div>
+                    <div class="slds-modal__footer">                
+                        <lightning:button variant="neutral" label="Cancel" onclick="{!c.doCancel}" />
+                        <lightning:button  variant="brand"  label="Save" type="submit" />
+                    </div>              
+                </div>
+            </div>
+        </lightning:recordEditForm> 
+        <div aura:id="overlay" class="slds-backdrop slds-backdrop--open"></div>
+        <aura:if isTrue="{!not(empty(v.recordError))}">
+            <div class="recordError">
+                {!v.recordError}</div>
+        </aura:if>   
+        
+    </aura:component>

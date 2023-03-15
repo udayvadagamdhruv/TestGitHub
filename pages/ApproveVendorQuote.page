@@ -1,0 +1,17 @@
+<!-- This Page is used for Approve Vendor for any Quote -->
+<apex:page standardController="Vendor_Quote__c" extensions="VendorQuoteController" showHeader="false" sidebar="false">
+        
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+          <!-- When this vf page is loaded its controller method (autoRun) will be called -->
+          <apex:actionFunction name="doInit" action="{!autoRun}"/> 
+        </apex:form>
+       
+</apex:page>
+<!-- End of Page -->

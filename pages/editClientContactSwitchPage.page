@@ -1,0 +1,12 @@
+<apex:page standardController="Client_Contact__c" extensions="EditJobTaskSwitchPageExtension" docType="html-5.0" applyBodyTag="False">
+  <apex:outputPanel rendered="{!if(isClassic,true,false)}">
+        <apex:include pageName="editClientContact"/>
+    </apex:outputPanel> 
+    <!--apex:outputPanel rendered="{!if(isMobile,true,false)}">
+         <apex:include pageName="EditJobTaskMobile"/>
+    </apex:outputPanel>
+    -->
+    <apex:outputPanel rendered="{!if(isLight,true,false)}">
+         <apex:include pageName="editClientContactLightning"/>
+    </apex:outputPanel>
+</apex:page>

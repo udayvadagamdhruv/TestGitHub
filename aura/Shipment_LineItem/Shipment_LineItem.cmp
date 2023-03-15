@@ -1,0 +1,218 @@
+<aura:component controller="job_Cost_Tab_cmp" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isShpLIOpen" type="boolean" default="false"/>
+    <aura:attribute name="ShpLIRecordid" type="String"/>
+    <aura:attribute name="isAccess" type="list" /><!-- to check Quote permissions(creatable,editable)-->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="ItemLink" />
+    <aura:attribute name="sortedDirection" type="String" default="ASC" />
+    <aura:attribute name="ShowProductionEstimate" type="boolean" default="false" />
+    <aura:attribute name="isShpLIEditOpen" type="boolean" default="false" />
+    <aura:attribute name="isaddClick" type="boolean" default="false" />
+    
+    <aura:attribute name="ShpLidata" type="Object"/>
+    <aura:attribute name="ShpLicolumns" type="List"/>
+    <aura:attribute name="ShpLiselectedRowsCount" type="Integer" />
+    <aura:attribute name="Selected_PELI" type="Sobject[]" default=""/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="ShipmentLineIemsSection" type="String" default="Shipment Line Items" required="true" access="global" />
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>  
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+      <aura:if isTrue="{!v.isAccess[3]}"> 
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ShipmentLineItems">
+        <lightning:accordionSection name="ShipmentLineItems" label="{!v.ShipmentLineIemsSection}"  class="slds-card" >
+            
+            <div align="center">
+                <aura:if isTrue="{!!v.isMobile}">
+                    <lightning:button variant="neutral" label="Add Line Items" title="Add Line Items" onclick="{!c.addLineItems}"/>
+                </aura:if>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                        <aura:if isTrue="{!!v.isMobile}">
+                            <div>
+                                <lightning:datatable class="ShpLItablecss"
+                                                     aura:id="ShpDataTable"
+                                                     columns="{!v.columns}"
+                                                     data="{!v.data}"
+                                                     keyField="Id"
+                                                     onsave ="{!c.onSave}"
+                                                     hideCheckboxColumn="true"
+                                                     showRowNumberColumn="true"
+                                                     errors="{!v.errors}"
+                                                     onsort="{!c.updateColumnSorting}"
+                                                     sortedBy="{!v.sortedBy}"
+                                                     sortedDirection="{!v.sortedDirection}" 
+                                                     onrowaction="{! c.handleRowAction }" />
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isMobile}">
+                            <aura:iteration items="{!v.data}" var="ShpLI">
+                                <table>
+                                    <tr>
+                                        <td colspan="2">
+                                            <b> <ui:outputText value="{!ShpLI.Name}"/></b> 
+                                        </td>
+                                  <!--  <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                            <lightning:buttonMenu name="{!Shp.Id}" aura:id="EstItem" onselect="{! c.handleShpQuickAction }">
+                                                <lightning:menuItem value="Edit_Shp" label="Edit" iconName="utility:edit"/>
+                                                <lightning:menuItem value="Delete_Shp" label="Delete" iconName="utility:delete"/>
+                                            </lightning:buttonMenu>
+                                        </td>-->
+                                    </tr>                           
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].Job}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <ui:outputText value="{!ShpLI.Job_Name__c}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].ClientName}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><lightning:formattedNumber value="{!ShpLI.Client_Name__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].Status}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!ShpLI.Item_Status__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].Shipped}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!ShpLI.Qty_Shipped__c}"/></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <hr style="margin: 0.4rem 0;"/>
+                            </aura:iteration>
+                        </aura:if>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+            
+        </lightning:accordionSection>
+    </lightning:accordion>
+    </aura:if>
+    <aura:if isTrue="{!v.isaddClick}">
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{!c.closeModelForAddLineItems}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add {!v.Labelname}</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    <aura:if isTrue="{!empty(v.ShpLidata)}">
+                        No Line Items are available for this Shipment. 
+                        <aura:set attribute="else" >
+                            
+                            
+                            <h1>Selected Rows: {!v.ShpLiselectedRowsCount} </h1>
+                            <lightning:datatable class="AddShpLItablecss"
+                                                 columns="{!v.ShpLicolumns}"
+                                                 data="{!v.ShpLidata}"
+                                                 keyField="Id"
+                                                 onrowselection="{!c.updateSelectedTextShpLI}"/>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModelForAddLineItems}"/>
+                    <lightning:button variant="brand" 
+                                      label="Add Line Items to Shipment"
+                                      title="Add Items"
+                                      onclick="{!c.saveSelectedLineItems}" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+    </aura:if>   
+    
+    <aura:if isTrue="{!v.isShpLIEditOpen}">
+        <lightning:recordEditForm aura:id="ShpLIEditform" density="comfy" objectApiName="Shipment_Line_Item__c" recordId="{!v.ShpLIRecordid}" onload="{!c.ShpLIload}"  onsubmit="{!c.ShpLIOnsubmit}" onsuccess="{!c.ShpLIonSuccess}"  >
+            <lightning:messages />
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{!c.closeModelForEditLI}"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit {!v.Labelname}</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:inputField fieldName="Item_Status__c" aura:id="StatusUpdate" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                        <lightning:inputField fieldName="Qty_Shipped__c" aura:id="QtyUpdate" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                    </div>
+                    
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModelForEditLI}"/>
+                        <lightning:button variant="brand" 
+                                              label="Save"
+                                              title="Save"
+                                              type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </lightning:recordEditForm> 
+    </aura:if>  
+</aura:component>

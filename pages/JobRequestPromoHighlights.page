@@ -1,0 +1,78 @@
+<apex:page controller="JobRequestPromoHighlights" tabstyle="Job__c" sidebar="false">
+ <apex:form >
+ <apex:pageMessages ></apex:pageMessages>
+   <apex:pageBlock title="Bulk Job Create">
+      
+      <apex:pageBlockTable value="{!wrappers}" var="wrapper" id="wtable">
+         <!--
+         <apex:column headerValue="Ident">
+            <apex:outputText value="{!wrapper.ident}"/>
+         </apex:column>
+         -->
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Name.Label}" width="20%">
+            <apex:inputField value="{!wrapper.objJob.Name}" required="true" style="width:250px"/>
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Dummy_Text_1__c.Label}" width="15%">
+             <apex:inputField value="{!wrapper.objJob.Dummy_Text_1__c}"/>
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" width="5%">
+            <apex:inputField value="{!wrapper.objJob.Start_Date__c}"/>
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Media_Types__c.Label}" width="8%">
+            <!-- <apex:inputField value="{!wrapper.objJob.Media_Types__c}"/> -->
+              <apex:actionRegion >
+                     <apex:outputPanel >
+                        <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                           <div class="requiredBlock"> </div>
+                           <apex:selectList id="MtName" value="{!wrapper.media}" size="1">
+                              <apex:selectOptions value="{!MediaTypes}">
+                              </apex:selectOptions> 
+                           </apex:selectList>
+                        </span>
+                         <apex:outputPanel rendered="{!LEN(wrapper.mediaError)!=0}">
+                             <div class="errorMsg"><strong>Error:</strong>&nbsp;{!wrapper.mediaError}</div>
+                          </apex:outputpanel>   
+                     </apex:outputPanel>  
+                  </apex:actionRegion>
+         </apex:column>
+         
+         <!--
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}">
+           
+             <apex:outputPanel >
+                     <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                        <div class="requiredBlock"> 
+                        </div>
+                        <apex:selectList id="ST" value="{!ScheduleTemp}" size="1">
+                           <apex:selectOptions value="{!ScheduleTemplates}">
+                           </apex:selectOptions>
+                        </apex:selectList>
+                     </span>
+                  </apex:outputPanel>  
+         </apex:column>
+         -->
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Specification_Template__c.Label}" width="10%">
+              <apex:selectList id="SpecTempName" value="{!SpecTempName}" size="1" >
+                     <apex:selectOptions value="{!SpecificationTemplates}"></apex:selectOptions>
+                  </apex:selectList>
+         </apex:column>
+         
+         <apex:column headerValue="Action">
+            <apex:commandButton value="Delete" action="{!delWrapper}" rerender="wtable">
+               <apex:param name="toDelIdent" value="{!wrapper.ident}" assignTo="{!toDelIdent}"/> 
+            </apex:commandButton>
+         </apex:column>
+      </apex:pageBlockTable>
+      <apex:commandButton value="Add Row" action="{!addRows}" rerender="wtable">
+         <apex:param name="addCount" value="1" assignTo="{!addCount}"/> 
+      </apex:commandButton>
+      <apex:commandButton value="Add 5 Rows" action="{!addRows}" rerender="wtable">
+         <apex:param name="addCount" value="5" assignTo="{!addCount}"/> 
+      </apex:commandButton>
+      <apex:commandButton value="Save" action="{!save}"/>
+   </apex:pageBlock>
+ </apex:form>
+</apex:page>

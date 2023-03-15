@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="MYTimesheetSection" label="MY Timesheets Section Label"  description="This will reflect the My Timesheet Section Label"/>
+</design:component>

@@ -1,0 +1,69 @@
+<apex:page controller="DisplayClientInvoiceUnderClientDetail">
+
+<head>
+ <style>
+  .hd{text-align:right;padding-right:20px!important;}
+  </style>
+</head>  
+  <apex:form >
+   <apex:pageBlock id="pb">
+      <table>
+          <tr>
+              <td> <apex:image url="{!$Resource.BigTop}" width="25" height="25"/> </td>
+               <td> <h3 style="color:#000000;font-size:1.2em;">Client Invoices</h3> </td>
+          </tr>
+      </table>
+    <div>
+     <apex:outputPanel layout="block" style="overflow:auto;height:150px;" rendered="{!ClientInvoice.size > 0}">
+    <apex:pageBlockTable value="{!ClientInvoice}" var="ci" id="abc">
+    
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Name.Label}">
+       <apex:outputLink tabindex="tab1" value="/apex/ClientInvoiceDetailpage?id={!ci.Id}">{!ci.Name}</apex:outputLink>
+       </apex:column>
+       
+        <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Job__c.Label}"> 
+      <apex:outputField value="{!ci.Job__r.Name}"/> 
+      </apex:column>
+      
+     
+                 
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!ci.Invoice_Date__c}"/>
+      </apex:column>
+      
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!ci.Date_Due__c}"/>
+      </apex:column>
+      
+      <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Total__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!ci.Invoice_Total__c}"/>
+      </apex:column>
+      
+        <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Status__c.Label}">
+       <apex:outputField value="{!ci.Invoice_Status__c}"/>
+      </apex:column>
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Term__c.Label}">
+       <apex:outputField value="{!ci.Term__c}"/>
+      </apex:column>
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Notes__c.Label}">
+       <apex:outputField value="{!ci.Notes__c}"/>
+      </apex:column>
+    
+    </apex:pageBlockTable>
+    </apex:outputpanel>
+    </div>
+  
+    <apex:pageBlockSection rendered="{!ClientInvoice.Size == 0}">
+     <apex:pageBlockSectionItem >
+     <b> No records to display </b>
+     
+     </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+   </apex:pageBlock>
+   
+  </apex:form>
+
+
+
+</apex:page>

@@ -1,0 +1,17 @@
+.THIS .slds-accordion__summary-action {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    min-width: 0;
+    border: 1px solid rgb(176, 173, 171) !important;
+    background: lightgray  !important;
+    padding: 5px  !important;
+}
+
+ .THIS .slds-accordion__section {
+    padding: 0.65rem !important;
+}
+
+ .THIS .slds-table td {
+    padding: .5rem .5rem !important;
+}

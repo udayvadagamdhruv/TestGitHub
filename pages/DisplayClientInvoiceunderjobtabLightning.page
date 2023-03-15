@@ -1,0 +1,429 @@
+<apex:page controller="DisplayClientInvoiceunderjobtabextension" id="frm" sidebar="flase" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true">
+    
+     <head>
+        <style>
+
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        .dateOnlyInput input {
+            width: 10.5em !important;
+        }
+               
+               
+       .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                         
+                        
+     </style>
+        
+    </head>
+
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}"/>
+            
+                  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+                  <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+                  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+             
+              <apex:slds />
+           
+               <div class="slds">
+        
+                <apex:form html-novalidate="novalidate" id="pb1">
+                
+                <apex:actionFunction name="inlinesaveCI" rerender="pb1" action="{!inlineSaveCI}"  status="LoadingStatus" >
+                <apex:param name="firstParam" assignTo="{!CIrowIndex }" value="" />
+                 <apex:param name="SecondParam" assignTo="{!editCIField}" value="" />
+              </apex:actionFunction>
+    
+                     <div class="slds-notify slds-text-heading--small slds-theme--error errorclass" role="alert" id="jobquote_Error">
+                        <apex:pageMessages id="pagemsgId2"></apex:pageMessages>
+                     </div> 
+               
+                    <br/>
+        
+                    <div align="center">
+                         <apex:commandButton action="{!CreateCI}" value="New Client Invoice" title="Press to create New Client Invoice" id="btn1" styleClass="slds-button slds-button--neutral slds-button-group"/>   
+                         <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;" styleClass="slds-button slds-button--neutral slds-button-group"/>  
+                         <apex:commandButton value="Cancel" id="cancelButton"  immediate="true" style="display: none;" reRender="pb1" styleClass="slds-button slds-button--neutral slds-button-group"/> 
+                    </div>
+                    
+                    <br/>
+                        <apex:outputPanel id="dq"> 
+                           <apex:outputPanel rendered="{!clientinvlst.size > 0}"> 
+                              
+                                 
+                            <div class="slds-card "   style="display:{!IF(clientinvlst.size>0,'block','none')}">
+                                            
+                                <div class="slds-card__body" >
+                                      
+                                   <apex:outputPanel id="dv"> 
+                                   <apex:outputPanel rendered="{!clientinvlst.size > 0}">   
+                           
+                                   <div class="clinvcol"  style="height:{!if(clientinvlst.size==1,'165px',if(clientinvlst.size==2,'215px',if(clientinvlst.size==3,'265px','')))};background-color:#f4f6f9;">
+                                         
+                                    <div style="overflow:auto;overflow-y:hidden;width: 100%;height:100%;">
+                                                 
+                                         
+                                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover" >
+                                                <thead class="slds-truncate">
+                                                    <tr class="slds-text-title">
+                                                        <th class="slds-size--1-of-9" scope="col">Action</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Name.Label}</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Client_Name__c.Label}</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Term__c.Label}</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Invoice_Status__c.Label}</th>
+                                                        <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Client_Invoice__c.Fields.Invoice_Total_new__c.Label}</th>
+                                                    </tr>
+                                                </thead>
+                                                
+                                                
+                                                  <script>
+                                                                                  
+                                                      $(document).ready(function(){
+                                                      
+                                                      
+                                                       $(".clientinvbutton").mouseover(function(){
+                                                            var cinv=$(this).children(".clientinvclass");
+                                                            
+                                                          if(($(this).offset().top+$(this).outerHeight()-$(".clinvcol").offset().top)+cinv.outerHeight()>$(".clinvcol").outerHeight()){
+                                                          
+                                                            $(this).children(".slds-dropdown_xx--small").addClass('slds-dropdown--bottom');
+                                                            
+                                                            }
+                                                            
+                                                           else{
+                                                        
+                                                             $(this).children(".slds-dropdown_xx--small").removeClass('slds-dropdown--bottom');
+                                                           }
+                                                                  
+                                                        });
+                                                       
+                                                         
+                                                      });
+                                                      
+                                                 </script>
+                                    
+                                                
+                                                
+                                                <tbody>
+                
+                                                    <apex:repeat value="{!clientinvlst}" var="ci" rendered="{!clientinvlst.size > 0}">
+                
+                                                        <tr class="slds-hint-parent">
+                                                        
+                                                            <td class="slds-size--1-of-9" data-label="Action">
+                                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open clientinvbutton">
+                                                                     &nbsp;&nbsp;  
+                                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                                               <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                        </div>
+                                                                        
+                                                                        &nbsp;&nbsp;&nbsp;
+                                                                        <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small clientinvclass">
+                                                                        
+                                                                           <ul class="slds-dropdown__list" role="menu">
+                                                                             
+                                                                               
+                                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                                
+                                                                                      <a href="/apex/EditClientInvoiceLightning?id={!ci.CIrec.Id}" role="menuitem" tabindex="0">
+                                                                                            <span class="slds-truncate" title="Edit">Edit</span>
+                                                                                          
+                                                                                             &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                                        </a>
+                                                                                    
+                                                                                                                                               
+                                                                                </li>
+                                                                                
+                                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                                     <apex:commandLink title="Delete" value="Delete" action="{!del}" onclick="if(!confirm('Are you sure?')){return false;}"  reRender="dv1,dv,deqt,dq,hiddenBlock1" status="LoadingStatus">
+                                                                                          <apex:param name="param1" value="{!ci.CIrec.Id}" assignTo="{!ciid}"> </apex:param>    
+                                                                                      
+                                                                                          &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                                    </apex:commandLink> 
+                                                                                    
+                                                                                                                                                  
+                                                                                </li>
+                                                                              
+                                                                            </ul>
+                                                                      </div> 
+                                                               </div>
+                                                            </td>
+                                                      
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Name.Label}">
+                                                                <div>
+                                                                    <apex:outputLink tabindex="tab1" value="/apex/ClientInvoiceDetailpageLightning?id={!ci.CIrec.Id}">{!ci.CIrec.Name}</apex:outputlink>
+                                                                </div>
+                                                            </td>
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Client_Name__c.Label}">
+                                                                <div>
+                                                                    <apex:outputField value="{!ci.CIrec.Client_Name__c}"/>
+                                                                </div>
+                                                            </td>
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Term__c.Label}">
+                                                                <div>
+                                                                     <apex:outputField value="{!ci.CIrec.Term__c}"/>
+                                                                </div>
+                
+                                                            </td>
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}">
+                                                                <div>
+                                                                   
+                                                              <apex:outPutpanel > 
+                                                                <apex:actionSupport event="ondblclick" rerender="pb1" rendered="{!(ci.CIrec.Invoice_Status__c!= 'Paid' && NOT(ci.isEditCIInvDt))}" action="{!inlineEditCI}"  status="LoadingStatus" focus="CIInvoiceDate">
+                                                                   <apex:param name="rowNumber" value="{!ci.CIrowNo}" assignTo="{!CIrowIndex}" />
+                                                                   <apex:param name="rowField" value="InvoiceDate" assignTo="{!editCIField}" />
+                                                                  </apex:actionSupport>
+                                                                  
+                                                                  <apex:outputfield value="{!ci.CIrec.Invoice_Date__c}"  rendered="{!NOT(ci.isEditCIInvDt)}"> 
+                                                                     <span style="display:{!IF(ci.CIrec.Invoice_Date__c==null,'inline','none')}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                     <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(ci.CIrec.Invoice_Status__c!= 'Paid','inline','none')}">&#xe254;</i>
+                                                                  </apex:outputfield>
+                                                                <apex:inputField id="CIInvoiceDate" value="{!ci.CIrec.Invoice_Date__c}"  rendered="{!ci.isEditCIInvDt}"   onchange="inlinesaveCI({!ci.CIrowNo},'InvoiceDate');" style="width:90%" />
+                                                         </apex:outPutpanel>  
+                                                                
+                                                                    <!---- <apex:outputfield value="{!ci.CIrec.Invoice_Date__c}"/> --->
+                                                                </div>
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}">
+                                                              <div>
+                                                              
+                                                              
+                                                               <apex:outPutpanel > 
+                                                                <apex:actionSupport event="ondblclick" rerender="pb1" rendered="{!(ci.CIrec.Invoice_Status__c!= 'Paid' && NOT(ci.isEditCIDueDt))}" action="{!inlineEditCI}"  status="LoadingStatus" focus="CIDueDate">
+                                                                   <apex:param name="rowNumber" value="{!ci.CIrowNo}" assignTo="{!CIrowIndex}" />
+                                                                   <apex:param name="rowField" value="DueDate" assignTo="{!editCIField}" />
+                                                                  </apex:actionSupport>
+                                                                  
+                                                                  <apex:outputfield value="{!ci.CIrec.Date_Due__c}"  rendered="{!NOT(ci.isEditCIDueDt)}"> 
+                                                                     <span style="display:{!IF(ci.CIrec.Date_Due__c==null,'inline','none')}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                     <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(ci.CIrec.Invoice_Status__c!= 'Paid','inline','none')}">&#xe254;</i>
+                                                                  </apex:outputfield>
+                                                                <apex:inputField id="CIDueDate" value="{!ci.CIrec.Date_Due__c}"  rendered="{!ci.isEditCIDueDt}"   onchange="inlinesaveCI({!ci.CIrowNo},'DueDate');" style="width:90%" />
+                                                             </apex:outPutpanel>  
+                                                              
+                                                             </div>
+                                                            </td>
+                
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Status__c.Label}">
+                                                                 <div>
+                                                                  <apex:outPutpanel > 
+                                                                    <apex:actionSupport event="ondblclick" rerender="pb1" rendered="{!(ci.CIrec.Invoice_Status__c!= 'Paid' && NOT(ci.isEditCIStatus))}" action="{!inlineEditCI}"  status="LoadingStatus" focus="CIStatus">
+                                                                       <apex:param name="rowNumber" value="{!ci.CIrowNo}" assignTo="{!CIrowIndex}" />
+                                                                       <apex:param name="rowField" value="Status" assignTo="{!editCIField}" />
+                                                                      </apex:actionSupport>
+                                                                      
+                                                                      <apex:outputfield value="{!ci.CIrec.Invoice_Status__c}"  rendered="{!NOT(ci.isEditCIStatus)}"> 
+                                                                         <span style="display:{!IF(ci.CIrec.Invoice_Status__c==null || ci.CIrec.Invoice_Status__c=='' ,'inline','none')}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                         <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(ci.CIrec.Invoice_Status__c!= 'Paid','inline','none')}">&#xe254;</i>
+                                                                      </apex:outputfield>
+                                                                    <apex:inputField id="CIStatus" value="{!ci.CIrec.Invoice_Status__c}"  rendered="{!ci.isEditCIStatus}"   onchange="inlinesaveCI({!ci.CIrowNo},'Status');"  />
+                                                                 </apex:outPutpanel>  
+                                                                 
+                                                              </div>
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-9" data-label="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Total_new__c.Label}">
+                                                                <div>
+                                                                    <apex:outputField value="{!ci.CIrec.Invoice_Total_new__c}"/>
+                                                                </div>
+                                                            </td>
+                                                         
+                                                        </tr>
+                
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                            </div> 
+                                           </div> 
+                                           
+                                             <div  style="float:right;padding-right:2.5%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                                 <apex:outputPanel rendered="{!clientinvlst.Size > 0}">
+                                                   <apex:outputLabel value="CI Total    " style="font-style:italic;"/> 
+                                                    <apex:outputText value="{0,Number, $###,###,###.00}">
+                                                       &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+                                                    </apex:outputText>
+                                                 </apex:outputPanel>
+                                              </div>  <br/><br/>
+                                           
+                                           
+                                            
+                                        </apex:outputPanel>
+                                       </apex:outputPanel> 
+                                      
+                                    </div>
+                                    
+                                       
+                                   <apex:outputPanel id="dv1" >
+                                  <apex:outputPanel rendered="{!ClientInvoice2.size>5}"><br/>
+                                      <div class="slds-card__footer">
+                                            <apex:commandLink value="View All ({!clientinvlst.size}{!IF(ClientInvoice2.size>5,'+','')})" action="{!ViewAllClientInvoice}" rendered="{!ViewAll}" status="LoadingStatus"  reRender="pb1"/>
+                                            <apex:commandLink value="Show Less ({!clientinvlst.size})" action="{!ShowLessClientInvoice}" rendered="{!ShowLess}" status="LoadingStatus"  reRender="pb1"/>
+                                      </div>
+                                  </apex:outputPanel>  
+                                  </apex:outputPanel>
+                                  
+                              </div>
+                              </apex:outputPanel>
+                             </apex:outputPanel>  
+                                 
+                                 
+                             <apex:actionStatus id="LoadingStatus" >
+                               <apex:facet name="start">
+                                  <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                                     <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                                       <span class="slds-assistive-text">Loading</span>
+                                       <div class="slds-spinner__dot-a"></div>
+                                       <div class="slds-spinner__dot-b"></div>
+                                     </div></div>
+                                </apex:facet>
+                            </apex:actionStatus>
+                             
+                             
+                              <apex:outputPanel id="deqt" >
+                    <apex:outputPanel rendered="{!clientinvlst.size <=0}" >
+                       <div> <b> No records to display </b></div>
+                    </apex:outputPanel>
+                  </apex:outputPanel>
+                                     
+                          
+        </apex:form>
+      </div>
+  
+      
+    </html>
+                    
+            
+    
+    
+    
+</apex:page>

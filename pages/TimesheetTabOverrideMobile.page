@@ -1,0 +1,240 @@
+<apex:page standardController="Timesheet_Entries__c" recordSetVar="Timesheets" readOnly="true"  extensions="TSEntryTabExt" showHeader="false" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" standardStylesheets="true">
+
+     <head>
+        <style>
+        
+         .slds .slds-tabs--scoped__nav 
+       {
+       background-color: #e2e4e6 !important;
+       font-size: 15px;
+       }
+       
+        html,html body
+        {
+              overflow: auto;
+              -webkit-overflow-scrolling:touch;
+        }
+        body
+        {
+          position:absolute;left:0;right:0;top:0;bottom:0;
+          margin:0;
+        }
+
+        
+            .hd {
+                text-align: right;
+                padding-right: 20px!important;
+            }
+            
+            .slds .slds-card__footer {
+                padding: 0px 16px 0px 0px;
+            }
+            
+            .slds .slds-card__header {
+                padding: 0px 10px 0px 0px;
+            }
+            
+            .slds .slds-card__body {
+                padding: 0px;
+            }
+            
+            .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color: white;
+            }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+            }
+            
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+            }
+            
+             .slds .slds-text-heading--small {
+          line-height: 1.8 !important;
+         }
+                
+        .slds .slds-table--bordered {
+     border-top: 0px solid #d8dde6;
+     //border-bottom: 0px solid #d8dde6;
+   }
+   
+            
+            
+        </style>
+    </head>
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+         <!-- <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" /> --->
+        
+        
+        <body>
+     
+             <!-- REQUIRED SLDS WRAPPER -->
+            
+              <div class="slds">
+              
+                  <apex:form html-novalidate="novalidate" id="job_list">
+                       
+                      
+                        <div class="slds slds-page-header" style="position:fixed;z-index:999;width:100% !important;border-bottom: 3px solid #ccc !important;padding: 0px 0px 0px 0px !important;">
+                        <div class="slds-media__body pageHeader">
+                            <div class="slds-grid" style="width:100%;">
+                                <div class="slds-size--9-of-12" style="padding: 8px;">
+                                 <div class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-media slds-no-space slds-grow">
+                                        <div class="slds-media__figure">
+                                            <svg class="slds-icon slds-icon-standard-user" aria-hidden="true" style="background-color:#83D074 !important;width:37px !important;height:39px !important;">
+                                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom95"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <p class="slds-text-title--caps slds-line-height--reset" style="color:#333;"><b>My Timesheets</b></p>
+                                           <!-- <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"  style="color:#333">
+                                                Total: <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                                            <apex:param value="{!ROUND(totalHrs,2)}" />
+                                                         </apex:outputText> hrs 
+                                            </h1> --->
+                                             <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"  style="color:#333">
+                                            Total Time This Week:  <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                                              <apex:param value="{!ROUND(TotalThisWeekTime,2)}" />
+                                         
+                                              </apex:outputText> hrs
+                                                </h1>
+                                        </div>
+                                        </div>
+                                        </div>
+                                  
+                                </div>
+                                <div class="slds-size--3-of-12" style="padding: 8px;">
+                                  <apex:commandButton value="New" style="float:right ! important;margin-left:3px;margin-top:4px;padding: 0px 12px 0px 12px !important;line-height: 30px;"  action="{!NewMethod}" styleClass="slds-button slds-button--neutral" />
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                      
+                      
+                        <div class="slds">
+                           <br/><br/> <br/><br/>
+                        </div>
+                           
+                          
+                           
+                            <div class="slds-grid slds-wrap">
+                                    <apex:repeat value="{!TsEnty}" var="ts">
+                                    
+                                      
+                                            <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                                           
+                                                <div class="slds-media slds-tile slds-hint-parent" style="margin-top: 5px;">
+                                                 
+                                                    <div class="slds-media__figure slds-icon slds-icon-standard-groups">
+                                                       <svg class="slds-icon slds-icon-standard-user" aria-hidden="true" style="background-color:#83D074 !important;width:35px !important;height:37px !important;">
+                                                            <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom95"></use>
+                                                        </svg>
+                                                       </div>
+                                                    
+                                                    <div class="slds-media__body">
+                                                        <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                                <apex:outputLink value="/{!ts.Id}" style="align:left;"> {!ts.name} </apex:outputLink>
+                                                               <!-- <apex:outputLink value="/apex/JobRequestFormdetailpageMobile?id={!ts.Job__c}" style="align:right;"> {!ts.Job__r.Job_Auto_Number__c} </apex:outputLink>-->
+                                                                
+                                                                <h1 style="align:right;">Job#&nbsp;<apex:outputLink value="/apex/JobRequestFormdetailpageMobile?id={!ts.Job__c}" > {!ts.Job__r.Job_Auto_Number__c} </apex:outputLink></h1>
+                                                                
+                                                        </div>
+                                                        <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                          <!-- <apex:outputField value="{!ts.Hours_Worked__c}"/> &nbsp;-->
+                                                           <h1><apex:outputField value="{!ts.Hours_Worked__c}"/> hrs  </h1> 
+                                                           
+                                                           <apex:outputField value="{!ts.Date__c}" style="float:right;"/>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                   
+                                                </div> 
+                                               
+                                            <hr style="margin: 6px; margin-left: -4px; margin-right: -4px;"/>
+                                            
+                                        </div><br/>
+                                      
+                                      
+                                    </apex:repeat>
+                           
+                            </div>
+                           
+                           <br/>
+                              
+                   <!--          <apex:outputPanel rendered="{!TsEnty.size>0}" > 
+                             
+                              <span style="margin-left:20px !important;" >  {!(pageNo-1)*blockSize+1}-{!IF(pageNo*blockSize>=totalRecs,totalRecs,pageNo*blockSize)} of {!totalRecs} </span >
+                         
+                           <apex:selectList value="{!blockSize}" size="1" style="float:right;margin-right:20px;" >
+                                  <apex:selectOption itemLabel="10" itemValue="10"></apex:selectOption>
+                                  <apex:selectOption itemLabel="25" itemValue="25"></apex:selectOption>
+                                  <apex:selectOption itemLabel="50" itemValue="50"></apex:selectOption>
+                                  <apex:selectOption itemLabel="100" itemValue="100"></apex:selectOption>
+                                  <apex:actionSupport event="onchange" action="{!setindex}" reRender="job_list" status="TSstatus" />
+                                </apex:selectList>
+                                
+                                
+                                
+                                
+                       <div align="center" style="margin-top:10px;">
+                         <apex:commandButton value="First" rerender="job_list" action="{!beginning}" disabled="{!prev}" styleClass="slds-button slds-button--neutral" status="TSstatus"/>
+                                                    <apex:commandButton value="Prev" rerender="job_list" action="{!previous}" disabled="{!prev}" styleClass="slds-button slds-button--neutral" status="TSstatus"/>
+                                                    <apex:commandButton value="Next" rerender="job_list" action="{!next}" disabled="{!nxt}" styleClass="slds-button slds-button--neutral" status="TSstatus"/>
+                                                    <apex:commandButton value="Last" rerender="job_list" action="{!end}" disabled="{!nxt}" styleClass="slds-button slds-button--neutral" status="TSstatus"/>
+                                                    
+                        </div>                     
+                             
+                             
+                               
+                              
+                                           
+                         
+                            
+                            </apex:outputPanel> 
+                             
+                          
+                        
+                                      
+                          
+                          
+                          
+                          <apex:actionStatus id="TSstatus" >
+                          <apex:facet name="start">
+                                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                                    &nbsp;
+                                </div>
+                                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                                    <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                                        <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                                    </div>
+                                </div>
+                                </apex:facet>
+                          
+                          </apex:actionStatus>
+                           
+       
+                    -->         
+                            
+                   <br/>
+              </apex:form>     
+           </div> 
+        </body>
+    </html>
+    
+    
+    
+    
+    
+
+</apex:page>

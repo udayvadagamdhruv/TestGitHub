@@ -1,0 +1,17 @@
+<apex:page standardController="Campaign_Template__c"  tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true" >
+ 
+ <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/NewcampaignTemplate", "_self");
+         }
+        
+    </script>
+  
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="NewCampaignTemplateLightning"/>
+    </apex:outputPanel>
+
+</apex:page>

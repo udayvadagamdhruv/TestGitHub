@@ -1,0 +1,88 @@
+<apex:page controller="DisplayBillboardUnderVendorController" tabStyle="Billboard__c" readOnly="true">
+
+     <head>
+         <style>
+           .hd
+              {
+              text-align:right;
+              padding-right:20px!important;
+              }
+            </style>
+      </head>
+        
+   <apex:form > 
+      
+   <apex:pageBlock >
+      <table>
+          <tr>
+              <td> <apex:image url="{!$Resource.BigTop}" width="25" height="25" /> </td>
+              <td>  <h3 style="color: #000000;font-size:1.2em;">Billboards</h3> </td>
+          </tr>
+      </table>
+   
+             <table >
+                <tr>
+                  <td  width="10%;">
+                     <b> <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Billboard_Status__c.Label}" /> </b>
+                   </td>
+                   <td style="margin-right:15px;">&nbsp;&nbsp;  
+                        <apex:selectList id="StatusList" value="{!strStatus}" size="1" >                              
+                           <apex:selectOptions value="{!StatusList}"/>
+                            <apex:actionSupport event="onchange" rerender="pgt1" action="{!populatebbList}"/>
+                        </apex:selectList></td>
+                                 
+               </tr>
+             </table> <br/>
+              <b> <apex:outputLabel value="You are Viewing recent thousand Jobs" rendered="{!BB.size == 1000}" /></b>  
+               <apex:pageBlock id="pgt1">  
+             <div>
+                   <apex:outputPanel layout="block" style="overflow:auto;height:150px;"  rendered="{!BB.size > 0}" >
+                          <apex:pageBlockTable value="{!BB}" var="b" > <br/><br/><br/> 
+                               
+                             <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Name.Label}">
+                     
+                                   <apex:outputLink tabindex="tab1" value="/apex/Billboarddetailpage?id={!b.Id}">{!b.Name}</apex:outputLink> 
+                              </apex:column>   
+                              
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Title__c.Label}">
+                                   <apex:outputField value="{!B.Title__c}"/>
+                              </apex:column>       
+                             
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Location__c.Label}">
+                                  <apex:outputfield value="{!B.Location__c}"/>
+                              </apex:column>
+                              
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.BB_Vendor__c.Label}" >
+                                 <apex:outputField value="{!b.BB_Vendor__c}"/>
+                              </apex:column> 
+                               <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Client_Name__c.Label}" >
+                                 <apex:outputField value="{!b.Client_Name__c}"/>
+                              </apex:column>
+                                    
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Expiration_Date__c.Label}" >
+                                 <apex:outputField value="{!b.Expiration_Date__c}"/>
+                              </apex:column>
+                              
+                          </apex:pageBlockTable>
+                  </apex:outputpanel><br/>
+                  
+           </div>
+             
+             
+             
+             
+             
+         
+         
+      
+               <apex:pageBlockSection rendered="{!BB.size == 0}">
+                   <apex:pageBlockSectionItem >
+                       <b>No records to display</b>
+                   </apex:pageBlockSectionItem>              
+                 </apex:pageBlockSection>
+          </apex:pageBlock>
+    </apex:pageBlock>
+ </apex:form> 
+
+
+</apex:page>

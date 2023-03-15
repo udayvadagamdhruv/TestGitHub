@@ -1,0 +1,460 @@
+<apex:page standardController="Estimate_Line_Items__c" extensions="DisplayProductionEstSpecInEstimateTabExt" tabStyle="Job__c" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true" id="page1">
+
+
+ <style>
+ 
+       .slds .slds-max-medium-table--stacked-horizontal td:before
+        {
+          text-transform:none;
+        }
+   
+   
+       .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                    }
+                     td {
+             font-family: Arial,Helvetica,sans-serif;
+              color:white;
+           }
+                   
+       
+       .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                    
+   </style>
+
+   
+
+     
+      
+
+
+      <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <head>
+      
+        <!---  <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+     <apex:stylesheet value="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.css')}"/>
+            
+     <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> ---->
+        
+       
+          
+          
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+       <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>          
+             
+        </head>
+        
+           <body>
+                 
+               <div class="slds">
+               
+              
+              
+               
+               
+               <apex:form html-novalidate="novalidate" id="pb1">
+               
+                <apex:outputPanel id="importspecs"> 
+                <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                <apex:pageMessages id="pgmsg"/>
+                           </div> <br/> 
+                           <apex:inputHidden value="{!errorMsg}" id="hiddenElement"/>
+                           
+                         <script>
+     
+                         function dosomething(){
+                          var hiddenElement=document.getElementById("{!$Component.hiddenElement}").value;
+                          
+                          var isfalse=(hiddenElement=='false');
+                          if(isfalse){
+                            //alert(typeof(hiddenElement));
+                            //alert(typeof(isfalse));
+                            //alert(hiddenElement);
+                           window.location.reload(true);
+                         }
+                         }
+                         </script>   
+                           
+                    </apex:outputPanel>                     
+              
+                           
+                        <apex:pageBlock mode="edit" id="pb" >  
+                                                       
+                             <table width="100%" >
+                                
+                                 <tr>
+                                   <td colspan="2">
+                                    
+                                 </td>
+                               </tr>
+                             
+                                 
+                              <tr>
+                                 <td align="left" width="38%" style="padding-top:10px;" >
+                                     <apex:outputLabel value="Production Spec Template"></apex:outputLabel>&nbsp;&nbsp;
+                                   <apex:selectList id="theSelectList" value="{!ProductionSpecTempName}"  size="1" styleClass="slds-select slds-m-right--medium" >
+                                    <apex:selectOptions value="{!ProductionSpecTemplate}" id="sp"></apex:selectOptions>
+                                 </apex:selectList> &nbsp;  
+                        
+                          
+                               </td>   
+              
+                         <td valign="middle" style="padding-top:10px;">
+                            &nbsp; &nbsp; &nbsp; 
+                            <apex:commandButton value="Import Spec Items" action="{!importSpecs}" reRender="importspecs"  oncomplete="dosomething();"    styleClass="slds-button slds-button--neutral"></apex:commandButton>&nbsp; &nbsp;  &nbsp; 
+                             <apex:commandButton value="Add Spec Item" action="{!addNewSpecs}"   id="addspec" styleClass="slds-button slds-button--neutral"/>&nbsp;
+                             <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display:none;" styleClass="slds-button slds-button--neutral"/>&nbsp;
+                             <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display:none;" styleClass="slds-button slds-button--neutral" reRender="pb1"/>&nbsp;                                    
+                       </td>
+                
+                   </tr>
+                                       
+                </table>
+                <br/>
+               
+             
+           <div class="slds-box" style="display:{!IF(lstEstli.size > 0, 'block','none')};">
+           
+                   
+                      <div class="slds-grid slds-wrap">
+                            <apex:repeat value="{!lstEstli}" var="lst" rendered="{! lstEstli.size > 0}" id="results" >
+                                
+                                    <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                                        <div class="slds-media slds-tile slds-hint-parent">
+                        
+                                            <div class="slds-media__figure">
+                                                <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                    <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#record')}"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                    <p class="slds-tile__title slds-truncate">
+                                                        {!lst.name}
+                                                    </p>
+                        
+                                                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                        
+                                                         <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                                    <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                </div>
+                                                        
+                                                       
+                        
+                                                        <div class="slds-dropdown slds-dropdown--right">
+                        
+                                                            <ul class="slds-dropdown__list" role="menu">
+                                                               
+                                                              <apex:outputPanel rendered="{!$ObjectType.Estimate_Spec_Item__c.updateable}">
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                    <a  href="/apex/EditestimatelineitemunderJobLightning?id={!lst.id}" role="menuitem" tabindex="0">
+                                                                        <span class="slds-truncate" title="Edit">Edit </span>
+                                                                        
+                                                                   <!---- <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                        <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                    </svg>----->
+                                                                     &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i>
+                                                                    </a>
+                                                                </li>
+                                                               </apex:outputPanel>  
+                                                               <apex:outputPanel rendered="{!$ObjectType.Estimate_Spec_Item__c.updateable}"> 
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                    <a href="/apex/DeleteSpecItemUndertheEstLI?id={!lst.id}" onclick="if(!confirm('Are you sure?')){return false;}" role="menuitem" tabindex="-1">
+                                                                        <span class="slds-truncate" title="Delete">Delete</span>
+                                                                        <!----
+                                                                     <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                        <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                    </svg> 
+                                                                    ----->
+                                                                     &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>
+                                                                    </a>
+                                                                </li>
+                                                                </apex:outputPanel>  
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                        
+                                                </div>
+                                                <div class="slds-tile__detail slds-text-body--small">
+                                                    <p >{!lst.Description__c}</p>
+                                                </div>
+                        
+                                            </div>
+                                        </div> <br/>
+                                   
+                                </div><br/>
+                               
+                            </apex:repeat>
+                             <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                               </div>
+                        </div>
+           
+                   
+                      
+                      
+                   <!--  <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" id="table111">
+                                <thead>
+                                   <tr class="slds-text-title">
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="Name" ><b>Name</b></div>
+                                      </th>
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="Description"><b>Description</b></div>
+                                      </th>
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="Action"><b>Action</b></div>
+                                      </th>
+                                  </tr>
+                               </thead>
+                               
+                               
+                                <tbody>
+                                   <apex:repeat value="{!lstEstli}" var="lst" rendered="{! lstEstli.size > 0}" id="results" >
+                                        <tr>
+                                             
+                                              <td data-label="Name">
+                                                <div >
+                                                    <apex:outputField value="{!lst.name}">
+                                                         <apex:inlineEditSupport event="ondblclick" hideOnEdit="addspec" showOnEdit="saveButton,cancelButton"/>
+                                                             &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9"/> 
+                                                       </apex:outputField>
+                                                 </div>
+                                                
+                                              </td>
+                                              
+                                              <td data-label="Description">
+                                                <div>
+                                                      
+                                                        
+                                                        <apex:outputField value="{!lst.Description__c}">
+                                                            <apex:inlineEditSupport event="ondblclick" hideOnEdit="addspec" showOnEdit="saveButton,cancelButton"/>
+                                                            &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9"/> 
+                                                         </apex:outputField>   
+                                                </div>
+                                              </td>
+                                             
+                                              <td data-label="Action">
+                                                 <div>
+                                                      <apex:commandButton value="Edit" action="{!editSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Estimate_Spec_Item__c.updateable}" styleClass="slds-button slds-button--neutral">
+                                                          <apex:param name="param1" value="{!lst.id}" assignTo="{!specId}"></apex:param>
+                                                      </apex:commandButton> &nbsp;
+                                    
+                                                    <apex:commandButton value="Remove" action="{!DelSpec}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Estimate_Spec_Item__c.updateable}" styleClass="slds-button slds-button--neutral">
+                                                        <apex:param name="param2" value="{!lst.id}" assignTo="{!specId}"> </apex:param>
+                                                     </apex:commandButton>  
+                                                  </div>
+                                               </td>
+                                               
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                               
+                               
+                     </table>-->
+           
+           
+           
+           
+           </div>
+        
+
+       
+            </apex:pageBlock>
+                           
+            </apex:form>
+               
+               </div>
+                 
+            </body>
+           </html>
+       
+  <style>
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+       
+         .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+       
+       
+        
+       
+          <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:black;
+             }
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white;
+                }
+                
+                .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                
+                 .slds td {
+                    padding: 0;
+                    padding-left: 5px;
+                }
+                
+            <!--- error Mesgg-------------------------------------->
+                
+ 
+       
+       
+       
+    </style>  
+</apex:page>

@@ -1,0 +1,11 @@
+<apex:page standardController="Job_Task__c" extensions="JobTaskDetailPageExtension" >
+    <apex:outputPanel rendered="{!if(isClassic,true,false)}">
+        <apex:include pageName="JobTaskDetailPage"/>
+    </apex:outputPanel> 
+    <apex:outputPanel rendered="{!if(isMobile,true,false)}">
+         <!--apex:include pageName="JobTaskDetailPageMobile"/-->
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!if(isLight,true,false)}">
+         <apex:include pageName="JobTaskDetailPageLightning"/>
+    </apex:outputPanel>
+</apex:page>

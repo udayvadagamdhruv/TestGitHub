@@ -1,0 +1,50 @@
+<apex:page standardController="Quote__c" extensions="QuoteUnapproveExt">
+   
+   
+    <script src="/soap/ajax/20.0/connection.js" type="text/javascript"></script>
+   
+    <script type = "text/javascript">
+      
+        window.onload=function()       
+        {        
+            sforce.connection.sessionId = "{!$Api.Session_ID}";
+            if({!$Setup.ProductionEstimate__c.Active__c})
+            {
+                    var result = sforce.connection.query("select id,Job__c,Quote__r.id,Approved__c from Production_Estimate__c where Quote__r.Id = '{!Quote__c.Id}' and Job__c = '{!Quote__c.Job__c}' and Approved__c = True");
+                    
+                    var records = result.getArray("records"); 
+                    if (records.length == 1)
+                    {
+                        alert("You Can not unapprove this Quote Because Production  Estimate Line Item Created from this Quote is Approved...");
+                    }
+                    else
+                    {
+                         PageRefer();
+                    }
+            }
+                    
+            else
+            {
+                
+                    var result = sforce.connection.query("select id,Job__c,Quote__r.id,Approved__c from Estimate_Line_Items__c where Quote__r.Id = '{!Quote__c.Id}' and Job__c = '{!Quote__c.Job__c}' and Approved__c = True");
+                    
+                    var records = result.getArray("records"); 
+                   
+                    if (records.length == 1)
+                    {
+                        alert("You Can not unapprove this Quote Because Estimate Line Item Created from this Quote is Approved...");
+                        PageRefer2();
+                    }
+                    else
+                    {
+                         PageRefer();
+                    }
+            }
+        };
+    </script>
+   <apex:form >
+     <apex:actionFunction name="PageRefer" action="{!Unapprove}"/>
+     <apex:actionFunction name="PageRefer2" action="{!PageRefer2}"/>
+   </apex:form>
+   
+</apex:page>

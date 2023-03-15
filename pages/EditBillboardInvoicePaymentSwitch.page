@@ -1,0 +1,16 @@
+<apex:page standardController="BB_Invoice_Payment__c" extensions="BillboardInvoicePaymentSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/EditBillboardInvoicePayment?id="+'{!BBInvPayId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="EditBillboardInvoicePaymentLightning"/>
+    </apex:outputPanel>
+</apex:page>

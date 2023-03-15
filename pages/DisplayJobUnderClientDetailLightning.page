@@ -1,0 +1,204 @@
+<apex:page controller="DisplayJobUnderClientDetail" showHeader="false"  sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" standardStylesheets="true">
+ 
+  <head>
+     <style>
+          .hd
+          {
+              text-align:right;
+              padding-right:20px!important;
+          }
+          .slds .slds-card__footer 
+          {
+              padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header 
+          {
+             padding: 0px 10px 0px 0px;
+          }
+          .slds .slds-card__body 
+          {
+             padding: 0px ;
+          }
+          .slds .slds-card 
+          {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+          }
+          .slds .slds-table--bordered 
+          {
+             border-top: 0px solid #d8dde6;
+             border-bottom: 1px solid #d8dde6;
+          }
+          .slds .slds-card__body 
+          {
+            margin-bottom: -0.25rem;
+            margin-top: -0.15rem;
+          }
+        </style>
+   </head>
+   
+ <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+    
+      <div class="slds">
+    
+     
+    
+        <apex:form html-novalidate="novalidate">
+
+         <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+              <apex:pageMessages id="pagemsgId2"></apex:pageMessages>
+         </div> 
+         
+              <table width="100%" >
+                  <tr>
+                      <td align="left" width="60%" style="padding-top:10px;padding-left:1%;" >
+                             <apex:outputLabel value="Job {!$ObjectType.Job__c.Fields.Status__c.Label}"></apex:outputLabel><br/>
+                             
+                               <apex:selectList id="StatusList" value="{!strStatus}" size="1" styleClass="slds-select slds-m-right--medium" style="width:20%" >                              
+                                          <apex:selectOptions value="{!StatusList}"/>
+                                          <apex:actionSupport event="onchange" rerender="pgt1,foot2" action="{!populateJobList}" status="Jobstatus"/>
+                                          <apex:actionStatus id="Jobstatus">
+                                         <apex:facet name="start">
+                                                <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                                                     <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                                                       <span class="slds-assistive-text">Loading</span>
+                                                       <div class="slds-spinner__dot-a"></div>
+                                                       <div class="slds-spinner__dot-b"></div>
+                                                     </div>
+                                                </div>
+                                         </apex:facet>
+                                   </apex:actionStatus>
+                                 </apex:selectList>
+                             
+                        </td>   
+                   </tr>
+             </table>
+    
+             <br/>  
+           <b> <apex:outputLabel value="You are Viewing recent thousand Jobs" rendered="{!job.size ==1000}"/> </b> 
+         
+         <apex:outputPanel id="pgt1" >
+         
+          <apex:outputPanel layout="block" rendered="{!job.Size > 0}" >
+         
+                <div class="slds-card">
+                            
+                      <div class="slds-card__body">
+                      
+                      <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-7" scope="col"> 
+                                            {!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}
+                                        </th>
+                                        <th class="slds-size--1-of-7" scope="col">
+                                            {!$ObjectType.Job__c.Fields.Name.Label}
+                                        </th>
+                                         <th class="slds-size--1-of-7" scope="col">
+                                           {!$ObjectType.Job__c.Fields.Start_Date__c.Label}
+                                        </th>
+                                        <th class="slds-size--1-of-7" scope="col">
+                                           {!$ObjectType.Job__c.Fields.Completion_Date__c.Label}
+                                        </th>
+                                        <th class="slds-size--1-of-7" scope="col">
+                                            {!$ObjectType.Job__c.Fields.Due_Date__c.Label}
+                                        </th>
+                                        <th class="slds-size--1-of-7" scope="col">
+                                            {!$ObjectType.Job__c.Fields.Status__c.Label}
+                                        </th>
+                                        <th class="slds-size--1-of-7" scope="col">
+                                            {!$ObjectType.Job__c.Fields.JS_Client_Contact__c.Label}
+                                        </th>
+                                       
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                
+                                  <apex:repeat value="{!job}" var="j" rendered="{!job.Size > 0}">
+                                  
+                                    <tr class="slds-hint-parent">
+                                        
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}">
+                                                <div>
+                                                   <apex:outPutField value="{!j.Job_Auto_Number__c}"></apex:outPutField>
+                                                </div>
+                                            </td>
+                                        
+                                        <!---------    
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Name.Label}}">
+                                                <div>
+                                                  <apex:outputLink value="/apex/JobListView?id={!j.id}" tabindex="tab1">{!j.Name}</apex:outputLink>
+                                                </div>
+                                            </td>
+                                            ---------------------->
+                                            
+                                            
+                                             <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Name.Label}}">
+                                                <div>
+                                                  <apex:outputLink value="/apex/JobdetailpageLightening07?id={!j.id}" tabindex="tab1">{!j.Name}</apex:outputLink>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!j.Start_Date__c}"></apex:outputField>
+                                                </div>
+                                            </td>
+                                  
+                                           <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Completion_Date__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!j.Completion_Date__c}"></apex:outputField>
+                                                </div>
+                                            </td>
+                                             <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!j.Due_Date__c}"></apex:outputField>
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.Status__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!j.Status__c}"></apex:outputField>
+                                                </div>
+                                            </td>
+                                            
+                                             <td class="slds-size--1-of-7" data-label="{!$ObjectType.Job__c.Fields.JS_Client_Contact__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!j.JS_Client_Contact__c}"></apex:outputField>
+                                                </div>
+                                            </td>
+                                  </tr>
+                                  
+                                  
+                                  
+                                  </apex:repeat>
+                                
+                                </tbody>
+                           
+                        </table>
+                     
+                      
+                      </div>
+                     </div>
+         
+             </apex:outputPanel>
+         </apex:outputPanel>
+           
+                <apex:outputPanel id="foot2" >
+                    <apex:outputPanel rendered="{!job.size <= 0}" >
+                           No records to display
+                    </apex:outputPanel>
+                    </apex:outputPanel>
+         
+         
+         
+         </apex:form>
+         </div>
+      </html>
+ 
+</apex:page>

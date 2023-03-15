@@ -1,0 +1,92 @@
+<apex:page standardController="User" extensions="EditStaffAndUserExtension" tabStyle="MyAdmin__tab">
+ <apex:sectionHeader title="{!(User.FirstName+' '+User.LastName)}">
+   <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel"/>
+            </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="User Detail" columns="2" collapsible="false"> 
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.User_Types__c.Label}"></apex:outputLabel>  
+                      <apex:inputField value="{!User.User_Types__c}"/> 
+                  </apex:pageBlockSectionItem>    
+                  
+                  <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.User.Fields.IsActive.Label}"/>
+                         <apex:inputField value="{!User.IsActive}"/>
+                  </apex:pageBlockSectionItem> 
+                  
+                  <Apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.FirstName.Label}"></apex:outputLabel>
+                        <apex:inputField value="{!User.FirstName}"/>
+                  </Apex:pageBlockSectionItem>
+                  
+                  <Apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.LastName.Label}"></apex:outputLabel>
+                       <apex:inputField value="{!User.LastName}"/>
+                  </Apex:pageBlockSectionItem>
+                  
+                  <Apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Email.Label}"></apex:outputLabel>
+                       <apex:inputField value="{!User.Email}"/>
+                  </Apex:pageBlockSectionItem>
+                  
+                  <apex:pageblockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Username.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!User.Username}"/>
+                  </apex:pageblockSectionItem>
+                  
+                  <Apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Phone.Label}"></apex:outputLabel>
+                        <apex:inputField value="{!User.Phone}"/>
+                  </Apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Department.Label}"></apex:outputLabel>
+                         <apex:inputField value="{!User.Department}"/>
+                  </apex:pageBlockSectionItem>
+                
+                 
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.User.Fields.Fax.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!User.Fax}"/>
+                 </apex:pageBlockSectionItem>
+    
+     
+        <apex:pageBlockSectionItem >  
+                  <apex:outputLabel value="Profile"></apex:outputLabel>
+                  <apex:actionRegion >
+                  <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                  <div class="requiredBlock"> </div>
+                  <apex:selectList id="ProName" value="{!ProfileName}" size="1">
+                  <apex:selectOptions value="{!Profile}"></apex:selectOptions>
+                  </apex:selectList>
+                  </span>
+                  </apex:outputPanel> 
+                  </apex:actionRegion>  
+        </apex:pageBlockSectionItem>
+                 
+                 
+         <apex:pageBlockSectionItem >  
+                  <apex:outputLabel value="Role" for="rl"></apex:outputLabel>
+                  <apex:actionRegion >
+                  <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                  <div class="requiredBlock"> </div>
+                  <apex:selectList value="{!UserRolename}" multiselect="false" size="1" id="selectedRoleId">
+                       <apex:selectOptions value="{!Role}"/>
+                  </apex:selectList>
+                  </span>
+                  </apex:outputPanel> 
+                  </apex:actionRegion>  
+           </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+       </apex:pageBlock>
+    </apex:form>
+  </apex:sectionHeader>
+</apex:page>
+<!-- End of Page -->

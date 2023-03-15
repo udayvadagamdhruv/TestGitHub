@@ -1,0 +1,30 @@
+<aura:component controller="BillBoardController" implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <!-- attributes -->
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="zoomLevel" type="Integer"/>
+    <aura:attribute name="markersTitle" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="recordError" type="Object"/>
+    <aura:attribute name="record" type="Object"/>
+    <!-- handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>
+    
+    <!-- the map component -->
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Map">
+            <lightning:accordionSection name="Map" label="Map"  class="slds-card" >   
+                <aura:if isTrue="{!v.mapMarkers.length > 0}" >
+                    <lightning:map mapMarkers="{!v.mapMarkers}"  zoomLevel="{! v.zoomLevel }"/>
+                </aura:if>
+            </lightning:accordionSection>
+        </lightning:accordion>
+</aura:component>

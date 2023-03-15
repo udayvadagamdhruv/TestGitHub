@@ -1,0 +1,132 @@
+<apex:page controller="DisplayClientInvoiceunderjobtabextension" id="frm">
+
+<head>
+<style>
+#table_id td
+{
+    border:0px;
+}
+#table_dd td
+{
+border:0px;
+}
+#table_s td
+{
+border:0px;
+}
+ .hd
+  {
+  text-align:right;
+  padding-right:20px!important;
+  }
+</style>
+</head>
+  <apex:form id="pb11"> 
+  <apex:pageMessages id="pagemsgId4"></apex:pageMessages>
+    
+   <apex:pageBlock tabStyle="Client_Invoice__c" id="pb" title="Client Invoices">
+      
+    <apex:pageBlockButtons location="top">
+     <apex:commandButton action="{!CreateCI}" value="New Client Invoice" id="btn1"/>   
+   
+     <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  
+     <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb1"/> 
+      </apex:pageBlockButtons>
+    <div>
+    <apex:pageBlockTable value="{!ClientInvoice2}" var="ci" rendered="{!ClientInvoice2.Size > 0}" id="abc">
+    
+     
+   
+    
+    <apex:column headerValue="Action">
+
+      
+         <apex:commandButton value="Delete" action="{!del}" reRender="hiddenBlock1" onclick="if(!confirm('Are you sure?')){return false;}" >
+                 <apex:param name="param1" value="{!ci.Id}" assignTo="{!ciid}"> </apex:param>
+         </apex:commandButton> 
+         </apex:column> 
+    
+   
+      
+      <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Name.Label}">
+       <apex:outputLink tabindex="tab1" value="/apex/ClientInvoiceDetailpage?id={!ci.Id}">{!ci.Name}</apex:outputlink>
+      </apex:column> 
+      
+      <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Client_Name__c.Label}">
+            <apex:outputField value="{!ci.Client_Name__c}"/>
+       </apex:column>
+      
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Term__c.Label}"> 
+            <apex:outputField value="{!ci.Term__c}"/> 
+       </apex:column>
+      
+       
+          
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}">
+           <table border="0" id="table_id">
+           <tr>
+               <td border="0">
+                  <apex:outputfield value="{!ci.Invoice_Date__c}">
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,poreport" rendered="{!ci.Invoice_Status__c != 'Paid'}"/></apex:outputfield> </td>
+                 <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" rendered="{!ci.Invoice_Status__c != 'Paid'}" title="Edit Invoice date"/>  </td>
+          </tr>
+          </table>
+          </apex:column>
+           
+      
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}">
+       <table border="0" id="table_dd">
+           <tr>
+           <td border="0">
+               <apex:outputField value="{!ci.Date_Due__c}">
+               <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,poreport" rendered="{!ci.Invoice_Status__c != 'Paid'}"/></apex:outputfield> </td>
+           <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" rendered="{!ci.Invoice_Status__c != 'Paid'}" title="Edit Due Date"/>  </td>
+            </tr>
+          </table>
+       </apex:column>
+      
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Status__c.Label}">
+        <table border="0" id="table_s">
+           <tr>
+           <td border="0">
+               <apex:outputField value="{!ci.Invoice_Status__c}">
+               <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,poreport" rendered="{!ci.Invoice_Status__c != 'Paid'}"/></apex:outputfield> </td>
+            <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" rendered="{!ci.Invoice_Status__c != 'Paid'}" title="Edit Invoice Status"/>  </td>
+            </tr>
+          </table>
+      </apex:column>   
+      
+      <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Total_new__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!ci.Invoice_Total_new__c}"/>
+      </apex:column>
+      
+    </apex:pageBlockTable>
+    <br/>
+    
+  <div style="float:right;padding-right:20px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+    <apex:outputPanel rendered="{!ClientInvoice2.Size > 0}">
+            <apex:outputLabel value="CI Total    " style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, $###,###,###.00}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+            </apex:outputText>
+        </apex:outputPanel>
+      </div> 
+      </div>
+      <br/>
+ 
+ 
+    
+
+   
+  
+    <apex:pageBlockSection rendered="{!ClientInvoice2.Size == 0}">
+     <apex:pageBlockSectionItem >
+          <b>No records to display</b>
+     </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+   </apex:pageBlock>
+  </apex:form>
+
+
+
+</apex:page>

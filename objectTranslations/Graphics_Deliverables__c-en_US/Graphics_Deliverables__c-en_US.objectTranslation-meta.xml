@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Graphic Deliverable</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Graphic Deliverables</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Graphics_Deliverables_Fieldset</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Job_List_GD</name>
+    </fieldSets>
+    <layouts>
+        <layout>Graphics Deliverable Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Delete</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Graphics_View</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,197 @@
+<aura:component controller="AdminController"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="Task_Order__c" />
+    <aura:attribute name="sortedDirection" type="String" default="asc" />
+    
+    <aura:attribute name="isSTBelowInsert" type="boolean" default="false"/>
+    <aura:attribute name="TaskOrderforBelowTask" type="decimal" default="1"/>
+    
+    <aura:attribute name="isSTEdit" type="boolean" default="false"/>
+    <aura:attribute name="EditSTaskId" type="String" />
+    
+    <aura:attribute name="isSTAboveInsert" type="boolean" default="false"/>
+    <aura:attribute name="AboveSTaskId" type="String" />
+    <aura:attribute name="AboveSTaskRow" type="Approval_Schedule_Task__c"   />
+    
+    <aura:attribute name="isRolesAddingtoTask" type="boolean" default="false"/>
+    <aura:attribute name="AddRolesEditSTaskId" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c.UpdateRecordsforChanges" action="{!c.refreshScheduleTasks}" /> 
+    
+    <aura:attribute name="SchduleTaskSection" type="String" default="Approval Schedule Tasks" access="global" required="true"/>
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ScheduleTasks">
+        <lightning:accordionSection name="ScheduleTasks" label="{!v.SchduleTaskSection}"  class="slds-card" >  
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    <lightning:datatable class="STaskstablecss"
+                                         aura:id="STasksDataTable"
+                                         columns="{!v.columns}"
+                                         data="{!v.data}"
+                                         keyField="Id"
+                                         onsave ="{!c.onSave}"
+                                         hideCheckboxColumn="true"
+                                         
+                                         errors="{!v.errors}"
+                                         onsort="{!c.updateColumnSorting}"
+                                         sortedBy="{!v.sortedBy}"
+                                         sortedDirection="{!v.sortedDirection}" 
+                                         onrowaction="{!c.handleRowAction}" />
+                    
+                </aura:set>
+            </aura:if>
+            <br/>
+            <div align="center">
+                <lightning:button variant="neutral" label="Insert Task Below" title="Insert Task Below" onclick="{!c.InsertScheduleTaskBelow}"/>
+            </div>
+            <br/>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+    
+    <aura:if isTrue="{!v.isSTBelowInsert}">
+        
+        <lightning:recordEditForm aura:id="STaskBelowEditForm" density="comfy" objectApiName="Approval_Schedule_Task__c"  onsubmit="{!c.STaskBelowOnsubmit}"  onsuccess="{!c.STaskBelowOnSuccess}" >
+            
+            <!--************************************************ Insert Approval Schedule Task Below  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeBelowSTaskModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insert Approval Schedule Task Below</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages />
+                        <lightning:inputField fieldName="Name" aura:id="NameSTaskBelowFields"  class="slds-size--1-of-2 slds-p-horizontal_x-small frequired"  /> 
+                        <lightning:inputField fieldName="Approval_Schedule_Template__c" value="{!v.recordId}" disabled="true" aura:id="STaskBelowFields"   class="slds-size--1-of-2 slds-p-horizontal_x-small"  /> 
+                        <lightning:inputField fieldName="Days__c" aura:id="STaskBelowFields"   class="slds-size--1-of-2 slds-p-horizontal_x-small"  /> 
+                        <lightning:inputField fieldName="Task_Order__c" value="{!v.TaskOrderforBelowTask}" disabled="true" aura:id="STaskBelowFields"   class="slds-size--1-of-2 slds-p-horizontal_x-small"  /> 
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeBelowSTaskModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.isSTEdit}">
+        
+        <lightning:recordEditForm aura:id="STaskEditForm" density="comfy" objectApiName="Approval_Schedule_Task__c" recordId="{!v.EditSTaskId}"  onsubmit="{!c.STaskEditOnsubmit}"  onsuccess="{!c.STaskEditOnSuccess}" >
+            
+            <!--************************************************ Edit Approval Schedule Task MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeEditSTaskModel}"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Approval Schedule Task</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages />
+                        
+                        <lightning:inputField fieldName="Name" aura:id="NameSTaskEditFields" class="slds-size--1-of-2 slds-p-horizontal_x-small frequired"  /> 
+                        <lightning:inputField fieldName="Approval_Schedule_Template__c" disabled="true" aura:id="STaskEditFields" class="slds-size--1-of-2 slds-p-horizontal_x-small"  /> 
+                        <lightning:inputField fieldName="Days__c" aura:id="STaskEditFields" class="slds-size--1-of-2 slds-p-horizontal_x-small"  /> 
+                        <lightning:inputField fieldName="Task_Order__c"  aura:id="STaskEditFields" class="slds-size--1-of-2 slds-p-horizontal_x-small"   />  
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeEditSTaskModel}"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.isSTAboveInsert}">
+        
+        <lightning:recordEditForm aura:id="STaskAboveForm" density="comfy" objectApiName="Approval_Schedule_Task__c"  onsubmit="{!c.STaskAboveOnsubmit}"  onsuccess="{!c.STaskAboveOnSuccess}" >
+            
+            <!--************************************************ Insert Approval Schedule Task Above  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeAboveSTaskModel}"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insert Approval Schedule Task Above</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages />
+                        
+                        <lightning:inputField fieldName="Name" aura:id="NameSTaskAboveFields" class="slds-size--1-of-2 slds-p-horizontal_x-small frequired"/> 
+                        <lightning:inputField fieldName="Approval_Schedule_Template__c"  disabled="true" value="{!v.recordId}" aura:id="STaskAboveFields" class="slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                        <lightning:inputField fieldName="Days__c" aura:id="STaskAboveFields" class="slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                        
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeAboveSTaskModel}"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.isRolesAddingtoTask}">
+        <c:Approval_schedule_Task_Roles STaskId="{!v.AddRolesEditSTaskId}" aura:id="STRoleCompId" />
+    </aura:if>
+    
+</aura:component>

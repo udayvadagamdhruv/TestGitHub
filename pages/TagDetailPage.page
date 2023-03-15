@@ -1,0 +1,7 @@
+<!-- This page is used to display detail of Tag -->
+<apex:page standardController="Tag__c" tabStyle="Job__c">
+    <apex:form >
+        <apex:detail inlineEdit="true" showChatter="true" relatedList="false"/>    
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,44 @@
+<apex:page controller="SessionController">
+  <apex:form >
+        <apex:commandButton value="Add Session" action="{!createNewSession}"
+            id="btnAddSession" />
+        <apex:commandButton value="Save" action="{!save}" id="btnSave"
+            style="display:none" />
+        <apex:commandButton value="Cancel" action="{!cancel}" id="btnCancel"
+            style="display:none" reRender="PanelId" />
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!lstSessions}" var="Session"
+                rendered="{!lstSessions.size > 0}" id="pbt">
+                <apex:column headerValue="{!$ObjectType.Session__c.Fields.Session_Status__c.Label}">
+                    <apex:outputField value="{!Session.Session_Status__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Session__c.Fields.GL_Department__c.Label}">
+                    <apex:outputField value="{!Session.GL_Department__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Session__c.Fields.Quantity__c.Label}">
+                    <apex:actionRegion >
+                        <table border="0" id="table_quantity">
+                            <tr>
+                                <td border="0"><apex:outputField value="{!Session.Quantity__c}">
+                                    <apex:inlineEditSupport event="ondblClick"
+                                        showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddSession"/>
+                                </apex:outputField></td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Session__c.Fields.Unit_Cost__c.Label}">
+                    <apex:actionRegion >
+                        <table border="0" id="table_unit_cost">
+                            <tr>
+                                <td border="0"><apex:outputField value="{!Session.Unit_Cost__c}">
+                                    <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddSession"  />
+                                </apex:outputField></td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

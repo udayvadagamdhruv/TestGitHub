@@ -1,0 +1,7 @@
+<apex:page standardController="Material_Item__c" tabStyle="Material_Item__c" extensions="MaterialLineDetailPageExtension">
+  <apex:detail relatedList="true" inlineEdit="false" showChatter="true"/> 
+   <apex:include pageName="DisplayMaterialUsage"/> 
+   <apex:include pageName="DisplayMaterialInventory"/> 
+   
+  
+</apex:page>

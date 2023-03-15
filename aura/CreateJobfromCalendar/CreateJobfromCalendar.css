@@ -1,0 +1,25 @@
+@media (min-width: 48em){
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 100% !important;
+    max-width: 90rem;
+    min-width: 30rem;
+}
+}
+
+.THIS .frequired label:after { 
+    content:" *";
+    color: #e32;
+}
+.THIS .scrollerSizecart{
+    height:30rem;
+}
+.THIS .slds-rich-text-editor{
+    word-break: break-word !important;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+      height:150px !important;
+}

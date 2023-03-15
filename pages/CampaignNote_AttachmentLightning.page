@@ -1,0 +1,346 @@
+<!-- This page is used to display BB Note Attachment. -->
+<apex:page standardController="Campaign__c" extensions="CampaignNote_AttachmentLightningExt" showHeader="false"  docType="html-5.0"  standardStylesheets="true">
+<style>
+        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody 
+        {
+          margin: 0px 0px 0px;
+         }
+     
+       body
+       {
+            display: block;
+            margin: 8px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            margin-left: 0px;
+        }
+       
+       
+        body
+        {
+            background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+            background-repeat: repeat-x;
+            background-position: left top;
+            background-attachment: fixed;
+        }
+            
+        .slds .slds-tabs--scoped 
+        {
+               display: block;
+                width: 100%;
+                background-color: white;
+                margin-top: 2px;
+                border-radius: 10px;
+        }   
+        .slds .slds-tabs--scoped__content
+        {
+         padding:26px;
+        }
+  
+    </style>
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+    
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head> 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+
+
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+    
+        
+         
+    
+    
+    
+  <div class="slds" style="background:white;">
+  <div class="slds-row">
+  <apex:pageMessages id="pagemsgId6"></apex:pageMessages><br/>
+  <center>
+  <apex:form >
+      <apex:commandButton styleclass="slds-button slds-button--neutral" value="New Note" action="{!CreateNote}"/>
+                   <apex:commandButton styleclass="slds-button slds-button--neutral" value="Attach File" action="{!AttachFile}"/>
+                   </apex:form>
+  </center>
+  </div>
+      <div class="slds-grid" >
+      
+                   
+      <div class="slds-col"  id="details">
+      <div class="slds-section slds-is-open">
+                             <h3 class="slds-section__title">
+                                <button class="slds-button slds-section__title-action" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; color: darkslategrey;font-weight: normal;line-height: 1.875rem;">
+                                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                  </svg>
+                                   <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;width:35px !important;height:35px !important;">
+                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#note')}" ></use>
+                                    </svg>
+                                  
+                                     Notes Section
+                                </button>
+                            </h3>
+                            <br/><br/>
+                                <div class="slds-section__content" style="padding-left:30px;padding-right:30px;">                               
+                                       
+                                        <apex:outputPanel rendered="{!n1.size > 0}"><div >
+                                        <div class="slds-grid slds-wrap">
+                                          <apex:repeat value="{!n1}" var="na" rendered="{!n1.Size > 0}" >
+                                                <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                <div class="slds-media slds-tile slds-hint-parent">
+                                
+                                                    <div class="slds-media__figure">
+                                                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#note')}"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="slds-media__body">  
+                        
+                                                        <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                            <p class="slds-tile__title slds-truncate">
+                                                                <apex:outputLink tabindex="tab1" value="/apex/CampaignNoteDetailPageLightning?id={!na.Id}"><font color="#0070d2">{!na.Title}</font></apex:outputLink>
+                                                            </p>
+                                
+                                                            <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                
+                                                                <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none">
+                                                                    &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                                    </svg>
+                                                                    <span class="slds-assistive-text">Show More</span>
+                                                                </div>
+                                                                
+                                                                
+                                                               
+                                
+                                                                <div class="slds-dropdown slds-dropdown_left">
+                                
+                                                                    <ul class="slds-dropdown__list" role="menu">
+                                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                            <a  href="/apex/EditCampaignNoteLightning?id={!na.Id}" role="menuitem" tabindex="0">
+                                                                                <span class="slds-truncate" title="Edit">Edit
+                                                                                 </span>&nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                    <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                                </svg>
+                                                                            </a>
+                                                                        </li>
+                                                                        
+                                                                        
+                                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                           <!-- <a href="/apex/DeleteJobSpec?id={!lst.id}" onclick="if(!confirm('Are you sure?')){return false;}" role="menuitem" tabindex="-1">-->
+                                                                            <a href="/apex/DeleteCampaignNote?Id={!na.id}" role="menuitem" tabindex="-1">
+                                                                                <span class="slds-truncate" title="Delete">Delete</span>
+                                                                                &nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                 <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                    <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                                </svg> 
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                
+                                                        </div>
+                                                        <div class="slds-tile__detail slds-text-body--small">
+                                                            <p ><b>Body: </b>{!na.body}</p>
+                                                            
+                                                        </div>
+                                
+                                                    </div>
+                                                </div> <br/>
+                                           
+                                        </div><br/>
+                      </apex:repeat>
+                      <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                       </div>
+                  </div>
+                  </div>
+            </apex:outputPanel>
+        
+            <apex:outputPanel rendered="{!n1.size <= 0}">
+                   <apex:outputPanel >
+                           <b>No Notes to display</b>
+                   </apex:outputPanel>              
+            </apex:outputPanel>
+                              
+            </div>
+                                
+           </div>
+           
+           
+           <div class="slds-section slds-is-open">
+             <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; color: darkslategrey;font-weight: normal;line-height: 1.875rem;">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>&nbsp;
+                   <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--medium" style="fill:#333;width:20px !important;height:20px !important;">
+                       <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
+                    </svg>
+                  &nbsp;
+                     Attachments Section
+                </button>
+            </h3><br/><br/>
+            <div class="slds-section__content" style="padding-left:30px;padding-right:30px;">                               
+                                       
+              <apex:outputPanel rendered="{!n2.size > 0}"><div class="slds-grid slds-wrap">
+                   <apex:repeat value="{!n2}" var="na" rendered="{!n2.Size > 0}" >
+                        <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                <div class="slds-media slds-tile slds-hint-parent">
+                                
+                                                    <div  class="slds-media__figure"  style="background-color:#779ef2;width:30px !important;height:30px !important;border-radius:10%;">
+                                                     <img src="{!URLFOR($Resource.attachment)}" style="width:25px !important;height:25px !important;padding-top:15%;padding-left:8%;"/>
+                                                      
+                                                    </div>
+                                                    <div class="slds-media__body">  
+                        
+                                                          <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                            <p class="slds-tile__title slds-truncate">
+                                                                <apex:outputLink tabindex="tab1" value="/servlet/servlet.FileDownload?file={!na.Id}"><font color="#0070d2">{!na.Name}</font></apex:outputLink>
+                                                            </p>
+                                
+                                                            <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                
+                                                                <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none">
+                                                                    &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                                    </svg>
+                                                                    <span class="slds-assistive-text">Show More</span>
+                                                                </div>
+                                                                
+                                                                
+                                                               
+                                
+                                                                <div class="slds-dropdown slds-dropdown_left">
+                                
+                                                                    <ul class="slds-dropdown__list" role="menu">
+                                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                            <a  href="/apex/EditCampaignAttachmentLightning?id={!na.id}" role="menuitem" tabindex="0">
+                                                                                <span class="slds-truncate" title="Edit">Edit
+                                                                                 </span>&nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                    <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                                </svg>
+                                                                            </a>
+                                                                        </li>
+                                                                        
+                                                                        
+                                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                            <a href="/apex/DeleteCampaignAttachment?Id={!na.id}" role="menuitem" tabindex="-1">
+                                                                                <span class="slds-truncate" title="Delete">Delete</span>
+                                                                                &nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                 <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                    <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                                </svg> 
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                
+                                                        </div>
+                                                            <div class="slds-tile__detail slds-text-body--small">
+                                                            <p ></p>
+                                                        </div>
+                                
+                                                    </div>
+                                                </div> <br/>
+                                           
+                                        </div><br/>
+                        
+                   </apex:repeat>
+                   <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                   </div>
+                   </div>
+            </apex:outputPanel>
+
+           <apex:outputPanel rendered="{!n2.size <= 0}">
+               <apex:outputPanel >
+                       <b>No Attachments to display</b>
+               </apex:outputPanel>              
+       </apex:outputPanel> 
+                              
+                                </div>
+                                
+           </div>
+           
+           
+           <div class="slds-section slds-is-open">
+             <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em;color: darkslategrey; font-weight: normal;line-height: 1.875rem;">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>&nbsp;
+                   <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;width:20px !important;height:20px !important;">
+                        <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#file"></use>
+                    </svg>
+                  &nbsp;
+                     Chatter Files Section
+                </button>
+            </h3><br/><br/>
+                <div class="slds-section__content" style="padding-left:30px;padding-right:30px;">                               
+                       
+                  <apex:outputPanel rendered="{!n4.size > 0}">
+                     <div class="slds-grid slds-wrap">                 
+                   <apex:repeat value="{!n4}" var="nf4" rendered="{!n4.Size > 0}"  >
+                        
+                        
+                      <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                <div class="slds-media slds-tile slds-hint-parent">
+                                
+                                                    <div class="slds-media__figure">
+                                                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#file')}"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="slds-media__body">  
+                        
+                      <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                            <p class="slds-tile__title slds-truncate">
+                                                                <apex:outputLink tabindex="tab1" value="/{!nf4.ContentDocumentId}"><font color="#0070d2">{!nf4.ContentDocument.Title}</font></apex:outputLink>
+                                                            </p>
+                                
+                                                            
+                                
+                                                        </div>
+                        <div class="slds-tile__detail slds-text-body--small">
+                                                            <p ><b>Created By: </b>{!nf4.ContentDocument.CreatedBy.Name}</p>
+                                                            <b>Last Modified Date: </b><apex:outputText value="{0,date,MM'/'dd'/'yy}" >
+                                <apex:param value="{!nf4.ContentDocument.LastModifiedDate}"/>
+                          </apex:outputText>
+                                                        </div>
+                                
+                                                    </div>
+                                                </div> <br/>
+                                           
+                                        </div><br/>
+                        
+                   </apex:repeat>
+                   <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                   </div>
+                   </div>
+            </apex:outputPanel>
+                              
+                                </div>
+                                
+           </div>
+           <br/>
+      </div>
+      </div>
+  
+  </div>
+  
+  
+    
+    
+    </html>
+   
+</apex:page>
+<!-- End of Page -->

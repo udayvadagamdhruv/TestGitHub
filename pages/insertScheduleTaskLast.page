@@ -1,0 +1,65 @@
+<!-- This page is used to insert Schedule Task in the last for a particulas schedule Template. -->
+<apex:page standardController="Schedule_Task__c" extensions="insertScheduleTaskLastExtension" tabstyle="MyAdmin__tab">
+    <apex:form >
+        <apex:pageblock mode="edit">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"></apex:commandButton>
+                <apex:commandButton action="{!Cancel}" value="Cancel"></apex:commandButton>
+            </apex:pageBlockButtons>
+        
+            <apex:pageBlockSection title="Task Detail" columns="2" collapsible="False">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Name.Label}"/>
+                <apex:inputField value="{!Schedule_Task__c.Name}" required="true"/>
+             </apex:pageBlockSectionItem>
+            
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Schedule_Template__c.Label}"/>
+                <apex:outputlabel value="{!STemplate}"/>
+           </apex:pageBlockSectionItem>
+            
+          <apex:pageBlockSectionItem >                  
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.GL_Code__c.Label}" for="GLCName" ></apex:outputLabel>
+                <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <!-- <div class="requiredBlock"> </div> code commented for Gl code -->
+                          <apex:selectList id="glcName" value="{!GLCName}" size="1">
+                              <apex:selectOptions value="{!GLCodes}"></apex:selectOptions> 
+                          </apex:selectList>
+                   </span>
+                  </apex:outputPanel>  
+            </apex:pageBlockSectionItem>
+                  
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Days__c.Label}"/>
+                <apex:inputField value="{!Schedule_Task__c.Days__c}" required="true"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Report__c.Label}"/>
+                <apex:inputField value="{!Schedule_Task__c.Report__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Hours__c.Label}"/>
+                <apex:inputField value="{!Schedule_Task__c.Hours__c}"/>
+            </apex:pageBlockSectionItem>
+            
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Locked__c.Label}"/>
+                <apex:inputField value="{!Schedule_Task__c.Locked__c}"/>
+            </apex:pageBlockSectionItem>
+            
+     <!--       <apex:pageBlockSectionItem rendered="{!SchedTaskList.size==0}">
+               <apex:outputLabel Value="{!$ObjectType.Schedule_Task__c.Fields.Task_Order__c.Label}"/>
+               <apex:inputField value="{!Schedule_Task__c.Task_Order__c}" required="true"/>
+            </apex:pageBlockSectionItem>
+         -->   
+            
+            
+        </apex:pageBlockSection>
+    </apex:pageblock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

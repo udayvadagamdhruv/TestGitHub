@@ -1,0 +1,103 @@
+<apex:page controller="DisplayCreativeBriefSpecItemsController">
+  
+   <head>
+   
+        <style>
+        #table_id td
+                {
+                    border:0px;
+                }
+        </style>
+
+    </head>
+   
+  
+   <apex:form >
+   
+   
+     <apex:pageBlock title="Spec Items">
+     
+         <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+         <apex:commandButton action="{!createSpecitems}" value="Add Spec Items" id="btn1" rendered="{!$ObjectType.Spec_Item__c.Createable}"/> 
+         <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  
+       <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;"/> 
+        </span>
+       
+ 
+        <br/> <br/>
+        
+       
+      
+      
+         <apex:pageBlockTable value="{!CSpecItem}" var="Item" rendered="{!CSpecItem.Size>0}">
+         
+          <apex:column headerValue="Action" width="10%">
+         
+             <apex:outputLink tabindex="tab1" value="/apex/EditSpecItem?id={!Item.Id}">Edit</apex:outputLink>  |    <apex:outputLink tabindex="tab1" value="/apex/DeleteSpecItem?id={!Item.Id}">Delete</apex:outputLink>
+         
+             
+          </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Spec_Item__c.Fields.Name.Label}">
+              
+                <apex:outputLink tabindex="tab1" value="/apex/SpecItemDetailPage?id={!Item.Id}">{!Item.Name}</apex:outputLink>
+                  
+              </apex:column>
+              
+             <apex:column headerValue="{!$ObjectType.Spec_Item__c.Fields.Description__c.Label}">
+              
+                 <apex:outputfield value="{!Item.Description__c}"/>
+                  
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Spec_Item__c.Fields.Lock__c.Label}">
+              
+                 <apex:outputfield value="{!Item.Lock__c}"/>
+                  
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Spec_Item__c.Fields.Value__c.Label}">
+              
+                 <apex:outputfield value="{!Item.Value__c}"/>
+                  
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Spec_Item__c.Fields.Sort_Order__c.Label}">
+              
+                
+                 
+                 
+            <table border="0" id="table_id">
+            <tr>
+               <td border="0">
+                  <apex:outputfield value="{!Item.Sort_Order__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btn2,btn6" />
+                  </apex:outputfield> </td>
+               <td> 
+
+                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Sort Order" />  
+               </td>
+           </tr>
+           </table>
+                 
+                 
+                  
+              </apex:column>
+              
+             
+              
+                
+         
+         </apex:pageBlockTable>
+         
+   
+           <apex:pageBlockSection rendered="{!CSpecItem.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection> 
+     </apex:pageBlock>
+  </apex:form>
+
+  
+  
+  
+</apex:page>

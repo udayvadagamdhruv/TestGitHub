@@ -1,0 +1,6 @@
+<apex:page standardController="Campaign_Jobs__c" extensions="CampaignTemplateDetailSwitchExt" standardStylesheets="true" sidebar="false" showHeader="false" applyHtmlTag="false" applyBodyTag="false"  docType="html-5.0" action="{!CTDetailview}" >
+
+
+
+
+</apex:page>

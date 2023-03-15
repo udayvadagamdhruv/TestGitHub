@@ -1,0 +1,302 @@
+<apex:page controller="DisplayTagTempLitemController" sidebar="flase" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true">
+  
+        <head>
+        <style>
+
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        .dateOnlyInput input {
+            width: 10.5em !important;
+        }
+               
+               
+       .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                         
+                        
+     </style>
+     
+       
+        
+    </head>
+    
+    
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+     
+   <apex:slds />
+    
+
+         <apex:outputPanel id="pbload"> 
+            <div class="slds">
+              
+                <apex:form html-novalidate="novalidate" id="frmid">
+              
+                
+                 <apex:pageBlock mode="edit">
+                      <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                         <apex:pageMessages />
+                      </div><br/>
+                      
+                       <div align="center">
+                             <apex:commandButton action="{!createTagLI}" value="Add Line Items" id="btn2" rendered="{!$ObjectType.Tag_Template_Item__c.Createable}" styleClass="slds-button slds-button--neutral slds-button-group"/> 
+                        </div>
+                        
+                        <br/>
+                        
+                        <apex:outputPanel rendered="{!TagLI.Size>0}">
+                          <div class="slds-card" >             
+                               <div class="slds-card__body"> 
+                               
+                               
+                                 <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover" >
+                                        <thead class="slds-truncate">
+                                            <tr class="slds-text-title">
+                                                <th class="slds-size--1-of-9" scope="col">Action</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.name.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Description__c.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Air_Time__c.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Show_Air_Date__c.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Promo_End_Date__c.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Promo_Due_Date__c.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Air_Date__c.Label}</th>
+                                                <th class="slds-size--1-of-9" scope="col">{!$ObjectType.Tag_Template_Item__c.Fields.Lengths__c.Label}</th>
+                                            </tr>
+                                        </thead>
+                                 
+                                        <tbody> 
+                                          
+                                             <apex:repeat value="{!TagLI}" var="Item" rendered="{!TagLI.Size>0}"> 
+                      
+                                                <tr class="slds-hint-parent">
+                                                    <td class="slds-size--1-of-5" data-label="Action">
+                                                           <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open quotebutton">
+                                                                 &nbsp;&nbsp;  
+                                                                    <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                                           <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                    </div>
+                                                                    
+                                                         
+                                                                    <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small quoteclass">
+                                                                    
+                                                                       <ul class="slds-dropdown__list" role="menu">
+                                                                         
+                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                 <apex:outputLink tabindex="tab1" value="/apex/EditTagtempLineItemsLightning?id={!Item.Id}">Edit
+                                                                                  &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                                 </apex:outputLink>
+                                                                            </li>
+                                                                            
+                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                 <apex:outputLink tabindex="tab1" value="/apex/DeleteTagLIItem?id={!Item.Id}" >Delete
+                                                                                   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                                 </apex:outputLink>
+                                                                            </li>
+                                                                        
+                                                                        </ul>
+                                                                  </div> 
+                                                           </div>
+                                                        </td>
+                                                        
+                                                     
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.name.Label}">
+                                                            <div>
+                                                                <apex:outputLink tabindex="tab1" value="/apex/TagTemplateLIdetailpageLightning?id={!Item.Id}">{!Item.Name}</apex:outputLink>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                         <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Description__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Description__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Air_Time__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Air_Time__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Show_Air_Date__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Show_Air_Date__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Promo_End_Date__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Promo_End_Date__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Promo_Due_Date__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Promo_Due_Date__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Air_Date__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Air_Date__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td class="slds-size--1-of-9" data-label="{!$ObjectType.Tag_Template_Item__c.Fields.Lengths__c.Label}">
+                                                            <div>
+                                                              <apex:outputfield value="{!Item.Lengths__c}"/>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                       
+                                                        
+                                                </tr>
+            
+                                            </apex:repeat> 
+                                      </tbody>
+                            </table> 
+                           </div>
+                        </div> 
+                     </apex:outputPanel>  
+                     
+                       <apex:outputPanel rendered="{!TagLI.size <= 0}">
+                             <b>No records to display</b>
+                       </apex:outputPanel>  
+                      
+                    </apex:pageBlock> 
+              </apex:form>
+          </div>
+      </apex:outputPanel>
+      
+    </html>
+                                    
+</apex:page>

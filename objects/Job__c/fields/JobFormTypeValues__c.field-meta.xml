@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobFormTypeValues__c</fullName>
+    <externalId>false</externalId>
+    <label>JobFormTypeValues</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Name Tag Request</fullName>
+                <default>false</default>
+                <label>Name Tag Request</label>
+            </value>
+            <value>
+                <fullName>Store Business Card</fullName>
+                <default>false</default>
+                <label>Store Business Card</label>
+            </value>
+            <value>
+                <fullName>Corporate Business Card</fullName>
+                <default>false</default>
+                <label>Corporate Business Card</label>
+            </value>
+            <value>
+                <fullName>Billboard Repair Request</fullName>
+                <default>false</default>
+                <label>Billboard Repair Request</label>
+            </value>
+            <value>
+                <fullName>Store Supply Orders</fullName>
+                <default>false</default>
+                <label>Store Supply Orders</label>
+            </value>
+            <value>
+                <fullName>Corporate Office Nameplate</fullName>
+                <default>false</default>
+                <label>Corporate Office Nameplate</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

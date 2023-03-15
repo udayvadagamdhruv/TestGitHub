@@ -1,0 +1,16 @@
+<!-- This Page is used to override the delete button of Vendor Contact Object -->
+<apex:page standardController="Vendor_Contact__c" extensions="DeleteVendorContactExtension" showHeader="false" sidebar="false">
+ 
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form> 
+  
+</apex:page>
+<!-- End of Page -->

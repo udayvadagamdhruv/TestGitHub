@@ -1,0 +1,5 @@
+<apex:page standardController="Shipment__c" tabStyle="Job__c" extensions="ShipmentDetailPageExtension" >
+
+  <apex:detail relatedList="false" inlineEdit="false" showChatter="true"/> 
+  <apex:include pageName="DisplayShipmentLineitems"/>
+</apex:page>

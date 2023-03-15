@@ -1,0 +1,86 @@
+<aura:component controller="Job_Search_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="data" type="List" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="String"/>
+    <aura:attribute name="loadMoreStatus" type="String" /> 
+    <aura:attribute name="enableInfiniteLoading" type="boolean" default="true" /> 
+    <aura:attribute name="statusList" type="Object"/>
+    <aura:attribute name="totalRows" type="Integer" /> 
+    
+    <lightning:navigation aura:id="navService"/>
+    
+    
+    <!-- handlers-->
+    
+    <aura:handler name="init" value="{! this }" action="{!c.doInIt }"/>
+        
+   <lightning:card iconName="standard:search"  title="Job Serach">
+        <aura:set attribute="actions">
+            <lightning:button label="New Job" title="New Job" onclick="{! c.navigateToMyComponent }"/>
+            <lightning:button label="Export To PDF" title="Export To PDF" onclick="{! c.navigateToJobSearchResult }"/>
+            <lightning:button label="Cancel" title="Cancel" onclick="{! c.cancelnaviagtion}"/>      
+          </aura:set>    
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="2" padding="around-small">
+            
+            <lightning:input aura:id="Job_Name" name="Job_Name" label="Job Name" onchange="{!c.doSearch}"  />
+            <lightning:input aura:id="Client" name="Client" label="Client" onchange="{!c.doSearch}" />
+            <lightning:input aura:id="Campaign" name="Campaign" label="Campaign" onchange="{!c.doSearch}"/>
+            
+            <lightning:select aura:id="Status" name="select1" label="Status" onchange="{!c.doSearch}" >
+                <option value="">--None--</option>
+                <aura:iteration items="{!v.statusList}" var="item">
+                    <option value="{!item}">{!item}</option>
+                </aura:iteration>
+            </lightning:select>
+            <lightning:input aura:id="Job_Description" name="Job_Description" label="Job Description" onchange="{!c.doSearch}" />
+            
+            <lightning:input aura:id="Start_Date1" type="date" name="Start_Date1" label="Start Date (From)"  onchange="{!c.doSearch}"   /> 
+            <lightning:input aura:id="Start_Date2" type="date" name="Start_Date2" label="Start Date (To)"  onchange="{!c.doSearch}"   /> 
+            
+            <lightning:input aura:id="Due_Date1" type="date" name="Due_Date1" label="Due Date (From)"  onchange="{!c.doSearch}"  />
+            <lightning:input aura:id="Due_Date2" type="date" name="Due_Date2" label="Due Date (To)"  onchange="{!c.doSearch}"   />
+            
+            <lightning:input aura:id="Completion_Date1" type="date" name="Completion_Date1" label="Completion Date (From)"  onchange="{!c.doSearch}"  />
+            <lightning:input aura:id="Completion_Date2" type="date" name="Completion_Date2" label="Completion Date (To)"  onchange="{!c.doSearch}"  />
+            
+            
+            
+        </lightning:layoutItem> 
+        
+        <lightning:layoutItem size="10" padding="around-small">
+            <aura:if isTrue="{!!empty(v.data)}">
+            <div style="height:500px">    
+                <lightning:datatable class="JobSearchClass"
+                                     columns="{!v.columns}"
+                                     data="{!v.data}"
+                                     keyField="Id"
+                                     hideCheckboxColumn="true"
+                                     showRowNumberColumn="true"                 
+                                     sortedBy="{!v.sortedBy}"
+                                     sortedDirection="{!v.sortedDirection}"
+                                     onsort="{!c.updateColumnSorting}"
+                                     onrowaction="{!c.handleSearchRowActions }"
+                                     enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                                     onloadmore="{!c.loadMoreData }"
+                                     rowNumberOffset="0"
+                                       />
+                </div>
+                
+                <br/>
+                <div class="slds-float_left">
+                    <strong>Total Rows : {!v.totalRows}</strong>
+                </div>
+                <div class="slds-float_right">
+                   <!-- <strong>{!v.loadMoreStatus}</strong> -->
+                </div>
+               <aura:set attribute="else">                      
+                  No records to display.
+            </aura:set>
+                  </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+    </lightning:card>  
+</aura:component>

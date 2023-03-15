@@ -1,0 +1,175 @@
+<apex:page standardController="JS_Time_Sheet__c" extensions="enterJsTsDetailCon" id="Page">
+   
+   <script>
+
+    function clearValue()
+
+    {
+
+    document.getElementById('{!$Component.page:frm:pg_ts:pbs1:starttime:start}').value = '';
+
+    document.getElementById('{!$Component.page:frm:pg_ts:pbs1:endtime:End}').value = '';
+
+   
+    }
+
+     
+
+    </script>
+
+   
+   
+    <apex:form id="frm">  
+    
+       
+    <apex:sectionHeader title="Job Time" />
+        <apex:pageBlock id="pg_ts" > 
+    
+
+            <apex:pagemessages id="pgMsg"/>   
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!Save}" />
+                <apex:commandButton value="Cancel" action="{!Cancel}" />
+            </apex:pageBlockButtons>
+            
+            <Apex:pageBlockSection title="Watch Section" id="pbs1">
+   
+            <apex:pageBlockSectionItem id="starttime">
+                    <apex:outputLabel >Start Watch</apex:outputLabel>
+                    <apex:actionRegion >
+                    <apex:inputfield value="{!objTSDetail.Start_Watch__c}" id="start">
+                    <apex:actionSupport event="onchange" reRender="pbs,pgMsgs"/> 
+                    </apex:inputfield>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+                
+                <apex:commandButton value="Start Time" reRender="Start,pbs,pg_ts,tde" action="{!start}"/>
+                
+               <apex:pageBlockSectionItem id="endtime" >
+                
+                   <apex:outputLabel >End Watch</apex:outputLabel>
+                    <apex:actionRegion >
+                    <apex:inputfield value="{!objTSDetail.End_Watch__c}" id="End" >
+                        <apex:actionSupport event="onchange" reRender="pbs,pgMsgs"/>
+                    </apex:inputfield>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>  
+                
+                <apex:commandButton value="End Time" reRender="End,pbs,pg_ts,tde" action="{!End}"/> 
+                
+                
+               
+                <apex:commandButton value="Clear" onclick="clearValue()" reRender="End,pbs,pg_ts,tde" style="margin-left:61%;width:50px;"/> 
+              
+               
+            </Apex:pageBlockSection> <br/>
+            
+            
+            
+            <apex:pageBlockSection columns="2" id="pbs" title="Entry Section" collapsible="true">
+
+            
+               <apex:pageBlockSectionItem >      
+                    <apex:outputLabel >Job Name</apex:outputLabel>
+                    
+                    <apex:actionRegion >
+                        <apex:outputPanel >
+                            <apex:selectList value="{!JobNameStr}" size="1" >
+                                <apex:selectOptions value="{!JobName}" />
+                                <apex:actionSupport event="onchange" rerender="txtTask,txtGL,txtHrs,txtRemain"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>  
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel >Task Name</apex:outputLabel>
+                    <apex:actionRegion >
+                        <apex:outputPanel >                    
+                            <apex:selectList value="{!JobTaskNameStr}" size="1" id="txtTask" >
+                                <apex:selectOptions value="{!TaskName}" />
+                                <apex:actionSupport event="onchange" reRender="txtGL,txtHrs,txtRemain"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:actionRegion>                           
+                </apex:pageblockSectionItem>  
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >GL Code</apex:outputLabel>
+                    <apex:outputText value="{!GLCodeOfTask}" id="txtGL" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel >Total Hours Estimated</apex:outputLabel>
+                    <apex:outputText value="{!if(GLCodeOfTask<>'',TotalHours,'0.00')}" id="txtHrs" />
+                </apex:pageblockSectionItem>  
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Date</apex:outputLabel>
+                    <apex:inputField value="{!objTSDetail.Date__c}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Total Hours Remaining</apex:outputLabel>
+                    <apex:outputText value="{!if(GLCodeOfTask<>'',RemainHours,'0.00')}" id="txtRemain" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Notes</apex:outputLabel>
+                    <apex:inputTextarea value="{!objTSDetail.Notes__c}" rows="3" cols="55"  style="resize:none"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!(objTSDetail.Start_Watch__c == null && objTSDetail.End_Watch__c == null)}">
+                  <apex:outputLabel >Total Hours Worked</apex:outputLabel>
+                  <apex:inputField value="{!objTSDetail.Hours_Worked__c}"  /> 
+                   
+                   </apex:pageBlockSectionItem> 
+                
+                   <apex:pageBlockSectionItem rendered="{!(objTSDetail.Start_Watch__c != null ) }"> 
+                   </apex:pageBlockSectionItem> 
+                <!-- <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Start Watch</apex:outputLabel>
+                    <apex:actionRegion >
+                    <apex:inputField value="{!objTSDetail.Start_Watch__c}" >
+                   <apex:actionSupport event="onchange" reRender="pbs,pgMsgs"/> 
+                    </apex:inputField>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem> -->
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel rendered="{!$Profile.Name =='System Administrator'}" >User</apex:outputLabel>
+                    <apex:inputField value="{!objTSDetail.User__c}" rendered="{!$Profile.Name =='System Administrator'}" />
+                </apex:pageBlockSectionItem> 
+                
+                
+                <apex:pageBlockSectionItem id="td" rendered="{!(objTSDetail.Start_Watch__c != null ) }">
+                    <apex:outputLabel >Total Hours Worked</apex:outputLabel>
+                  <apex:outputText id="tde" value="{!calcTimeDiff}" /> 
+                   
+                </apex:pageBlockSectionItem>                
+                 <br/>
+           <apex:pageMessage summary=" End watch should  be greater than Start watch. " rendered="{!error}" id="pgMsgs" severity="FATAL" strength="1" />                             
+      
+                   
+                
+                
+                
+              <!--   <apex:pageBlockSectionItem id="endtime" >
+                
+                   <apex:outputLabel >End Watch</apex:outputLabel>
+                    <apex:actionRegion >
+                    <apex:inputField value="{!objTSDetail.End_Watch__c}" id="yy" >
+                        <apex:actionSupport event="onchange" reRender="pbs,pgMsgs"/>
+                    </apex:inputField>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>  -->
+               
+            </apex:pageblockSection>
+            
+            
+           
+            
+            
+            
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

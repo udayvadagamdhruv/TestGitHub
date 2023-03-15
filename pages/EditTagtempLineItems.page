@@ -1,0 +1,75 @@
+<apex:page standardController="Tag_Template_Item__c" extensions="EditTagtempLineItemsExt" tabStyle="MyAdmin__tab">
+
+<apex:sectionHeader title="{!Tag_Template_Item__c.Name}"/>
+  <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="Information" columns="2" collapsible="false"> 
+                   <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Name.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!Tag_Template_Item__c.Name}" required="true"/>
+             </apex:pageBlockSectionItem>
+             
+               <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.TagTemplate__c.Label}"></apex:outputLabel>
+                     <apex:outputField value="{!Tag_Template_Item__c.TagTemplate__c}"/>
+             </apex:pageBlockSectionItem>
+             
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Description__c.Label}"/>
+               <apex:inputField value="{!Tag_Template_Item__c.Description__c}"/>
+            </apex:pageBlockSectionItem>
+             
+            
+             
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Air_Time__c.Label}"/>
+               <apex:inputField value="{!Tag_Template_Item__c.Air_Time__c}"/>
+            </apex:pageBlockSectionItem>
+            
+              <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Show_Air_Date__c.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!Tag_Template_Item__c.Show_Air_Date__c}"/>
+             </apex:pageBlockSectionItem>
+            
+            
+             
+         
+             
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Promo_End_Date__c.Label}"/>
+               <apex:inputField value="{!Tag_Template_Item__c.Promo_End_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+               <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Promo_Due_Date__c.Label}"></apex:outputLabel>
+               <apex:inputField value="{!Tag_Template_Item__c.Promo_Due_Date__c}"/>
+                     
+             </apex:pageBlockSectionItem>
+             
+              <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Air_Date__c.Label}"></apex:outputLabel>
+               <apex:inputField value="{!Tag_Template_Item__c.Air_Date__c}"/>
+                     
+             </apex:pageBlockSectionItem>
+             
+              <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Tag_Template_Item__c.Fields.Lengths__c.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!Tag_Template_Item__c.Lengths__c}"/>
+             </apex:pageBlockSectionItem>
+             
+              
+           </apex:pageBlockSection>
+             </apex:pageBlock>
+    </apex:form>
+
+
+
+
+  
+</apex:page>

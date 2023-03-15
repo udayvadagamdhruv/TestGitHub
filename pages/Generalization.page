@@ -1,0 +1,134 @@
+<apex:page controller="customSettingsInroPg" >
+<script type="text/javascript">
+    window.onload = function() { 
+   
+        var ele1 = document.getElementById('{!$Component.form1.pageblock.pageblock1.pgblcksctn.iptxt1}');
+        var ele2 = document.getElementById('{!$Component.form1.pageblock.pageblock1.pgblcksctn.str_DateForm}');
+        var ele3 = document.getElementById('{!$Component.form1.pageblock.pageblock1.pgblcksctn.str_Code}');
+        var selectedvalue = '{!JSENCODE(HTMLENCODE(str_radibtn))}';
+      
+        if(selectedvalue == 'Auto')
+        {
+            ele1.disabled = false;
+            ele2.disabled = true;
+            ele3.disabled = true;
+        }
+        else if(selectedvalue == 'Date')
+        {
+            ele1.disabled = true;
+            ele2.disabled = false;
+            ele3.disabled = true;
+        }
+        else if(selectedvalue == 'Code')
+        {
+            ele1.disabled = true;
+            ele2.disabled = true;
+            ele3.disabled = false;
+        }
+    } 
+    function DisableMenu(selectedValue){
+        var ele1 = document.getElementById('{!$Component.form1.pageblock.pageblock1.pgblcksctn.iptxt1}');
+        var ele2 = document.getElementById('{!$Component.form1.pageblock.pageblock1.pgblcksctn.str_DateForm}');
+        var ele3 = document.getElementById('{!$Component.form1.pageblock.pageblock1.pgblcksctn.str_Code}');
+
+        if(selectedValue == 'Auto'){
+            ele1.disabled = false;
+            ele2.disabled = true;
+            ele3.disabled = true;
+        }
+        else if(selectedValue == 'Date'){
+            ele1.disabled = true;
+            ele2.disabled = false;
+            ele3.disabled = true;
+        }
+        else if(selectedValue == 'Code'){
+            ele1.disabled = true;
+            ele2.disabled = true;
+            ele3.disabled = false;
+        }
+    }
+</script>
+<apex:form id="form1" >
+     <apex:pagemessages />
+     <apex:pageBlock id="pageblock">
+         <apex:pageBlockButtons >
+            <apex:commandButton value="Save" action="{!savePage}"/>
+            <apex:commandButton value="Cancel" action="{!cancelPage}"/>
+        </apex:pageBlockButtons>
+     
+    <apex:pageBlock id="pageblock1">
+         
+        <apex:pageBlockSection id="pgblcksctn" collapsible="true" title="Job Number Settings">
+            <apex:selectRadio label="Options" onchange="DisableMenu(this.value)" id="optradio" value="{!str_radibtn}">
+                <apex:selectOption itemValue="Auto"  itemLabel="Auto"/>
+                <apex:selectOption itemValue="Date" itemLabel="Date"/>
+                <apex:selectOption itemValue="Code" itemLabel="Code"/>
+            </apex:selectRadio><br/><br/>
+            
+            <apex:inputText value="{!str_Auto}" label="Auto" id="iptxt1" /><br/><br/>
+            
+            <apex:selectList label="Date Format :" value="{!str_DateForm}" size="1" id="str_DateForm" >
+                <apex:selectOption itemValue="mm-dd-yy" itemLabel="mm-dd-yy"/>
+                <apex:selectOption itemValue="dd-mm-yy" itemLabel="dd-mm-yy"/>
+                <apex:selectOption itemValue="mm-yy" itemLabel="mm-yy"/>
+                <apex:selectOption itemValue="yy-mm" itemLabel="yy-mm"/>
+                <apex:selectOption itemValue="yy" itemLabel="yy"/>
+            </apex:selectList><br/><br/>
+            
+            <apex:selectList value="{!str_Code}" size="1" label="Code :" id="str_Code" > 
+                <apex:selectOption itemValue="{!$ObjectType.Job__c.Fields.Client__c.Label}" itemLabel=" {!$ObjectType.Job__c.Fields.Client__c.Label} Code"/>
+                <apex:selectOption itemValue="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" itemLabel="{!$ObjectType.Job__c.Fields.Campaign__c.Label} Code"/>
+                 
+            </apex:selectList><br/><br/>
+
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+            <apex:pageBlock id="pb">
+                  <apex:pageBlockSection title="Tab Order in Job Details" collapsible="true">
+                     <apex:pageblockTable value="{!objlist1}" var="v" style="width:700px" id="Pgb"  >
+                        
+                        <apex:column headerValue="Tab Name"> 
+                            <apex:inputText value="{!v.Tabs_Order__c}"/> 
+                        </apex:column>
+                        
+                        <apex:column headerValue="Active">
+                            <apex:inputCheckbox value="{!v.Active__c}"/>
+                        </apex:column>
+                         
+                        <apex:column >
+                        
+                            <apex:commandButton title="Move Up" action="{!MoveUp}" reRender="pb"  disabled="{!v.Order__c == 1}" image="{!$Resource.Up_Arrow}" style="width:12px;height:12px;" >
+                                 
+                                 <apex:param name="strTabID" value="{!v.Id}" assignTo="{!tabid}"/>
+                            </apex:commandButton> &nbsp;
+                            <apex:commandButton title="Move Down" action="{!MoveDown}" rerender="pb" disabled="{!v.Order__c == (objlist1.size) }" image="{!$Resource.Down_Arrow}" style="width:12px;height:12px;" >
+                                <apex:param name="strTabID" value="{!v.Id}" assignTo="{!tabid}"/>
+                            </apex:commandButton>  
+                         
+                        </apex:column>    
+                     </apex:pageblockTable>
+               </apex:pageBlockSection> 
+                
+              
+                   
+        </apex:pageBlock>
+         <apex:pageBlock >
+          <apex:pageBlockSection title="Notes and Attachments display" columns="2">
+               
+                <apex:pageBlock >
+                    <apex:repeat var="r" value="{!cstWrap}" >
+                        <apex:inputCheckbox value="{!r.isSelected}"> </apex:inputCheckbox> &nbsp;&nbsp;&nbsp;
+                        <apex:outputLabel value="{!r.strProfile}" ></apex:outputLabel><br/><br/>
+                    </apex:repeat>
+                    </apex:pageBlock>      
+               </apex:pageBlockSection> 
+          </apex:pageBlock>
+          <!-- <apex:pageblock >
+              <apex:pageblockSection title="Gl Code required in schedule?">
+                  <apex:inputCheckbox />
+              </apex:pageblockSection>
+          </apex:pageblock>-->
+        
+        </apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,7 @@
+<!-- This page is used to display detail of Graphics Deliverable record -->
+<apex:page standardController="Graphics_Deliverables__c" tabStyle="Job__c">
+    <apex:form >
+        <apex:detail inlineEdit="false" showChatter="true" relatedList="false"/>    
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

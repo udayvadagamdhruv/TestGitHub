@@ -1,0 +1,350 @@
+<!-- This page is used to Display Spec Item for Quote. -->
+<apex:page standardController="Quote__c" extensions="DisplaySpecItemForQuote" sidebar="flase" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true">
+     <head>
+        <style>
+        
+
+            .slds .slds-max-medium-table--stacked-horizontal td:before
+            {
+              text-transform:none;
+            }
+        
+            #table_Description td
+            {
+                border:0px;
+            }
+          
+           .labelCol2{font-size:1.0em};
+           
+          
+         
+           
+        </style>
+        
+         <style>
+          
+         .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                   }
+                    
+                   .slds .slds-table tr > td:first-child 
+                   {
+                        padding-left: 6px;
+                        padding: 15px;
+                   }
+                                       
+              .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+            
+            
+        </style>
+        
+        
+        
+        
+        
+     </head>
+     
+      <script>
+        OnChange(control)
+        {
+         
+          alert('changed');
+        }
+        </script>
+        
+        
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+    
+       <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+       <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+      <body> 
+      
+          <div class="slds">
+           
+           
+                <apex:form html-novalidate="novalidate">
+                
+                 <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                       <apex:pageMessages id="hiddenBlock3"/>
+                 </div>
+      
+     
+          <apex:outputPanel id="pb">
+           
+          <br/> 
+               <div align="center">
+                    <apex:commandButton value="Create Spec" action="{!addNewQuoteSpec}" id="addspec"  styleClass="slds-button slds-button--neutral"/>
+                    <apex:commandButton value="Import Template" action="{!ImportProductionSpec}" id="ImportSpecs"  styleClass="slds-button slds-button--neutral"/>
+                    <apex:commandButton value="Save" action="{!save}" id="saveButton1" style="display: none;"  styleClass="slds-button slds-button--neutral"/>  
+                    <apex:commandButton value="Remove" id="cancelButton1" style="display: none;" onclick="window.location.reload();" reRender="pb"  styleClass="slds-button slds-button--neutral"/> 
+               </div>
+               
+               
+               <br/><br/>
+               
+             <apex:outputPanel rendered="{! qsi.size > 0}" > 
+               <div class="slds-box">
+               
+               <div class="slds-grid slds-wrap">
+                        <apex:repeat value="{!qsi}" var="qsitem" rendered="{! qsi.size > 0}">
+                            
+                                <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                                    <div class="slds-media slds-tile slds-hint-parent">
+                    
+                                        <div class="slds-media__figure">
+                                            <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#record')}"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                <p class="slds-tile__title slds-truncate">
+                                                    <apex:outputLink tabindex="tab1" value="/apex/QuoteSpecItemDetailPageLightning?id={!qsitem.id}" rendered="{!$ObjectType.Quote_Spec_Item__c.updateable}"><font color="#0070d2">{!qsitem.Name}</font></apex:outputLink>
+                                                </p>
+                    
+                                                <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                    
+                                                              <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                                    <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                </div>
+                                                   
+                                                    
+                                                    <div class="slds-dropdown slds-dropdown--right">
+                    
+                                                        <ul class="slds-dropdown__list" role="menu">
+                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                <a  href="/apex/EditQuoteSpecItemLightning?id={!qsitem.id}" role="menuitem" tabindex="0">
+                                                                    <span class="slds-truncate" title="Edit">Edit </span>
+                                                                    
+                                                                    <!---<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                        <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                    </svg>---->
+                                                                   &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i>  
+                                                                </a>
+                                                            </li>
+                                                            
+                                                            
+                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                <a href="/apex/DeleteQuoteSpecItem?id={!qsitem.id}" onclick="if(!confirm('Are you sure?')){return false;}" role="menuitem" tabindex="-1">
+                                                                    <span class="slds-truncate" title="Delete">Delete</span>
+                                                                  <!----
+                                                                     <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                        <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                    </svg> 
+                                                                    ---->
+                                                                     &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                    
+                                            </div>
+                                            <div class="slds-tile__detail slds-text-body--small">
+                                                <p >{!qsitem.Description__c}</p>
+                                            </div>
+                    
+                                        </div>
+                                         
+                                        
+                                        
+                                    </div> <br/>
+                               
+                            </div><br/>
+                           
+                        </apex:repeat>
+                        <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                                    </div>
+                    </div>
+               </div>
+               
+               </apex:outputPanel>  
+               
+               
+               
+               <!--
+                         <div class="slds-box" style="display:{!IF(qsi.size > 0, 'block','none')};">    
+                        
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" id="table111">
+                                <thead>
+                                   <tr class="slds-text-title">
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="Spec Name" ><b>Spec Name</b></div>
+                                      </th>
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="Description"><b>Description</b></div>
+                                      </th>
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="Action"><b>Action</b></div>
+                                      </th>
+                                  </tr>
+                               </thead>
+                               
+                               
+                               <tbody>
+                                   <apex:repeat value="{!qsi}" var="qsitem" rendered="{! qsi.size > 0}">
+                                        <tr>
+                                             
+                                              <td data-label="Spec Name">
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/apex/QuoteSpecItemDetailPageLightning?id={!qsitem.id}" rendered="{!$ObjectType.Quote_Spec_Item__c.updateable}"><font color="#0070d2">{!qsitem.Name}</font></apex:outputLink>
+                                                </div>
+                                              </td>
+                                              
+                                              <td data-label="Description">
+                                                <div>
+                                                       <apex:outputField value="{!qsitem.Description__c}">
+                                                       <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" hideOnEdit="addspec,ImportSpecs"/>  
+                                                       &nbsp;&nbsp;&nbsp;&nbsp;
+                                                       <apex:image url="{!$Resource.Plus}" width="9" height="9" id="img" title="Edit Description"/>  
+                                                        </apex:outputfield>    
+                                                </div>
+                                              </td>
+                                             
+                                              <td data-label="Action">
+                                                 <div>
+                                                      <apex:commandButton value="Edit" action="{!editQuoteSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Quote_Spec_Item__c.updateable}" styleClass="slds-button slds-button--neutral">
+                                                          <apex:param name="param1" value="{!qsitem.id}" assignTo="{!specId}"></apex:param>
+                                                      </apex:commandButton> &nbsp;
+                                    
+                                                    <apex:commandButton value="Remove" action="{!deleteQuoteSpec}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" rendered="{!$ObjectType.Quote_Spec_Item__c.deletable}" styleClass="slds-button slds-button--neutral">
+                                                        <apex:param name="param2" value="{!qsitem.id}" assignTo="{!specId}"> </apex:param>
+                                                     </apex:commandButton>  
+                                                  </div>
+                                               </td>
+                                               
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                   -->
+               
+               
+                        
+                 <!-- <table style="width:100%" class="slds-table slds-table--bordered">
+                         
+                               <tr  class="slds-text-heading--label">
+                                   <th style="width:30%;text-align:left;padding-left:5px;" class="slds-truncate"><b>Spec Name</b></th>
+                                   <th style="width:45%;text-align:left;padding-left:25px;" class="slds-truncate"><b>Description</b></th>
+                                   <th style="width:25%;text-align:left;padding-left:25px;" class="slds-truncate"><b>Action</b></th>
+                                  
+                               </tr>
+                               
+                                <apex:repeat value="{!qsi}" var="qsitem" rendered="{! qsi.size > 0}">
+                               <tr>
+                               
+                                <td style="width:30%;text-align:left;padding-left:5px;word-wrap: break-word;"  class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" >
+                                  <apex:outputLink tabindex="tab1" value="/apex/QuoteSpecItemDetailPage?id={!qsitem.id}" rendered="{!$ObjectType.Quote_Spec_Item__c.updateable}"><font color="#0070d2">{!qsitem.Name}</font></apex:outputLink>
+                                </td>
+                               
+                                
+                                
+                                  <td style="width:45%;text-align:left;padding-left:5px;word-wrap:break-word;" class="slds-truncate"  styleClass="slds-cell-wrap slds-cell-shrink">
+                                    <table border="0" id="table_qty">
+                                    <tr>
+                                        <td border="0">
+                                           <apex:outputField value="{!qsitem.Description__c}">
+                                           <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" hideOnEdit="addspec,ImportSpecs"/>  </apex:outputfield>
+                                        </td>
+                                        <td align="right">
+                                                <apex:image url="{!$Resource.Plus}" width="9" height="9" id="img" title="Edit Description"/>  
+                                       </td>
+                                    </tr>
+                                    </table>
+                                 </td>   
+                                
+                                
+                                  <td>
+                                       <apex:commandButton value="Edit" action="{!editQuoteSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Quote_Spec_Item__c.updateable}" >
+                                          <apex:param name="param1" value="{!qsitem.id}" assignTo="{!specId}"></apex:param>
+                                      </apex:commandButton> &nbsp;
+                           
+                                    <apex:commandButton value="Delete" action="{!deleteQuoteSpec}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" rendered="{!$ObjectType.Quote_Spec_Item__c.deletable}">
+                                        <apex:param name="param2" value="{!qsitem.id}" assignTo="{!specId}"> </apex:param>
+                                     </apex:commandButton> 
+                                              
+                                  
+                                  </td>
+                                
+                               
+                              </tr> 
+                               </apex:repeat>
+                              
+                          </table>-->
+                         
+                      </apex:outputPanel> 
+                         <apex:outputPanel rendered="{!qsi.size <= 0}">
+                             
+                                <b>No records to display.</b>
+                                       
+                        </apex:outputPanel>
+                        
+         
+      </apex:form> 
+     </div> 
+      </body>
+    </html>  
+</apex:page>
+<!-- End of Page -->

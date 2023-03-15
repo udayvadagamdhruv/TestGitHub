@@ -1,0 +1,35 @@
+<apex:page standardController="Job_Task__c" extensions="TaskRoleStaffSectionExtension" id="thePage">
+ 
+ <apex:form id="theForm">
+      <apex:pageBlock id="thePageBlock" title="Assign Staff">
+         
+         <div>
+          <apex:pageBlockTable value="{!lstTR}" var="lst" id="thePageBlockable" rendered="{!lstTR.size > 0}">
+              <apex:column headerValue="{!$ObjectType.Job_Task_Role__c.Fields.Name.Label}">
+               <apex:outputField value="{!lst.Name}" />    
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Job_Task_Role__c.Fields.User__c .Label}">
+                    <apex:outputField value="{!lst.User__c }" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+           
+                    </apex:pageBlockTable>
+             </div> 
+          
+           <apex:pageBlockSection rendered="{!lstTR.size <= 0}">
+               <apex:pageBlockSectionItem >
+                   <b>No records to display</b>
+               </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection>  
+         
+           <apex:pageBlockButtons location="top">
+              <apex:commandButton value="Add/Edit Staff" action="{!AddStaffs}"/> 
+         </apex:pageBlockButtons>
+      </apex:pageBlock>
+  </apex:form>
+ 
+ 
+ 
+ 
+</apex:page>

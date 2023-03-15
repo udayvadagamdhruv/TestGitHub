@@ -1,0 +1,53 @@
+<!-- This page is used to upload csv or xls file in Document -->
+<apex:page controller="FileUploadController">
+   <apex:sectionHeader subtitle="Select report CSV/XLS to generate PDF"/>
+     <apex:form enctype="multipart/form-data">
+        <apex:pageMessages />
+       
+        <apex:pageBlock >
+           <apex:pageBlockButtons >
+             <apex:commandButton action="{!upload}" value="Create PDF"/>
+           </apex:pageBlockButtons>
+    
+          <apex:pageBlockSection showHeader="false" columns="2" id="block1">
+    
+       <!--   <apex:pageBlockSectionItem >
+              <apex:outputLabel value="Report Name" for="fileName"/>
+              <apex:inputText value="{!document.name}" id="fileName" required="true"/>
+              </apex:pageBlockSectionItem>  -->
+          
+          
+           <apex:pageBlockSectionItem >                  
+             <apex:outputLabel value="Report Name" for="fileName" >
+             </apex:outputLabel>
+               <apex:actionRegion >
+                 <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                   <div class="requiredBlock"> 
+                   </div>
+                   <apex:inputText value="{!document.name}" id="fileName" required="true"/> 
+                  </span>
+                 </apex:outputPanel>  
+               </apex:actionRegion>
+           </apex:pageBlockSectionItem>
+          
+           <apex:pageBlockSectionItem >
+             <apex:outputLabel value="Report File" for="file"/>
+               <apex:inputFile value="{!document.body}" filename="{!document.name}" id="file" required="true"/>
+             </apex:pageBlockSectionItem>
+    
+     <!--  <apex:pageBlockSectionItem >
+             <apex:outputLabel value="Description" for="description"/>
+              <apex:inputTextarea value="{!document.description}" id="description"/>
+           </apex:pageBlockSectionItem>
+    
+           <apex:pageBlockSectionItem >
+             <apex:outputLabel value="Keywords" for="keywords"/>
+              <apex:inputText value="{!document.keywords}" id="keywords"/>
+           </apex:pageBlockSectionItem> -->
+    
+        </apex:pageBlockSection> 
+      </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,77 @@
+.THIS .slds-accordion__summary-action {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    min-width: 0;
+    background: #e2e4e6  !important;
+    line-height: 1.675rem  !important;
+    padding: 5px  !important;
+    font-size: 1.1em !important;
+    color: darkslategrey !important;
+}
+
+
+.THIS .POtablecss {
+    line-height: 40px;
+}
+
+.THIS .AppEstimatetablecss {
+    line-height: 35px;
+}
+
+.THIS .frequired label:after{
+    content:" *";
+    color:red;
+    
+}
+
+.THIS .slds-button_icon-border
+{
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    
+}
+
+.THIS .PONonEditable button{
+    display:none;
+}
+
+.THIS .MobileMoreActions .slds-dropdown-trigger .slds-dropdown_left
+{
+    left:auto !important;
+    right:0 !important;
+    transform:translateX(0) !important;
+}
+
+
+.THIS .slds-dropdown-trigger .slds-button
+{
+   /* line-height:1.5rem !important;*hidden because effecting date picklist icon position*/ 
+}
+
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+    height:150px !important;
+}
+
+
+@media (min-width: 48em) {
+    .THIS .slds-modal__container {
+        margin: 0 auto;
+        width: 70% !important;
+        max-width: 70rem !important;
+        min-width: 10rem !important;
+    }
+}
+
+.THIS .slds-p-horizontal_x-small{
+    /*added for edit layout fields alignment*/
+    padding-left:0px !important;
+    padding-right:0px !important;
+}
+.THIS .slds-p-around_small{
+    /*added for edit layout fields alignment*/
+    padding: 0 10px 0 10px !important;
+}

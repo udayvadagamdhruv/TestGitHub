@@ -1,0 +1,35 @@
+<!-- This page is used to edit Vendor GL Code. -->
+<apex:page standardController="Vendor_GL_Code__c" tabStyle="Vendor__c" extensions="EditVendorGLCode">
+  <head>
+  </head>
+      <apex:form >
+       <apex:sectionHeader title="{!$ObjectType.Vendor_GL_Code__c.label} Details"/>
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+                 <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                    <apex:commandButton action="{!cancel}" value="Cancel"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="Information" columns="2" collapsible="false"> 
+              
+              <apex:pageBlockSectionItem >  
+                  <apex:outputLabel value="{!$ObjectType.Vendor_GL_Code__c.Fields.GL_Code__c.Label}" for="GLC" ></apex:outputLabel>
+                  <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                  <div class="requiredBlock"> </div>
+                  <apex:selectList id="GLCName" value="{!GLCName}" size="1">
+                  <apex:selectOptions value="{!GLCodes}"></apex:selectOptions>
+                  </apex:selectList> 
+                   </span>
+                  </apex:outputPanel>  
+                  </apex:pageBlockSectionItem>
+              
+                 <apex:pageBlockSectionitem > 
+                      <apex:outputLabel value="{!$ObjectType.Vendor_GL_Code__c.Fields.Vendor__c.Label}"/>
+                      <apex:outputfield value="{!Vendor_GL_Code__c.Vendor__c}"/>
+                   </apex:pageBlockSectionitem>
+          </apex:pageBlocksection>               
+      </apex:pageblock>
+   </apex:form>
+</apex:page>

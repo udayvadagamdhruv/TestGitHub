@@ -1,0 +1,5 @@
+<!--  This page is used to display Detail record of Music Usage -->
+<apex:page StandardController="Music_Usage__c">
+    <apex:detail relatedlist="false" showChatter="true"/>
+</apex:page>
+<!--  End of Page -->

@@ -1,0 +1,15 @@
+<!-- This Page is used to override the delete button of Spec Item Object -->
+<apex:page standardController="Production_Estimate_Temp_Line_Items__c" extensions="DeletePESpecItemExt" showHeader="false" sidebar="false">
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- End Of Page -->

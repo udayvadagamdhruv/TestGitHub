@@ -1,0 +1,19 @@
+<apex:page standardController="Purchase_Order__c" extensions="POSwitchExt" tabStyle="Purchase_Order__c" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="false"   >
+
+<script>
+   var s='{!$User.UITheme=='Theme3'}';
+   
+   if(s=='true'){
+   
+     window.open("/apex/PODetailPage?id="+'{!poid}',"_self");
+   }
+
+</script>
+
+   <apex:outputPanel rendered="{!$User.UITheme=='Theme4d'}">
+   <apex:include pageName="PODetailPageLightning"/>
+   
+   </apex:outputPanel>
+
+ 
+</apex:page>

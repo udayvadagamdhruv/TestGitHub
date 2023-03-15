@@ -1,0 +1,199 @@
+<apex:page standardController="Production_Estimate_Temp_Line_Items__c" tabStyle="MyAdmin__tab" extensions="CreatePETLINewpageExtension">
+
+
+
+    <apex:sectionHeader title="Production Estimate Temp Line Items Edit"/>
+    <apex:pagemessages id="pgMsg"/>
+    <apex:form >
+    <apex:pageBlock >
+       
+   
+       <apex:pageBlockButtons >
+          <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+          <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+       </apex:pageBlockButtons>
+             
+       <apex:actionRegion >
+       <apex:pageBlockSection title="Information" columns="2" collapsible="true" id="pbs">
+        
+          <apex:pageBlockSectionItem >  
+         <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Calc_Unit__c.Label}"/>   
+          <apex:actionRegion >
+              <apex:outputPanel >
+                   <span>
+                        <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Calc_Unit__c}"  required="true"/>
+                        <apex:actionSupport event="onchange" rerender="selectedMedia,pbs"/>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+          
+          </apex:pageBlockSectionItem>
+        
+         <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Production_Estimate_Template__c.Label}"/>
+             <apex:outputField value="{!Production_Estimate_Temp_Line_Items__c.Production_Estimate_Template__c}"/>
+          </apex:pageBlockSectionItem>
+        
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Name.Label}"/>
+             <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Name}" required="true"/>
+          </apex:pageBlockSectionItem>
+             
+          
+          <apex:pageBlockSectionItem >                  
+             <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.GL_Department__c.Label}" for="GLDept" ></apex:outputLabel>
+             <apex:actionRegion >
+                <apex:outputPanel >
+                   <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList id="GLDName" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>  
+          </apex:pageBlockSectionItem>
+             
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.GL_Code__c.Label}" for="usr"></apex:outputLabel>
+             <apex:actionRegion >
+                <apex:outputPanel >
+                   <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+          </apex:pageBlockSectionItem>  
+             
+          <apex:pageBlockSectionItem id="pbs">
+             <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Vendor__c.Label}" for="JT"></apex:outputLabel>
+                <apex:outputPanel >
+                   <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList id="ST" value="{!VName}" size="1" title="Vendors">
+                         <apex:selectOptions value="{!Vendors}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel>  
+         </apex:pageBlockSectionItem> 
+        
+          
+           <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Material_Item__c.Label}"  />
+                  
+                  <apex:outputPanel >
+                    <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList value="{!MIName}" size="1" id="selectedMedia">
+                      <apex:selectOptions value="{!MaterialItems}"></apex:selectOptions>
+                       <apex:selectOptions value="{!MaterialItems2}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                 </apex:outputPanel> 
+             
+         </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem > 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Quantity__c.Label}"/>   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Quantity__c}" />
+          </apex:pageBlockSectionItem>
+          
+          
+          <apex:pageBlockSectionItem > 
+               <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Color__c.Label}"/>   
+               <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Color__c}" />
+          </apex:pageBlockSectionItem>
+          
+         
+          
+          <apex:pageBlockSectionItem rendered="{!Production_Estimate_Temp_Line_Items__c.Calc_Unit__c!='Size'}" id="qtyup"> 
+              <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Qty_Up__c.Label}"/>   
+              <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Qty_Up__c}" />
+          </apex:pageBlockSectionItem>
+          
+          
+          
+           <apex:pageBlockSectionItem > 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Sided__c.Label}"/>   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Sided__c}" />
+          </apex:pageBlockSectionItem>
+         
+         <apex:pageBlockSectionItem rendered="{!Production_Estimate_Temp_Line_Items__c.Calc_Unit__c=='Sheet'}" id="sheetpages"> 
+          
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.of_Pages__c.Label}" />   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.of_Pages__c}" />
+          
+          </apex:pageBlockSectionItem>
+          
+          
+          
+          
+         
+          
+          <apex:pageBlockSectionItem > 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Width_in_Inches__c.Label}"/>   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Width_in_Inches__c}" />
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem rendered="{!Production_Estimate_Temp_Line_Items__c.Calc_Unit__c=='Sheet'}" id="sheetcheckbox"> 
+          
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Divide_Sheets_By_Two__c.Label}" />   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Divide_Sheets_By_Two__c}" />
+          
+          </apex:pageBlockSectionItem>
+          
+          
+          <apex:pageBlockSectionItem rendered="{!If(orgId='00DG0000000kpp2MAA' || orgId='00DK000000W50oOMAR',false,true)}"> 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Equipment_Type__c.Label}"/>   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Equipment_Type__c}" />
+          </apex:pageBlockSectionItem>
+          
+           <apex:pageBlockSectionItem rendered="{!If(orgId='00DG0000000kpp2MAA' || orgId='00DK000000W50oOMAR',true,false)}"> 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Equipment_Type__c.Label}" />   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Equipment_Type__c}" required="true" />
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem > 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Length_in_Inches__c.Label}"/>   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Length_in_Inches__c}" />
+          </apex:pageBlockSectionItem>
+          
+          
+         
+         
+          <apex:pageBlockSectionItem > 
+          <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Commission__c.Label}"/>   
+   
+          <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Commission__c}" />
+          </apex:pageBlockSectionItem>
+          
+          
+          
+          
+          
+          <apex:pageBlockSectionItem > 
+              <apex:outputLabel value="{!$ObjectType.Production_Estimate_Temp_Line_Items__c.Fields.Sort_Order__c.Label}"/>   
+              <apex:inputField value="{!Production_Estimate_Temp_Line_Items__c.Sort_Order__c}" />
+          </apex:pageBlockSectionItem>
+          
+         
+          
+             
+       </apex:pageBlockSection>
+       </apex:actionRegion>  
+    </apex:pageBlock>
+ </apex:form>
+
+</apex:page>

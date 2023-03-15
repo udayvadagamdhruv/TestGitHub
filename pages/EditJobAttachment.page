@@ -1,0 +1,19 @@
+<!-- This page is used to Edit Attachment associate with Job record. -->
+<apex:page standardController="Attachment" extensions="EditJobAttachmentExtension" tabStyle="Job__c">
+  <apex:form >
+  <apex:pageMessages ></apex:pageMessages>
+    <apex:pageBlock >
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!SaveAttachment}" value="Save"/>
+            <apex:commandButton action="{!cancelme}"  value="Cancel" immediate="true"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Enter New File</apex:outputLabel>
+               <apex:inputfile value="{!Attachment.body}" filename="{!Attachment.name}" />
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

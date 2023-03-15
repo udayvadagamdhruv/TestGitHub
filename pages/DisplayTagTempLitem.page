@@ -1,0 +1,96 @@
+<apex:page Controller="DisplayTagTempLitemController">
+  
+  <head>
+<style>
+ #table_id td
+        {
+            border:0px;
+        }
+</style>
+
+</head>
+ 
+ <apex:form >
+  <apex:pageBlock >
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+    <apex:commandButton action="{!createTagLI}" value="Add Line Items" id="btn2" rendered="{!$ObjectType.Tag_Template_Item__c.Createable}"/> 
+       
+       </span>
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!TagLI}" var="Item" rendered="{!TagLI.Size>0}">
+      <!--   <apex:column headerValue="Action" width="10%">
+         
+             <apex:commandButton value="Edit" action="{!EditIATLI}" reRender="hiddenBlock2" rendered="{!$ObjectType.Invoice_Allocation_Template_Line_Item__c.Updateable}">
+                  <apex:param name="param1" value="{!Item.id}" assignTo="{!strIATLI}" ></apex:param>
+              </apex:commandButton>
+         
+              <apex:commandButton value="Delete" action="{!deleteIATLI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" rendered="{!$ObjectType.Invoice_Allocation_Template_Line_Item__c.Deletable}">
+                  <apex:param name="param2" value="{!Item.id}" assignTo="{!strIATLI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          -->
+          <apex:column headerValue="Action" width="10%">
+         
+             <apex:outputLink tabindex="tab1" value="/apex/EditTagtempLineItems?id={!Item.Id}">Edit</apex:outputLink>  |    <apex:outputLink tabindex="tab1" value="/apex/DeleteTagLIItem?id={!Item.Id}" >Delete</apex:outputLink>
+         
+             
+          </apex:column>
+        
+        
+          
+          <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.name.Label}">
+               <apex:outputLink tabindex="tab1" value="/apex/TagTemplateLIdetailpage?id={!Item.Id}">{!Item.Name}</apex:outputLink>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Description__c.Label}">
+              <apex:outputfield value="{!Item.Description__c}"/>
+          </apex:column>
+          
+          
+          
+          
+            <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Air_Time__c.Label}">
+              <apex:outputfield value="{!Item.Air_Time__c}"/>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Show_Air_Date__c.Label}">
+              <apex:outputfield value="{!Item.Show_Air_Date__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Promo_End_Date__c.Label}">
+              <apex:outputfield value="{!Item.Promo_End_Date__c}"/>
+          </apex:column>
+        
+          
+            <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Promo_Due_Date__c.Label}">
+              <apex:outputfield value="{!Item.Promo_Due_Date__c}"/>
+          </apex:column>
+          
+          
+         <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Air_Date__c.Label}">
+              <apex:outputfield value="{!Item.Air_Date__c }"/>
+          </apex:column>
+          
+            
+            <apex:column headerValue="{!$ObjectType.Tag_Template_Item__c.Fields.Lengths__c.Label}">
+              <apex:outputfield value="{!Item.Lengths__c}"/>
+          </apex:column>
+          
+         
+          
+          
+         </apex:pageBlockTable>
+     
+   
+    
+   
+     
+    
+     </apex:pageBlock>
+ </apex:form> 
+          
+          
+</apex:page>

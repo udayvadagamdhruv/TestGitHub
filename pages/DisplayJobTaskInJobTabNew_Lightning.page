@@ -1,0 +1,1855 @@
+<!-- This page is used as inline VF page. It is displayed under Schedule SubTab in Job Tab -->
+<apex:page standardController="Job__c" extensions="RetrieveTaskNewTesting" id="scheudleform" showHeader="false" sidebar="false" applyBodyTag="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="true">
+
+
+
+<div id="MainPage">
+  
+  
+     <head>
+     
+     <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+     <apex:stylesheet value="{!URLFOR($Resource.jQueryScheduleUpadate,'/css/ui-lightness/jquery-ui-1.8.13.custom.css')}" />
+     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css" />
+      
+ 
+     <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-1.5.1.min.js')}" type="text/javascript" > </script>
+     <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-ui-1.8.13.custom.min.js')}" type="text/javascript" > </script>
+     <script src="{!URLFOR($Resource.ScheduleTasks,'ScheduleTasks/jquery-1.3.2.js')}"> </script>
+     <script src="{!URLFOR($Resource.ScheduleTasks,'ScheduleTasks/jquery-1.7.2.js')}"> </script>
+     
+     
+     
+       
+       <meta name="viewport" content="width=device-width, initial-scale=1"/>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+       <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+          
+   
+   
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    
+    <style>
+        .fc-Print-button
+        {
+                background-color: white !important;
+                color: blue !important;
+        }
+        .ui-state-active
+        {
+            color: white !important;
+            background-color: blue !important;
+        }
+       
+       
+        .fc-prev-button
+        {
+            background-color: white !important;
+        }
+        .fc-next-button
+        {
+            background-color: white !important;
+        }
+        .fc-today-button
+        {
+            background-color: white !important;
+        }
+        
+    </style>
+    
+    
+    <!-----------------------calender Scriting---------->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+       <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   
+      
+      
+  
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.css')}" rel="stylesheet" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.print.css')}" rel="stylesheet" media="print" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.print.min.css')}" rel="stylesheet" media="print" />
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/moment.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/jquery.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/jquery-ui.min.js')}"></script>
+      <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.min.js')}"></script>
+     
+      <script>
+        $Cal=jQuery.noConflict();
+      </script>
+
+
+ 
+    
+  
+    
+    <!------------------------calender Scripting----------------------------------------->
+    
+   </head>
+   
+   
+   <apex:outputLabel id="loadScript"> 
+   
+    <script>
+    
+    
+        //We need to wrap everything in a doc.ready function so that the code fires after the DOM is loaded
+        
+        
+           
+        
+        
+        $Cal(document).ready(function() {   
+          
+            loadingScript();
+             var ele = $Cal("h2");
+             var eleData  = ele.html();
+           // alert(eleData);
+             
+        });
+        
+        
+      function loadingScript(){
+      
+      //$cal('#calendar').fullCalendar('refetchEvents');
+      
+      $Cal('#calendar').fullCalendar({
+            
+              
+
+                customButtons: { Print: { text: 'Print', click: function() {  
+                window.print(); 
+              
+                } } },
+                header: {
+
+                    center: 'prev title next, today',
+                
+                    right:'Print',
+                   
+                    left: 'month,basicWeek,basicDay'
+
+                },
+               //defaultView: 'basicWeek'
+                aspectRatio: 2.5,
+                editable: true,
+                
+                themeSystem: 'jquery-ui',
+                //themeSystem :'standard',
+                eventDurationEditable: true,
+                eventStartEditable: true,
+                firstDay: 1,
+                 //height:650,
+                //contentHeight:600,
+                
+
+                events:
+
+                [
+
+                    //At run time, this APEX Repeat will reneder the array elements for the events array
+
+                    <apex:repeat value="{!events}" var="e">
+
+                        {
+
+                            title: "{!e.titleNew}",
+
+                            start: '{!e.startString}',
+
+                            end: '{!e.endString}',
+                            
+                            taskid:'{!e.TaskId}',
+                            
+                            Tstatus:'{!e.Tstatus}',
+
+                            url: '{!e.url}',
+
+                            allDay: {!e.allDay},
+                            
+                            color:'{!e.color} !important',
+                            
+                            jn: '{!e.JN1}',
+                             
+                            client: '{!e.client1}',
+                            
+                            staff: '{!e.Staff}',
+                            
+                            className: '{!e.className}'
+                            
+                        },
+
+                    </apex:repeat>
+
+                ],
+                
+               eventRender: function eventRender( event, element, view ) {
+               
+                   var DELAY = 200,
+                    clicks = 0,
+                    timer = null;   
+                element.bind("click", function(e){
+                        clicks++;  //count clicks
+        
+                if(clicks === 1){
+                      timer = setTimeout(function() {
+                        var tskid=event.taskid;
+                        calenderTaskEdit(tskid);
+                        clicks = 0;  //after action performed, reset counter
+                      }, DELAY);
+                  } 
+               else{
+                  var tskstatus=event.Tstatus;
+                  var taskDid=event.taskid;
+                  var textmsg;
+                 
+                     if(tskstatus==='Completed'){
+                        tskstatus='Active';
+                        textmsg='Do yo want Re-Open the Task?';
+                       }
+                    else{
+                        tskstatus='Completed';
+                         textmsg='Do yo want Complete the Task?';
+                       }
+                       
+                       clearTimeout(timer);  //prevent single-click action
+                       //alert('Double Click');  //perform double-click action
+                       clicks = 0;  //after action performed, reset counter
+                       if(confirm(''+textmsg)){
+                        statusChangeUpdate(taskDid,tskstatus);
+                       }
+                       
+                  }
+                });
+                   return ['all', event.Tstatus].indexOf($Cal('#task_status_change').val()) >= 0;
+                   
+                  },
+                
+                
+               eventMouseover: function(event, jsEvent) {
+                   // alert('invokeddd...........');
+                   event.title = event.title.split(' - ')[0]+', Job - # '+event.title.split(' - ')[1];
+                  if(event.title.substring(0, 3)== 'Job'){
+                    
+                    var tooltip = '<div class="tooltipevent" style="width:250px;height:100px;background: linear-gradient(to right, rgb(234,185,45) 0%,rgb(199,152,16) 100%);position:absolute;z-index:10001;">' +
+                                        '<B>Job Name: </B>'+ event.title.substring(5, event.title.length) +
+                                        '<br>'+'<B>Campaign : </B>'+event.staff+
+                                        '<br>'+'<B>Job Client : </B>'+event.client+
+                                        '<br>'+'<B>Start Date: </B>'+event.start.format()+
+                                        '<br>'+'<B>End Date: </B>'+event.end.format()+
+                                        
+                                   '</div>';
+                    var tooltip = '<div class="tooltipevent" style="box-shadow: 4px 4px 4px 4px '+event.color+';padding:10px;background-color:'+event.color+';color:white;position:absolute;z-index:10001;">' +
+                            '<B>Job Name: </B>' + event.title.substring(5, event.title.length) +
+                            '<br>' + '<B>Campaign : </B>' + event.staff +
+                            '<br>' + '<B>Job Client : </B>' + event.client +
+                            '<br>' + '<B>Start Date: </B>' + event.start.format() +
+                            '<br>' + '<B>End Date: </B>' + event.end.format() +
+
+                            '</div>';
+                    $Cal("body").append(tooltip);
+                    $Cal(this).mouseover(function(e) {
+                        $Cal(this).css('z-index', 10000);
+                        $Cal('.tooltipevent').fadeIn('500');
+                        $Cal('.tooltipevent').fadeTo('10', 1.9);
+                        }).mousemove(function(e) {
+                                $Cal('.tooltipevent').css('top', e.pageY + 10);
+                                $Cal('.tooltipevent').css('left', e.pageX + 20);
+                        });}
+                        
+                        // task Mouse Over
+                    //
+                    else if(event.title.substring(0, 11) != 'JS Campaign'){
+                    //alert('event.title.substring(0, 11) :::'+event.title.substring(0, 11));
+                   
+                    //Substringing the event tile to get Job# and Task name
+                    var titlepos = event.title.indexOf(",");
+                    var taskName = event.title.substring(0, titlepos);
+                    var jobNo = event.title.substring(titlepos+7,event.title.length); 
+                    
+                    //Substringing the event JN to get Job Name and campaign name
+                    var jnpos = event.jn.indexOf(":");
+                    var campName = event.jn.substring(0, jnpos );
+                    var jobName = event.jn.substring(jnpos +2,event.jn.indexOf("id="));
+                    
+                    
+                    var tooltip = '<div class="tooltipevent" style="width:250px;height:120px;background: linear-gradient(to right, rgb(234,185,45) 0%,rgb(199,152,16) 100%);position:absolute;z-index:10001;">' +
+                                       
+                                         '<B>Job : </B>'+jobName+' - '+jobNo+'<br>'+
+                                         '<B>'+ taskName +' :: '+event.start.format()+'</B>'+'<br>'+
+                                         '<B>Client : </B>'+event.client+'<br>'+
+                                         '<B>Campaign: </B>'+campName +'<br>'+
+                                         '<B>Staff: </B>'+event.staff+'<br>'+
+                                         
+                                   '</div>';
+                    var tooltip = '<div class="tooltipevent" style="box-shadow: 4px 4px 4px 4px '+event.color+';padding:10px;background-color:'+event.color+';color:white;position:absolute;z-index:10001;">' +
+                            '<B>Job : </B>' + jobName + ' - ' + jobNo + '<br>' +
+                            '<B>' + taskName + ' :: ' + event.start.format() + '</B>' + '<br>' +
+                            '<B>Client : </B>' + event.client + '<br>' +
+                            '<B>Campaign: </B>' + campName + '<br>' +
+                            '<B>Staff: </B>' + event.staff + '<br>' +
+
+                            '</div>';
+                  // alert('event.title.substring(0, 11) :::'+event.title.substring(0, 11));
+                    $Cal("body").append(tooltip);
+                    $Cal(this).mouseover(function(e) {
+                        $Cal(this).css('z-index', 10000);
+                        $Cal('.tooltipevent').fadeIn('500');
+                        $Cal('.tooltipevent').fadeTo('10', 1.9);
+                        }).mousemove(function(e) {
+                                $Cal('.tooltipevent').css('top', e.pageY + 10);
+                                $Cal('.tooltipevent').css('left', e.pageX + 20);
+                        });}
+                    },
+
+                    eventMouseout: function(event, jsEvent)
+                    {
+                         $Cal(this).css('z-index', 8);
+                         $Cal('.tooltipevent').remove();
+                    },
+                
+               eventDrop: function(event, delta, revertFunc)
+               {
+                  // alert('Dragged Event');
+                  // alert('Event start date ::::::'+event.start.format());
+                   //alert('Event end date ::::::'+event.end.format());
+                   if (!confirm("Do you want to Update..!!!!!"))
+                     {
+                        revertFunc();
+                     }
+                     else
+                     {
+                               // alert('Invoked..................');
+                               if(event.title.substring(0, 3)== 'Job'|| event.title.substring(0, 11) == 'JS Campaign')
+                               {
+                                 var enddate = event.end.format();
+                                 var startdate = event.start.format();
+                               }
+                               else
+                               {
+                                // alert('Invoked.......Task...........'+event.start.format());
+                                 var enddate = event.start.format();
+                                 var startdate = event.start.format();
+                               }
+                     //          alert('Invoked..................'+enddate );
+                                 var cntctName = event.title;
+                                 var jn1 = event.jn;
+                                 
+                                 TaskDueDateUpdate(event.taskid,enddate);
+                                 
+                   }
+               },
+                
+               eventResize: function(event, delta, revertFunc) 
+               {
+                    //alert(event.title + " end is now " + event.end.format());
+                   // alert('Delta...'+delta.end);
+                    if (!confirm("Do you want to CONFIRM..!!!!!?"))
+                     {
+                        revertFunc();
+                     }
+                     else
+                     {
+                                 var enddate = event.end.format();
+                                 var startdate = event.start.format();
+                                 var jn1 = event.jn;
+                               //  alert('Invoked..................'+enddate );
+                                 var cntctName = event.title;
+                                 
+                     }
+                }
+                
+             /* eventClick: function(calEvent, jsEvent) {
+                    var tskid=calEvent.taskid;
+                    calenderTaskEdit(tskid);
+                
+               } */
+            
+            });
+            
+            
+            $Cal('#task_status_change').on('change',function(){
+               $Cal('#calendar').fullCalendar('rerenderEvents');
+            }); 
+            
+            
+            
+            
+         var duedate;
+        if('{!CalDD}'!=''){
+         duedate='{!CalDD}';
+        }
+         
+       $Cal('#calendar').fullCalendar('gotoDate',duedate);    
+         
+     }  
+      
+      
+     
+
+    </script>
+    
+    
+    
+    
+    
+
+</apex:outputLabel>
+    
+    <!--some styling. Modify this to fit your needs-->
+
+    <style>
+
+        #cal-options {float:left;}
+
+        #cal-legend { float:right;}
+
+        #cal-legend ul {margin:0;padding:0;list-style:none;}
+
+        #cal-legend ul li {margin:0;padding:5px;float:left;}
+
+        #cal-legend ul li span {display:block; height:16px; width:16px; margin-right:4px; float:left; border-radius:4px;}
+
+        #calendar {margin-top:20px;}
+
+        #calendar a:hover {color:#fff !important;}
+
+        #formID\3A scheduleID table.fc-agenda-slots
+        {
+            display:none;
+        }
+
+        .fc-event-inner {padding:3px;}
+        
+           .event-JSCampaign{background:#cc9933;border-color:#cc9933;}
+           
+           .center {
+                    margin: auto;
+                    width: 60%;
+                    border:3px solid #73AD21;
+                    padding: 10px;
+                    }
+
+         <!--  .event-Jobs{background:#56458c;border-color:#56458c;}-->
+
+    </style>
+
+   
+   
+   
+   
+   
+   
+  
+  
+    <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-1.5.1.min.js')}" type="text/javascript" > </script>
+     <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-ui-1.8.13.custom.min.js')}" type="text/javascript" > </script>
+     <script src="{!URLFOR($Resource.ScheduleTasks,'ScheduleTasks/jquery-1.3.2.js')}"> </script>
+     <script src="{!URLFOR($Resource.ScheduleTasks,'ScheduleTasks/jquery-1.7.2.js')}"> </script> 
+   
+    <script>
+     var j$ = jQuery.noConflict();
+    </script>
+   
+                   
+   
+     
+    
+   <div class="slds">
+    <apex:form id="formID1" html-novalidate="novalidate" >  
+
+        <style>
+            .mainTitle
+            {
+                overflow: hidden;
+                width: 200px;
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+                -ms-text-overflow: ellipsis;
+                -moz-binding:url("/sync/ellipsis.xml#ellipsis");
+            }
+            
+           
+        </style> 
+       
+        <script  type="text/javascript">
+            function InlineSave()
+            {
+              window.location.reload();
+            }
+        </script>
+                      <!--------------------
+                        <script type="text/javascript">
+                            function f1(taskId,dt)
+                            {
+                                var r = confirm('Do you want to update rest of the schedule?');
+                                if(r == true)
+                                {
+                                    updateSchedule(taskId,dt.value,r);
+                                }
+                                else
+                                {   
+                                    updateSchedule(taskId,dt.value,r);
+                                }
+                            }
+                        </script>
+                        -->
+                        
+                        
+                        <!--
+                         <script type="text/javascript">
+                            function f2(taskId1,days)
+                            {
+                                var r1 = confirm('Do you want to update rest of the schedule?');
+                                if(r1 == true)
+                                {
+                                   updateScheduleOnDaysChange(taskId1,days.value,r1);
+                                }
+                                else
+                                {   
+                                    updateScheduleOnDaysChange(taskId1,days.value,r1);
+                                }
+                            }
+                        </script>
+                        
+                        ------------------------->
+                        
+              <script>           
+                 
+                    //create a function that accepts an input variable (which key was key pressed) 
+                    function disableEnterKey(e){ 
+                     
+                    //create a variable to hold the number of the key that was pressed      
+                    var key; 
+                     
+                        //if the users browser is internet explorer 
+                        if(window.event){ 
+                          
+                        //store the key code (Key number) of the pressed key 
+                        key = window.event.keyCode; 
+                          
+                        //otherwise, it is firefox 
+                        } else { 
+                          
+                        //store the key code (Key number) of the pressed key 
+                        key = e.which;      
+                        } 
+                          
+                        //if key 13 is pressed (the enter key) 
+                        if(key == 13){ 
+                          
+                        //do nothing 
+                        return false; 
+                          
+                        //otherwise 
+                        } else { 
+                          
+                        //continue as normal (allow the key press for keys other than "enter") 
+                        return true; 
+                        } 
+                          
+                    //and don't forget to close the function     
+                    } 
+                    </script>         
+                    
+                        
+                        
+        <script>
+        
+                       
+            j$("#subsortsortable>tbody").sortable();
+            j$("#subsortsortable>tbody").disableSelection();
+            var strTaskId1, strdt, strr,strr1,strDays, strTaskId2,strTaskId3,strHours,strIndex;
+            
+            j$(document).ready(function(){
+           
+            j$("#dialog-confirm1" ).dialog({
+                        autoOpen: false,
+                        resizable: false,
+                        height:150,
+                        modal: true,
+                        buttons: {
+                            "Yes": function() {
+                                
+                                // Call ActionFunction to update Rest of the Schedule
+            
+                               updateSchedule(strTaskId1,strdt,true);
+                                
+                                
+                                j$( this ).dialog( "close" );
+                            },
+                            "No": function() {
+                            
+                               // Call ActionFunction to update only the current Tasks Revised Due Date
+                               
+                                updateSchedule(strTaskId1,strdt,false);
+                                j$( this ).dialog( "close" );
+                            }
+                        }
+              });
+              
+           j$("#dialog-confirm2" ).dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    height:150,
+                    modal: true,
+                    buttons: {
+                        "Yes": function() {
+                            
+                            // Call ActionFunction to update Rest of the Schedule
+        
+                            updateScheduleOnDaysChange(strTaskId2,strDays,true);
+                            
+                            
+                            
+                            j$( this ).dialog( "close" );
+                            
+                            
+                        },
+                        "No": function() {
+                        
+                           // Call ActionFunction to update only the current Tasks Revised Due Date
+                           
+                            updateScheduleOnDaysChange(strTaskId2,strDays,false);
+                             
+                            j$( this ).dialog( "close" );
+                            
+                            
+                        }
+                    }
+                });
+                
+                
+            }); 
+            
+            
+            
+            function moveUp()
+            { 
+            //alert("hello");
+            updateScheduleOnDaysChange(strJTUID);
+            var id1="{!taskId3}";
+                alert(id1);
+            }
+            function scheduleUpdateRevDate(taskId,dt)
+            {
+                strTaskId1 = taskId;
+                strdt = dt.value;
+                if(strdt=="")
+                {
+                    alert('Please select date');
+                    return false;
+                }
+                else
+                {
+                    j$( "#dialog-confirm1" ).dialog( "open" );
+                }    
+            }
+            
+            function scheduleUpdateRevHours(taskId,Hr,index)
+            {
+                strTaskId3 = taskId;
+                strHours = Hr.value;
+                strIndex = index;
+                updateHours(strTaskId3,strIndex);
+             //   j$( "#dialog-confirm3" ).dialog( "open" );
+                   
+            }
+            function scheduleUpdateDays(taskId,days)
+            {
+                strTaskId2 = taskId;
+                strDays = days.value;
+                if(isNaN(strDays) || strDays < 0)
+                {
+                    alert('Please enter valid number for days');
+                    return false;
+                }
+                if(strDays > 1000)
+                {
+                    alert('Please enter days less than 1000');
+                    return false;
+                }
+                if(strDays=="")
+                {
+                    alert('Please enter value for days');
+                    return false;
+                }
+                else
+                {
+                     j$( "#dialog-confirm2" ).dialog( "open" );
+                }    
+            }
+            
+            
+             function createSchedule(isNew)
+                { 
+                 var x;
+                 var r; 
+                    if(isNew)
+                    {                       
+                        r =confirm("This will create new schedule. Do you want to continue ?");    
+                         alert(r);
+                          if (r==true)
+                          {
+                            alert('in true');
+                            return true;   
+                                                
+                          }
+                          else
+                          {
+                           alert('in false');
+                            return false;
+                          }                    
+                    }
+                    else
+                    {
+                        r =confirm(" This will delete tasks on current schedule and recreate new schedule. Do you want to continue ?");    
+                         if (r==true)
+                          {
+                            alert('in true');
+                            return true;   
+                                                
+                          }
+                          else
+                          {
+                           alert('in false');
+                            return false;
+                          }                   
+                    }                        
+                }
+                
+            function reload(){
+                
+                j$( "#scheduleListView" ).load( "https://c.na30.visual.force.com/apex/DisplayJobTaskInJobTabNew_Lightning?id=a0Y36000003GI8j #MainPage", function( response, status, xhr ) {
+                  if ( status == "error" ) {
+                    var msg = "Sorry but there was an error: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                    
+                  }
+                });
+            
+            }
+            
+          
+            
+        </script>
+        <style>
+            .ui-widget-header {
+                    border: 1px solid #088de7 !important;
+                    background: #35a7fb !important;
+            }
+        
+            #table_days td
+            {
+                border:0px;
+            }
+            #table_rd td
+            {
+                border:0px;
+            }
+            #table_rd1 td
+            {
+                border:0px;
+            }
+            #table_compdate td
+            {
+                border:0px;
+            }
+            
+            #table_to td
+            {
+                border:0px;
+            }
+            
+            /*.draggableSpan{
+                border:1px solid #ECEFF3;
+                border-radius:5%;
+                padding:10px;
+            }*/
+       /* .slds .slds-dropdown-trigger_click.slds-is-open .slds-dropdown
+          {
+                 margin-left: 63px !important;
+                
+          }*/
+        
+              
+            th {
+    text-align: left;
+    /* font-weight: bold; */
+    white-space: nowrap;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    color: #706e6b;
+    /* text-transform: uppercase; */
+    letter-spacing: 0.0625rem;
+}
+            
+            
+            
+      .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }       
+            
+            
+            
+        </style>
+        
+       
+         
+         <apex:actionFunction name="updateSchedule" action="{!updateRestSchedule}" rerender="PgbTasks,messages,pagemsgId" status="statustask">
+            <apex:param name="strTaskId1" value="" assignTo="{!taskId}"/>
+            <apex:param name="strdt" value="" assignTo="{!dt}"/>
+            <apex:param name="r" value="" assignTo="{!updateRestScheduleRevDt}"/>
+        </apex:actionFunction>
+        
+        
+        
+        <apex:actionFunction name="updateHours" status="statustask" action="{!updateScheduleHours}" rerender="pagemsgId,pb">
+            <apex:param name="strTaskId3" value="" assignTo="{!taskId}"/>
+            <apex:param name="index" value=""/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="updateScheduleOnDaysChange" action="{!updateScheduleOnDays}" reRender="PgbTasks,messages,pagemsgId"  status="statustask" >
+            <apex:param name="strTaskId2" value="" assignTo="{!taskId1}"/>
+            <apex:param name="strDays" value="" assignTo="{!days1}"/>
+            <apex:param name="r1" value="" assignTo="{!updateRestScheduleDays}"/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="MoveUpandDown" action="{!moveUpandDown}" reRender="PgbTasks,messages,pagemsgId">
+        <apex:param name="strJTUID" value="" assignTo="{!taskId3}"/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="saveOrder" action="{!saveOrder}" reRender="PgbTasks,messages,pagemsgId" status="statustask">
+        </apex:actionFunction>
+      
+        
+<apex:messages id="messages" />
+
+          <apex:pageMessages id="pagemsgId"></apex:pageMessages>
+             
+                  <apex:pageMessage strength="5" title="Error:" severity="Error" summary="You must enter Start or Due Date Values in job" rendered="{!Dateerror}"></apex:pageMessage>
+                  
+             <apex:outputPanel id="PgbTasksbuttons">
+                
+     
+             <center>
+               <apex:commandButton value="Create Schedule" title="Create Schedule"  reRender="formID1" action="{!createSchedule}" id="btncs1" status="statustask" rendered="{!lstJT.size==0 && isHD && scheduletemp != null}"   styleClass="slds-button slds-button--neutral slds-button-group" />&nbsp;
+                  
+                  <apex:commandButton value="Create Schedule" title="Press to Create Schedule" action="{!createSchedule}" id="btncs2" rendered="{!lstJT.size>0 && isHD }"  styleClass="slds-button slds-button--neutral slds-button-group"  onclick="if(!confirm('This will delete tasks on current schedule and recreate new schedule.')){return false;}" />&nbsp;
+             
+                  
+           
+                  <apex:commandButton value="Print Schedule" title="Press to Print Schedule" id="btnR" rendered="{!AND(Not(showprintschedulebutton),lstJT.Size>0)}" onClick="window.open('/one/one.app#/alohaRedirect/apex/ScheduleReport?id={!$CurrentPage.Parameters.Id}');" reRender="scheudleform" styleClass="slds-button slds-button--neutral slds-button-group" />    &nbsp;
+                  
+                  <apex:commandButton value="Copy Schedule " title="Press to Copy Schedule" id="btnCpySch1"  rendered="{!AND(ShowCopySceduleButton,lstJT.size > 0,Not(showcopyschedulebutton))}" onClick="window.open('/one/one.app#/alohaRedirect/apex/MultipleScheduleCopyNewLightning?CpyId={!jobId}');" reRender="frm" styleClass="slds-button slds-button--neutral slds-button-group"/> &nbsp;
+                  
+               <!---   <apex:commandButton action="{!displayTasksInCalendar}" value="Calendar View" id="btn2" rendered="{!AND(Not(Showcalendarviewbutton),lstJT.Size>0)}" styleClass="slds-button slds-button--neutral slds-button-group"></apex:commandButton> &nbsp; ---->
+                  
+                  
+                  <!-- Added this button by Rahul on 7th March 2014 for dev item 684 -->
+                  <!--
+                  <apex:commandButton value="New TimeSheet" id="btnTimeSheet" rendered="{!AND(ShowoldTimesheetflow,lstJT.size > 0,Not(showoldtimesheetentrybutton))}"  onClick="window.open('/apex/enterJsTsDetail?jobId={!jobId}');" reRender="scheudleform"  styleClass="slds-button slds-button--neutral slds-button-group" /> &nbsp;
+                   
+                  <apex:commandButton value=" New TimeSheet Entry" id="btnTimeSheet1" rendered="{!AND(Not(ShowoldTimesheetflow),lstJT.size > 0,Not(showNewtimesheetentrybutton))}" onClick="window.open('/apex/TimesheetEntriesLightning?jobId={!jobId}');" reRender="scheudleform"   styleClass="slds-button slds-button--neutral slds-button-group"/> &nbsp;
+                  -->
+
+                  <!-- Added this button by rahul on 7th May 2014 for dev item 665-->
+                  <!--
+                  <apex:commandButton value="Copy Schedule" id="btnCpySch"  rendered="{!AND(Not(ShowCopySceduleButton),lstJT.size > 0,Not(showOldcopybutton))}"  onClick="window.open('/apex/multipleScheduleCopyLightning?CpyId={!jobId}');" reRender="scheudleform"  styleClass="slds-button slds-button--neutral slds-button-group" /> &nbsp;
+                  -->
+                  
+                  <!-- Added this button by Subharnshu for Epson Copy Schedule Logic -->
+                  <!--
+                  <apex:commandButton value="Copy Schedule " id="btnCpySch1"  rendered="{!AND(ShowCopySceduleButton,lstJT.size > 0,Not(showcopyschedulebutton))}" onClick="window.open('/apex/MultipleScheduleCopyNewLightning?CpyId={!jobId}');" reRender="scheudleform"  styleClass="slds-button slds-button--neutral slds-button-group" /> &nbsp;
+                  -->                                  
+                                  <!--------  toggleviewCalender     ----->
+                                
+                  <apex:commandButton action="{!toggleviewCalender}"    status="LoadingStatus" value="Calendar View" title="Calendar View"  id="toggleCal" reRender="PgbTasksbuttons,PgbTasks,calenderview,insertatend,loadScript,calPanel,calPanelForm"    rendered="{!AND(Not(Showcalendarviewbutton),lstJT.Size>0,islistview)}"   styleClass="slds-button slds-button--neutral slds-button-group"></apex:commandButton> &nbsp;
+                   <apex:commandButton action="{!toggleviewList}"  status="LoadingStatus" value="List View"  title="List View" id="togglelist" reRender="PgbTasksbuttons,PgbTasks,calenderview,insertatend,loadScript,calPanel,calPanelForm" rendered="{!AND(Not(Showcalendarviewbutton),lstJT.Size>0,Not(islistview))}"  styleClass="slds-button slds-button--neutral slds-button-group"></apex:commandButton> &nbsp;
+                  <apex:commandButton value="Tasks Done/Open" title="Tasks Done/Open" action="{!save}" id="saveButton" rendered="{!AND(lstJT.Size>0,islistview)}"   styleClass="slds-button slds-button--neutral slds-button-group"/>      &nbsp;
+    
+                  <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb1"  styleClass="slds-button slds-button--neutral slds-button-group"/> 
+                  <br/><br/>
+                  
+                  <!------ <apex:repeat value="{!lstJobTeam}" var="staff"><span class="draggableSpan" style="cursor: move;" >{!staff.Staff__c}</span>&nbsp;&nbsp;------->
+                      
+               <!---------   </apex:repeat>   ------>
+                 
+              </center> 
+                <apex:variable value="{!0}" var="index"/>
+
+   
+    
+      
+            <apex:outputpanel id="PgbTasks">
+            
+             <apex:outputPanel rendered="{!islistview}">   
+            
+            
+            
+            <div style="display:none;">
+                <apex:inputField id="StartDate" styleClass="StartDate" value="{!JobRecord.Start_Date__c}" />
+                <apex:inputField id="EndDate" styleClass="EndDate" value="{!JobRecord.Due_Date__c}"/>
+                
+                <apex:inputText value="{!dt123}" id="dt" styleClass="dt"/>
+                <apex:inputText value="{!taskId123}" id="taskId123" styleClass="taskId123"/>
+            </div>
+            <apex:actionFunction action="{!refreshTasks}" name="refreshTasks" reRender="formID1" />
+            <apex:dataTable value="{!lstJT}" var="lst" styleClass="list sortable" style="width:100%;" rendered="{!lstJT.size > 0}" >
+            
+                      
+                       <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Task_Order__c.Label}" styleClass="index" >
+                                           <span class="TaskId" style="display:none;" >{!lst.Id}</span>
+                                           <apex:inputField value="{!lst.Task_Order__c}" style="width:30px"/>
+                       </apex:column>
+                       
+                               <apex:column headerValue="Action" >
+                              
+                                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                                     &nbsp;&nbsp;  
+                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon">
+                                                           <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                        </div>
+                                                        
+                                              <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                           
+                                                           
+                                                                 <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Task Done" action="{!Complete}" reRender="PgbTasks" status="statustask" rendered="{!lst.Marked_Done__c == False}">
+                                                                        <apex:param name="param3" value="{!lst.id}" assignTo="{!tskid}"></apex:param>    
+                                                                            &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">check</i> 
+                                                                    </apex:commandLink> 
+                                                                </li>
+                                                                
+                                                                 <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Re-open" action="{!Active}" reRender="PgbTasks" status="statustask" rendered="{!lst.Marked_Done__c == True}">
+                                                                        <apex:param name="param3" value="{!lst.id}" assignTo="{!tskid}"></apex:param>    
+                                                                           &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">clear</i>    
+                                                                    </apex:commandLink> 
+                                                                </li>
+                                                               
+                                                             
+                                                              
+                                                               <li class="slds-dropdown__item" role="presentation" style="{!if(showNewtimesheetentrybutton || lst.Job__r.status__c!='Active' ,'display:none','')}">
+                                                                   <a href="/apex/TimesheetEntriesLightning?jobId={!jobId}&taskId={!lst.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Log Time">Log Time</span>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+                                                                          &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">av_timer</i> 
+                                                                        </a>
+                                                                </li>
+                                                                
+                                                               
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                      <a href="/apex/EditJobTaskLightning?id={!lst.id}&pagefrom=listPage" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+                                                                            &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                      </a>
+                                                                </li>
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Insert Above" action="{!insertNewTaskLight}" reRender="hiddenBlock1" status="statustask">
+                                                                        <apex:param name="param1" value="{!lst.Id}" assignTo="{!strJTID1}"> </apex:param>    
+                                                                         &nbsp;&nbsp;<i class="fa fa-tasks" style="font-size:20px;color:black"></i> 
+                                                                    </apex:commandLink> 
+                                                                </li>
+                                                                
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Delete" action="{!deltask}" reRender="formID1" status="statustask">
+                                                                        <apex:param name="param3" value="{!lst.id}" assignTo="{!tskid}"></apex:param>    
+                                                                          &nbsp;&nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                    </apex:commandLink> 
+                                                                </li>
+                                                                
+                                                                 
+                                                            </ul>
+                                                      </div> 
+                                                       
+                                               </div>
+                             </apex:column>
+                       
+                       
+                       
+                       
+                      
+                       
+                       
+                       
+                       
+                       <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Name.Label}">
+                            <apex:outputLink tabindex="tab1" value="/apex/JobTaskDetailPageLightning?id={!lst.Id}">{!lst.Name}</apex:outputLink>
+                       </apex:column>
+          
+                         
+                        <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}" styleclass="droppableTd {!lst.id}" style="padding-top:10px;padding-bottom:10px;">
+                               <div style="min-width:150px !important;"> 
+                            <apex:outputText value="@@@@@@@" rendered="{!AsignStaffNoMap[lst.id]==0}" style="visibility:hidden;"/> 
+                            
+                              <apex:repeat value="{!taskStaffMap[lst.id]}" var="ts" >
+                              
+                                  <span style="display:inline;"><span style="padding:4px;">{!ts} <span title="Remove this staff member from task." style="color:red;cursor:pointer;" onmouseout="this.parentNode.style.border='none';" onmouseover="this.parentNode.style.border='1px solid red';" onclick="removeTeam('{!lst.id}', '{!ts}');">
+                                    <i class="material-icons" style="font-size:19px;color:black;valign:center;display:inline">delete</i>
+                                    </span></span></span>  
+                              </apex:repeat> 
+                             </div>
+                        </apex:column>
+                          
+                      
+                      <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Days__c.Label}">
+                          <apex:actionRegion > 
+                            <apex:inputField id="DaysID" value="{!lst.Days__c}" rendered="{!lst.Marked_Done__c == False}" style="width:30px;border-left:3px solid red !important"  onchange="scheduleUpdateDays('{!lst.id}',this)"  onKeyPress="return disableEnterKey(event)"/>  
+                            <apex:outputField value="{!lst.Days__c}" rendered="{!lst.Marked_Done__c == True}"/> 
+                          </apex:actionRegion> 
+                     </apex:column>
+    
+             
+                     <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}">
+                            <apex:inputField id="reviseDt" value="{!lst.Revised_Due_Date__c}" onchange="scheduleUpdateRevDate('{!lst.Id}',this);" rendered="{!lst.Marked_Done__c==False}"  onKeyPress="return disableEnterKey(event)"></apex:inputField>
+                            <apex:outputField value="{!lst.Revised_Due_Date__c}" rendered="{!lst.Marked_Done__c == True}"/>
+                     </apex:column>
+                     
+                     
+                     
+                    
+                     
+                     
+                     
+                    
+                     <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Completion_Date__c.Label}">
+                     <apex:outputField value="{!lst.Completion_Date__c}"> 
+                        </apex:outputfield>
+                     </apex:column>   
+                     
+                     
+                      <apex:column headerValue="{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}"  >
+                          <apex:facet name="header" >
+                          
+                          <apex:inputCheckbox selected="{!isAllTasksDone}" >
+                                <apex:actionSupport event="onclick" onsubmit="checkAll(this)" reRender="checkedone" /> 
+                                 <span class="slds-checkbox--faux"></span>
+                            </apex:inputCheckbox>
+                            
+                          </apex:facet>
+                      
+                          
+                      
+                       
+                          <label class="slds-checkbox" >
+                         <apex:inputField value="{!lst.Marked_Done__c}"  id="checkedone" >
+                        <!--- <apex:actionSupport event="onchange" action="{!save}" /> --->
+                          <span class="slds-checkbox--faux"></span>
+                          
+                          </apex:inputField>
+                         </label>
+                         
+                         
+                         
+                      </apex:column>
+                        
+                      
+                  
+                   
+                 
+        </apex:dataTable>
+        
+        
+           
+              <apex:actionStatus id="statustask" >
+                          <apex:facet name="start">
+                             <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                                <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                                  <span class="slds-assistive-text">Loading</span>
+                                  <div class="slds-spinner__dot-a"></div>
+                                  <div class="slds-spinner__dot-b"></div>
+                                </div></div>
+                          </apex:facet>
+                </apex:actionStatus>
+        
+        
+        <apex:actionFunction name="addTeams" action="{!addTeams}" reRender="PgbTasks" status="LoadingStatus">
+            <apex:param name="afJobId" value="{!null}"/>
+            <apex:param name="afTaskId" value="{!null}"/>
+            <apex:param name="afTeamateName" value="{!null}"/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="removeTeam" action="{!removeTeam}" reRender="PgbTasks" status="LoadingStatus">
+            <apex:param name="afTaskId1" value="{!null}"/>
+            <apex:param name="afTeamateName1" value="{!null}"/>
+        </apex:actionFunction>
+        
+    
+       
+         
+        
+        <apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+        <apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+        
+        
+   
+    
+        
+         <script>
+         
+         function togglingCale(){
+         //loadingScript();
+         document.getElementById('clanid').style.display='block';
+         }
+        function togglingList(){
+        //loadingScript();
+        document.getElementById('clanid').style.display='none';
+        }
+        
+         function checkAll(cb)
+        {
+            var inputElem = document.getElementsByTagName("input");
+            for(var i=0; i<inputElem.length; i++)
+            {
+                if(inputElem[i].id.indexOf("checkedone")!=1)
+                inputElem[i].checked = cb.checked;
+            }
+        }
+         
+         
+         
+         function getParameterByName(name, url) {
+                            if (!url) url = window.location.href;
+                            name = name.replace(/[\[\]]/g, "\\$&");
+                            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                                results = regex.exec(url);
+                            if (!results) return null;
+                            if (!results[2]) return '';
+                            return decodeURIComponent(results[2].replace(/\+/g, " "));
+         }
+         
+         
+         
+          //var j$ = jQuery.noConflict();
+                   
+          j$( function() {
+             j$( ".droppableTd" ).droppable({
+             drop: function (event, ui) {
+                  
+                  //alert('Droppable from jobteam------'+j$(ui.draggable[0]).find('h1').text());
+                 // alert(this.innerText);
+                  
+                  if(j$(ui.draggable[0]).find('h1').text() != ''){
+                  if(!this.innerText.includes(j$(ui.draggable[0]).find('h1').text())){                      
+                      //sforce.connection.sessionId = "{!$Api.Session_ID}";
+                      //sforce.apex.execute("RetrieveTaskNewTesting","addTeam",{"JobId":getParameterByName('id'),"TaskId":this.className.split(" ")[1],"TeamateName":j$(ui.draggable[0]).find('h1').text()});
+                      addTeams(getParameterByName('id'), this.className.split(" ")[1], j$(ui.draggable[0]).find('h1').text());
+                      //refreshTasks();
+                  }
+                  else{
+                      alert('Already existed in staff.');
+                  }
+                }
+                   
+              },
+              
+            /* over: function (event, ui){
+              j$(this).find(".material-icons").css("display",'none');
+               }, 
+             */
+               
+              revert: false
+             });
+            j$( ".draggableSpan" ).draggable({
+             
+              connectToSortable: ".droppableTd",
+              helper: "clone",
+             
+              revert: "invalid",
+              start: function(){ 
+                    j$(".droppableTd").find(".material-icons").css("display",'none');
+                     },
+                    
+             stop: function(){ 
+                     j$(".droppableTd").find(".material-icons").css("display",'inline');
+                     }
+              
+              
+              
+              
+            });
+            
+          });
+         
+       </script>
+        
+        <script>
+           // var j$ = jQuery.noConflict();
+            
+            var fixHelperModified = function(e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function(index) {
+                    $(this).width($originals.eq(index).width())
+                });
+                return $helper;
+            },
+            updateIndex = function(e, ui) {
+                    
+                    $('td.index', ui.item.parent()).each(function (i) {
+                        //$(this).html(i + 1);
+                        $(this).children("input")[0].value = i+1;
+                        
+                    });
+                    
+                    
+                    var scheduleCalc = '{!JobRecord.Schedule_Calc__c }';
+                    var taskIds = document.getElementsByClassName('TaskId');
+                    var taskIdsLength = taskIds.length;
+                    
+                    if(scheduleCalc == 'Start Date'){
+                        var startDate = document.getElementsByClassName('StartDate')[0].value;
+                        var taskId = taskIds[0].innerHTML;
+                        document.getElementsByClassName('dt')[0].value = startDate;
+                        document.getElementsByClassName('taskId123')[0].value = taskId;                       
+                    }
+                    else if(scheduleCalc == 'End Date'){
+                        var endDate = document.getElementsByClassName('EndDate')[0].value;
+                        var taskId = taskIds[taskIdsLength-1].innerHTML;
+                        document.getElementsByClassName('dt')[0].value = endDate;
+                        document.getElementsByClassName('taskId123')[0].value = taskId;
+                    }
+                    saveOrder();
+            };
+    
+            j$("table.sortable>tbody").sortable({ helper: fixHelperModified, stop: updateIndex});
+            j$("#subsortsortable>tbody").disableSelection();
+        </script>
+        
+        
+        
+         </apex:outputpanel>
+      </apex:outputPanel>   
+    </apex:outputPanel>      
+        
+        
+        
+                  
+        
+           <apex:outputPanel rendered="{!lstJT.size <= 0}">
+               <b>No records to display</b>
+           </apex:outputPanel> 
+        <br/>
+
+        <div align="center">
+        <apex:outputPanel id="insertatend">
+               <apex:commandButton action="{!addNewTaskLight}" value="Insert at End" title="Press to Insert Task at End" rendered="{!AND(lstJT.Size>0,islistview)}" styleClass="slds-button slds-button--neutral slds-button-group" >  </apex:commandButton>  
+          </apex:outputPanel> 
+        </div>
+          
+          <div id="dialog-confirm1" title="Schedule Update" style="display:none;width:60px !important;"> 
+            <p>
+                Do you want to update rest of the schedule?
+            </p>
+        </div>
+        
+         <div id="dialog-confirm2" title="Schedule Update" style="display:none;width:60px !important;">
+            <p>
+                Do you want to update rest of the schedule?
+            </p>
+        </div>
+        
+        
+        
+        
+     
+     
+        
+        
+        
+        
+        <!------------- Start: Processing Div---------------------------------------->
+        <style>
+            .dateOnlyInput input {
+        width: 7em !important;
+    }
+            .ProcessingBackground
+            {
+                background-color: black;
+                opacity: 0.50;
+                filter: alpha(opacity = 50);
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                z-index: 8551;
+                top:0;
+                left:0;
+            }
+            .Processing
+            {
+                z-index: 8552;
+                left: 50%;
+                top: 40%;
+                text-align: center;
+                position: fixed;
+            } 
+            .ProcessingImage
+            {
+                margin-top:-250; 
+                z-index: 25;
+                text-align: center;
+                position: absolute;
+            }
+            table.sortable > thead > tr > th:nth-child(1), table.sortable td:nth-child(1) { 
+                display : none;
+            }
+        </style>
+        <div id="divProcessing" style="display:none;">
+       <!--     <div class="ProcessingBackground"></div>
+            <div class="Processing">
+                <apex:image alt="ProcessingAutoSave" url="{!$Resource.LoadingImage}" />
+            </div>-->
+        </div>
+        
+      <apex:actionStatus id="Processing" onstart="document.getElementById('divProcessing').style.display = '';" 
+                onstop="document.getElementById('divProcessing').style.display = 'none';">                            
+        </apex:actionStatus>
+        
+        <apex:actionStatus id="LoadingStatus" >
+                   <apex:facet name="start">
+                      <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                         <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                           <span class="slds-assistive-text">Loading</span>
+                           <div class="slds-spinner__dot-a"></div>
+                           <div class="slds-spinner__dot-b"></div>
+                         </div></div>
+                    </apex:facet>
+                </apex:actionStatus>
+  
+       
+         
+        
+  
+       
+      
+   
+         
+            
+  </apex:form>
+  
+  
+  
+ <!----
+  
+  <apex:outputPanel id="calenderview">
+  
+    <apex:outputPanel rendered="{!Not(islistview)}"> 
+      
+        <apex:include pageName="TaskCalendarNew"  /> 
+           
+       </apex:outputPanel>
+  
+  
+    </apex:outputPanel>
+  
+  --------------->
+  
+  
+  
+     <apex:outputPanel id="calPanel" >
+      <apex:outputPanel rendered="{!Not(islistview)}"> 
+     
+     <div id="clanid"  >
+   <apex:form id="calPanelForm" >
+     
+       
+   
+     &nbsp;
+       <select id="task_status_change"  class="slds-select" style="width:15%">
+       
+       <apex:repeat value="{!StatusList}" var="sta">
+       <option value="{!sta.value}">{!sta.label}</option>
+        </apex:repeat>
+       <!--- 
+          <option value="all">All</option>
+          <option value="Active">Active</option>
+          <option value="Completed">Completed</option>
+          <option value="Requested">Requested</option>
+          <option value="In Progress">In Progress</option>
+          --->
+        </select>
+       
+         
+       
+        
+        
+         
+ 
+       <apex:actionFunction name="calenderTaskEdit" action="{!calenderTaskEdit}" reRender="PopUpCalender" >
+                 <apex:param name="CalTaskId" value="{!null}" />
+         </apex:actionFunction>
+         
+         <apex:actionFunction name="statusChangeUpdate" action="{!statusChangeUpdate}" reRender="calPanelForm,loadScript,PopUpCalender" >
+                 <apex:param name="DTaskId" value="{!null}" />
+                 <apex:param name="DTaskStatus" value="{!null}" />
+         </apex:actionFunction> 
+         
+         
+          <apex:actionFunction name="TaskDueDateUpdate" action="{!TaskDueDateUpdate}" reRender="calPanelForm,loadScript,PopUpCalender" >
+           <apex:param name="DCalTaskId" value="{!null}" />
+           <apex:param name="DcalDueDate" value="{!null}" />
+           
+         </apex:actionFunction> 
+                                   
+            <div id="calendar" style="background-color:white !important;padding:10px !important;" ></div>
+           
+            <br/>
+         
+       <apex:outputPanel id="PopUpCalender" > 
+                       
+          <apex:outputPanel rendered="{!isPopup}">
+                        
+               <div class="demo-only" style="height:850px;">
+                  <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium"  style="background-color: rgba(2,2,2,0.5);">
+                    <div class="slds-modal__container">
+                      <header class="slds-modal__header">
+                       <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Task</h2>
+                      </header>
+                      <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1"> 
+                                          
+                         <!-----    
+                             <apex:actionFunction name="calSave" action="{!CaleEditSave}" reRender="PopUpCalender"   />
+                              <apex:actionFunction name="calCancel" action="{!CalEditCancel}"  immediate="true" reRender="PopUpCalender" />
+                              
+                             ---------->
+                               
+                              
+                               <div class="CalenderEdittask">       
+                                  <apex:pageBlock mode="edit">
+                                  
+                                     
+                                   <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                        <apex:pageMessages />
+                                   </div>   <br/>
+                                   
+                                   <div class="SectionHeader" style="background-color:SteelBlue;color:white;">
+                                       <h3 class="slds-section-title"><b>&nbsp;Information</b></h3>
+                                   </div>
+                               
+                               
+                                   <div class="slds-grid slds-wrap">
+                                     
+                                       <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                
+                                           <div class="slds-grid slds-wrap">  
+                                           
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF(EditTask.Locked__c==False,'block','none')}">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label required "><b>{!$ObjectType.Job_Task__c.Fields.Name.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:inputField value="{!EditTask.Name}" styleClass="slds-input" required="true"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                            
+                                            
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF(EditTask.Locked__c==True,'block','none')}">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Name.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputfield value="{!EditTask.Name}" styleClass="slds-output" />
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                            
+                                               <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Job__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputText value="{!EditTask.Job__r.Name}" styleClass="slds-output"/>
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                            
+                                             
+                                              
+                                              <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label required "><b>{!$ObjectType.Job_Task__c.Fields.Status__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:inputField value="{!EditTask.Status__c}" styleClass="slds-input" required="true"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside> 
+                                            
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.GL_Code__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputText value="{!EditTask.GL_Code__r.Name}" styleClass="slds-output"/>
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                              
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Start_Date__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:inputField value="{!EditTask.Start_Date__c}" type="date" showDatePicker="false"  style="width:100% !important" styleClass="slds-input"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside>  
+                                            
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label required"><b>{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                      <apex:inputField value="{!EditTask.Revised_Due_Date__c}" type="date" showDatePicker="false" required="true" style="width:100% !important" onchange="scheduleRevisedDateUpdate('{!EditTask.Revised_Due_Date__c}',this);" styleClass="slds-input"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside>  
+                                           
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label "><b>{!$ObjectType.Job_Task__c.Fields.Task_Start_Time_Text__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       
+                                                       <apex:inputField value="{!EditTask.Task_Start_Time_Text__c}" html-placeholder="H:MM AM/PM" styleClass="slds-input"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside>     
+                                                   
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label "><b>{!$ObjectType.Job_Task__c.Fields.Task_End_Time_Text__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       
+                                                       <apex:inputField value="{!EditTask.Task_End_Time_Text__c}" html-placeholder="H:MM AM/PM" styleClass="slds-input"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside>     
+                                            
+                                            
+                                                     
+                                                   
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF(EditTask.Locked__c==False,'block','none')}">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label required"><b>{!$ObjectType.Job_Task__c.Fields.Days__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:inputField value="{!EditTask.Days__c}" styleClass="slds-input"  onchange="scheduleDaysUpdate('{!EditTask.Days__c}',this);" onkeypress="return noenter(event)"  onKeyPress="return disableEnterKey(event)"/>
+                                                    </div>
+                                                </div>
+                                            </aside>   
+                                            
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF(EditTask.Locked__c==True,'block','none')}">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Days__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputField value="{!EditTask.Days__c}" styleClass="slds-output"   />
+                                                    </div>
+                                                </div>
+                                            </aside>    
+                                                    
+                                                  
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputField value="{!EditTask.Marked_Done__c}"   styleClass="slds-output" />
+                                                    </div>
+                                                </div>
+                                            </aside>  
+                                                   
+                                                   
+                                                
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Task_Order__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputField value="{!EditTask.Task_Order__c}" styleClass="slds-output"/>
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                            
+                                               <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Locked__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                       <apex:outputfield value="{!EditTask.Locked__c}" styleClass="slds-output" />
+                                                    </div>
+                                                </div>
+                                            </aside>       
+                                                   
+                                                   
+                                              <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                    <label class="slds-form-element__label"><b>{!$ObjectType.Job_Task__c.Fields.Report__c.Label}</b></label>
+                                                    <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!EditTask.Report__c}" StyleClass="slds-input"/>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                                       
+                                                
+                                           </div>
+                                        
+                                      </main>
+                                   
+                                    </div> 
+                                  
+                                   <br/>
+                                
+                                </apex:pageBlock>
+                                 </div>
+                                 
+                                <footer class="slds-modal__footer">
+                               
+                                 <apex:commandButton Styleclass="slds-button slds-button--neutral" action="{!CalEditCancel}"     value="Cancel" immediate="true" reRender="PopUpCalender"  />
+                                 <apex:commandButton Styleclass="slds-button slds-button--brand" action="{!CaleEditSave}"  value="Save" reRender="calPanelForm,PopUpCalender,loadScript" />
+                              </footer>
+                             
+                              
+                             
+                             </div>
+                              
+                            </div> 
+                       </section>
+                   </div>  
+      
+        </apex:outputPanel>
+      </apex:outputPanel>
+      
+                  
+                       
+        </apex:form>
+        
+        </div>
+     
+      </apex:outputPanel>
+       </apex:outputPanel>
+      
+      
+    
+  </div>
+</div>
+
+    <script>
+        
+            $(document ).ready(function() {
+                refreshTasks();
+            });
+            
+    </script>
+    
+    
+    
+    <style>
+    
+    .pbBottomButtons{
+        margin-top:0px !important;
+    }
+    @page {
+  @top-center {
+    content: element(pageHeader);
+  }
+}
+#pageHeader{
+  position: running(pageHeader);
+}
+    
+    @media print {
+    
+   @top-center {
+    content: element(pageHeader);
+  }
+    
+    
+    span.fc-title{
+        color:white !important;
+        text-decoration:none !important;
+    }
+    
+  a[href]:after {
+    content: none !important;
+  }
+  header.oneHeader{
+      display: none !important;
+  }
+  .slds .slds-icon-standard-user {
+    background-color: #34becd !important;
+    }
+    
+    .fc-day-grid-event,
+        .fc-h-event,
+        .fc-event,
+        .fc-start,
+        .fc-not-end,
+        .event-Jobs,
+        .fc-draggable {
+            -webkit-print-color-adjust: white !important;
+            color: white !important;
+        }
+}
+        #cal-options {
+            float: left;
+        }
+        
+        #cal-legend {
+            float: right;
+        }
+        
+        #cal-legend ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        #cal-legend ul li {
+            margin: 0;
+            padding: 5px;
+            float: left;
+        }
+        
+        #cal-legend ul li span {
+            display: block;
+            height: 16px;
+            width: 16px;
+            margin-right: 4px;
+            float: left;
+            border-radius: 4px;
+        }
+        
+        #calendar {
+            margin-top: 20px;
+        }
+        
+        #calendar a:hover {
+            //color: #fff !important;
+        }
+        
+        #formID\3A scheduleID table.fc-agenda-slots {
+            display: none;
+        }
+        
+        .fc-event-inner {
+            padding: 3px;
+        }
+        
+        .event-JSCampaign {
+            background: #cc9933;
+            border-color: #cc9933;
+        }
+        
+        .center {
+            margin: auto;
+            width: 60%;
+            border: 3px solid #73AD21;
+            padding: 10px;
+        }
+        
+        
+        .bPageBlock{
+            border-top:0px solid white !important;
+        }
+        .slds .slds-col--padded{
+            padding-left:0px !important;
+        }
+        .requiredLegend{
+        display:none !important;
+        }
+        .pbSubheader {
+        background-color: SteelBlue !important;
+        color: white !important;
+        background-image: none !important;
+        }
+        .pbBody{
+            padding-bottom:10px !important;
+        }
+        
+        span.fc-title{
+        color:white !important;
+        text-decoration:none !important;
+    }
+        
+        
+        .event-Jobs {
+            background: #56458c;
+            border-color: #56458c;
+        }
+        
+        .fc-day-grid-event,
+        .fc-h-event,
+        .fc-event,
+        .fc-start,
+        .fc-not-end,
+        .event-Jobs,
+        .fc-draggable {
+            -webkit-print-color-adjust: exact !important;
+            color: white !important;
+        }
+        
+   <!---     td {
+            padding-bottom: 1px !important;
+            padding-top: 1px !important;
+            padding-left: 2px !important;
+            padding-right: 2px !important;
+        }
+        
+        th {
+            padding-top: 2px !important;
+            padding-bottom: 2px !important
+        }
+        ---->
+        
+        div.fc-content {
+            white-space: inherit !important;
+        }
+        
+        //#printSection1 { page-break-inside:avoid !important; }
+        //#outputsection { page-break-inside:avoid !important; }
+        //#calendar {  page-break-inside:avoid !important; page-break-before:avoid !important;}
+        //#calendar {  page-break-inside:auto !important;}
+        
+        #printSection1 { page-break-inside:always !important; }
+        #outputsection { page-break-inside:avoid !important; }
+                #outputsection1 { page-break-inside:avoid !important; }
+
+        //#calendar {  page-break-inside:avoid !important; page-break-before:avoid !important;}
+        #calendar {  page-break-before:avoid !important;}
+
+   
+   
+       .ui-widget-header {
+        border: 1px solid #e2e4e6 !important;
+        background: rgb(226, 228, 230) !important;
+        color: black !important;
+    }
+        
+        
+    </style>
+   
+    
+    
+    
+    
+    
+    
+    
+    
+ 
+     
+</apex:page>
+<!-- End of Page -->

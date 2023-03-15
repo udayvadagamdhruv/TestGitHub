@@ -1,0 +1,71 @@
+<aura:component controller="BB_Search_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="data" type="List"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="String"/>
+    <aura:attribute name="loadMoreStatus" type="String" /> 
+    <aura:attribute name="enableInfiniteLoading" type="boolean" default="true" /> 
+    <aura:attribute name="totalRows" type="Integer" /> 
+    
+    <lightning:navigation aura:id="navService"/>
+    
+    <!-- handlers-->
+    
+    <aura:handler name="init" value="{! this }" action="{!c.doInIt }"/>
+    
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium"><b>Billboard Search</b></h4>
+    </div>  <br/>
+    
+    <div  class="slds-card">
+        <center> <br/>
+            <lightning:button label="New" title="New" onclick="{! c.navigateToMyComponent }"/>
+            <lightning:button label="Cancel" title="Cancel" onclick="{! c.cancelnaviagtion}"/>      
+        </center>
+        
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem size="2" padding="around-small">
+                <lightning:input aura:id="BB#" name="BB#" label="BB#" onchange="{!c.doSearch}"  />
+                <lightning:input aura:id="Client" name="Client Name" label="Client Name" onchange="{!c.doSearch}" />
+                <lightning:input aura:id="ClientCode" name="Client Code" label="Client Code" onchange="{!c.doSearch}"/>
+                <lightning:input aura:id="BBVendor" name="BB Vendor" label="BB Vendor" onchange="{!c.doSearch}" />
+                <lightning:input aura:id="Location" name="Location" label="Location" onchange="{!c.doSearch}" />
+                <lightning:input aura:id="ExpirationDate1" type="date" name="Expiration Date1" label="Expiration Date (From)"  onchange="{!c.doSearch}"   /> 
+                <lightning:input aura:id="ExpirationDate2" type="date" name="Expiration Date2" label="Expiration Date (To)"  onchange="{!c.doSearch}"   /> 
+            </lightning:layoutItem> 
+            
+            <lightning:layoutItem size="10" padding="around-small">
+                <aura:if isTrue="{!!empty(v.data)}">
+                    <div style="height:500px">      
+                        <lightning:datatable class="BBSearchClass"
+                                             columns="{!v.columns}"
+                                             data="{!v.data}"
+                                             keyField="Id"
+                                             hideCheckboxColumn="true"
+                                             showRowNumberColumn="true"               
+                                             sortedBy="{!v.sortedBy}"
+                                             sortedDirection="{!v.sortedDirection}"
+                                             onsort="{!c.updateColumnSorting}"                 
+                                             onrowaction="{! c.handleSearchRowActions }"
+                                             enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                                             onloadmore="{!c.loadMoreData }"
+                                             rowNumberOffset="0"
+                                             />
+                    </div>
+                    
+                    <br/>
+                    <div class="slds-float_left">
+                        <strong>Total Rows : {!v.totalRows}</strong>
+                    </div>
+                    <div class="slds-float_right">
+                        <!-- <strong>{!v.loadMoreStatus}</strong> -->
+                    </div>
+                    <aura:set attribute="else">                      
+                        No records to display.
+                    </aura:set>
+                </aura:if>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>   
+</aura:component>

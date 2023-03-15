@@ -1,0 +1,202 @@
+<!-- This page is used to display Sessions under Job. -->
+<apex:page controller="displaySessionsUnderJobTab" tabStyle="Job__c">
+  <head>
+  
+   <script>
+   function stopRedirect(toStopRedirect)
+   {
+        if(toStopRedirect) 
+        alert('You can not edit this Session,Because Estimate Line Item created from this Session is approved.');
+   }
+  </script>
+ 
+  <style>
+       #table_session_type td
+            {
+                border:0px;
+            }
+       
+       #table_quantity td
+            {
+                border:0px;
+            }
+        
+       #table_unit_cost td
+            {
+                border:0px;
+            }
+            
+      #table_start_time td
+            {
+                border:0px;
+            }
+            
+      #table_end_time td
+            {
+                border:0px;
+            }                 
+            
+  </style>    
+       
+  </head>  
+  
+  <apex:form id="formId"> 
+  
+    <apex:pageMessages id="pagemsgId"></apex:pageMessages>
+    <apex:outputPanel id="PanelId">
+      <apex:pageblock id="pageBlockId">  
+      <center>
+          <apex:commandButton value="Add Session" action="{!createNewSession}" id="btnAddSession"/>
+          <apex:commandButton value="Save" action="{!save}" id="btnSave" style="display:none"/>
+          <apex:commandButton value="Cancel" action="{!cancel}" id="btnCancel" style="display:none" reRender="PanelId"/>
+      </center><br/>         
+          <apex:pageBlockTable value="{!lstSessions}" var="Session" rendered="{!lstSessions.size>0}" id="pbt">
+              
+              <apex:column headerValue="Action">
+              
+              <apex:commandButton value="Edit" action="{!editSession}" reRender="hiddenBlock10" OnComplete="stopRedirect('{!ChildExists}')">
+                      <apex:param name="param1" value="{!Session.id}" assignTo="{!strSessionId}"></apex:param>
+              </apex:commandButton>&nbsp;
+               
+              <!--    <apex:commandButton value="Edit" action="{!editSession}" reRender="hiddenBlock10">
+                      <apex:param name="param1" value="{!Session.id}" assignTo="{!strSessionId}"></apex:param>
+                  </apex:commandButton>&nbsp; -->
+               
+            <!--      <apex:commandButton value="Edit" onclick="alert('You can not Edit This Session because its Status is Booked');" rendered="{!Session.Session_Status__c = 'Booked'}" reRender="pb1"/>  
+                rendered="{!Session.Session_Status__c != 'Booked'}" -->
+                 
+                 <!-- <apex:commandButton value="Delete" action="{!deleteSession}" reRender="hiddenBlock11" onclick="if(!confirm('Are you sure?')){return false;}">
+                      <apex:param name="param2" value="{!Session.id}" assignTo="{!strSessionId}"></apex:param>
+                  </apex:commandButton>  -->
+                  
+                  <apex:commandButton value="Delete" action="{!deleteSession}" rerender="PanelId,hiddenblock7,pagemsgId" rendered="{!Session.Session_Status__c != 'Booked'}" onclick="if(!confirm('Are you sure?')){return false;}">
+                   <apex:param name="ssnIdParam" value="{!Session.id}" assignTo="{!ssnIdChosen}"/>
+                  </apex:commandButton> 
+                  
+                  <apex:commandButton value="Delete" onclick="alert('You can not Delete this Session because its Status is Booked');" rendered="{!Session.Session_Status__c = 'Booked'}" reRender="pb1"/>  
+             
+                  
+              </apex:column>
+            
+              <apex:column headerValue="{!$ObjectType.Session__c.Fields.Name.Label}">
+                    <apex:outputLink tabindex="tab1" value="/apex/SessionDetailPage?id={!Session.Id}">{!Session.Name}</apex:outputLink>
+              </apex:column>
+              
+         <!--     <apex:column headerValue="{!$ObjectType.Session__c.Fields.Session_Type__c.Label}">
+                    <apex:actionRegion >
+                        <table border="0" id="table_session_type">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!Session.Session_Type__c}">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddSession" showOnEdit="btnSave,btnCancel" rendered="{!Session.Session_Status__c != 'Booked'}"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Session Type" rendered="{!Session.Session_Status__c != 'Booked'}"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+                   
+              </apex:column>   -->
+              
+              <apex:column headerValue="{!$ObjectType.Session__c.Fields.Session_Status__c.Label}">
+                <apex:outputField value="{!Session.Session_Status__c}"/> 
+              </apex:column>
+              
+               <apex:column headerValue="{!$ObjectType.Session__c.Fields.GL_Department__c.Label}">
+                <apex:outputField value="{!Session.GL_Department__c}"/> 
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Session__c.Fields.GL_Code__c.Label}">
+                <apex:outputField value="{!Session.GL_Code__c}"/> 
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Session__c.Fields.Vendor__c.Label}">
+                <apex:outputField value="{!Session.Vendor__c}"/>
+              </apex:column>
+              
+               <apex:column headerValue="{!$ObjectType.Session__c.Fields.Quantity__c.Label}">
+                <apex:actionRegion >
+                      <table border="0" id="table_quantity">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!Session.Quantity__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddSession" rendered="{!Session.Session_Status__c != 'Booked'}"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Quantity" rendered="{!Session.Session_Status__c != 'Booked'}"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Session__c.Fields.Unit_Cost__c.Label}">
+                 <apex:actionRegion >
+                      <table border="0" id="table_unit_cost">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!Session.Unit_Cost__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddSession" rendered="{!Session.Session_Status__c != 'Booked'}"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Unit Cost" rendered="{!Session.Session_Status__c != 'Booked'}"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>         
+              
+          <!--    <apex:column headerValue="{!$ObjectType.Session__c.Fields.Start_Time__c.Label}" width="14%">
+                 <apex:actionRegion >
+                      <table border="0" id="table_start_time">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!Session.Start_Time__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddSession"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Start Time"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Session__c.Fields.End_Time__c.Label}" width="14%">
+                  <apex:actionRegion >
+                      <table border="0" id="table_end_time">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!Session.End_Time__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddSession"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit End Time"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column> -->
+              
+          </apex:pageBlockTable> 
+          
+      
+          <apex:outputPanel rendered="{!lstSessions.size<=0}">
+              <b>No records to display</b>
+          </apex:outputPanel>
+      </apex:pageBlock>
+    </apex:outputPanel>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

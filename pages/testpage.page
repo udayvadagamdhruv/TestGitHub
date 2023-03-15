@@ -1,0 +1,13 @@
+<apex:page >
+    <script>
+    function load()
+    {
+    window.open("/home/home.jsp", "_blank");
+    }
+    </script>
+
+    <apex:form >
+        <apex:commandButton value="Close" oncomplete="load();"/>
+    </apex:form>
+ 
+</apex:page>

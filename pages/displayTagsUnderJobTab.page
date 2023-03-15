@@ -1,0 +1,220 @@
+<!-- This page is used to display Tags under Job Tab. -->
+<apex:page controller="displayTagsUnderJobTab" tabStyle="Job__c" id="pg1">
+  <head>
+       <Style>
+            #table_title td
+            {
+                border:0px;
+            }
+            #table_tag_start_date td
+            {
+                border:0px;
+            }
+            #table_tag_end_date td
+            {
+                border:0px;
+            }
+            #table_tag_due_date td
+            {
+                border:0px;
+            }
+            #table_tag_air_date td
+            {
+                border:0px;
+            }
+            #table_tag_air_time td
+            {
+                border:0px;
+            }
+            #table_tag_lengths td
+            {
+                border:0px;
+            }
+            
+       </Style>
+  </head>      
+         
+
+  <apex:form id="formId">
+     
+      <apex:pageMessages id="pagemsgId"></apex:pageMessages>
+       <apex:outputPanel id="panelId">
+       
+      <apex:pageblock id="pageBlockId">   
+          <center>
+                <apex:commandButton value="Add Tag" action="{!createNewTag}" id="btnAddTag"/>
+                <apex:commandButton value="Save" action="{!save}" id="btnSave" style="display:none"/>
+                <apex:commandButton value="Cancel" action="{!cancel}" id="btnCancel" style="display:none"/>
+          </center> <br/>
+          <apex:pageBlockTable value="{!lstTags}" var="tag" rendered="{!lstTags.size>0}">
+              <apex:column headerValue="Action" width="10%">
+                  <apex:commandButton value="Edit" action="{!editTag}" reRender="hiddenBlock7">
+                      <apex:param name="param1" value="{!tag.id}" assignTo="{!strTagId}"></apex:param>
+                  </apex:commandButton>&nbsp;
+              
+                  <apex:commandButton value="Delete" action="{!deleteTag}" reRender="hiddenBlock8,panelId" onclick="if(!confirm('Are you sure?')){return false;}">
+                      <apex:param name="param2" value="{!tag.id}" assignTo="{!strTagId}"></apex:param>
+                  </apex:commandButton>
+              </apex:column>
+            
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Name.Label}" width="15%">
+                    <apex:outputLink tabindex="tab1" value="/apex/TagDetailPage?id={!tag.Id}">{!tag.Name}</apex:outputLink>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Program_Title__c.Label}" width="15%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_title">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!tag.Tag_Program_Title__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddTag" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Program Title"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+                   
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Start_Date__c.Label}" width="10%">
+                  <apex:actionRegion >
+                      <table border="0" id="table_tag_start_date">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!tag.Tag_Start_Date__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Start Date"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_End_Date__c.Label}" width="10%">
+                  <apex:actionRegion >
+                      <table border="0" id="table_tag_end_date">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!tag.Tag_End_Date__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit End Date"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Due_Date__c.Label}" width="10%">
+                  <apex:actionRegion >
+                      <table border="0" id="table_tag_due_date">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!tag.Tag_Due_Date__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Due Date"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion> 
+              </apex:column>
+              
+              
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Air_Time__c.Label}" width="15%">
+                  <apex:actionRegion >
+                      <table border="0" id="table_tag_air_time">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!tag.Tag_Air_Time__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Air Time"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion> 
+              </apex:column>
+              
+ <!--             <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Air_Date__c.Label}" width="10%">
+                 <apex:actionRegion >
+                      <table border="0" id="table_tag_air_date">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!tag.Tag_Air_Date__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Air Date"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Air_Time__c.Label}" width="10%">
+                  <apex:actionRegion >
+                      <table border="0" id="table_tag_air_time">
+                          <tr>
+                              <td border="0">
+                                  <apex:outputField value="{!tag.Tag_Air_Time__c}">
+                                      <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                  </apex:outputField>
+                              </td>
+                              
+                              <td border="0">
+                                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Air Time"/>  
+                              </td>
+                          </tr>
+                      </table>
+                  </apex:actionRegion>
+              </apex:column>    -->
+              
+              <apex:column headerValue="{!$ObjectType.Tag__c.Fields.Tag_Lengths__c.Label}" width="10%">
+                    <apex:actionRegion >
+                         <table id="table_tag_lengths" border="0">
+                             <tr>
+                                 <td border="0">
+                                       <apex:outputField value="{!tag.Tag_Lengths__c}"> 
+                                           <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                       </apex:outputField>
+                                 </td>
+                                 
+                                 <td>
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Lengths"/>  
+                                 </td>
+                              </tr>
+                          </table>                     
+                    </apex:actionRegion>
+                      
+              </apex:column>
+          </apex:pageBlockTable>
+          
+          <apex:outputPanel rendered="{!lstTags.size<=0}">
+              <b>No records to display</b>
+          </apex:outputPanel>
+      </apex:pageBlock>
+      </apex:outputPanel> 
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

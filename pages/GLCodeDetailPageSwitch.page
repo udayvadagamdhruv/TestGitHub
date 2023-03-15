@@ -1,0 +1,18 @@
+<apex:page standardController="GL_Code__c" tabStyle="MyAdmin__tab" extensions="editGLCodeSwitchExt" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+
+    <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/GLCodeDetailPage?id="+'{!GLCodeId}', "_self");
+     }
+    
+    </script>
+   
+          <apex:include pageName="GLCodeDetailPageLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+        
+    
+   
+
+
+</apex:page>

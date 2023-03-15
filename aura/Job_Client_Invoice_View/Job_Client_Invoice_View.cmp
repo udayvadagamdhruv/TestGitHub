@@ -1,0 +1,444 @@
+<aura:component controller="Job_Billing_Tab"  implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="DESC" />
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isInvALIOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="InvALIRecordid" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="InvALITempRecords" type="Object" />
+    <aura:attribute name="ClientRecords" type="Object" />
+    <aura:attribute name="SumCash" type="double" />
+    <aura:attribute name="SumQuant" type="Object" />
+    <aura:attribute name="JobBillingActiveSections" type="List" default="['InvLI','InvALI','AllocationSection']" />
+    <aura:attribute name="CntInvLIAccess" type="List"/>
+    <aura:attribute name="isaddClick" type="boolean" default="false"/>
+    <aura:attribute name="AddCLINVLIdata" type="Object"/>
+    <aura:attribute name="AddCLINVColumns" type="List"/>
+    <aura:attribute name="AddCLINVLIsortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="AddCLINVLIsortedDirection" type="String" default="DESC" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="Selected_ESTLI" type="Sobject[]" default=""/>
+    
+    <aura:attribute name="CLINVLIdata" type="Object"/>
+    <aura:attribute name="CLINVColumns" type="List"/>
+    <aura:attribute name="CLINVLIsortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="CLINVLIsortedDirection" type="String" default="DESC" />
+    <aura:attribute name="ShowProductionEstimate" type="boolean" default="false" />
+    <!-- This attribute will hold the update records from data table-->
+    <aura:attribute name="updatedRecord" type="Object[]" />
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <aura:if isTrue="{!or(v.CntInvLIAccess[1],v.CntInvLIAccess[2])}"> 
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.JobBillingActiveSections}">
+        
+        <!-- ********************************************** 
+******************************************************   Invoice Line Items Section
+                        ****************************************** -->    
+         <aura:if isTrue="{!v.CntInvLIAccess[1]}"> 
+        <lightning:accordionSection name="InvLI" label="Invoice Line Items"  class="slds-card">
+           
+                
+                <aura:if isTrue="{!!v.isMobile}"> 
+                    <div class="slds-size_2-of-10" style="padding-top: 20px !important;">
+                        <div class="slds-m-around_x-small" align="center">
+                            <lightning:button variant="neutral" label="Add Line Items" onclick="{!c.CreateCLInvLIRecord}"/>
+                        </div>
+                        
+                        <!-- ********************************************** ADD Button Invoice Line Items ****************************************** -->
+                        
+                        <aura:if isTrue="{!v.isaddClick}">
+                            
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container">
+                                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                                    <header class="slds-modal__header">
+                                        <lightning:buttonIcon iconName="utility:close"
+                                                              onclick="{! c.closeModelForCLInvLI}"
+                                                              alternativeText="close"
+                                                              variant="bare-inverse"
+                                                              class="slds-modal__close"/>
+                                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Line Items</h2>
+                                    </header>
+                                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                                        <aura:if isTrue="{!empty(v.AddCLINVLIdata)}">
+                                            <b>No Records to display</b>
+                                            <aura:set attribute="else" >        
+                                                
+                                                <lightning:card>
+                                                    <!-- ********************************************** Estimate/Production Estimate Line items in table  ****************************************** -->
+                                                    <h1>Selected Rows: {! v.selectedRowsCount }</h1>
+                                                    <lightning:datatable class="tablecss"
+                                                                         aura:id="AddCLInvLIDataTable"
+                                                                         columns="{!v.AddCLINVColumns}"
+                                                                         data="{!v.AddCLINVLIdata}"
+                                                                         keyField="Id"
+                                                                         onsave ="{!c.onSaveAddCLInvLI}"
+                                                                         onsort="{!c.AddCLIupdateColumnSorting}"
+                                                                         sortedBy="{!v.AddCLINVLIsortedBy}"
+                                                                         sortedDirection="{!v.AddCLINVLIsortedDirection}" 
+                                                                         onrowselection="{! c.updateSelectedText }"/>
+                                                </lightning:card>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                    
+                                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                                    <footer class="slds-modal__footer">
+                                        <lightning:button variant="neutral" 
+                                                          label="Cancel"
+                                                          title="Cancel"
+                                                          onclick="{! c.closeModelForCLInvLI }"/>
+                                        <lightning:button variant="brand" 
+                                                          label="Add Line Items"
+                                                          title="Add Items"
+                                                          onclick="{!c.saveSelectedItems }"/>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                            
+                        </aura:if>
+                        <!-- ********************************************** Display Client Invoice Line items records in table  ****************************************** -->
+                        
+                        <aura:if isTrue="{!empty(v.CLINVLIdata)}">
+                            <b>No Records to display</b>
+                            <aura:set attribute="else" >                
+                                <lightning:card>
+                                    <div>
+                                        <lightning:datatable class="tablecss"
+                                                             aura:id="CLInvLIDataTable"
+                                                             columns="{!v.CLINVColumns}"
+                                                             data="{!v.CLINVLIdata}"
+                                                             keyField="Id"
+                                                             onsave ="{!c.onSaveCLInvLI}"
+                                                             hideCheckboxColumn="true"
+                                                             showRowNumberColumn="true"
+                                                             errors="{!v.errors}"
+                                                             onsort="{!c.CLIupdateColumnSorting}"
+                                                             sortedBy="{!v.CLINVLIsortedBy}"
+                                                             sortedDirection="{!v.CLINVLIsortedDirection}" 
+                                                             onrowaction="{! c.CLInvLIhandleRowAction }" />
+                                    </div>
+                                    
+                                </lightning:card>
+                            </aura:set>
+                        </aura:if>  
+                        
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.isMobile}">
+                    <aura:if isTrue="{!empty(v.CLINVLIdata)}">
+                        <b>No records to display</b>
+                        <aura:set attribute="else">
+                            <aura:iteration items="{!v.CLINVLIdata}" var="CliInvLI">
+                                <table>
+                                    <tr>
+                                        <td colspan="2">
+                                            <b> <ui:outputText value="{!CliInvLI.EstName}"/></b>
+                                        </td>
+                                        <!--  <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                            <lightning:buttonMenu name="{!Shp.Id}" aura:id="EstItem" onselect="{! c.handleShpQuickAction }">
+                                                <lightning:menuItem value="Edit_Shp" label="Edit" iconName="utility:edit"/>
+                                                <lightning:menuItem value="Delete_Shp" label="Delete" iconName="utility:delete"/>
+                                            </lightning:buttonMenu>
+                                        </td>-->
+                                    </tr>                           
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="GL Description"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <ui:outputText value="{!CliInvLI.GL_Code__r.Name}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="GL Code"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!CliInvLI.GL_Code_No__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="Unit Type"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputDate value="{!CliInvLI.Unit_Type__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="Quantity"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!CliInvLI.Quantity__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="Billable Amount"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputCurrency value="{!CliInvLI.Billable_Amount__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="Tax"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!CliInvLI.Tax__c}"/></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <hr style="margin: 0.4rem 0;"/>
+                            </aura:iteration>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                
+           
+        </lightning:accordionSection>
+         </aura:if>
+        <!-- ********************************************** Invoice Allocation Line Items Section ****************************************** -->
+          <aura:if isTrue="{!v.CntInvLIAccess[2]}">
+        <lightning:accordionSection name="InvALI" label="Invoice Allocation Line Items"  class="slds-card" >  
+          
+                <aura:if isTrue="{!!v.isMobile}">
+                    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                        <div class="slds-size_2-of-10">
+                            <div class="slds-m-around_x-small">
+                                <lightning:select name="InvALISelect" aura:id="InvALITempSelectId" label="Invoice Allocation Template"  >
+                                    <aura:iteration items="{!v.InvALITempRecords}" var="Temp">
+                                        <option text="{!Temp.value}" value="{!Temp.key}" />
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                        </div>
+                        <div class="slds-size_2-of-10" style="padding-top: 20px !important;">
+                            <div class="slds-m-around_x-small">
+                                <lightning:button variant="neutral" label="Import Template" onclick="{!c.ImportTemplate}"/>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-size_2-of-10" style="padding-top: 20px !important;">
+                            <div class="slds-m-around_x-small">
+                                <lightning:button variant="neutral" label="Add Invoice Allocation" onclick="{!c.CreateInvALIRecord}" />
+                            </div>
+                        </div>
+                        
+                        
+                    </div>            
+                    
+                    <aura:if isTrue="{!empty(v.data)}">
+                        <b>No Records to display</b>
+                        <aura:set attribute="else" >
+                            
+                            <lightning:card>
+                                <div>
+                                    <lightning:datatable class="tablecss"
+                                                         aura:id="InvALIDataTable"
+                                                         columns="{!v.columns}"
+                                                         data="{!v.data}"
+                                                         keyField="Id"
+                                                         onsave ="{!c.onSave}"
+                                                         hideCheckboxColumn="true"
+                                                         showRowNumberColumn="true"
+                                                         errors="{!v.errors}"
+                                                         onsort="{!c.updateColumnSorting}"
+                                                         sortedBy="{!v.sortedBy}"
+                                                         sortedDirection="{!v.sortedDirection}" 
+                                                         onrowaction="{! c.handleRowAction }" />
+                                </div>
+                                
+                                
+                                <div style="float:right;padding-right:5%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                    <span style="font-style:italic;" > Total Allocation Amount </span>
+                                    &nbsp;:&nbsp;&nbsp; <ui:outputCurrency value="{!v.SumCash}"/>   
+                                </div> 
+                                
+                                <div style="float:right;padding-right:18%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                    <span style="font-style:italic;" > Total Allocation Qty </span>
+                                    &nbsp;:&nbsp;&nbsp; <ui:outputText value="{!v.SumQuant}"/>   
+                                </div> 
+                                
+                            </lightning:card>
+                            <aura:if isTrue="{!v.isLoading}">
+                                <lightning:spinner alternativeText="Loading"/>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.isMobile}">
+                    <aura:if isTrue="{!empty(v.data)}">
+                        <b>No records to display</b>
+                        <aura:set attribute="else">
+                            <aura:iteration items="{!v.data}" var="CliInvAll">
+                                <table>
+                                    <tr>
+                                        <td colspan="2">
+                                            <b> <ui:outputText value="{!CliInvAll.Client_Name__r.Name}"/></b>
+                                        </td>
+                                        <!--  <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                            <lightning:buttonMenu name="{!Shp.Id}" aura:id="EstItem" onselect="{! c.handleShpQuickAction }">
+                                                <lightning:menuItem value="Edit_Shp" label="Edit" iconName="utility:edit"/>
+                                                <lightning:menuItem value="Delete_Shp" label="Delete" iconName="utility:delete"/>
+                                            </lightning:buttonMenu>
+                                        </td>-->
+                                    </tr>                           
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="Allocation Qty"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <ui:outputText value="{!CliInvAll.Allocation_Qty__c}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="Allocation Amount"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputCurrency value="{!CliInvAll.Allocation_Amount__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                </table>
+                                <hr style="margin: 0.4rem 0;"/>
+                            </aura:iteration>
+                            <div style="float:right;padding-right:18%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                <span style="font-style:italic;" > Total Allocation Qty </span>
+                                &nbsp;:&nbsp; <ui:outputText value="{!v.SumQuant}"/>   
+                            </div> 
+                            <div style="float:right;padding-right:5%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                <span style="font-style:italic;" > Total Allocation Amount </span>
+                                &nbsp;:&nbsp;&nbsp; <ui:outputCurrency value="{!v.SumCash}"/>   
+                            </div> 
+                            <br/>
+                            
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                
+           
+        </lightning:accordionSection>
+		 </aura:if>        
+        <!-- **********************************************  Allocation Section ********************************************* -->
+        
+         <aura:if isTrue="{!v.CntInvLIAccess[2]}">
+        <lightning:accordionSection name="AllocationSection" label="Allocation Section"  class="slds-card" >
+           
+                <lightning:layout multipleRows="true">
+                    
+                    
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="3" padding="around-small">
+                        <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Client_Invoice__c.Total_Allocated_Qty__c.label}</label>
+                        <div class="slds-form-element__control">
+                            <ui:outputText value="{!v.data[0].Client_Invoice__r.Total_Allocated_Qty__c}"  />
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="3" padding="around-small">
+                        <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Client_Invoice__c.Total_Produced__c.label}</label>
+                        <div class="slds-form-element__control">
+                            <ui:outputText value="{!v.data[0].Client_Invoice__r.Total_Produced__c}"  />
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="3" padding="around-small">
+                        <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Client_Invoice__c.Cost_Per__c.label} </label>
+                        <div class="slds-form-element__control">
+                            <ui:outputCurrency value="{!v.data[0].Client_Invoice__r.Cost_Per__c}"  />
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="3" padding="around-small">
+                        <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Client_Invoice__c.Reconciliation__c.label}</label>
+                        <div class="slds-form-element__control">
+                            <ui:outputText value="{!v.data[0].Client_Invoice__r.Reconciliation__c}"  />
+                        </div>
+                    </lightning:layoutItem>
+                    
+                </lightning:layout>
+          
+            
+        </lightning:accordionSection>  
+          </aura:if>
+    </lightning:accordion>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isInvALIOpen}">
+        <lightning:recordEditForm aura:id="InvALIEditform" density="comfy" objectApiName="Invoice_Allocation_Line_Item__c" recordId="{!v.InvALIRecordid}" onload="{!c.InvALIload}"  onsubmit="{!c.InvALIOnsubmit}" onsuccess="{!c.InvALIRecordSuccess}"  >
+            
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{!c.closeModel}"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.CLIRecordid==null?'New':'Edit'} Invoice Allocation Line Items</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:select  name="Client Name" aura:id="ClientId" label="{!v.ObjectType.Invoice_Allocation_Line_Item__c.Client_Name__c.label}">
+                                <aura:iteration items="{!v.ClientRecords}" var="Cli">
+                                    <option text="{!Cli.value}" value="{!Cli.key}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        
+                        <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                            <lightning:inputField fieldName="Allocation_Qty__c" aura:id="InvALItems"/> 
+                        </div>
+                        
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,9 @@
+<design:component>
+    <design:attribute name="QuoteSection" label="Quote Section Label"  description="This will reflect the  Quote Section Label"/>
+    <design:attribute name="EstimateSection" label="Estimate Section Label" description="This will reflect the  Estimate Section Label" />
+    <design:attribute name="ProdEstimateSection" label="Prodution Estimate Section Label" description="This will reflect the  Production Estimate Section Label" />
+    <design:attribute name="POSection" label="Purcahse Order Section Label"  description="This will reflect the  Purchase Order Section Label"/>
+    <design:attribute name="InvSection" label="Invoice Section Label"  description="This will reflect the  Invoice Section Label"/>
+    <design:attribute name="ShipmentSection" label="Shipment Section Label"  description="This will reflect the  Shipment Section Label"/>
+    
+</design:component>

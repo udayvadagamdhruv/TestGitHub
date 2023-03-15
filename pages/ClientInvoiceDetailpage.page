@@ -1,0 +1,7 @@
+<apex:page standardController="Client_Invoice__c" tabStyle="Job__c" extensions="ClientInvoiceDetailPageExtension">
+
+<apex:detail relatedList="false" inlineEdit="True" showChatter="true"/>
+<apex:include pageName="DisplayClientInvoiceLI" />
+<apex:include pageName="DisplayInvoiceAllocationLI" />
+
+</apex:page>

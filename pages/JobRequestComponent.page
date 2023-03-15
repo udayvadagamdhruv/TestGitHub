@@ -1,0 +1,10 @@
+<apex:page controller="JobRequestComponentController" showHeader="false" sidebar="false">
+     <apex:form >  
+         <apex:pageBlock tabStyle="Job__c" title="Job Request">
+             <apex:pageBlockButtons location="top">
+             <apex:commandButton value="Promo Highlights Request" onclick="window.open('/apex/JobRequestPromoHighlightsUserTest','_top')"/>
+             <apex:commandButton value="Promo Highlights" onclick="window.open('/apex/apex/PromoHighlightsReport','_new')"/>
+             </apex:pageBlockButtons>
+         </apex:pageBlock>              
+     </apex:form>
+</apex:page>

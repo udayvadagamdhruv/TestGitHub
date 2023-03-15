@@ -1,0 +1,78 @@
+<apex:page controller="CreateInvoiceAllocationLI" tabStyle="Job__c">
+
+<apex:form >
+      <apex:sectionHeader title="Invoice Allocation Line Items"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton value="Save" action="{!saveme}"></apex:commandButton>
+            <apex:commandButton value="Save & New" action="{!savenew}"></apex:commandButton>
+            <apex:commandButton value="Cancel" action="{!back}" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+          <apex:pageblockTable value="{!IALI}" var="recs" style="width:700px">
+          
+          <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Client_Name__c.Label}" style="width:50%" >
+          
+          <apex:selectList value="{!selectedClient}"   size="1" >
+                     <apex:selectOptions value="{!Client}" id="selected" ></apex:selectOptions>
+          </apex:selectList> 
+          </apex:column>
+          <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Allocation_Qty__c.Label}" style="width:50%">
+          
+          <apex:inputField value="{!recs.Allocation_Qty__c}"/>
+          </apex:column>
+          
+          
+        
+       <!--  <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.GL_Department__c.Label}" >
+         
+         <apex:actionRegion >
+                <apex:outputPanel >
+                   <span  >
+                     
+                      <apex:selectList id="GLDName" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+         </apex:column>
+         
+         
+         <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.GL_Code__c.Label}" >
+         
+         
+                
+               <apex:actionRegion >
+                <apex:outputPanel >
+                   <span  >
+                      
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+         </apex:column>
+         -->
+          
+          </apex:pageblockTable>
+           
+           
+           
+          
+            
+            
+            
+         
+    </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>          
+
+  
+</apex:page>

@@ -1,0 +1,317 @@
+<apex:page Controller="CampaignStatusReportController" showHeader="false"  renderAs="pdf" standardStylesheets="false" applyHtmlTag="false">
+  
+<html>
+        <head>
+          <style type="text/css">
+            @page{
+                size:landscape;
+                margin : .7in .3in 1.5in .5in;
+                counter-increment: pages;
+                
+                @top-Left{
+                content:element(header) ;
+                Background-repeat:no-repeat;
+                font-size:20px;
+                font-Weight:bold;
+                
+                
+     
+                   }   
+                
+                @bottom-center{
+                   content : element(footer); 
+                    height:50px;         
+                    }
+                    
+                @bottom-right 
+               {
+                  content: "Page " counter(page);
+                  font-family: sans-serif;
+                  font-size:8pt;
+                } 
+                
+                
+                
+                    
+               
+                    
+                 @bottom-left-corner
+                   {
+                       content: "<apex:outputText value="{0,date,MM'/'dd'/'yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+                        background-repeat: no-repeat;
+                       font-size:10pt;
+                       font-family: sans-serif;
+                       padding-left: 20px;
+                       padding-top:20px;
+                  }   
+            
+                }
+                
+                
+                div.header{
+                    position : running(header);
+                    line-height:18px;
+                }
+               
+               
+               @page { 
+                    margin-left: 5mm;
+                    margin-right: 4mm;
+                    margin-top:5cm;
+                    margin-bottom:20mm;
+                    page-break-inside: avoid;
+                    
+                } 
+                body { line-height:90% !important; } 
+                
+                  body 
+      {
+           font-family: sans-serif;
+           font-size:8pt;
+      }
+  
+      th
+      {
+          font-size:10pt
+          font-style:bold;
+          font-family: sans-serif;
+      }
+
+      td
+      {
+         font-size:8pt;
+         font-family: sans-serif;
+      }
+  
+      div.footer 
+      {
+        position : running(footer) ;
+      }
+
+
+               
+            </style> 
+        
+        
+        
+         <!--  <style type="text/css">
+             @page{
+                size:landscape;
+                
+             @top{
+                content:element(header) ;
+                Background-repeat:no-repeat;
+                font-size:17px;
+                font-Weight:bold;
+                
+                
+     
+                   }   
+                
+            @bottom-right
+            {
+            content: "Page " counter(page);
+            font-family:Helvetica;
+            font-size:8pt;
+            }
+   
+            @bottom-left 
+            {
+            content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>"; 
+            background-repeat: no-repeat;
+            font-size:8pt;
+            font-family:Helvetica;
+            } 
+                
+                
+              }  
+            div.header{
+                    position : running(header);
+                    line-height:18px;
+                }
+               
+            </style>  -->
+        
+        </head>
+        
+         <body> 
+     
+        
+         <apex:repeat value="{!CNWrapper}" var="cnw">
+          
+          <div style="page-break-after: always;" > 
+         
+         
+          <div class="header" style="page-break-after: always;">  
+           
+               <table border="0" cellspacing="0" cellpadding="0" width="100%" id="table1">
+                  <tr>
+                    <td rowspan="5" width="60"><Br/>
+                       <apex:image id="JS_logo" value="{!$Resource.JS_Logo}" rendered="{!imageNotFound == True}" />
+                       <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}" />
+                       
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td align= "right" style="font-size:15px;font-family: sans-serif;padding-right:15px;font-weight:bold;">
+                     CAMPAIGN STATUS REPORT
+                   </td>
+                 </tr>
+              </table> <br/>
+              
+          <!-- <div style="page-break-after: always;"> -->
+          
+               <table width = "100%" style="page-break-inside: avoid;line-height:14px;">
+               <tr>
+                 <td style="height:10%;width:11%;">
+                   
+                     <b><apex:outputLabel value="Job Name" style="font-size:10px;vertical-align:Top !important;"></apex:outputLabel></b>
+                  
+                 </td>
+                                    
+                                   
+                  <td style="height:10%;width:9%;">
+                   
+                     <b><apex:outputLabel value="Due Date" style="font-size:10px;vertical-align:Top !important;"></apex:outputLabel></b>
+                 
+                 </td>
+                 
+                 <td style="height:10%;width:10%;">
+                   
+                     <b><apex:outputLabel value="Team" style="font-size:10px;vertical-align:Top !important;"></apex:outputLabel></b>
+                  
+                 </td>
+                 
+                 <td style="height:10%;width:18%;">
+                   
+                     <b><apex:outputLabel value="Schedule" style="font-size:10px;vertical-align:Top !important;"></apex:outputLabel></b>
+                  
+                 </td>
+                 
+                     <td style="height:10%;width:18%;">
+                      
+                     <b><apex:outputLabel value="Specs" style="font-size:10px;vertical-align:Top !important;"></apex:outputLabel></b>
+                  
+                 </td>
+                 
+                 
+                     <td style="height:10%;width:12%;">
+                      
+                     <b><apex:outputLabel value="Job Notes" style="font-size:10px;vertical-align:Top !important;"></apex:outputLabel></b>
+                  
+                 </td>
+                </tr>
+               </table><br/>
+                <hr style="margin-bottom:-5px;margin-top:-4px;noshade;"/><br/>
+               
+                      
+             <!-- <div style="width:100%;font-weight: bolder;width:100%;background-color:#C9C7C9;">
+              
+                <b> <apex:outputText value="{!cnw.strCampaignName}"    style="font-size:18px;font-weight:bold;font-color:#0000FF;"/> </b> 
+           
+              </div> -->
+              
+              <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;page-break-after: always;">
+                        <tr style="page-break-inside: avoid;">
+                            <td width = "20%" style="page-break-inside: avoid;">
+                                <b> <apex:outputText value="{!cnw.strCampaignName}" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                            </td>
+                        </tr>
+                    </table>
+              
+              
+              <br/><br/>    
+              
+             
+             </div>   
+           
+             <apex:repeat value="{!cnw.jWrapper}"  var="jw"  >       
+              
+                                 
+               <div style="page-break-inside: avoid;">
+                 
+               
+               <table width="100%" style="margin-bottom:-10px;">
+                <tr style="vertical-align:top;">
+                
+                 <td width = "11%" style="vertical-align:top;">
+                   <apex:outputText value="{!jw.job.name}" style="font-size:10px;"/><apex:outputText value="({!jw.job.Job_Auto_Number__c})" style="font-size:10px;"/><br/>
+                   <apex:outputText value="{!jw.job.Campaign__r.name}" style="font-size:10px;"/>
+                 </td>
+                
+                <td width = "9%" style="vertical-align:top;">
+                   <apex:outputText style="width:100%;float:left;font-size:10px;" value="{0,date,MM'/'dd'/'yy}"  rendered="{!if(jw.job.Due_Date__c !=null,true,false)}">
+                    <apex:param value="{!if(jw.job.Due_Date__c !=null,jw.job.Due_Date__c,'-')}"/> </apex:outputText>
+                    <apex:outputText style="width:100%;float:right; align:center;" value=" " rendered="{!if(jw.job.Due_Date__c == null,true,false)}" ></apex:outputText> 
+                  
+                 
+                 </td>
+                 <td width = "10%" style="vertical-align:top;">
+                   <apex:repeat value="{!jw.jobTeams}" var="jobTeams">
+             
+                   <apex:outputtext value="{!jobTeams}"    style="font-size:10px;height:22px;"/><br/>
+             
+                   
+                   
+                  </apex:repeat>
+                 
+                 </td>
+                 <td width = "18%" style="vertical-align:top;">
+                   <apex:repeat value="{!jw.jobStasks}" var="jobStasks">
+             
+                   <apex:outputtext value="{!jobStasks.Name}  : "    style="font-size:10px;height:22px;"/> <br/>
+                   
+                   <apex:outputText style="width:100%;float:left;font-size:10px;" value="{0,date,MM'/'dd'/'yy}"  rendered="{!if(jobStasks.Revised_Due_Date__c !=null,true,false)}">
+                    <apex:param value="{!if(jobStasks.Revised_Due_Date__c !=null,jw.job.Due_Date__c,'-')}"/> </apex:outputText> <br/>
+                    <apex:outputText style="width:100%;float:right; align:center;" value=" " rendered="{!if(jobStasks.Revised_Due_Date__c == null,true,false)}" ></apex:outputText>
+                   
+                   
+                  </apex:repeat>
+                 
+                 </td>
+                 <td width = "18%" style="vertical-align:top;">
+                   <apex:repeat value="{!jw.jobSpecs}" var="jobSpecs">
+                   
+                   <div style="width:100%;float:left;" >
+                   <apex:outputtext value="{!jobSpecs.Name}  : "    style="font-size:10px;height:22px;" /><br/>
+                   
+                   <apex:outputtext value="{!jobSpecs.Description__c}"  style="font-size:10px;"/><br/><!-- value="{!jobSpecs.Description__c}"-->
+                   </div>
+                   
+                   
+                  </apex:repeat>
+                  </td>
+                  
+                  <td width = "12%" style="vertical-align:top;">
+                   <div style="width:100%;float:left;" align = "left">
+                   <apex:outputText value="{!left(jw.job.Creative_Overview__c,800)}" style="font-size:10px;" escape="false"/>
+                   </div>
+             
+                 
+                  </td>
+                  <hr style="margin-top:20px;"/>
+                </tr>    
+                  
+               </table>
+             
+             </div>  
+              
+              
+              
+                 
+            </apex:repeat>   
+           
+           
+           
+          
+        </div>
+      </apex:repeat>
+       
+    </body>
+        
+        
+</html>
+  
+  
+</apex:page>

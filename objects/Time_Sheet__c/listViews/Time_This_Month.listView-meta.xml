@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Time_This_Month</fullName>
+    <columns>NAME</columns>
+    <columns>Duration__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Dev_Item__c</columns>
+    <columns>TS_Date__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>greaterThan</operation>
+        <value>LAST_MONTH</value>
+    </filters>
+    <label>Time This Month</label>
+    <language>en_US</language>
+</ListView>

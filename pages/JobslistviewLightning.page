@@ -1,0 +1,198 @@
+<apex:page tabStyle="Job__c" controller="JobsListViewHome" showHeader="false" readOnly="true" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" standardStylesheets="true">
+
+   <style>
+   
+          .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+            
+            
+        </style>
+   
+   
+   
+   
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+    
+   
+    <div class="slds">
+    
+     
+    
+        <apex:form html-novalidate="novalidate">
+
+         <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+              <apex:pageMessages id="pagemsgId2"></apex:pageMessages>
+         </div> 
+
+            <table width="100%" >
+                  <tr>
+                      <td align="left" width="60%" style="padding-top:10px;" >
+                             <apex:outputLabel value="Job Status"></apex:outputLabel>
+                             <apex:selectList id="status" value="{!JobStatusString }" size="1"  onchange="jobstatus()" styleClass="slds-select slds-m-right--medium">
+                                  <apex:selectOptions value="{!jobStatuslist}"></apex:selectOptions>
+                                  <apex:actionSupport event="onchange" reRender="jobb" status="Jobstatus">
+                                       <apex:actionFunction name="jobstatus" action="{!ViewData}"/>
+                                  </apex:actionSupport>
+                                  <apex:actionStatus id="Jobstatus">
+                                         <apex:facet name="start">
+                                                <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                                                     <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                                                       <span class="slds-assistive-text">Loading</span>
+                                                       <div class="slds-spinner__dot-a"></div>
+                                                       <div class="slds-spinner__dot-b"></div>
+                                                     </div>
+                                                </div>
+                                         </apex:facet>
+                                   </apex:actionStatus>
+                              </apex:selectList>  
+                        </td>   
+                   </tr>
+             </table>
+    
+         <br/>
+         
+         <apex:outputlabel rendered="{!joblist.size == 0}">
+               <b>No {!jobstatusstring} Jobs to display</b>
+         </apex:outputLabel>
+                  
+         <div class="slds-card">
+                            
+                      <div class="slds-card__body">
+
+                        <apex:outputPanel layout="block" rendered="{!jWrapper.size != 0}">
+
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-6" scope="col"> 
+                                             <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job__c.Fields.Name.Label}{!IF(sortExpression=='jobName',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort1" style="color:black;">
+                                                    <apex:param value="jobName" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                             </apex:commandLink>
+                                        </th>
+                                        <th class="slds-size--1-of-6" scope="col">
+                                             <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}{!IF(sortExpression=='jobNo',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort2" style="color:black;">
+                                                  <apex:param value="jobNo" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                             </apex:commandLink>
+                                        </th>
+                                        <th class="slds-size--1-of-6" scope="col">
+                                            <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}{!IF(sortExpression=='Client',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort3" style="color:black;">
+                                                <apex:param value="Client" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                            </apex:commandLink>
+                                        </th>
+                                        
+                                     <!--<th class="slds-size--1-of-7" scope="col">Status</th>-->
+                                        
+                                        <th class="slds-size--1-of-6" scope="col">
+                                             <apex:commandLink action="{!ViewData}" value="Job Due{!IF(sortExpression=='jobDuedate',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort4" style="color:black;">
+                                                  <apex:param value="jobDuedate" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                              </apex:commandLink>
+                                        </th>
+                                        <th class="slds-size--1-of-6" scope="col">
+                                            <apex:commandLink action="{!ViewData}" value="Task Name {!IF(sortExpression=='taskName',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort5" style="color:black;">
+                                                  <apex:param value="taskName" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                            </apex:commandLink>
+                                        </th>
+                                        <th class="slds-size--1-of-6" scope="col">
+                                            <apex:commandLink action="{!ViewData}" value="Task Due{!IF(sortExpression=='jobtaskDuedate',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort6" style="color:black;">
+                                                  <apex:param value="jobtaskDuedate" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                            </apex:commandLink>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <apex:repeat value="{!jWrapper }" var="jobex" rendered="{!jWrapper.size != 0}" >
+
+                                        <tr class="slds-hint-parent">
+                                        
+                                            <td class="slds-size--1-of-6" data-label="Job Name">
+                                                <div>
+                                                    <apex:outputLink value="/apex/JobdetailpageLightening07?id={!jobex.job.id}" target="_parent"> {!jobex.jobName1} </apex:outputLink>
+                                                    <apex:facet name="header">
+                                                          <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job__c.Fields.Name.Label}{!IF(sortExpression=='jobName',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort1">
+                                                              <apex:param value="jobName" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                                          </apex:commandLink>
+                                                      </apex:facet>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-6" data-label="Job#">
+                                                <div>
+                                                    <apex:outputLink value="/apex/JobdetailpageLightening07?id={!jobex.job.id}" target="_parent"> {!jobex.jobNo} </apex:outputLink>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-6" data-label="Client">
+                                                <div>
+                                                     <apex:outputText value="{!jobex.Client} "></apex:outputText>
+                                                </div>
+                                            </td>
+                                            
+                                     <!--   <td class="slds-size--1-of-7" data-label="Status">
+                                                <div>
+                                                    <apex:outputText value="{!jobex.Status}"></apex:outputText>
+                                                </div>
+                                            </td>-->
+                                            
+                                            <td class="slds-size--1-of-6" data-label="Job Due">
+                                                <div>
+                                                    <apex:outputText value="{!jobex.date1}"></apex:outputText>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-6" data-label="Task Name">
+                                                <div>
+                                                    <apex:outputLink value="/apex/JobTaskDetailPageLightning?id={!jobex.task.Id}" target="_parent"> {!jobex.taskName1} </apex:outputLink>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-6" data-label="Task Due">
+                                                <div>
+                                                    <apex:outputText value="{!jobex.date2}"></apex:outputText>
+                                                </div>
+                                            </td>
+                                            
+                                            
+                                        </tr>
+
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </apex:outputpanel>
+                    </div>
+                    </div>
+                    
+                      </apex:form>
+      </div>
+      
+
+    </html>
+
+</apex:page>

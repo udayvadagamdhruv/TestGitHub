@@ -1,0 +1,18 @@
+<apex:page standardController="Purchase_Order__c" extensions="editPurchaseorderSwitchExt" tabStyle="Job__c" sidebar="true" docType="html-5.0" >
+ 
+  <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/editPurchaseorder?id="+'{!porder}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="editPurchaseorderLightning"/>
+    </apex:outputPanel>
+ 
+ 
+</apex:page>

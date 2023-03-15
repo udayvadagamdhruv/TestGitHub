@@ -1,0 +1,16 @@
+<apex:page standardController="Material_Item__c" extensions="EditMaterialItemSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/MaterialLineDetailPage?id="+'{!MIId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="MaterialLineDetailPageLightning"/>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,14 @@
+<apex:page standardcontroller="Estimate_Spec_Item__c" extensions="DeleteSpecItemUndertheEstLIExt" showHeader="false" sidebar="false">
+
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form> 
+
+</apex:page>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unlicensed_Staff_Active</fullName>
+    <columns>NAME</columns>
+    <columns>Username__c</columns>
+    <columns>User_Type__c</columns>
+    <columns>Active__c</columns>
+    <columns>IsDeleted__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>User_Type__c</field>
+        <operation>equals</operation>
+        <value>Unlicensed Staff</value>
+    </filters>
+    <filters>
+        <field>Active__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Unlicensed Staff (Active)</label>
+    <language>en_US</language>
+</ListView>

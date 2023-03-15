@@ -1,0 +1,166 @@
+.THIS .btn_approval{
+    border-color: none !important;
+    color:red !important;
+}
+
+/*.THIS .slds-button__icon_left{
+    fill:red;
+}*/
+
+.THIS .ViewApprovalProcesscls{
+    line-height: 28px;
+}
+
+.THIS .Taskstablecss{
+    line-height: 28px;
+}
+/* Description line breaks in the lightning data table*/ 
+.THIS .Taskstablecss .slds-truncate {
+    white-space: break-spaces!important;
+    overflow-wrap: break-word!important;
+    word-wrap: break-word!important;
+} 
+
+.THIS .slds-table tbody td{
+    vertical-align: text-top !important;
+}
+
+.THIS .slds-table tbody th {
+    vertical-align: text-top !important;
+}
+
+.THIS .Taskstablecss {
+    line-height: 28px;
+}
+
+
+
+.THIS .Taskstablecss .slds-table tbody td:first-child 
+{
+    display:none !important;
+}
+
+.THIS .Taskstablecss .slds-table thead th:first-child 
+{
+    display:none !important;
+}
+
+.THIS .Taskstablecss .slds-table .slds-row-number:after {
+    content: counter(none) !important ;
+    display: none !important ;
+}
+
+
+.THIS .slds-grid .slds-wrap{
+    width:100%;
+}
+
+.THIS .TaskstablecssCopy{
+    line-height: 25px;
+}
+
+.THIS .TaskstableCampcssCopy{
+    line-height: 25px;
+}
+
+.THIS .EditTaskClass{
+    left: 25% !important;
+    right: 25% !important;
+}
+
+.THIS .frequired label:after { 
+    content:" *";
+    color: #e32;
+}
+.THIS .slds-modal__content{
+   /* overflow-y: hidden !important;*/
+}
+@media (min-width: 48em){
+    .THIS .slds-modal__container {
+        margin: 0 auto;
+        width: 95%;/*changed from 100 to 85 for add/tam layout width*/
+        height: 95%;
+        max-width: 90rem !important;
+        min-width: 30rem !important;
+    }
+}
+
+.THIS .chart-container {
+    position: relative;
+    margin: auto;
+    height: 50vh;
+    width: 30vw;
+}
+
+.THIS .helptext{
+    align-items:right !important;
+}
+
+.THIS .slds-accordion__summary-action {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    min-width: 0;
+    background: #e2e4e6  !important;
+    line-height: 1.675rem  !important;
+    padding: 5px  !important;
+    font-size: 1.1em !important;
+    color: darkslategrey !important;
+}
+
+.THIS .slds-accordion__section {
+    padding: 0.65rem !important;
+}
+
+.THIS .slds-button_icon-border
+{
+    width: 1.05rem;
+    height: 1.05rem;
+}
+
+.THIS .TaskDueDatesNotEditable button{
+    display:none;
+}
+
+.THIS .fc {
+    font-size: 16.5px;
+}
+
+.THIS .MobileMoreActions .slds-dropdown-trigger .slds-dropdown_left
+{
+    left:auto !important;
+    right:0 !important;
+    transform:translateX(0) !important;
+}
+
+.THIS .MobileMoreActions .slds-dropdown-trigger .slds-button
+{
+    line-height:1.5rem !important;
+}
+.THIS .scrollerSizecart{
+    height:27rem;
+}
+.THIS .uiScrollerWrapper.scrollable.scrollingOnIOS>*:not(.skipTransform) {
+    transform: inherit !important;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+    height:150px !important;
+}
+.THIS .slds-p-horizontal_x-small{
+  /*added for edit layout fields alignment*/
+    padding-left:0px !important;
+    padding-right:0px !important;
+}
+.THIS .slds-p-around_small{
+    /*added for edit layout fields alignment*/
+    padding: 0 10px 0 10px !important;
+}
+
+.THIS .slds-accordion__summary
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

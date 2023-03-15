@@ -1,0 +1,24 @@
+<apex:page standardController="Job__c" tabStyle="Job__c" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/CreateNewJobNew", "_self");
+         }
+        
+    </script>
+    
+   
+  
+  <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="CreateNewJobNewLightning"/>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4t'}">
+         <apex:include pageName="JobRequestFormMobile"/>
+    </apex:outputPanel>
+    
+    
+</apex:page>

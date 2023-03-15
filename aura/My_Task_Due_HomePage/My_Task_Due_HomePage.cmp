@@ -1,0 +1,160 @@
+<aura:component controller="Home_Page" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate"/>
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    <aura:attribute name="activeSections" type="List" default="['MyTask']" />
+    <aura:attribute name="isTaskLogTime" type="boolean" default="false"/>
+    <aura:attribute name="LogTaskId" type="String" default=""/>
+    <aura:attribute name="TSAccessable" type="boolean" default="false"/>
+    <aura:attribute name="isListview" type="boolean" default="true"/>
+    <aura:attribute name="isListview1" type="boolean" default="true"/>
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <aura:attribute name="MyTaskDueSection" type="String" default="My Tasks Due" required="true" access="global"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />   
+    <body>
+        <aura:if isTrue="{!!v.isMobile}">   
+            <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.activeSections}">
+                <lightning:accordionSection name="MyTask" label="{!v.MyTaskDueSection}"  class="slds-card" >
+                    <lightning:card title="">
+                        
+                        <div align="center" >
+                            <aura:if isTrue="{! !empty(v.data)}">
+                                <lightning:button aura:id="buttonId" variant="neutral" label="My Calendar" title="My Calendar" onclick="{!c.CalenderView}"/>
+                            </aura:if>
+                        </div>                
+                        <br/> 
+                        <aura:if isTrue="{!v.isListview1}">
+                        <div class="slds-form-element" style="width:25%">
+                                            <label class="slds-form-element__label" for="select-01">Tasks</label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-select_container">  
+                                                    <select class="slds-select" id="TaskViewId" label="Tasks" onchange="{!c.handleTasksView}">
+                                                        <option selected="true" value="MyTaskDues">Next Tasks Due</option>
+                                                        <option  value="All">All Tasks Due</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                      
+                                    <br/>            
+                        </aura:if>
+                        <aura:if isTrue="{!empty(v.data)}">
+                            <b>No records to display</b>
+                            <aura:set attribute="else" >
+                                <aura:if isTrue="{!v.isListview}">
+                                  
+                                    <div style="height:420px;">
+                                        <lightning:datatable aura:id="MyJobs"
+                                                             class="tablecss"
+                                                             columns="{! v.columns }"
+                                                             data="{!v.data}"
+                                                             keyField="Id"
+                                                             hideCheckboxColumn="true"
+                                                             errors="{! v.errors }"
+                                                             sortedBy="{!v.sortedBy}"
+                                                             sortedDirection="{!v.sortedDirection}"
+                                                             onsort="{! c.updateColumnSorting }"
+                                                             onrowaction="{! c.handleRowAction }"
+                                                             />
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <ltng:require styles="{!join(',',
+                                                              $Resource.FullCalendar380 + '/fullcalendar-3.8.0/fullcalendar.css'
+                                                              )}"
+                                                      scripts="{!join(',',
+                                                               $Resource.FullCalendar380 + '/fullcalendar-3.8.0/moment.min.js',
+                                                               $Resource.FullCalendar380  + '/fullcalendar-3.8.0/jquery.min.js',
+                                                               $Resource.FullCalendar380  + '/fullcalendar-3.8.0/jquery-ui.min.js',
+                                                               $Resource.FullCalendar380  + '/fullcalendar-3.8.0/fullcalendar.min.js'
+                                                               )}"
+                                                      afterScriptsLoaded="{!c.afterScriptsLoadedinHomePage}" /> 
+                                        
+                                        
+                                        <br/>
+                                        
+                                        <div id="HomeCalender" class="slds-card">
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                        
+                    </lightning:card>
+                    
+                    <aura:if isTrue="{!v.isTaskLogTime}">
+                        <c:Task_Log_Time taskId="{!v.LogTaskId}" aura:id="LogTimeId" actionFrom="Task"  />  <!-- LogTimePopUp="{!v.LogTimeOpen}" -->
+                    </aura:if>
+                    
+                </lightning:accordionSection>
+            </lightning:accordion>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.isMobile}"><br/>
+            <center><b style="font-size:26px;"> My Task Due </b></center><br/>
+            
+            
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    <div style="padding-left:10px;">
+                        <aura:iteration items="{!v.data}" var="tsk">
+                            <table >
+                                <tr>
+                                    <td colspan="2">
+                                        <a href="{!'/'+tsk.jobTaskrole.Job_Task__c}"> <b style="{!'color:'+tsk.color}"> <ui:outputText value="{!tsk.jobTaskrole.Job_Task__r.Name}"/></b></a> 
+                                    </td>
+                                    <td width="20%" style="text-align:right;padding-right:5px;" class="MobileMoreActions" >
+                                        <lightning:buttonMenu name="{!tsk.jobTaskrole.Job_Task__c}" aura:id="TaskName" onselect="{!c.handleTaskQuickAction}">
+                                            <lightning:menuItem value="TaskDoneMobile" label="Task Done" iconName="action:approval"/>
+                                            <lightning:menuItem value="Log_Time" label="Log Time" disabled="{!!v.TSAccessable}" iconName="action:defer"/>
+                                        </lightning:buttonMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">                                   
+                                        <ui:outputText value="Final Due Date"/>:                                   
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputDate value="{!tsk.jobTaskrole.Job_Task__r.Revised_Due_Date__c}"/>	
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">                                   
+                                        <ui:outputText value="Job"/>:                                   
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!tsk.jobTaskrole.Job_Task__r.Job__r.Name}"/>	
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" >
+                                        <ui:outputText value="Job#"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!tsk.jobTaskrole.Job_Task__r.Job__r.Job_Auto_Number__c}"/>	
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" colspan="2">
+                                        <hr style="margin: 0.4rem 0;"/>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                            
+                        </aura:iteration>
+                        
+                        <aura:if isTrue="{!v.isTaskLogTime}">
+                            <c:Task_Log_Time taskId="{!v.LogTaskId}" aura:id="LogTimeId" actionFrom="Task"  />  <!-- LogTimePopUp="{!v.LogTimeOpen}" -->
+                        </aura:if>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </aura:if>
+    </body>
+</aura:component>

@@ -1,0 +1,224 @@
+<apex:page controller="BillboardSearchController"  tabStyle="Billboard__c" docType="html-5.0">
+  <head>
+ <style>
+      .actionLink 
+        {
+            color: #015BA7 !important;
+            font-weight: normal;
+            text-decoration: none;
+        }
+ </style>
+    
+ </head>
+ <apex:form >
+  <apex:pageMessages id="errors" />
+  
+  
+  <apex:pageBlock mode="edit" tabStyle="Billboard__c" id="pageBlockMain">
+<img src="{!$Resource.JobLogo}"/> <h1>Billboards</h1><br/>
+  <table width="100%" border="0">
+  <tr>  
+    <td width="200" valign="top">
+ 
+    <apex:pageBlock mode="edit" id="criteria">
+    <br/>
+    <h2>Search</h2>
+    <script type="text/javascript">
+      function doSearch() {
+        searchServer
+        (
+          document.getElementById("Name").value,
+          document.getElementById("clientName").value,
+          document.getElementById("clientCode").value,
+          document.getElementById("vendorName").value,
+          document.getElementById("location").value,
+          document.getElementById("duedt1").value,
+          document.getElementById("duedt2").value
+          
+         );
+      }
+      </script>
+      
+      <script type="text/javascript">
+         // function f1(jobId,ip)
+          //{
+         //     follow(jobId,ip);
+         // }
+        //  function imageOverCross(id2)
+         // {
+         //     id2.src='{!$Resource.Cross}';
+       //   }
+        //  function imageNormal(id2)
+         // {
+        //      id2.src='{!$Resource.Follow}';
+         // }
+      </script>
+      
+     
+     
+   <!-- <apex:actionFunction name="follow" action="{!followRecord}" rerender="theTable">
+        <apex:param name="jobId" value="" /> 
+        <apex:param name="ip" value="" /> 
+    </apex:actionFunction>-->
+      
+     <apex:actionFunction name="searchServer" action="{!runSearch}" rerender="results,debug,errors,id1">
+          <apex:param name="Name" value="" />
+           <apex:param name="clientName" value="" />
+           <apex:param name="clientCode" value="" />
+           <apex:param name="vendorName" value="" />
+           <apex:param name="location" value="" />
+           <apex:param name="duedt1" value=""/>
+           <apex:param name="duedt2" value=""/>
+           
+      </apex:actionFunction>
+ 
+      <table cellpadding="2" cellspacing="2">
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Billboard__c.Fields.Name.Label}<br/>
+        <input type="text" id="Name" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Billboard__c.Fields.Client_Name__c.Label}<br/>
+        <input type="text" id="clientName" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Client__c.Fields.Client_Code__c.Label}<br/>
+        <input type="text" id="clientCode" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      
+     
+      <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Billboard__c.Fields.BB_Vendor__c.Label}<br/>
+        <input type="text" id="vendorName" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      
+       <tr>
+        <td style="font-weight:bold;">{!$ObjectType.Billboard__c.Fields.Location__c.Label}<br/>
+        <input type="text" id="location" onkeyup="doSearch();"/>
+        </td>
+      </tr>
+      
+     
+      
+       <tr>
+          <td style="font-weight:bold;">
+              {!$ObjectType.Billboard__c.Fields.Expiration_Date__c.Label}<br/>
+              <input type="text" id="duedt1" name="ddt1" onfocus="DatePicker.pickDate(false,'duedt1', false);" size="10" onblur="doSearch();"/> &nbsp; >=<br/><br/>
+              <input type="text" id="duedt2" name="ddt2" onfocus="DatePicker.pickDate(false,'duedt2', false);" size="10" onblur="doSearch();"/> &nbsp; <apex:outputLabel value="<="/><br/>
+          </td>
+      </tr>
+      
+     
+      
+      </table>
+ 
+      </apex:pageBlock>
+ 
+    </td>
+    <td valign="top">
+     
+    <apex:pageBlock mode="edit" id="results"> <br/>
+              <apex:commandButton action="{!createNewJob}" value="New Billboard" rendered="{!$ObjectType.Billboard__c.Createable}"/>
+       &nbsp;
+  
+       
+     
+              <br/><br/>
+        <apex:pageBlockTable value="{!jobsW}" var="j" rendered="{!NOT(ISNULL(jobsW))}" rows="{!PageSize}" id="theTable">
+        <br/>
+         
+            <apex:column width="8%">
+                    <apex:facet name="header">Action</apex:facet>
+                        <apex:commandLink action="{!editJob}" rendered="{!$ObjectType.Billboard__c.updateable}" styleClass="actionLink">
+                            <apex:outputText value="Edit" />
+                                <apex:param name="editId" value="{!j.objJOb.Id}" assignTo="{!strId}"/>
+                        </apex:commandLink>
+                        <apex:outputText value=" | " rendered="{!$ObjectType.Job__c.updateable && $ObjectType.Job__c.deletable}"/>
+                        <apex:commandLink action="{!deleteJob}" rendered="{!$ObjectType.Billboard__c.deletable}" onclick="return confirm('Are you sure?');" styleClass="actionLink">
+                        <apex:outputText value="Del" />
+                            <apex:param name="deleteId" value="{!j.objJob.Id}" assignTo="{!strId}"/>
+                        </apex:commandLink>
+                      
+             </apex:column>           
+                   
+            
+         
+            <apex:column width="19%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Name.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Name" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+  
+                <apex:commandLink target="_top" action="{!navigate}" ><apex:param assignTo="{!strId}" name="param1" id="p1" value="{!j.objJob.Id}"/><apex:outputField value="{!j.objJob.Name}" /></apex:commandLink>
+             </apex:column>
+            
+            
+
+            <apex:column width="15%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Client_Name__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Client_Name__r.Name" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:commandLink /><apex:outputField value="{!j.objJob.Client_Name__r.Name}"/>
+            </apex:column>
+
+            <apex:column width="15%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.BB_Vendor__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="BB_Vendor__r.name" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.BB_Vendor__r.Name}"/>
+            </apex:column>
+
+          <apex:column width="15%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Location__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Location__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Location__c}"/>
+            </apex:column>
+           
+            
+            <apex:column style="text-align:left;" width="6%">
+                <apex:facet name="header">
+                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Expiration_Date__c.label}" action="{!toggleSort}" rerender="results,debug">
+                        <apex:param name="sortField" value="Expiration_Date__c" assignTo="{!sortField}"/>
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputField value="{!j.objJob.Expiration_Date__c}"/>
+            </apex:column>
+            
+             
+
+        </apex:pageBlockTable>
+        
+       <apex:outputPanel rendered="{!jobsW.size <= 0}">
+            <br/><b><p>No records to display</p></b>
+        </apex:outputPanel>
+       <br/> 
+     
+    </apex:pageBlock>
+    <apex:pageBlock rendered="{!NOT(ISNULL(jobsW))}" id="id1">
+        <font size="1pt">Page #:&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;out of&nbsp;<apex:outputLabel value="{!totalPageNumber}"/>&nbsp;&nbsp;&nbsp;&nbsp;</font>
+            <apex:commandButton value="Previous" action="{!previousBtnClick}" disabled="{!PreviousButtonEnabled}" reRender="results,id1"></apex:commandButton>
+            <apex:commandButton value="Next" action="{!nextBtnClick}" disabled="{!nextButtonDisabled}" reRender="results,id1" ></apex:commandButton>
+    </apex:pageBlock>
+    </td>
+  </tr>
+</table>
+
+    
+</apex:pageBlock>
+</apex:form>
+  
+  
+</apex:page>

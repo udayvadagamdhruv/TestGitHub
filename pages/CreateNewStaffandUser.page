@@ -1,0 +1,88 @@
+<!-- This Page is used for create User/Staff Functionality based on User type selection -->
+<apex:page standardController="User" extensions="CreateNewStaffAndUserExtension4" tabStyle="MyAdmin__tab">
+   <apex:sectionHeader title="Staff/User"/> 
+   <apex:form >
+      <apex:pageMessages />
+      <apex:pageBlock mode="edit" id="mmm">
+
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+            <apex:commandButton action="{!Cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+              
+         <apex:pageBlockSection title="Staff/User Information" columns="2" collapsible="false"> 
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.User.Fields.User_Types__c.Label}"></apex:outputLabel>
+                  <apex:inputField value="{!User.User_Types__c}" required="true"/> 
+             </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.User.Fields.IsActive.Label}"/>
+              <apex:inputCheckbox value="{!User.IsActive}" selected="true" disabled="true"/>
+<!--               <apex:outputField value="{!User.IsActive}"/> -->
+            </apex:pageBlockSectionItem> 
+            
+            <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.User.Fields.FirstName.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!User.FirstName}" required="true"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.User.Fields.LastName.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!User.LastName}"/>
+             </apex:pageBlockSectionItem>
+                
+            <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.User.Fields.Email.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!User.Email}"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.User.Fields.Username.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!User.Username}"/> 
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.User.Fields.Phone.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!User.Phone}"/>
+             </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.User.Fields.Fax.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!User.Fax}"/>
+             </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.User.Fields.Department.Label}"></apex:outputLabel>
+                  <apex:inputField value="{!User.Department}"/>
+             </apex:pageBlockSectionItem>
+            
+          <apex:pageBlockSectionItem >
+               <apex:outputLabel value="Profile" for="prol"></apex:outputLabel> 
+               <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                     <div class="requiredBlock"> </div>
+                     <apex:selectList value="{!ProfileId}" multiselect="false" size="1" id="selectedProfileId"> 
+                        <apex:selectOptions value="{!Profile}"/>
+                     </apex:selectList> 
+                  </span>
+               </apex:outputPanel>
+            </apex:pageBlockSectionItem> 
+                             
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="Role" for="rl"></apex:outputLabel> 
+               <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                     <div class="requiredBlock"> </div>
+                     <apex:selectList value="{!RoleId}" multiselect="false" size="1" id="selectedRoleId">
+                        <apex:selectOptions value="{!Role}"/>
+                     </apex:selectList>
+                  </span>
+               </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+      
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

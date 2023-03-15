@@ -1,0 +1,51 @@
+<apex:page standardController="Material_Usage_line_item__c" extensions="CreateMaterialUsageExtension">
+  
+  <apex:form >
+      <apex:sectionHeader title="Material Usage Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Usage_line_item__c.Fields.Material_Item__c.Label}"/>
+               <apex:outputLabel value="{!MaterialName }" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Usage_line_item__c.Fields.Credit__c.Label}"/>
+               <apex:inputfield value="{!Material_Usage_line_item__c .Credit__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Usage_line_item__c.Fields.Type__c.Label}"/>
+               <apex:Inputfield value="{!Material_Usage_line_item__c.Type__c  }" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Usage_line_item__c.Fields.Debit__c.Label}"/>
+               <apex:inputfield value="{!Material_Usage_line_item__c .Debit__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Usage_line_item__c.Fields.Date__c.Label}"/>
+               <apex:inputfield value="{!Material_Usage_line_item__c.Date__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Usage_line_item__c.Fields.Description__c.Label}"/>
+               <apex:inputfield value="{!Material_Usage_line_item__c .Description__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            
+            
+            
+  </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>   
+  
+</apex:page>

@@ -1,0 +1,11 @@
+<aura:component controller="WorkDocDocument" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="recordId" type="string" />
+     <aura:attribute name="docList" type="List" />
+    <aura:handler name="init" value="{!this}" action="{!c.LoadDocumnets}"/>
+    
+    <aura:iteration items="{!v.docList}" var="docId">
+        <div> {!docId} </div>
+        <c:Campaign_WorkDocs docId="{!docId}" />
+    </aura:iteration>
+</aura:component>

@@ -1,0 +1,4 @@
+<apex:page standardController="Campaign_Jobs__c" tabStyle="MyAdmin__tab">
+ 
+ <apex:detail relatedList="true" showChatter="true"/>
+</apex:page>

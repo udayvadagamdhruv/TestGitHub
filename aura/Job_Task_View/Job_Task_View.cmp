@@ -1,0 +1,125 @@
+<aura:component controller="Job_Task_View_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String"  />
+    <aura:attribute name="JobTaskRoles" type="object"  />
+    <aura:attribute name="AllstaffWrappers" type="Object"  /> 
+   <aura:attribute name="isEditStaffOpen" type="boolean" default="false" /> 
+    
+  
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     
+    
+    
+     <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="AssignStaff">
+         <lightning:accordionSection name="AssignStaff" label="Assign Staff"  class="slds-card" >
+             
+             <div align="center" draggable="false" >  
+                 <lightning:button label="Add/Edit Staff" iconPosition="right" variant="neutral" onclick="{!c.AddEditStaffMembers}"   />   
+                    
+             </div>
+             <br/>             
+             <aura:if isTrue="{!empty(v.JobTaskRoles)}">
+                 <b>No Records to display.</b>
+                 <aura:set attribute="else"> 
+                  
+                         <div style="border : 1px solid #e2e4e6; border-radius:5px;" >  
+                         <lightning:layout multipleRows="true"> 
+                             <aura:iteration items="{!v.JobTaskRoles}" var="jtr" >
+                                 <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="3" >
+                                    <div style="border-bottom : 1px solid lightgrey;padding: 10px;">  
+                                         <ul id="draggable">
+                                             <li class="slds-item">
+                                                 <lightning:tile  label="{!jtr.User__c}" >  
+                                                     <aura:set attribute="media">    
+                                                         <lightning:avatar src="{!$Resource.SLDS0122 +'/assets/images/avatar2.jpg'}" fallbackIconName="standard:person_account" alternativeText="{!jtr.User__c}"/>
+                                                     </aura:set>
+                                                     
+                                                     <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                         <li class="slds-item">{!jtr.Name}</li>
+                                                     </ul>
+                                                 </lightning:tile>
+                                             </li>
+                                         </ul> 
+                                     </div>
+                                 </lightning:layoutItem>
+                             </aura:iteration>
+                         </lightning:layout> 
+                     </div>
+                 </aura:set>     
+             </aura:if>   
+         </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+    <aura:if isTrue="{!v.isEditStaffOpen}">
+        
+        <!--************************************************  MODAL BOX Start *************************************************--> 
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Assign Staff</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:messages />
+                    <aura:if isTrue="{!empty(v.AllstaffWrappers)}">
+                   <center>   <b>  There are no Job Team Members for this Job.</b> </center>
+                        <aura:set attribute="else">
+                    <div style="border : 1px solid #e2e4e6; border-radius:5px;" >
+                        <lightning:layout multipleRows="true">    
+                            <aura:iteration items="{!v.AllstaffWrappers}" var="s">  
+                                <lightning:layoutItem size="12"  smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" >
+                                    <div style="border-bottom : 1px solid lightgrey;padding: 10px;">  
+                                          <lightning:input style="float:right;" type="checkbox" label="" name="SelectedStaff" checked="{!s.selection}" />    
+                                        <ul id="draggable">
+                                            <li class="slds-item">
+                                                <lightning:tile  label="{!s.staff.Staff__c}">
+                                                    <aura:set attribute="media">
+                                                        <lightning:avatar src="{!$Resource.SLDS0122 +'/assets/images/avatar2.jpg'}" fallbackIconName="standard:person_account" alternativeText="{!s.staff.Staff__c}"/>
+                                                    </aura:set>
+                                                     
+                                                    <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                        <li class="slds-item">{!s.staff.Role__c}</li>
+                                                      
+                                                    </ul>                                                      
+                                                </lightning:tile>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                        </lightning:layout>
+                    </div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand" 
+                                      label="Save"
+                                      title="Save"
+                                      onclick="{!c.AddStafftoTask}"  disabled="{!empty(v.AllstaffWrappers)}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        
+        
+        
+       <!-- 
+    <c:Add_Edit_Staff_Task aura:id="AddEditStaffMembers" TaskId="{!v.recordId}"  /> -->
+    </aura:if>
+    
+    
+</aura:component>

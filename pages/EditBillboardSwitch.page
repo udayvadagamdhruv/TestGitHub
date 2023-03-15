@@ -1,0 +1,16 @@
+<apex:page standardController="Billboard__c" extensions="BillboardSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/EditBillboard?id="+'{!BBId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="EditBillboardLightning"/>
+    </apex:outputPanel>
+</apex:page>

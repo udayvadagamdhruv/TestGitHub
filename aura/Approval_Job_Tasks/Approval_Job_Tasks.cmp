@@ -1,0 +1,550 @@
+<aura:component controller="ApprovalJobTaskExt" implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+
+<aura:attribute name="isBelowInsertFileId" type="String"/>
+<aura:attribute name="recordId" type="String" />
+<aura:attribute name="record" type="Object" />
+<aura:attribute name="simpleRecord" type="Object" />
+<aura:attribute name="recordError" type="Object" />
+<aura:attribute name="sObjectName" type="Object" />
+ 
+<aura:attribute name="helpText" type="List"/>
+
+<aura:attribute name="fieldSet" type="List"  />
+
+<aura:attribute name="jobTimesheetrecords" type="Object" />
+<aura:attribute name="timesheetcolumns" type="List"/>
+<aura:attribute name="isOpen" type="boolean" default="false"/>
+<aura:attribute name="AllstaffWrappersJobTeam" type="Object"/>
+<aura:attribute name="isTeamEidt" type="boolean" default="false"/>
+
+<aura:attribute name="taskdata" type="Object"/>
+<aura:attribute name="taskcolumns" type="List"/>
+<aura:attribute name="draftValues" type="Object" default="[]"/>
+<aura:attribute name="taskerrors" type="Object"/>
+<aura:attribute name="sortedBy" type="String" default="Name" />
+<aura:attribute name="sortedDirection" type="String" default="asc" />
+<aura:attribute name="jobFileId" type="List" />
+<aura:attribute name="fileIdContains" type="List" />
+
+<!-- no need --> 
+<aura:attribute name="isCopyOpen" type="boolean" default="false"/>
+<aura:attribute name="isListview" type="boolean" default="true"/>
+<aura:attribute name="isHD" type="boolean" default="true"/>
+<aura:attribute name="ShowScheduleBtn" type="boolean" default="false"/>
+<aura:attribute name="CST" type="Object" />
+
+<aura:attribute name="ScheCopyJobs" type="Object"/>
+<aura:attribute name="ScheCopyColumns" type="List"/>
+<aura:attribute name="selCopyScheRowsCount" type="Integer" />
+<aura:attribute name="selected_CopyScheJobs" type="Sobject[]"/>
+
+<aura:attribute name="isCampSchCopyOpen" type="boolean" default="false"/>
+<aura:attribute name="CampScheCopyJobs" type="Object"/>
+<aura:attribute name="CampScheCopyColumns" type="List"/>
+<aura:attribute name="selCampCopyScheRowsCount" type="Integer" />
+<aura:attribute name="selected_CopyCampScheJobs" type="Sobject[]"/>
+
+<!-- no need --> 
+
+<!-- Calender View attributes -->
+
+<aura:attribute name="statusList" type="List[]"/>
+<aura:attribute name="Objectlist" type='Object[]'/>
+<aura:attribute name="JobDetailAccessible" type="Object"/>
+<aura:attribute name="OrgInfo" type="Object"/>   
+
+<aura:attribute name="isLoadedDate" type="Date" />
+<aura:attribute name="isLoadedDays" type="Integer" />
+
+<aura:attribute name="isTaskEdit" type="boolean" default="false"/>
+<aura:attribute name="isDaysChanged" type="boolean" default="false"/>
+<aura:attribute name="isDueDateChanged" type="boolean" default="false"/>
+<aura:attribute name="todayDate" type="Date" default="" />
+<aura:attribute name="calDueDate" type="Date" default="" />
+<aura:attribute name="isTaskLocked" type="boolean" default="false"/>
+<aura:attribute name="EditTaskId" type="string" default=""/>
+<aura:attribute name="selectedLookUpRecord_GLCode" type="sObject" default="{}" />
+
+<aura:attribute name="isAddEditTeamMembers" type="boolean" default="false"/>  
+
+<aura:attribute name="isAboveInsert" type="boolean" default="false"/>
+<aura:attribute name="AboveTaskRecordId" type="string" default="" />
+<aura:attribute name="RolesList" type="Object"  />
+<aura:attribute name="selectedLookUpRecordAbove_GLCode" type="sObject" default="{}" />
+
+<aura:attribute name="isBelowInsert" type="boolean" default="false"/>
+<aura:attribute name="selectedLookUpRecordBelow_GLCode" type="sObject" default="{}"/>
+
+<aura:attribute name="isTaskLogTime" type="boolean" default="false"/>
+<aura:attribute name="LogTaskId" type="String" default=""/>
+
+<aura:attribute name="DynamicLabels" type="list"/>
+<aura:attribute name="isMobile" type="boolean" default="false"/>
+
+<aura:attribute name="isCopyStaff" type="boolean" default="false"/>
+<aura:attribute name="isaddEditStaff" type="boolean" default="false"/>
+<aura:attribute name="AddEditStaffTaskId" type="String" default=""/>
+<aura:attribute name="selectedRows" type="List"/>
+<aura:attribute name="selectedTasksforMarkDone" type="String[]" />
+
+<aura:attribute name="SectionName2" type="String" default="Approval Steps" required="true" access="global"/>
+
+<aura:attribute name="helpteam" type="String" default="Team Help text" required="true" access="global"/>
+
+
+<aura:attribute name="isApprovalTaskFile" type="boolean" default="false"/>
+<aura:attribute name="isDeleteApprovalTask" type="boolean" default="false"/>
+<aura:attribute name="JobFileList" type="Object" />
+<aura:attribute name="JobApprovalFileList" type="Object" />
+<aura:attribute name="AppschedTempList" type="Object" />
+<aura:attribute name="tskTableId" type="Object"  />
+<aura:attribute name="TaskStatus" type="String"  />
+
+<force:recordData aura:id="record"
+                    layoutType="FULL"
+                    fields="Name,Status__c"
+                    recordId="{!v.recordId}"
+                    targetError="{!v.recordError}"
+                    targetRecord="{!v.record}"
+                    targetFields ="{!v.simpleRecord}"
+                    mode="EDIT"/>
+
+<aura:attribute name="ObjectType" type="String" />
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+<aura:handler event="c.UpdateRecordsforChanges" action="{!c.refreshJobTasks}" /> 
+
+
+<aura:attribute name="overlayPanel" type="Aura.Component"  />
+<lightning:overlayLibrary aura:id="overlayLib1" />
+
+
+<!-- *************************************************** Approval Task ******************************************************************** -->     
+
+<aura:if isTrue="{!v.JobDetailAccessible[0]}"> 
+    <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="JobTasks">  
+        <lightning:accordionSection name="JobTasks" label="{!v.SectionName2}"  class="slds-card" >
+            <aura:if isTrue="{!!v.isMobile}">
+                <c:customHelpText text="{!v.helpText[0].Approval_Tasks__c}" />
+            <center>
+                    <lightning:button variant="neutral" label="Create Approval Process" title="Create Approval Process" onclick="{!c.handlecreateApprovalSchedule}" disabled="{!v.ShowScheduleBtn}"/>    
+                    <lightning:button variant="neutral" label="Delete Approval Process" title="Delete Approval Process" onclick="{!c.handleDeleteApprovalSchedule}" disabled="{!v.taskdata.length==0}"/>    
+            </center>
+                <br/>
+
+
+
+                  <!-- ***************************************************Delete Schedule pop up ******************************************************************** -->     
+                
+                  <aura:if isTrue="{!v.isDeleteApprovalTask}"> 
+                    <lightning:recordEditForm aura:id="DelTaskidRec" density="comfy" objectApiName="Approval_Job_Task__c"/>
+                    
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container TeamModalContainer">
+                            <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                            <header class="slds-modal__header">
+                                <lightning:buttonIcon iconName="utility:close"
+                                                        onclick="{!c.closeDelApprovalTaskFile}"
+                                                        alternativeText="close"
+                                                        variant="bare-inverse"
+                                                        class="slds-modal__close"/>
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Delete Approval Process </h2>
+                            </header>
+                            <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                            <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1" style="padding:0rem 1rem 1rem 1rem !important">
+                                <lightning:messages />
+                                
+                                <lightning:layout multipleRows="true">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                        <br/>
+                                        <b style="padding:6px 0px 6px 0px;font-size:13px;">Please select a file to delete the related Approval Process for.  Note, this does not delete the file.</b>
+                                        <br/>
+                                    </lightning:layoutItem> 
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                        <lightning:select name="Files" aura:id="DelFileId" label="Files"  class="slds-p-horizontal_x-small frequired">
+                                            <aura:iteration items="{!v.JobApprovalFileList}" var="Temp">
+                                                <option text="{!Temp.value}" value="{!Temp.key}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </lightning:layoutItem>  
+                                              
+                                </lightning:layout>
+                            </div>
+                            <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                            <footer class="slds-modal__footer">
+                                <lightning:button variant="neutral" 
+                                                    label="Cancel"
+                                                    title="Cancel"
+                                                    onclick="{!c.closeDelApprovalTaskFile}"/>
+                                <lightning:button variant="brand" 
+                                                    label="Delete"
+                                                    title="Delete"
+                                                    onclick="{!c.handleDeleteSchedule}"/>
+                            </footer>
+                        </div>
+                    </section>
+                    
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                    
+                </aura:if>
+                <!-- *************************************************** End Delete Schedule pop up  ******************************************************************** -->     
+                
+
+                
+                <!-- *************************************************** Start Create Schedule pop up (First screen) ******************************************************************** -->     
+                
+                <aura:if isTrue="{!v.isApprovalTaskFile}"> 
+                    <lightning:recordEditForm aura:id="TaskidRec" density="comfy" objectApiName="Approval_Job_Task__c"/>
+                    
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container TeamModalContainer">
+                            <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                            <header class="slds-modal__header">
+                                <lightning:buttonIcon iconName="utility:close"
+                                                        onclick="{!c.closeApprovalTaskFile}"
+                                                        alternativeText="close"
+                                                        variant="bare-inverse"
+                                                        class="slds-modal__close"/>
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Approval Process</h2>
+                            </header>
+                            <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                            <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1" style="padding:0rem 1rem 1rem 1rem !important">
+                                <lightning:messages />
+                                
+                                <lightning:layout multipleRows="true">
+                                    
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                        <lightning:select name="Files" aura:id="FileId" label="Files"  class="slds-p-horizontal_x-small frequired">
+                                            <aura:iteration items="{!v.JobFileList}" var="Temp">
+                                                <option text="{!Temp.value}" value="{!Temp.key}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </lightning:layoutItem>  
+                                    <lightning:layoutItem size="12"   smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                        <lightning:select name="Approval Process Template" aura:id="APPSchTempId" label="Approval Process Template"  class="slds-p-horizontal_x-small frequired">
+                                            <aura:iteration items="{!v.AppschedTempList}" var="Temp">
+                                                <option text="{!Temp.value}" value="{!Temp.key}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </lightning:layoutItem>           
+                                    
+                                </lightning:layout>
+                            </div>
+                            <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                            <footer class="slds-modal__footer">
+                                <lightning:button variant="neutral" 
+                                                    label="Cancel"
+                                                    title="Cancel"
+                                                    onclick="{!c.closeApprovalTaskFile}"/>
+                                <lightning:button variant="brand" 
+                                                    label="Create"
+                                                    title="Create"
+                                                    onclick="{!c.handlecreateSchedule}"/>
+                            </footer>
+                        </div>
+                    </section>
+                    
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                    
+                </aura:if>
+                <!-- *************************************************** End Create Schedule pop up (First screen) ******************************************************************** -->     
+                
+                <!-- *************************************************** Start Display Approval Task in lightning data table ******************************************************************** -->     
+                <!--aura:iteration items="{!v.fileIdContains}" var="fileIdContains">
+                       <br/> {!fileIdContains}
+                </aura:iteration-->
+               
+                <aura:iteration items="{!v.taskdata}" var="ApprovetskMap" indexVar="FileId">
+                     <!--aura:if isTrue="{!not(empty(v.jobFileId))}">
+                        <aura:iteration items="{!v.jobFileId}" var="FileName">
+                            <aura:if isTrue="{!FileName != ApprovetskMap.FileId}">
+                                <br/>  <b style="padding:6px 0px 6px 0px;font-size:16px;color:green;">  {!ApprovetskMap.FileId!='null'?ApprovetskMap.FileId:''} </b>
+                            </aura:if>
+                            <aura:if isTrue="{!FileName == ApprovetskMap.FileId}">
+                                <br/>  <b style="padding:6px 0px 6px 0px;font-size:16px;color:black;">  {!ApprovetskMap.FileId!='null'?ApprovetskMap.FileId:''} </b>
+                            </aura:if>
+                        </aura:iteration> 
+                        <aura:set attribute="else">
+                             <br/>   <b style="padding:6px 0px 6px 0px;font-size:16px;color:red;">  {!ApprovetskMap.FileId!='null'?ApprovetskMap.FileId:''} </b>
+                        </aura:set>
+                    </aura:if-->
+                    <!--aura:iteration items="{!ApprovetskMap.value}" var="mapValue">
+                        <p>{!mapValue.File_ID__c}</p>
+                    </aura:iteration-->
+
+                   
+                <br/>   <b style="padding:6px 0px 6px 0px;font-size:16px;">  {!ApprovetskMap.FileId!='null'?ApprovetskMap.FileId:''} </b>
+                    
+                    <lightning:datatable class="Taskstablecss" id="sortable"
+                                            aura:id="{!v.TaskTable}" 
+                                            columns="{!v.taskcolumns }"
+                                            data="{!ApprovetskMap.value }"
+                                            keyField="Id"
+                                            errors="{!v.taskerrors}"
+                                            showRowNumberColumn="false"
+                                            draftValues="{!v.draftValues}"
+                                            hideCheckboxColumn="false"
+                                            sortedBy="{!v.sortedBy}"
+                                            sortedDirection="{!v.sortedDirection}"
+                                            onsort="{!c.updateColumnSorting}"
+                                            oncellchange="{!c.handleCellChangeAction}"
+                                            onsave="{!c.handleSaveEdition}"
+                                            onrowaction="{!c.handleTaskRowActions}"
+                                            onrowselection="{!c.handleRowSelection}"
+                                            selectedRows="{!v.selectedRows}"
+                                            />
+                    
+                 
+            </aura:iteration>
+        
+            
+
+                <br/> <center>   <lightning:button variant="neutral" label="Insert at End" onclick="{!c.insertatEnd}" title="Press to Insert Task at End" disabled="{!v.taskdata.length==0}" />  </center>
+            </aura:if>
+            
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:if> 
+<!-- *************************************************** End Display Approval Task in lightning data table ******************************************************************** -->     
+
+<!-- *************************************************** Starts Approval Task Edit Layout ******************************************************************** -->     
+
+<aura:if isTrue="{!v.isTaskEdit}">
+    
+    <lightning:recordEditForm aura:id="TaskEditForm" density="comfy" objectApiName="Approval_Job_Task__c" recordId="{!v.EditTaskId}" onsubmit="{!c.TaskOnsubmit}" onload="{!c.TaskOnLoad}" onsuccess="{!c.TaskOnSuccess}"  >
+        
+        <!--************************************************  MODAL BOX Start *************************************************--> 
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                            onclick="{! c.closeTaskModel }"
+                                            alternativeText="close"
+                                            variant="bare-inverse"
+                                            class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.EditTaskId==null?'New':'Edit'} Approval Task</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    
+                    <lightning:messages />     
+                    <lightning:layout multipleRows="true"> 
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Name" aura:id="JobTaskFields"  class="er slds-p-horizontal_x-small frequired"/> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <div class="slds-form-element slds-p-horizontal_x-small">
+                                <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Approval_Job_Task__c.Job__c.label} </label>
+                                <div class="slds-form-element__control">
+                                    <ui:outputText value="{!v.record.fields.Name.value}"  />
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                <div class="slds-form-element slds-p-horizontal_x-small">
+                                <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Approval_Job_Task__c.Status__c.label} </label>
+                                <div class="slds-form-element__control">
+                                    <ui:outputText value="{!v.TaskStatus}"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Start_Date__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  /> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Revised_Due_Date__c" aura:id="JobTaskFields" onchange="{!c.EditDueDateChanged}"  class="slds-p-horizontal_x-small frequired"  /> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Days__c" aura:id="JobTaskFields" onchange="{!c.EditDaysChanged}"  class="slds-p-horizontal_x-small"  /> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:InputField fieldName="Task_Order__c" aura:id="JobTaskFields"  class="slds-p-horizontal_x-small"  /> 
+                        </lightning:layoutItem>
+                        
+                        <br></br>
+                        
+                    </lightning:layout>
+                </div>
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                        label="Cancel"
+                                        title="Cancel"
+                                        onclick="{! c.closeTaskModel }"/>
+                    <lightning:button variant="brand" 
+                                        label="Save"
+                                        title="Save"
+                                        type="submit" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+    </lightning:recordEditForm> 
+</aura:if>
+    <!-- *************************************************** End Approval Task Edit Layout ******************************************************************** -->     
+
+<!-- *************************************************** Starts Approval Task Insert Above Layout ******************************************************************** -->     
+
+<aura:if isTrue="{!v.isAboveInsert}">
+    
+    <lightning:recordEditForm aura:id="TaskAboveEditForm" density="comfy" objectApiName="Approval_Job_Task__c"  onsubmit="{!c.TaskAboveOnsubmit}"  onsuccess="{!c.TaskAboveOnSuccess}" >
+        
+        <!--************************************************  MODAL BOX Start *************************************************--> 
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                            onclick="{! c.closeAboveTaskModel }"
+                                            alternativeText="close"
+                                            variant="bare-inverse"
+                                            class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insert Above Approval Task</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    <lightning:messages />
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Name" aura:id="JobTaskAboveFields"  class="slds-p-horizontal_x-small frequired"  /> 
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Days__c" aura:id="JobTaskAboveFields"   class="slds-p-horizontal_x-small"  /> 
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <div class="slds-form-element slds-p-horizontal_x-small">
+                                <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Approval_Job_Task__c.Schedule_Roles__c.label}</label>
+                                <div class="slds-form-element__control">
+                                    <select name="cars" size="5" class="slds-select" id="RolesList" multiple="true">
+                                        <option value="">--None--</option>
+                                        <aura:iteration items="{!v.RolesList}" var="item">
+                                            <option value="{!item.Name}">{!item.Name}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </div>
+                            </div> 
+                        </lightning:layoutItem>
+                        <br></br>
+                    </lightning:layout>
+                    
+                    
+                </div>
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                        label="Cancel"
+                                        title="Cancel"
+                                        onclick="{! c.closeAboveTaskModel }"/>
+                    <lightning:button variant="brand" 
+                                        label="Save"
+                                        title="Save"
+                                        type="submit" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+    </lightning:recordEditForm> 
+</aura:if>
+
+<!-- *************************************************** End Approval Task Insert Above Layout ******************************************************************** -->     
+
+
+<aura:if isTrue="{!v.isBelowInsert}">
+    
+    <lightning:recordEditForm aura:id="TaskBelowEditForm" density="comfy" objectApiName="Approval_Job_Task__c"  onsubmit="{!c.TaskBelowOnsubmit}"  onsuccess="{!c.TaskBelowOnSuccess}" >
+        
+        <!--************************************************  MODAL BOX Start *************************************************--> 
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                            onclick="{! c.closeBelowTaskModel }"
+                                            alternativeText="close"
+                                            variant="bare-inverse"
+                                            class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Insert Below Approval Task</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    <lightning:messages />
+                    <lightning:layout multipleRows="true"> 
+
+                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small" class="frequired">
+                                <lightning:select name="File" aura:id="BFileId" label="File">
+                                    <aura:iteration items="{!v.JobFileList}" var="Temp">
+                                        <option text="{!Temp.value}" value="{!Temp.key}" />
+                                    </aura:iteration>
+                                </lightning:select>
+                            </lightning:layoutItem>  
+                                
+                        
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Name" aura:id="JobTaskBelowFields"  class="slds-p-horizontal_x-small frequired"  /> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <lightning:inputField fieldName="Days__c" aura:id="JobTaskBelowFields"   class="slds-p-horizontal_x-small"  /> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <div class="slds-form-element slds-p-horizontal_x-small">
+                                <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Approval_Job_Task__c.Schedule_Roles__c.label}</label>
+                                <div class="slds-form-element__control">
+                                    <select name="cars" size="5" class="slds-select" id="RolesListBelow" multiple="true">
+                                        <option value="">--None--</option>
+                                        <aura:iteration items="{!v.RolesList}" var="item">
+                                            <option value="{!item.Name}">{!item.Name}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        <br/>
+                    </lightning:layout>
+                    
+                    
+                </div>
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                        label="Cancel"
+                                        title="Cancel"
+                                        onclick="{! c.closeBelowTaskModel }"/>
+                    <lightning:button variant="brand" 
+                                        label="Save"
+                                        title="Save"
+                                        type="submit" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+    </lightning:recordEditForm> 
+</aura:if>
+
+
+<aura:if isTrue="{!v.isTaskLogTime}">
+    <c:Approval_Task_Log_Time taskId="{!v.LogTaskId}" aura:id="LogTimeId" actionFrom="Task"  />  <!-- LogTimePopUp="{!v.LogTimeOpen}" -->
+</aura:if> 
+<aura:if isTrue="{!v.isaddEditStaff}"> 
+    <!-- component.find("AddEditStaffMembers").refreshStaffMembers(); -->
+    <c:Add_Edit_Staff_ApprovalTask aura:id="AddEditStaffMembers" TaskId="{!v.AddEditStaffTaskId}"  />
+</aura:if>
+
+
+</aura:component>

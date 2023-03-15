@@ -1,0 +1,7 @@
+<!-- This page is used to display Detail Page of Invoice Line Item -->
+<apex:page standardController="Invoice_Line_Item__c" tabStyle="Job__c">
+
+  <apex:detail relatedList="false" showChatter="false" inlineEdit="false"/>
+
+</apex:page>
+<!-- End of Page -->

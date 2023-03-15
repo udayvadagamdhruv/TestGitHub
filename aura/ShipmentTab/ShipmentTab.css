@@ -1,0 +1,30 @@
+.THIS .frequired label:after { 
+    content:" *";
+    color: #e32;
+}
+.THIS .scrollerSizecart{
+    height:25rem;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+      height:150px !important;
+}
+@media (min-width: 48em) {
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 75% !important;
+    max-width: 90rem !important;
+    min-width: 30rem !important;
+ }
+}
+.THIS .slds-p-horizontal_x-small{
+  /*added for edit layout fields alignment*/
+    padding-left:0px !important;
+    padding-right:0px !important;
+}
+.THIS .slds-p-around_small{
+    /*added for edit layout fields alignment*/
+    padding: 0 10px 0 10px !important;
+}

@@ -1,0 +1,841 @@
+<apex:page controller="StorefrontJobRequestFormController" showHeader="false">
+<!-- <apex:image value="{!$Resource.LovesHeaderLogo}" width="1350px"/>
+       <apex:sectionHeader title="Store Request Type Form " subtitle="Select Store Request Types" />  -->
+<style>
+.sfdc_richtext img {
+border: 0;
+height : 30%;
+width : 30%;
+}
+.button2
+{
+background-color:#FFD700;
+font-weight:bold;
+color:Black;
+}
+
+#ProductsTable img {
+opacity : 50%;
+width:20% !Important;
+}
+
+
+</style>
+  
+  
+  <script>
+function Hidetext(ele){
+   ele.value='(xxx)xxx-xxxx';
+   }
+
+</script>
+<apex:form >
+<apex:outputPanel >
+            <!-- style="background-color:#F8F8F8;width:1642px;" -->
+             <head>
+                   <div>
+                     <table border='0' width="130%" >
+                       <tr ><br/>
+                       
+                           <td width="2.8%" valign="top"> 
+                           
+                           </td>
+                           
+                           <td width="40%" valign="top"> 
+                           
+                          <!-- <apex:image value="{!$Resource.LovesHeaderLogo}"/>-->
+                           
+                           </td>  
+                       </tr>
+                     </table>
+                   </div>
+               </head>
+
+              <body>
+               <table width="130%" border="0" height="800px" margin-bottom="0px" style="background-color:#F8F8F8;" >
+               <tr >
+               <td width="5%" valign="top" >
+               
+                </td>
+                
+                <td width="40%" valign="top">
+                  <!-- <div align="top"><br/><br/>
+                    <table border="1"  width="60%" valign="top" style="margin-left:50px;background-color:lightgray;">
+                      <tr>
+                        <td style="padding-bottom:50px;width:60%;" align="top">  -->
+    
+                          
+               <apex:pageBlock id="block" >
+                    <apex:pagemessages />
+                    
+                    
+                  
+                    
+                    
+                    
+                    <apex:pageBlockSection rendered="{!ShowJobRequestTypes}">
+                      
+                          
+                       
+                       <apex:pageBlocksectionItem id="secItem"   >
+                        <apex:outputText Value="Store OrderTypes" style="font-weight:bold;font-size:15px"/>   
+                        <apex:selectList value="{!JobRequestTypes}" size="1" id="JobRequest_Types" style="width:50%">
+                         <apex:selectOptions value="{!RequestTypes}"/>
+                        </apex:selectList>
+                       </apex:pageBlockSectionItem>
+                         <apex:pageBlockSectionItem >  
+                           <apex:commandButton value="Create" style="font-size:11px" action="{!methodcontinue}"/>
+                           
+                           
+                          
+                           
+                          </apex:pageBlockSectionItem> 
+                           <Br/><Br/><Br/> <Br/><Br/>
+                          
+                    </apex:pageBlockSection> 
+                    
+          <!-- mani -->
+                    
+                    <apex:pageBlockSection rendered="{!ShowStoreNameTag}" title="STORE NAME TAG FORM" >
+                  
+                  
+                  
+                  
+                  <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Media Type :"></apex:outputText><apex:outputText value="{!NameMediatype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Job Type :"></apex:outputText> <apex:OutputText value="{!NameTagScheduletype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   <apex:outputText Value="Title :"></apex:outputText>
+                   <apex:selectList value="{!TagTitleNewString }" id="selectTitleList" multiselect="false" size="1" required="true">
+                                                
+                       <apex:selectoptions value="{!TagTitleNew}"></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>  
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                          <apex:outputText value="First Name :"></apex:outputText> 
+                           <apex:outputPanel layout="block" styleClass="requiredInput">
+                              <div class="requiredBlock"></div>                          
+                                  <apex:inputText value="{!TagFirstName}"></apex:inputText>
+                           </apex:outputPanel>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                    <apex:outputText value="Last Name :"></apex:outputText> 
+                     <apex:outputPanel layout="block" styleClass="requiredInput">
+                          <div class="requiredBlock"></div>
+                             <apex:inputText value="{!TagLastName}"></apex:inputText>
+                     </apex:outputPanel>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Year of Hire :"></apex:outputText> 
+                  <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                          <apex:inputText value="{!TagYearsWorked}"></apex:inputText>
+                   </apex:outputPanel>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Logos :"></apex:outputText>
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                   <apex:selectList value="{!TagLogoList }" id="selectLogoList" multiselect="true" size="3">
+                                                
+                       <apex:selectoptions value="{!TagLogo}"></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                    </apex:outputPanel>
+                   </apex:pageBlockSectionItem>
+                  
+                  </apex:pageBlockSection>
+                  
+     <!-- mani -->
+                    
+                  <apex:pageBlockSection rendered="{!AND(ShowMultiStoreButton,ShowJobRequestTypes)}">
+                      
+                          
+                       
+                       <apex:pageBlocksectionItem id="secItem"   >
+                        <apex:outputText Value="District/Division Order Types" style="font-weight:bold;font-size:15px"/>   
+                        <apex:selectList value="{!DistDivJobRequestTypes}" size="1" id="JobRequest_Types" style="width:50%">
+                         <apex:selectOptions value="{!DistDivRequestTypes}"/>
+                        </apex:selectList>
+                       </apex:pageBlockSectionItem>
+                         <apex:pageBlockSectionItem >  
+                           <apex:commandButton value="Create" style="font-size:11px" action="{!DistDivmethodcontinue}"/>
+                           
+                           
+                           
+                           
+                          </apex:pageBlockSectionItem> 
+                          <Br/><Br/><Br/> <Br/><Br/>
+                          
+                    </apex:pageBlockSection>  
+                    
+                    
+                    
+                    <apex:pageBlockSection rendered="{!ShowJobRequestTypes}">
+                      
+                          
+                       
+                       <apex:pageBlocksectionItem id="secItem"   >
+                        <apex:outputText Value="Corporate Order Types" style="font-weight:bold;font-size:15px"/>   
+                        <apex:selectList value="{!CorpJobRequestTypes}" size="1" id="JobRequest_Types" style="width:50%">
+                         <apex:selectOptions value="{!CorpRequestTypes}"/>
+                        </apex:selectList>
+                       </apex:pageBlockSectionItem>
+                         <apex:pageBlockSectionItem >  
+                           <apex:commandButton value="Create" style="font-size:11px" action="{!Corpmethodcontinue}"/>
+                           
+                           
+                           
+                           
+                          </apex:pageBlockSectionItem> 
+                          
+                          <Br/><Br/><Br/> <Br/><Br/>
+                    </apex:pageBlockSection>
+                    
+                    
+                    
+                    
+                    
+                  
+                  <apex:pageBlockSection rendered="{!ShowNameTag}" title="CORPORATE NAME TAG FORM" >
+                  
+                  
+                  
+                  
+                  <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Media Type :"></apex:outputText><apex:outputText value="{!NameMediatype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Job Type :"></apex:outputText> <apex:OutputText value="{!NameTagScheduletype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   <apex:outputText Value="Title :"></apex:outputText> <apex:inputText value="{!Tagtitlecorp}"></apex:inputText>
+                 
+                   </apex:pageBlockSectionItem>  
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="First Name :"></apex:outputText> <apex:inputText value="{!TagFirstName}"></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Last Name :"></apex:outputText> <apex:inputText value="{!TagLastName}"></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Year of Hire :"></apex:outputText> <apex:inputText value="{!TagYearsWorked}"></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Logos :"></apex:outputText>
+                   <apex:selectList value="{!TagLogoList }" id="selectLogoList" multiselect="true" size="3" >
+                                                
+                       <apex:selectoptions value="{!TagLogo}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>
+                  
+                  </apex:pageBlockSection>
+                  
+                  
+                  
+                  
+                  <apex:pageBlockSection rendered="{!ShowNamePlate}" title="CORPORATE OFFICE NAMEPLATE" >
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Name Plate Type :"></apex:outputText>
+                   <apex:selectList value="{!PlateTypeList }" id="selecteList" multiselect="true" size="3" >
+                                                
+                       <apex:selectoptions value="{!PlateType}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>
+                  
+                  
+                  <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Name :"></apex:outputText><apex:inputText value="{!PlateName}"></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Title :"></apex:outputText> <apex:inputText value="{!PlateTitle}"></apex:inputText>
+                   </apex:pageBlockSectionItem>
+                    
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   
+                  <apex:outputText value="Year Of Hire :"></apex:outputText> <apex:inputText value="{!PlateDate}"></apex:inputText>
+                   
+                   </apex:pageBlockSectionItem>
+                    
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                  
+                <!--   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Logo :"></apex:outputText>
+                   <apex:selectList value="{!PlateLogoList }" id="selectPlateLogoList" multiselect="true" size="3" >
+                                                
+                       <apex:selectoptions value="{!PlateLogo}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem> -->
+                   
+                 <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Building :"></apex:outputText>
+                   <apex:selectList value="{!PlateBuildingString}" id="selectPlateList" multiselect="false" size="1" >
+                                                
+                       <apex:selectoptions value="{!PlateBuilding}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>   
+                   
+                   
+                   
+                  
+                  </apex:pageBlockSection>
+                  
+                  
+                  
+                  
+                  
+                  
+                  <apex:pageBlockSection rendered="{!ShowStoreBusiness}" title="STORE BUSINESS CARD" > 
+                  <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Media Type :"></apex:outputText><apex:outputText value="{!NameMediatype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Job Type :"></apex:outputText> <apex:OutputText value="{!NameBusinessCardScheduletype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                             
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Name :"></apex:outputText>
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                    <apex:inputText value="{!BusinessName}" ></apex:inputText>
+                    </apex:outputPanel>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem>  
+                  
+                 <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Title :"></apex:outputText>
+                   <apex:selectList value="{!BusinessTitleString}" id="selectTitleList" multiselect="false" size="1" >
+                                                
+                       <apex:selectoptions value="{!BusinessTitle}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText value="Address :"></apex:outputText> <apex:outputText value="{!clientcontact.Client__r.Billing_Street__c }" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText value="City :"></apex:outputText> <apex:outputText value="{!clientcontact.Client__r.Billing_City__c}" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText value="State :"></apex:outputText> <apex:outputText value="{!clientcontact.Client__r.Billing_State__c}" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText value="Zip :"></apex:outputText> <apex:outputText value="{!clientcontact.Client__r.Billing_Postal_Code__c}" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Phone :"></apex:outputText> <apex:outputText value="{!clientcontact.Business_Phone__c}" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Fax :"></apex:outputText> <apex:outputText value="{!clientcontact.Fax__c}" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Email :"></apex:outputText> <apex:outputText value="{!clientcontact.Email__c }" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   
+                  <!-- <apex:pageBlockSectionItem >
+                   <apex:outputText value="Store Logo :"></apex:outputText> <apex:inputText value="{!BusinessStoreLogo }" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Tire Care Logo :"></apex:outputText> <apex:inputText value="{!BusinesskTireCareLogo}" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   -->
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Logo :"></apex:outputText>
+                   <apex:selectList value="{!BusinessLogoString}" id="selectLogobList" multiselect="false" size="1" >
+                                                
+                       <apex:selectoptions value="{!BusinessLogo}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   
+                   
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem>
+                   
+                   
+                   
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Website :"></apex:outputText> <apex:outputText value="{!BusinesskWebsite}" ></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  
+                  
+                   </apex:pageBlockSection>
+                  
+                  <apex:pageBlockSection rendered="{!ShowCorporateBusiness}" title="CORPORATE BUSINESS CARD">
+                  <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Media Type :"></apex:outputText><apex:outputText value="{!NameMediatype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Job Type :"></apex:outputText> <apex:OutputText value="{!NameCorporateCardScheduletype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                             
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Name :"></apex:outputText> <apex:inputText value="{!CorporateName}" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Title :"></apex:outputText> <apex:inputText value="{!CorporateTitle}" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Address Selections :"></apex:outputText>
+                   <apex:selectList value="{!AddressSelectionsList }" id="selectAddressList" multiselect="true" size="6" >
+                                                
+                       <apex:selectoptions value="{!AddressSelections }" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText value="Phone :"></apex:outputText> <apex:inputText value="{!CorporatePhone}" onfocus="Hidetext(this);" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Fax :"></apex:outputText> <apex:inputText value="{!CorporateFax}" onfocus="Hidetext(this);" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Email :"></apex:outputText> <apex:inputText value="{!CorporateEmail}"  ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Mobile :"></apex:outputText> <apex:inputText value="{!CorporateMobile}"  ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Web Site :"></apex:outputText>
+                   <apex:selectList value="{!CorporateWebsiteList}" id="selectCWebsiteList" multiselect="true" size="3" >
+                                                
+                       <apex:selectoptions value="{!CorporateWebsite}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Yahoo IM :"></apex:outputText> <apex:inputText value="{!CorporateYahooIM}" ></apex:inputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Logo :"></apex:outputText>
+                   <apex:selectList value="{!CorporateLogoList}" id="selectCLogoList" multiselect="true" size="4" >
+                                                
+                       <apex:selectoptions value="{!CorporateLogo}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>
+                   
+                  
+                  </apex:pageBlockSection>
+                  
+                  <apex:pageBlockSection rendered="{!ShowBillboardRepairs}" title="BILLBOARD/DOT SERVICE REQUEST">
+                  <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Media Type :"></apex:outputText><apex:outputText value="{!NameBillboardMediatype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                  
+                   <apex:pageBlockSectionItem > 
+                  <apex:outputText value="Job Type :"></apex:outputText> <apex:OutputText value="{!NameBillboardScheduletype.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText value="District :"></apex:outputText> 
+                    <apex:outputText value="{!clientcontact.Client__r.Dummy_Picklist_1__c}"></apex:outputText>
+                 
+                  <!-- <apex:selectList value="{!DistrictString }" id="selectDistrict" size="1" multiselect="false" >
+                                            
+                       <apex:selectoptions value="{!District}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList>   -->
+                   
+                  
+                   
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Store Name:"></apex:outputText> <apex:outputText value="{!clientcontact.Client__r.Name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   <apex:outputText value="Requestor :"></apex:outputText> <apex:outputText value="{!clientcontact.name}"></apex:outputText>
+                   </apex:pageBlockSectionItem> 
+                   
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Location :"></apex:outputText>
+                   
+                      <apex:selectList id="BBLName" value="{!BBLName}" size="1" >
+                         
+                         <apex:selectOptions value="{!BBLocation}"></apex:selectOptions>
+                      </apex:selectList>
+                   </apex:pageBlockSectionItem>
+                 
+                   
+                  
+                  <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Sign type :"></apex:outputText>
+                   <apex:selectList value="{!BillboardSigntypeList }" id="selectBSignTypeList" multiselect="true" size="3" >
+                                                
+                       <apex:selectoptions value="{!BillboardSigntype}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> 
+                   </apex:pageBlockSectionItem>
+                   
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText Value="Billboard :"></apex:outputText>
+                   
+                      <apex:selectList id="BBList" value="{!BBList}" size="1" >
+                         
+                         <apex:selectOptions value="{!BillboardList}"></apex:selectOptions>
+                      </apex:selectList>
+                   </apex:pageBlockSectionItem>
+                   
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Service Issues :"/>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem >
+                   
+                          <apex:outputLabel >File Storage :</apex:outputLabel>
+                        <apex:inputfile value="{!myfile.body}" filename="{!myfile.Name}" />
+                   </apex:pageBlockSectionItem> 
+                   
+                   <apex:pageBlockSectionItem >
+                   <apex:outputText value="Select the below options that apply to the signage issues you are having." style="color:red;"/>
+                   </apex:pageBlockSectionItem> 
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem>
+                   
+                   <apex:pageBlockSectionItem >
+                   
+                   <apex:selectList value="{!BillboardServiceIssuesList }" id="selectBserviceList" multiselect="true" size="7" >
+                                                
+                       <apex:selectoptions value="{!BillboardServiceIssues}" ></apex:selectoptions>   
+                       
+                                                   
+                   </apex:selectList> 
+                    
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem >
+                    <apex:outputText value="Directional :"/>
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem > 
+                   </apex:pageBlockSectionItem>
+                   
+                   <!-- <apex:image value="{!$Resource.LovesLogoforBillboardForm}" / -->
+                  <apex:outputPanel >
+                  
+                  <apex:outputLabel value="Currently Reads :"/> <!-- style="font-weight: bold;"--> <br/>
+                  <apex:inputText value="{!BillboardReads}"/><br/><br/>
+                  
+                  <apex:outputLabel value="Should Read :"/> <!-- style="font-weight: bold;"--> <br/>
+                  <apex:inputText value="{!Billboardshouldread}"/><br/><br/>
+                  <apex:outputLabel value="Lighting :"/> <!-- style="font-weight: bold;"--> <br/>
+                  <apex:outputLabel value="If you are experiencing a lighting failure.select below options for each light. "/> <!-- style="font-weight: bold;"--> <br/><br/>
+                  <apex:selectList value="{!BillboardLightList}" id="selectBLightList" multiselect="true" size="4" >
+                                                
+                       <apex:selectoptions value="{!BillboardLight}" ></apex:selectoptions>   
+                       
+                                                   
+                   </apex:selectList> <br/><br/>
+                    
+                  
+                  
+                  <apex:outputLabel value="What time(s) are the lights being reported out: "/> <!-- style="font-weight: bold;"--> <br/><br/>
+                  <apex:inputText value="{!Billboardlightout}"/><br/>
+                  <apex:outputLabel value="(a.m./p.m.) "/> <!-- style="font-weight: bold;"--> <br/><br/>
+                  <apex:outputLabel value="Notes: "/> <br/><br/> <apex:inputText value="{!BillboardNotes}"/>
+        
+                  </apex:outputPanel>
+                  
+                  <apex:outputPanel >
+                  
+                <!--  <apex:image value="{!$Resource.LovesLogoforBillboardForm}"/>--> <br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:outputText value="Light 1" style="font-weight:bold;font-size:12px;"></apex:outputText>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:outputText value="Light 2" style="font-weight:bold;font-size:12px;"></apex:outputText>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:outputText value="Light 3" style="font-weight:bold;font-size:12px;"></apex:outputText>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:outputText value="Light 4" style="font-weight:bold;font-size:12px;"></apex:outputText>
+                  </apex:outputPanel>
+                 
+                  
+                  
+               
+               
+                </apex:pageBlockSection>
+                
+                
+                <apex:outputpanel rendered="{!ShowStoreSupplies}" id="thestoresection" >
+                <table width="100%">
+                <tr>
+                <td width="20%" style="vertical-align:top; " >
+                <apex:outputPanel ><br/>
+                <apex:outputText Value="Select Item Category" style="font-weight:bold;font-color:white;font-size:16px;"></apex:outputText>
+                   
+                    
+              <!--   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:outputText value="Store Front" style="font-weight:bold;font-size:20px"></apex:outputText> --><br/><br/>
+                                  
+                <apex:selectList value="{!MaterialTypeString }" id="selectMType" size="1" multiselect="false" >
+                                            
+                       <apex:selectoptions value="{!MaterialType}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList>  <br/><br/>  
+                
+                <apex:outputText Value="Item Search" style="font-weight:bold;font-color:white;font-size:16px;"></apex:outputText><br/><br/>
+                <apex:inputText value="{!MaterialItemNameString}"></apex:inputText>
+                
+                   <br/><br/> 
+                   <apex:commandButton value="Show Items"  action="{!ShowItems}" reRender="ajaxrequest" styleclass="button2"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+               
+               <!--   <apex:outputText Value="Select Type :" style="font-weight:bold;font-color:white;"></apex:outputText>&nbsp;&nbsp;
+                   
+                   <apex:selectList value="{!MaterialTypeString }" id="selectMType" size="1" multiselect="false" >
+                                            
+                       <apex:selectoptions value="{!MaterialType}" ></apex:selectoptions>   
+                                                   
+                   </apex:selectList> <br/> <br/>
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <apex:commandButton value="Show Items"  action="{!ShowItems}" reRender="ajaxrequest" styleclass="button2"/>
+                  -->
+                  </apex:outputPanel> 
+                </td> 
+                
+                <td width="80%"  >
+                <apex:outputPanel id="ajaxrequest"  >
+          <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+          -->
+                <apex:commandButton value="Add To Cart" disabled="{!Not(FirstWrapper)}"  action="{!AddToCart}" reRender="ajaxrequest"  style="float:right;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <apex:commandButton value="View Cart" action="{!ViewToCart}" disabled="{!Not(SecondWrapper)}"  style="float:right;"/><br/>
+               
+                <br/><br/>
+                <apex:pageMessages ></apex:pageMessages>
+                <apex:pageBlockTable value="{!MediaIdList}" var="p" id="ProductsTable" rendered="{!FirstWrapper}" width="600px" columnsWidth="10%">
+                    
+                    <apex:column value="{!roleWraps[p].MI.Name}" headerValue="{!$ObjectType.Material_Item__c.Fields.Name.Label}" style="width:150px"/>
+                    <apex:column value="{!roleWraps[p].MI.Package_Type__c}" headerValue="{!$ObjectType.Material_Item__c.Fields.Package_Type__c.Label}" />
+                    <apex:column headerValue="{!$ObjectType.Material_Item__c.Fields.File_Photo__c.Label}" style="width:10px">
+                    
+                  
+                    <apex:outputfield value="{!roleWraps[p].MI.File_Photo__c}" ></apex:outputfield>
+                       
+                    </apex:column>
+                    <apex:column value="{!roleWraps[p].MI.Description__c}" style="width:150px" headerValue="{!$ObjectType.Material_Item__c.Fields.Description__c.Label}" />
+                    
+                    <apex:column headerValue="Add to cart">
+                        <apex:inputCheckbox value="{!roleWraps[p].checked}"/>
+                    </apex:column>
+                    
+                    
+                </apex:pageBlockTable>
+                
+                
+                </apex:outputPanel>
+                </td>
+                </tr>
+                </table>
+                
+                </apex:outputpanel>
+                
+                 
+                <apex:pageBlockSection rendered="{!ShowAddcartSection}" title="Store Supply Order " id="ViewCartSection">
+                
+                <apex:pageBlockTable value="{!roleWraps2}" var="p1" style="width:1000px" rendered="{!SecondWrapper}">
+                 <apex:column >
+                        <apex:commandLink value="Remove" action="{!removeFromCart}" reRender="ViewCartSection" immediate="true">
+                           
+                            <apex:param value="{!roleWraps2[p1].MI.Id}" assignTo="{!toUnselect}" name="toUnselect"/>
+                        </apex:commandLink>
+                    </apex:column>
+                    
+                    
+                    <apex:column value="{!roleWraps2[p1].MI.Name}" headerValue="{!$ObjectType.Material_Item__c.Fields.Name.Label}" style="width:150px">
+                     
+                    </apex:column>
+                    <apex:column value="{!roleWraps2[p1].MI.Package_Type__c}" headerValue="{!$ObjectType.Material_Item__c.Fields.Package_Type__c.Label}" />
+                    
+                     <apex:column headerValue="{!$ObjectType.Material_Item__c.Fields.File_Photo__c.Label}" style="width:10px">
+                    
+                  
+                    <apex:outputText style="width:30px !Important;height:30px !Important;" escape="false" value="{!roleWraps2[p1].MI.File_Photo__c}"></apex:outputText>
+                       
+                    </apex:column>
+                   
+                    
+                     <apex:column headerValue="Quantity" style="width:10px">
+                     <apex:inputText value="{!roleWraps2[p1].Quantity}"/>
+                     </apex:column>
+                
+                </apex:pageBlockTable>
+                
+                
+                </apex:pageBlockSection>
+                
+                
+                
+                
+          <apex:pageBlockButtons location="top">
+          <apex:commandButton value="Place Order" action="{!Save}" rendered="{!ShowSavebutton}"/> <apex:commandButton value="Back" action="{!Cancel}" rendered="{!ShowCancelbutton}"/>
+          <apex:commandButton value="Cancel"  rendered="{!ShowBackbutton}" action="{!Back}"/>
+          <apex:commandButton value="Continue Shopping" action="{!CancelfromCart}" rendered="{!ShowCartBackbutton}"/>
+          
+          </apex:pageBlockButtons>
+           </apex:pageBlock>
+          
+     <!--     </td></tr></table></div>  -->
+     
+     
+     
+    </td> 
+    <td width="30%" valign="top" >
+               
+    </td>
+     
+   </tr>
+   
+   </table>
+   </body>
+   
+   
+  </apex:outputPanel>
+ </apex:form>
+  
+</apex:page>

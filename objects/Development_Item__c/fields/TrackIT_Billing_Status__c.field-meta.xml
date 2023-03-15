@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TrackIT_Billing_Status__c</fullName>
+    <description>Used to keep track of the billing of this item by TrackIT to Clients</description>
+    <externalId>false</externalId>
+    <label>TrackIT Billing Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Open</fullName>
+                <default>true</default>
+                <label>Open</label>
+            </value>
+            <value>
+                <fullName>Ready to Bill</fullName>
+                <default>false</default>
+                <label>Ready to Bill</label>
+            </value>
+            <value>
+                <fullName>Billed</fullName>
+                <default>false</default>
+                <label>Billed</label>
+            </value>
+            <value>
+                <fullName>Canceled</fullName>
+                <default>false</default>
+                <label>Canceled</label>
+            </value>
+            <value>
+                <fullName>Closed, NonBillable</fullName>
+                <default>false</default>
+                <label>Closed, NonBillable</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

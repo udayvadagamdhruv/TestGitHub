@@ -1,0 +1,119 @@
+<!-- This page is used to display Graphics Deliverables under Jobs Tab -->
+<apex:page controller="displayGraphicsDeliverablesUnderJobsTab" tabStyle="Job__c">
+      <head>
+          <style>
+          #table_graphics_type td
+          {
+              border:0px;
+          }
+          #table_graphics_description td
+          {
+              border:0px;
+          }
+          </style>
+      </head>
+      <apex:form id="formGraphics">
+        <apex:pageMessages id="pagemsgId"></apex:pageMessages>
+          <apex:outputPanel id="panelId">
+          <apex:pageBlock id="pageBlockGraphics">
+                 <h1 ><b>{!$ObjectType.Graphics_Deliverables__c.Label}</b></h1>
+                <center>
+                <!-- This button is Added by Rahul -->
+                    <apex:commandButton id="btnAddGraphics1" value="Add Graphics Deliverable" action="{!createNewGraphics}" rendered="{!If(orgId='00DE0000000Xp80MAC'|| orgId = '00DL00000027DtxMAE',true,false)}"/>
+                    <apex:commandButton id="btnAddGraphics" value="Add {!$ObjectType.Graphics_Deliverables__c.Label}" action="{!createNewGraphics}" rendered="{!If(orgId='00DE0000000Xp80MAC'|| orgId = '00DL00000027DtxMAE',false,true)}"/>
+                <!-- buttons ends here -->
+                    <apex:commandButton id="btnSave" value="Save" action="{!saveGraphics}" style="display:none"/>
+                    <apex:commandButton id="btnCancel" value="Cancel" action="{!cancelGraphics}" style="display:none"/>
+                </center> <br/>
+                <apex:pageBlockTable value="{!lstGD}" var="gd" rendered="{!lstGD.size > 0}" id="pbtId">
+                    <apex:column headerValue="Action" width="10%">
+                          <apex:commandButton value="Edit" action="{!editGraphics}" reRender="hiddenBlock1">  
+                              <apex:param name="param1" value="{!gd.Id}" assignTo="{!editGDId}"/>
+                          </apex:commandButton>
+                          
+                          <apex:commandButton value="Delete" action="{!deleteGraphics}" reRender="panelId,hiddenBlock2,panelId" onclick="if(!confirm('Are you sure?')){return false;}">
+                              <apex:param name="param2" value="{!gd.Id}" assignTo="{!deleteGDId}"/>
+                          </apex:commandButton>
+                    </apex:column>
+                  
+                    
+                   <apex:repeat var="f" value="{!$ObjectType.Graphics_Deliverables__c.FieldSets.Job_List_GD}">
+                          <apex:column headerValue="{!f.label}" width="20%" rendered="{!OR(CONTAINS(LOWER(f) , LOWER('name')))}">
+                               <apex:outputLink tabindex="tab1" value="/apex/GraphicsDetailPage?id={!gd.Id}">{!gd.Name}</apex:outputLink>
+                          </apex:column>
+                          <apex:column headerValue="{!f.label}" rendered="{!NOT(OR(CONTAINS(LOWER(f) , LOWER('name'))))}">
+                               <apex:outputField value="{!gd[f]}">
+                                        <apex:inlineEditSupport event="ondblclick" hideOnEdit="btnAddGraphics,btnAddGraphics1" showOnEdit="btnSave,btnCancel"/>
+                                       &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9" rendered="{!NOT(OR(CONTAINS(LOWER(f.label) , LOWER('job')),CONTAINS(LOWER(f.label) , LOWER('created date'))))}"/> 
+                               </apex:outputField>
+                          </apex:column> 
+                  </apex:repeat>
+                    
+                    
+                    
+                 <!--   <apex:column headerValue="{!$ObjectType.Graphics_Deliverables__c.Fields.Graphics_Type__c.Label}" width="20%">
+                         <apex:actionRegion >
+                         <table id="table_graphics_type" border="0">
+                             <tr>
+                                 <td border="0">
+                                       <apex:outputField value="{!gd.Graphics_Type__c}"> 
+                                           <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddGraphics"/>
+                                       </apex:outputField>
+                                 </td>
+                                 
+                                 <td>
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Type"/>  
+                                 </td>
+                              </tr>
+                          </table>                     
+                    </apex:actionRegion>
+                    </apex:column>
+                
+                    <apex:column headerValue="{!$ObjectType.Graphics_Deliverables__c.Fields.Graphics_Description__c.Label}" width="50%">
+                         <apex:actionRegion >
+                         <table id="table_graphics_description" border="0">
+                             <tr>
+                                 <td border="0">
+                                       <apex:outputField value="{!gd.Graphics_Description__c}"> 
+                                           <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                       </apex:outputField>
+                                 </td>
+                                 
+                                 <td>
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Description"/>  
+                                 </td>
+                              </tr>
+                          </table>                     
+                    </apex:actionRegion>
+                       
+                    </apex:column>     
+                   
+                    <apex:column headerValue="{!$ObjectType.Graphics_Deliverables__c.Fields.Graphics_Note__c.Label}" width="30%">
+                        <apex:actionRegion >
+                         <table id="table_graphics_note" border="0">
+                             <tr>
+                                 <td border="0">
+                                       <apex:outputField value="{!gd.Graphics_Note__c}"> 
+                                           <apex:inlineEditSupport event="ondblClick" showOnEdit="btnSave,btnCancel" hideOnEdit="btnAddTag"/>
+                                       </apex:outputField>
+                                 </td>
+                                 
+                                 <td>
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Note"/>  
+                                 </td>
+                              </tr>
+                          </table>                     
+                    </apex:actionRegion>
+                       
+                    </apex:column>               
+                  -->
+                    
+                </apex:pageBlockTable>
+                <apex:outputPanel rendered="{!lstGD.size = 0}">
+                  <b>No records to display</b>
+              </apex:outputPanel>
+          </apex:pageBlock>
+          
+          </apex:outputPanel>
+      </apex:form>
+</apex:page>

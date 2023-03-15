@@ -1,0 +1,15 @@
+<apex:page standardController="Billboard__c" tabStyle="Billboard__c" extensions="BillboardDetailPageExtension">
+  
+ <apex:detail relatedList="True" inlineEdit="false" showChatter="true"/> 
+ 
+  <apex:pageBlock >
+      <apex:pageBlockSection title="Map">              
+          <apex:iframe src="/apex/BillboardDetailPageMap?id={!Billboard__c.id}" height="200px" width="1000px"/>
+      </apex:pageBlockSection> 
+  </apex:pageBlock>
+ 
+  <apex:include pageName="DisplayBillboardInvoice"/> 
+ <apex:include pageName="DisplayBillboardContract"/> 
+ 
+  
+</apex:page>

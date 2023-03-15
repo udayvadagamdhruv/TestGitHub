@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="MyTaskDueSection" label="MY Task Due Section Label"  description="This will reflect the My Task Due Label"/>
+</design:component>

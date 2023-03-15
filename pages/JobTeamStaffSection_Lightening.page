@@ -1,0 +1,76 @@
+<apex:page standardController="Job__c" extensions="JobTeamStaffSectionExtension" id="thePage" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False" showHeader="False">
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+    <body>
+
+        <!-- REQUIRED SLDS WRAPPER -->
+        <div class="slds">
+
+            <apex:form id="theForm" html-novalidate="novalidate">
+                <apex:pageBlock >
+                    <div >
+                        <center>
+                            <apex:commandButton value="Add/Edit Staff" action="{!AddStaffs}" styleClass="slds-button slds-button--neutral" />
+                        </center>
+                    </div>
+                    <br/>
+                    <div style="width:100%;">
+                        <!--<apex:pageBlockTable value="{!lstJobTeam}" var="lst" id="thePageBlockable" rendered="{!lstJobTeam.size > 0}">
+              <apex:column headerValue="{!$ObjectType.Job_Team__c.Fields.Role__c.Label}">
+               <apex:outputField value="{!lst.Role__c}" />    
+              </apex:column>
+
+              <apex:column headerValue="{!$ObjectType.Job_Team__c.Fields.Staff__c.Label}">
+                    <apex:outputField value="{!lst.Staff__c}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+
+                    </apex:pageBlockTable>-->
+
+                        <div class="slds-grid slds-wrap">
+
+                            <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--2-of-2 slds-large-size--12-of-12">
+
+                                <div class="slds-grid slds-wrap">
+
+                                    <aside class="slds-col slds-size--1-of-1 slds-medium-size--6of-6 slds-large-size--12-of-12">
+                                        <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                            <table class="slds-table slds-table--bordered" style="display:{!IF((lstJobTeam.size > 0), 'block','none')};">
+                                                <tr class="slds-text-heading--label">
+                                                    <th style="width:10%;text-align:left;padding-left:5px;" class="slds-truncate"><b>Role</b></th>
+                                                    <th style="width:20%;text-align:left;padding-left:25px;" class="slds-truncate"><b>Staff</b></th>
+
+                                                </tr>
+                                                <apex:repeat value="{!lstJobTeam}" var="lst" id="thePageBlockable">
+                                                    <tr>
+                                                        <td style="width:10%;text-align:left;padding-left:5px;" class="slds-truncate">
+                                                            <apex:outputField value="{!lst.Role__c}" /> </td>
+                                                        <td style="width:20%;text-align:left;padding-left:25px;" class="slds-truncate">
+                                                            <apex:outputField value="{!lst.Staff__c}" />
+                                                            <apex:facet name="header"></apex:facet>
+                                                        </td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </table>
+
+                                        </div>
+                                    </aside>
+                                </div>
+                            </main>
+                        </div>
+
+                    </div>
+
+                    <apex:outputPanel rendered="{!lstJobTeam.size <= 0}">
+                        <b>No records to display</b>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </apex:form>
+        </div>
+    </body>
+
+    </html>
+
+</apex:page>

@@ -1,0 +1,81 @@
+<!-- This page is used to display User detail. -->
+<apex:page standardController="User" tabStyle="MyAdmin__tab" extensions="StaffandUserDetailPageExtension" >  <!--  <apex:detail title="false" relatedList="false"/> -->
+<apex:sectionHeader title="{!(User.FirstName+' '+User.LastName)}"/>
+    <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!EditUser}" value="Edit"/>
+                    <apex:commandButton action="{!UsersView}" value="List View"></apex:commandButton>
+                    <apex:commandButton action="{!resetpassword}" value="Reset Password" onclick="alert('Your New Password will be sent to your email id');"/> 
+                   <!--- <apex:commandButton action="{!displayStaffCalendar}" value="Calendar View"/> ---->
+                    <apex:commandButton action="{!deactivateUser}" value="Deactivate" onclick="window.confirm('Are you sure, you want to deactivate this User?');"/>
+            </apex:pageBlockButtons>
+              
+            <apex:pageBlockSection title="User Detail" columns="2" collapsible="false"> 
+                 <apex:outputField value="{!User.User_Types__c}"/> 
+            
+                  <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.User.Fields.IsActive.Label}"/>
+                         <apex:outputfield value="{!User.IsActive}"/>
+                  </apex:pageBlockSectionItem> 
+                  
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.User.Fields.FirstName.Label}"></apex:outputLabel>
+                     <apex:outputField value="{!User.FirstName}"/>
+                 </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.User.Fields.Username.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.Username}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.LastName.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.LastName}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                   <Apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Email.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.Email}"/> 
+                   </Apex:pageBlockSectionItem>               
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.alias.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.alias}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.CommunityNickName.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.CommunityNickName}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Phone.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.Phone}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.User.Fields.Department.Label}"></apex:outputLabel>
+                      <apex:outputField value="{!User.Department}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="Profile"></apex:outputLabel>
+                      <apex:outputField value="{!User.ProfileId}" />
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="Role"></apex:outputLabel>
+                      <apex:outputField value="{!User.UserRoleId}" />
+                  </apex:pageBlockSectionItem>
+                  
+              </apex:pageBlockSection>
+        
+            <apex:pageBlockSection >
+                  <apex:outputField value="{!User.Fax}"/>
+            </apex:pageBlocksection>
+         </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

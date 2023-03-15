@@ -1,0 +1,311 @@
+<apex:page standardController="Job__c" extensions="JobTeamAddEditStaffExtension" id="thePage" docType="html-5.0"   showHeader="False"  >
+
+
+ <style>
+   
+   body{
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed;
+      }
+      .slds-page-header{
+              background-color: #851225 !important;
+              border-bottom: 3px solid #851255 !important;
+              color: white !important;
+      }
+      .slds-page-header p {
+          color: white !important;
+      }
+      .slds .slds-tabs--scoped__nav {
+            background-color: #e2e4e6 !important;
+            font-size: 15px;
+        }
+   
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+          margin: 0px 0px 0px;
+         }
+       
+       
+       body {
+    display: block;
+    margin: 8px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+       
+       
+        body
+        {
+            background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+            background-repeat: repeat-x;
+            background-position: left top;
+            background-attachment: fixed;
+        }
+            
+        .slds .slds-tabs--scoped 
+        {
+               display: block;
+                width: 100%;
+                background-color: white;
+                margin-top: 2px;
+                border-radius: 10px;
+        }   
+        .slds .slds-tabs--scoped__content
+        {
+         padding:26px;
+        }
+  
+    </style>
+    
+
+
+ <apex:form >
+ 
+ 
+ 
+ 
+   <apex:slds />   
+   <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+     <div class="slds-page-header" style="width:100%;{!if($User.UITheme == 'Theme1' || $User.UITheme == 'Theme2' || $User.UITheme == 'Theme3','', 'position:fixed;z-index:2;margin-top: -12px')}" >
+            <div class="slds-grid " >
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media slds-no-space slds-grow">
+                        <div class="slds-media__figure">
+                            <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom93"></use>
+                            </svg>
+                        </div>
+                         <div class="slds-media__body pageHeader">
+                            <p class="slds-text-title--caps slds-line-height--reset">Job</p>
+                            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" ><apex:outputField value="{!Job__c.Name}"/>  -  (<apex:outputField value="{!Job__c.Job_Auto_Number__c}"/>) </h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-no-flex slds-grid slds-align-top">
+                    <div class="desktop">
+
+                        <div  role="group">
+                        <b>  
+ 
+    
+                            <apex:commandButton value="Save" action="{!Addstaff}" styleClass="slds-button slds-button--neutral"/> 
+                            <apex:commandButton value="Cancel" action="{!Cancel}" styleClass="slds-button slds-button--neutral"/> </b>  
+                        </div>
+                    </div>
+                </div>
+           </div>
+   </div>
+   
+    <div class="slds" style="display:{!IF(($User.UITheme="Theme4d"),'block','none')};margin-top:12px">
+           <br/><br/><br/>
+       </div>
+      
+      <div class="slds-grid">
+          <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="border-right:0px solid lightgray;width:30%;display:{!if($User.UITheme == 'Theme4t','block', 'none')}">    
+
+               <legend class="slds-text-heading--medium slds-p-vertical--medium" style="padding-left:5px;"><b>Resource Workloads</b></legend>
+          <center>  
+              <table class="slds-table"><tr><td style="width:70px !important;">
+      <b>User Role: </b> </td><td><apex:selectList id="UserRoleList" value="{!UserRoleString}" size="1" styleClass="slds-select slds-m-right--medium" >  
+                                          <apex:selectOption itemLabel="Select a role" itemValue=""  />                            
+                                          <apex:selectOptions value="{!UserRoleSelectOptions}"/>
+                                          <apex:actionSupport event="onchange" rerender="userRoleCharts" action="{!DisplayChart}"/>
+                                 </apex:selectList></td></tr></table>
+                                 <br/><br/>
+          
+              <apex:outputPanel id="userRoleCharts"  rendered="{!$User.UITheme == 'Theme4t'}">
+              <apex:outputPanel rendered="{!$User.UITheme == 'Theme4t' && mUserRole != 'none'}">
+                  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                                         <div id="top_x_div" style="height:300px !important;width:300px;"></div>
+
+                     <script type="text/javascript">
+                     
+                        var array = [['Staff Name', 'Active Jobs']];
+                        
+                        <apex:repeat value="{!urstaffList}" var="urs">
+                            var mylist = [];
+                            mylist.push('{!urs}');
+                            mylist.push(parseInt('{!StaffActiveJobsCountMap[urs]}'));
+                           
+                            array.push(mylist);
+                        </apex:repeat>
+                        google.charts.load('current', {'packages':['bar']});
+                          google.charts.setOnLoadCallback(drawStuff);
+                    
+                          function drawStuff() {
+                            var data = new google.visualization.arrayToDataTable(array);
+                    
+                            var options = {
+                              title: 'Active Jobs',
+                              width:300,
+                              legend: { position: 'none' },
+                              chart: { title: 'Active Jobs',
+                                       subtitle: 'Number of active jobs assigned to staff.' },
+                              bars: 'vertical', // Required for Material Bar Charts.
+                              axes: {
+                                x: {
+                                  0: { side: 'bottom', label: 'Staff Name'} // Top x-axis.
+                                }
+                              },
+                              bar: { groupWidth: "10%" }
+                            };
+                    
+                            var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+                            chart.draw(data, options);
+                          };
+                      </script>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!$User.UITheme == 'Theme4t' && mUserRole == 'none'}">
+                    Please select a role to view chart.
+                </apex:outputPanel>
+                </apex:outputPanel>
+                
+                </center>
+
+                <br style="display:{!if($User.UITheme == 'Theme4t','block', 'none')}"/>
+          </div>
+    <br style="display:{!if($User.UITheme == 'Theme4t','block', 'none')}"/>
+    <br style="display:{!if($User.UITheme == 'Theme4t','block', 'none')}"/>
+    <br style="display:{!if($User.UITheme == 'Theme4t','block', 'none')}"/>
+    </div>
+         
+      <div class="slds-grid">
+          <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="border:0px solid lightgray;padding:20px !important;">
+              <div class="slds-box slds-theme--default slds-container">
+                         <legend class="slds-text-heading--medium slds-p-vertical--medium" style=""><b> &nbsp; Resources &nbsp; </b></legend>
+          
+      <br/><table class="slds-table"><tr><td style="width:120px !important;">
+      <b>Filter Staff Type: </b> </td><td><apex:selectList id="StatusList" value="{!StatusString}" size="1" styleClass="slds-select slds-m-right--medium" >                              
+                                          <apex:selectOptions value="{!StatusList}"/>
+                                          <apex:actionSupport event="onchange" rerender="block" action="{!SerachStaff}"/>
+                                 </apex:selectList></td></tr></table>
+                                 <br/>
+      
+    <apex:outputPanel id="block" >
+    <apex:pageMessages ></apex:pageMessages>
+   <!-- <apex:commandButton value="SerachStaff"  reRender="block"/> -->
+   <div><center>
+   <!--apex:commandButton value="Add To Team" action="{!Addstaff}" styleClass="slds-button slds-button--neutral"/--> 
+  
+   </center></div> 
+    <br/>
+    <apex:outputPanel id="section" rendered="{!AllstaffWrappers.size >0}">
+          <apex:outputPanel style="width:100%;" >  
+              <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                  <tr style="border-bottom:1px solid lightgray;">
+                      <th></th>
+                      <th ><b>Name</b></th>
+                      <th class="desktop"><b>User Name</b></th>
+                      <th ><b>Role</b></th>
+                      
+                  </tr>
+              
+              <apex:repeat value="{!AllstaffWrappers}" var="staffwrap">
+              <tr>
+                  <td>
+                      <label class="slds-checkbox"> 
+                          <apex:inputCheckbox value="{!staffwrap.selection}" styleclass="slds-input"/>
+                          <span class="slds-checkbox--faux"></span>
+                      </label>
+                  </td>
+                  <td > {!staffwrap.Sojw.Staffname}</td>
+                  
+                  <td class="desktop">{!staffwrap.Sojw.Username}</td>
+                  <td  style="{!IF(staffwrap.sroles, 'color:red;font-weight:bold;','')}">{!staffwrap.Sojw.RoleName} </td>
+                   
+                  </tr>
+                  </apex:repeat>
+                  </table>  
+            </apex:outputPanel>  
+          </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!AllstaffWrappers.size <= 0}">
+                   <b>No records to display</b>
+           </apex:outputPanel>
+    
+    
+    </apex:outputPanel>
+    </div>
+    
+    </div>
+    
+    
+    <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="border:0px solid lightgray;width:50%;padding:20px !important;display:{!if($User.UITheme != 'Theme4t','block', 'none')}">    
+        <div class="slds-box slds-theme--default slds-container">
+               <legend class="slds-text-heading--medium slds-p-vertical--medium" style=""><b> &nbsp; Resource Workloads &nbsp; </b></legend>
+          <center>  
+          <br/>
+              <table class="slds-table"><tr><td style="width:70px !important;">
+      <b>User Role: </b> </td><td><apex:selectList id="UserRoleList1" value="{!UserRoleString1}" size="1" styleClass="slds-select slds-m-right--medium" > 
+                                          <apex:selectOption itemLabel="Select a role" itemValue="" />                               
+                                          <apex:selectOptions value="{!UserRoleSelectOptions}"/>
+                                          <apex:actionSupport event="onchange" rerender="userRoleChartsss" action="{!DisplayChart1}"/>
+                                 </apex:selectList></td></tr></table>
+                                 <br/><br/>
+          
+              <apex:outputPanel id="userRoleChartsss" >
+              <apex:outputPanel rendered="{!$User.UITheme != 'Theme4t' && dUserRole != 'none'}">
+                                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+                                         <div id="top_x_div" style="height:500px !important;width:500px;"></div>
+
+                     <script type="text/javascript">
+                     
+                        var array = [['Staff Name', 'Active Jobs']];
+                        
+                        <apex:repeat value="{!urstaffList}" var="urs">
+                            var mylist = [];
+                            mylist.push('{!urs}');
+                            mylist.push(parseInt('{!StaffActiveJobsCountMap[urs]}'));
+                           
+                            array.push(mylist);
+                        </apex:repeat>
+                        google.charts.load('current', {'packages':['bar']});
+                          google.charts.setOnLoadCallback(drawStuff);
+                    
+                          function drawStuff() {
+                            var data = new google.visualization.arrayToDataTable(array);
+                    
+                            var options = {
+                              title: 'Active Jobs',
+                              width:500,
+                              legend: { position: 'none' },
+                              chart: { title: 'Active Jobs',
+                                       subtitle: 'Number of active jobs assigned to staff.' },
+                              bars: 'vertical', // Required for Material Bar Charts.
+                              axes: {
+                                x: {
+                                  0: { side: 'bottom', label: 'Staff Name'} // Top x-axis.
+                                }
+                                
+                              },
+                              bar: { groupWidth: "10%" }
+                            };
+                    
+                            var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+                            chart.draw(data, options);
+                          };
+                      </script>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!$User.UITheme != 'Theme4t' && dUserRole == 'none'}">
+                    Please select a role to view chart.
+                </apex:outputPanel>
+                </apex:outputPanel>
+                </center>
+
+                <br/>
+                </div>
+          </div>
+    
+    
+    </div>
+    </html>
+    </apex:form>
+</apex:page>

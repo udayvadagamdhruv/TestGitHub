@@ -1,0 +1,17 @@
+<!--  This page is used to delete Music Usage record -->
+<apex:page standardcontroller="Music_Usage__c" extensions="DeleteMusicUsageExtension" showheader="false" sidebar="false">
+    <script>
+        window.onload=function()
+        {
+            doInit();
+        };
+    </script>
+    <apex:form >
+        <apex:pagemessages id="msg"/>
+        <apex:actionFunction name="doInit" action="{!checkDelete}" reRender="msg,po"></apex:actionFunction>
+        <apex:outputPanel id="po">
+                <center> <apex:outputLink value="/apex/JobListView?id={!jobId}" rendered="{!(isError!=False)}" target="_top">Click here to navigate to old Job</apex:outputLink> </center>
+            </apex:outputPanel>
+    </apex:form>
+</apex:page>
+<!--  End of Page -->

@@ -1,0 +1,12 @@
+.THIS .frequired label:after { 
+    content:" *";
+    color: #e32;
+}
+@media (min-width: 48em) {
+    .THIS .slds-modal__container {
+        margin: 0 auto;
+        width: 85% !important;
+        max-width: 90rem !important;
+        min-width: 30rem !important;
+    }
+}

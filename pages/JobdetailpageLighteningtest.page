@@ -1,0 +1,1138 @@
+<apex:page standardController="Job__c" sidebar="false"  showHeader="{!if($User.UITheme == 'Theme4t','false', 'true')}" standardStylesheets="true" docType="html-5.0" extensions="JobdetailpageLightening07Extension,JobRequestFormdetailpageext,RetrieveTaskNewTesting" >
+    <apex:slds />
+
+
+<style>
+    
+    .ui-dialog-buttonset > button {
+        background: white !important;
+        color: #088de7 !important;
+    }
+    .ui-state-hover{
+        border: 1px solid #088de7 !important;
+                    background: white !important;
+                    color: #088de7 !important;
+    }
+                   .EditDeleDupCls ul 
+                   {
+                      list-style: none;
+                      width: 100%;
+                       
+                        height: 20px;
+                        text-align: center;
+                    }
+                    .EditDeleDupCls ul li 
+                    { 
+                        display: inline-block;
+                        margin-right:10px;
+                    }
+                    
+                    .EditDeleDupCls ul li span 
+                    {
+                        color: black;
+                    }
+                    .EditDeleDupCls ul li
+                    {
+                        margin-left: 10%;
+                    }
+                    .EditDeleDupCls ul li span 
+                    {
+                       display: block;
+                       -webkit-transition: all 0.3s linear;
+                       -moz-transition: all 0.3s linear;
+                       transition: all 0.3s linear;
+                    }
+                    div.EditDeleDupCls
+                    {
+                        border-top:1px solid #CCC;
+                        padding-top: 6px;
+                        background-color:white !important;
+                        position:fixed !important;
+                        bottom:0 !important;
+                        width:100% !important;
+                        margin-left: -30px !important;
+                        height: 60px;
+                    }
+                                          
+                   
+                    #chatterFindExistingContent
+                    {
+                       width:95% !important; 
+                    }
+           
+                    .feedSearch a,.feedcontainer .comboMenu.feedsupermenu input 
+                    {    
+                           display: none; 
+                    }
+                  
+                    .feedcommentactions .commentActionMenu .zen-options
+                    {
+                       width:auto; 
+                    }
+                    
+                    .publishercontainer .LinkPost .postInput input[type="text"] 
+                    {
+                        width:auto;     
+                    }
+                    
+                    .publishercontainer input[type="text"] 
+                    {
+                        width:auto;     
+                    }
+                    
+                    .publishercontainer .contentPublisherSlideDown table.postInput  
+                    {
+                        width:auto;    
+                    }
+                    
+                    .feedpage
+                    {
+                        width:auto !important;   
+                    }
+                    
+                    .feedmain
+                    {
+                        width:auto !important;   
+                    }
+                                       
+                     .feeditemActionMenu .zen-options
+                    {
+                        margin:-1px;
+                        margin-left:-83px;  
+                    }
+                    
+                    .feeditemActionMenuButton
+                    {
+                       margin: -11px;
+                    }
+                    
+                     
+                    .publishercontainer .bottomBar
+                    {
+                        height: 49px;
+                    }
+                    
+                    
+                      
+                    
+                    .customImage
+                    { 
+                        height: 10px; width: 10px; 
+                    }
+                    #rcorners1 
+                    {
+                            border-radius:0%;
+                            border: 1px solid #cccccc;
+                            padding: 0px; 
+                            width: 100%;
+                            height: 0%;
+                    }
+                    #pagemessage
+                    {
+                         color:blue;
+                    }
+                   .required:after 
+                   { 
+                       content:" *";  color: Red;font:bold;
+                   }
+                   
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                  
+                  
+                  .ui-state-default
+                  {
+                       background: gray !important;
+                  }
+                  .ui-state-active 
+                  {
+                    
+                       border: 1px solid #2a61f3 !important;
+                       background: #2a61f3 !important;
+                  }
+                  
+                  .ui-accordion-header-icon, .ui-icon ui-icon-triangle-1-e
+                  {
+                      background-color: white !important;
+                  }
+                  
+                 
+                
+                 .chatterPublisherFileActionContainerLeft
+                 {
+                     display:none !important;
+                 }
+                 
+                 #InlineEditDialog
+                 {
+                     //margin-left: -209.5px !important;
+                     max-width: Auto !important;
+                     width : 80%
+                 }
+                 
+                 .inlineEditCompoundDiv > textarea
+                 {
+                     width:80% !important;
+                 }
+                 
+                 .feedcontainer .feeditemfooter, .feedcontainer .feedcommentfooter  
+                 {
+                     border-top : 1px solid #ededed;
+                      line-height: 39px !important;
+                 }
+                 
+                 .feedcontainer .feeditemfooter 
+                 {
+                    margin-bottom: -54px;
+                 }
+                 
+                 .feeditemtimestamp 
+                 {
+                    display: table-row-group !important;
+                 }  
+
+                 
+                 .feedcontainer .feeditem  
+                 {
+                     border : 1px solid #ededed;
+                         line-height: 2em;
+
+                 }
+                 
+                 .feeditembody
+                 {
+                  margin-top : 16px !important;
+                 }
+                 
+                 .chatter-photo
+                 {
+                     border-radius : 50% !important;
+                 }
+                 
+                 
+                 
+                  .feeditemclientinfo
+                  {
+                          display: none !important;
+                  }
+                  
+                  .feedrightbar
+                  {
+                      display: none !important;
+                  }
+                  
+                  .feeditemactionlink.cxaddcommentaction 
+                  {
+                       float: right !important;
+                       padding-right : 19px;
+                   }
+                  
+                 .chatter-avatarRegular, .chatter-avatarRegular .chatter-photo, .chatter-avatarRegular .chatter-avatarStyle 
+                 {
+                    width: 40px;
+                    height: 40px;
+                    line-height: 48px;
+                    margin: 4px;
+                 }
+                 
+                 .cxfeeditemlikedot.feeditemseparatingdot
+                 {
+                         display: none !important;
+                 }
+                 .cxfeeditemcommentdot.feeditemseparatingdot
+                 {
+                    display: none !important;
+                 }
+                 
+                 .feedcontainer .feeditemcontent
+                 {
+                     margin-left: 2px;
+                 }
+                 
+                 .feeditemactionlink.cxlikeitemaction
+                 {
+                         padding-left: 31px;
+                 }
+                 
+                 .feeditemattachments.cxfeeditemattachments
+                 {
+                     margin: 22px;
+                 }
+                 
+                 .feeditemaux.cxfeeditemaux.FilesCapabilityAuxBody
+                 {
+                     margin-right: 0px;
+                 }
+                 
+                 .zen-smlineSep
+                 {
+                       display: none !important;
+                 }
+                 
+                 .feedcontainer .zen-select .feeditemActionMenuButton, .feedcontainer .zen-select .commentActionMenuButton
+                 {
+                     padding: 6px 6px 6px 7px;
+                 }
+                 
+                 .comboMenu.zen-line.feedsupermenu 
+                 {
+                     display : none;
+                 }
+                 
+                 .publishercontainer
+                 {
+                         padding-top: 20px;
+                         padding-bottom:29px;
+
+                 }
+                 
+                 .chatterexpando .feedpage 
+                 {
+                    padding-left: 6px;
+                 }
+                 
+                 .actionsOnHoverEnabled .feeditembody 
+                 {
+                    padding-right: 34px  !important;
+                    padding-left: 50px  !important;
+                }
+               .chatter-avatar .chatter-avatarStyle 
+               {
+                        position: absolute;
+                        left: 0px;
+                        z-index: 1;
+                        background: url(/img/chatter/avatar-sprite.png?v=182-1) 0px -9999px no-repeat;
+               }  
+               
+              
+               
+             
+                
+                
+               
+                
+                .ui-helper-reset
+                {
+                    line-height: 0.9 !important;
+                }
+                
+                
+                
+                .ui-accordion,.ui-accordion-content
+                {
+                    padding: 1em 1.2em 1em 1.2em !important;
+                }
+                
+                
+                
+                .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
+                {
+                    font-size: 0.8em !important;
+                }
+                
+                
+                
+                .bPageTitle, .metadata
+               {
+                   display:none !important;
+               }
+               .btn {
+                   font-weight: normal !important;
+               }
+                
+                         
+         </style>  
+
+
+<!--jQuery CDN-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!--Salesforce Lightning Design System Static Resource-->
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+<script>
+var j$ = jQuery.noConflict();
+</script>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+        <script>
+        
+        $(document).ready(function() {
+                $(".overlayDialog").dialog({ autoOpen: false, modal: true, position: 'center'  });
+                
+           });
+           
+            var lastScrollTop = 0;
+            $(document).scroll(function(event){
+               var st = $(this).scrollTop();
+               if (st > lastScrollTop){
+                   $("div.EditDeleDupCls").hide(300);
+               } else {
+                  $("div.EditDeleDupCls").show(300);
+               }
+               lastScrollTop = st;
+            });
+        
+            function selectTab(elmnt) {
+                // slds-active
+                $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+                $(elmnt).parent("li").addClass("slds-active");
+                
+                // tabindex
+                $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+                $(elmnt).attr("tabindex", 0);
+                
+                // aria-selected
+                $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+                $(elmnt).attr("aria-selected", true);
+                
+                // hiding previously selected tab (slds-show/slds-hide)
+                
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+                // displaying newly selected tab (slds-show/slds-hide)
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").addClass("slds-show");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").removeClass("slds-hide");
+            }
+    function showChattter(){
+        if(document.getElementById('chatterSection').style.display == 'none')
+            document.getElementById('chatterSection').style.display = 'block';
+        else
+            document.getElementById('chatterSection').style.display = 'none';
+    }
+    function showChattterMobile(){
+        if(document.getElementById('chatterSection').style.display == 'block'){
+            document.getElementById('chatterSection').style.display = 'none';
+            document.getElementById('details').style.display = 'block';
+        }
+        else{
+            document.getElementById('chatterSection').style.display = 'block';
+            document.getElementById('details').style.display = 'none';
+        }
+    }
+</script>
+<script>
+function openEditPage() {
+    window.open('/apex/EditJobNewLightning?id={!jobId}', '_self');
+}
+</script>
+
+<!--The Salesforce Lightning Design System Wrapping Div with Scoping Class -->
+<div class="minerva18">
+
+<!-- Header -->  
+  <div class="slds-page-header" style="width:100%;{!if($User.UITheme == 'Theme1' || $User.UITheme == 'Theme2' || $User.UITheme == 'Theme3','', 'position:fixed;z-index:2;')}">
+  <div class="slds-grid">
+    <div class="slds-col slds-has-flexi-truncate">
+      <div class="slds-media slds-no-space slds-grow">
+        <div class="slds-media__figure">
+          <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                  <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom19"></use>
+          </svg>
+        </div>
+        <div class="slds-media__body">
+          <p class="slds-text-title--caps slds-line-height--reset">Job</p>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="{!Job__c.Name}">{!Job__c.Name}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="slds-col slds-no-flex slds-grid slds-align-top">
+      <div class="desktop">
+      
+     
+      <div class="slds-button-group" role="group">
+        <button id="myBtn" class="slds-button slds-button--neutral">Edit</button>
+        <!--button class="slds-button slds-button--neutral" onClick="openEditPage();">Edit</button-->
+        <button class="slds-button slds-button--neutral">Delete</button>
+        <button class="slds-button slds-button--neutral">Clone</button>
+      </div>
+       
+      </div>
+     
+      
+      
+    </div>
+  </div>
+  <div class="mobile">
+  <div class="slds-grid" style="padding-top:20px;float:right;">
+      <div class="slds-media__figure mobile" onclick="showChattterMobile();">
+          <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                  <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#chat"></use>
+          </svg>
+      </div>
+      <div role="group">
+        <button id="myBtn1" class="slds-button slds-button--neutral">Edit</button>
+        <!--button class="slds-button slds-button--neutral" onClick="openEditPage();">Edit</button-->
+        <button  class="slds-button slds-button--neutral">Delete</button>
+        <button  class="slds-button slds-button--neutral">Clone</button>
+      </div>
+  </div>
+  </div>
+  </div>
+<!-- Header Ending -->
+<br/><br/><br/><br/><br class="mobile"/><br class="mobile"/>
+<!--Chatter Section 
+
+<div class="slds-grid" >
+<div class="slds-col" style="padding-left:10px;padding-right:10px;">
+<fieldset class="slds-box slds-theme--default slds-container">
+   <legend class="slds-text-heading--medium slds-p-vertical--medium">Chatter</legend>
+   <div class="slds-section">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Feed</button>
+      </h3>
+      <div class="slds-section__content" style="padding-left:20px;">
+           <chatter:feed entityId="{!Job__c.Id}"/>
+      </div>
+    </div>
+</fieldset>
+</div>
+</div>
+
+Chatter section ending -->
+
+<div class="slds-grid" >
+<div class="slds-col" style="padding-left:10px;padding-right:10px;width:60% !important;" id="details">  
+<!--fieldset class="slds-box slds-theme--default slds-container"-->
+   <!--<legend class="slds-text-heading--medium slds-p-vertical--medium">Job Information</legend>--> 
+   
+   
+
+    <div class="slds-tabs--scoped" style="padding-top:27px;">
+      <ul class="slds-tabs--scoped__nav" role="tablist">
+        <li class="slds-tabs--scoped__item slds-active" title="Item One" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item" style="text-decoration: none !important;" onclick="selectTab(this);">Job Details</a></li>
+        <li class="slds-tabs--scoped__item" title="Item Two" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2" id="tab-scoped-2__item" style="text-decoration: none !important;" onclick="selectTab(this);">Job Costs</a></li>
+        <li class="slds-tabs--scoped__item" title="Item Three" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3" id="tab-scoped-3__item" style="text-decoration: none !important;" onclick="selectTab(this);">Job Billing</a></li>
+      </ul>
+      
+      <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item">
+      <apex:detail id="DetailsSection" inlineEdit="true" relatedList="false" title="False" showChatter="false"  oncomplete="parent.location.href = '/{!Job__c.Id}'" />
+      
+          
+            
+            <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Job Team</button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+              
+                    <div >
+                        <center>
+                            <Button id="myBtn01" value="Add/Edit Staff" Class="slds-button slds-button--neutral" >Add/Edit Staff</Button>
+                        </center>
+                    </div>
+                       
+                                                    <div  style="width:50%;float:left;border-bottom:1px solid lightgray;padding:5px;"><b>Role</b></div>
+                                                    <div   style="width:50%;float:right;border-bottom:1px solid lightgray;padding:5px;"><b>Staff</b></div>
+                                                <apex:repeat value="{!lstJobTeam}" var="lst" id="thePageBlockable">
+                                                        <div  class="slds-truncate" style="float:left;width:50%;padding:5px;">
+                                                            {!lst.Role__c} </div>
+                                                        <div  class="slds-truncate" style="width:50%;float:right;padding:5px;">
+                                                            {!lst.Staff__c}
+                                                        </div>
+                                                </apex:repeat>
+
+
+               &nbsp;   
+              </div>
+               
+            </div>
+           
+            <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Schedule </button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+                <center>
+                <div class="slds-button-group" role="group" style="width:200px;">
+                  <button class="slds-button slds-button--brand" id="scheduleList" onclick="showScheduleListView();" >List View</button>
+                  <button class="slds-button slds-button--neutral" id="scheduleCalender" onclick="showScheduleCalenderView();" >Calender View</button>
+                </div>
+                </center>
+                <div id="scheduleListView" style="padding-top:20px;width:100%;display:block;">
+                    
+                    <div Class="desktop">
+                    <apex:include pageName="DisplayJobTaskInJobTabNew_Lightning" />
+                    </div>
+                    <div class="mobile">
+                    <div class="slds-grid slds-wrap mobile">
+                                               
+                                                   <apex:variable value="{!1}" var="count"/>
+                                                        <apex:repeat value="{!jobTasks}" var="jt" id="pB">
+                                                     
+                                                                   <table  class="slds-table slds-table--bordered">
+                                                                   
+                                                                       <tr>
+                                                                       
+                                                                           <td rowspan="4" valign="top" width="1%">
+                                                                               {!floor(count)}.
+                                                                              </td>
+                                                                       
+                                                                           <td style="text-align:left;word-wrap: break-word;"  class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top" colspan="2">
+                                                                           <apex:outputLink tabindex="tab1" value="/apex/EditJobTaskSwitchPage?id={!jt.id}&page=Jobdetailpage" rendered="{!$ObjectType.Job_Task__c.updateable}"><font color="#0070d2">{!jt.Name}</font></apex:outputLink> </td>
+                                                                          
+                                                                           
+                                                                       </tr>
+                                                                   
+                                                                       <tr>
+                                                                           <td style="width:20%;text-align:left;padding-left:5px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}</td>
+                                                                           <td style="width:80%;text-align:left;padding-left:15px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink"><apex:outputField value="{!jt.Assigned_Users__c}"/></td>
+                                                                       </tr>
+                                                                       
+                                                                       <tr>
+                                                                           <td style="width:20%;text-align:left;padding-left:5px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}</td>
+                                                                           <td style="width:80%;text-align:left;padding-left:15px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink"><apex:outputField value="{!jt.Revised_Due_Date__c}"/></td>
+                                                                       </tr>
+                                                                       
+                                                                       
+                                                                       
+                                                                      <tr >
+                                                                           <td style="width:20%;text-align:left;padding-left:5px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" >Completed</td>
+                                                                           <td style="width:80%;text-align:left;padding-left:15px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">
+                                                                           
+                                                                              <!--  <apex:commandLink action="{!assignMarkedDone1}" >
+                                                                                    <apex:image value="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/Active_false.png')}" height="20px" width="20px"  rendered="{!if(jt.Marked_Done__c==true,false,true)}" ><apex:actionSupport event="onclick" action="{!assignMarkedDone1}" reRender="pB"><apex:param name="param5" value="{!jt.id}" assignTo="{!strJTID}" > </apex:param></apex:actionSupport></apex:image>
+                                                                                     <apex:image value="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/TaskDoneIcon.jpg')}" height="12px" width="25px" rendered="{!if(jt.Marked_Done__c==true,true,false)}" id="test1"><apex:actionSupport event="onclick" action="{!assignMarkedDone1}" reRender="pB"><apex:param name="param5" value="{!jt.id}" assignTo="{!strJTID}" > </apex:param></apex:actionSupport></apex:image>  
+                                                                                       
+                                                                                </apex:commandLink>-->
+                                                                                <apex:form >
+                                                                                <apex:inputCheckbox value="{!jt.Marked_Done__c}"/>
+                                                                                </apex:form>
+                                                                                
+                                                                           </td>
+                                                                       </tr>
+                                                                      
+                                                                       
+                                                                   </table>
+                                                           <apex:variable value="{!count+1}" var="count"/>
+                                                       </apex:repeat>
+                                                       
+                                                                                    
+                                                  </div>
+                    
+                    </div>
+                </div>
+                <div id="scheduleCalenderView" style="padding-top:20px;width:100%;display:none;">
+                    Schedule Calender View Content
+                </div>
+              </div>
+            </div>
+      </div>
+      
+      <div id="tab-scoped-2" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-2__item">
+          <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Quotes</button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+                <p>Quotes Content</p>
+              </div>
+            </div>
+            <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Estimate</button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+                <p>Estimate Content</p>
+              </div>
+            </div>
+            <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Purchase Orders</button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+                <p>Purchase Orders Content</p>
+              </div>
+            </div>
+            <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Vendor Invoices</button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+                <p>Vendor Invoices Content</p>
+              </div>
+            </div>
+            
+      </div>
+      
+      <div id="tab-scoped-3" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-3__item">
+          <div class="slds-section slds-is-open">
+              <h3 class="slds-section__title">
+                <button class="slds-button slds-section__title-action">
+                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                    <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                  </svg>Client Invoices</button>
+              </h3>
+              <div style="padding-left:20px;" class="slds-section__content">
+                <p>Client Invoices Content</p>
+              </div>
+            </div>
+      </div>
+      
+      
+   </div>
+
+<!--/fieldset-->
+</div>
+
+<div class="slds-col desktop" style="padding-left:10px;padding-right:10px;" id="chatterSection">
+<fieldset class="slds-box slds-theme--default slds-container">
+   <legend class="slds-text-heading--medium slds-p-vertical--medium">Chatter</legend>
+   
+           <!--chatter:feed entityId="{!Job__c.Id}"/-->
+           <apex:include pageName="jobChatterFeed"/> 
+          
+</fieldset>
+</div>
+</div>
+
+</div>
+
+<script>
+
+function iframeLoaded() {
+      var iFrameID = document.getElementById('chatterIframe');
+      if(iFrameID) {
+            // here you can make the height, I delete it first, then I make it again
+            iFrameID.height = "";
+            iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+      }   
+}
+
+function showScheduleListView(){
+        
+        if(j$('#scheduleList').hasClass('slds-button--neutral')){
+            j$('#scheduleList').removeClass('slds-button--neutral');
+            j$('#scheduleList').addClass('slds-button--brand');
+            j$('#scheduleCalender').removeClass('slds-button--brand');
+            j$('#scheduleCalender').addClass('slds-button--neutral');
+            j$('#scheduleCalenderView').hide();
+            j$('#scheduleListView').show();    
+        } 
+        
+    }
+    
+function showScheduleCalenderView(){
+        
+        if(j$('#scheduleCalender').hasClass('slds-button--neutral')){
+            j$('#scheduleCalender').removeClass('slds-button--neutral');
+            j$('#scheduleCalender').addClass('slds-button--brand');
+            j$('#scheduleList').removeClass('slds-button--brand');
+            j$('#scheduleList').addClass('slds-button--neutral');
+            j$('#scheduleListView').hide();
+            j$('#scheduleCalenderView').show();    
+        } 
+        
+    }
+
+
+/*SLDS Sections*/
+//j$('.slds-section__content').hide();
+j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+j$('.slds-section__title').click(function(){
+    if(j$(this).parent().parent().hasClass('Minerva18SectionGroupSingle')){
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().removeClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+        else{
+            j$(this).parent().parent().find('.slds-section').removeClass('slds-is-open');
+            j$(this).parent().parent().find('.slds-section__content').hide();
+            j$(this).parent().toggleClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').show();
+        }    
+    }
+    else{
+        j$(this).parent().toggleClass('slds-is-open');
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().find('.slds-section__content').show();
+        }else{
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+    } 
+});
+/*SLDS Sections*/
+
+//j$('table.list').addClass('slds-table');
+/* Detail Section Styles */
+j$('td.labelCol').removeClass('labelCol');
+j$('td.last').removeClass('last');
+//j$('td.pbButton').addClass('slds-button-group');
+var pbButton = j$('td.pbButton').html();
+j$('td.pbButton').html("");
+j$('td.pbButton').html("<center><div>"+pbButton+"</div></center>");
+//j$('td.pbButtonb').addClass('slds-button-group');
+var pbButtonb = j$('td.pbButtonb').html();
+j$('td.pbButtonb').html("");
+j$('td.pbButtonb').html("<center><div>"+pbButtonb+"</div></center>");
+j$('input.btn').addClass('slds-button slds-button--neutral');
+var trList = j$('.detailList > tbody > tr');
+for(var i=0;i<trList.length;i++){
+    var tdList = trList[i].getElementsByTagName('td');
+    
+    var label1 = tdList[0].innerHTML;
+    
+    tdList[0].innerHTML = '';
+    
+    j$(tdList[0]).append("<div class='mobileSeperator'><label class='slds-form-element__label'>"+label1+"</label><br/><span  class='slds-form-element__control' >"+ tdList[1].innerHTML+"</span></div>");
+    
+    if(tdList.length >= 3){
+        var label2= tdList[2].innerHTML;
+        tdList[2].innerHTML = '';
+        j$(tdList[2]).append("<label class='slds-form-element__label'>"+label2+"</label><br/><span  class='slds-form-element__control'>"+ tdList[3].innerHTML+"</span>");
+        
+        j$(tdList[0]).append("<br class='mobile'/><div class='mobile'><div class='mobileSeperator'>"+tdList[2].innerHTML+"</div></div>");
+
+    }
+    
+}
+j$('.pbBody').prepend("<br/>");
+j$('.pbButton').prepend("<br/>");
+j$('td.dataCol').hide();
+j$('td.data2Col').hide();
+j$('td.pbTitle').hide();
+j$('.detailList > tbody > tr > td').width('50%');
+j$("input[value=' Edit ']").hide();
+j$("input[value='Delete']").hide();
+j$("input[value='Duplicate']").hide();
+/* Detail Section Styles End */
+
+                        j$(document).ready(function(){
+                            j$("#myModal").scroll(function(){
+                                j$(".datePicker").hide();
+                            });
+                        });
+
+</script>
+
+<!-- Custom Styles -->
+<style>
+
+h3{
+    display:inline !important;
+}
+
+.brandTertiaryBrd {
+    border :none !important;
+}
+
+.mainTitle {
+    display: none !important;
+}
+
+.detailList > tbody > tr > td{
+    
+    padding-top : 15px !important;
+    padding-bottom : 7px !important;
+    padding-left : 10px !important;
+    border-bottom: 1px solid lightgray !important;
+}
+
+
+.pbSubsection {
+    padding-left: 20px;
+    padding-right: 10px;
+}
+.pbBottomButtons{
+    display:none;
+}
+.publishercontainer, .cxfeedinnerwrapper {
+    padding-left: 20px !important;
+}
+
+.bPageBlock, .brandSecondaryBrd, .bDetailBlock, .secondaryPalette, .pbHeader, .pbBody, .pbError, .pbBottomButtons, .pbFooter, .secondaryPalette, .brandTertiaryBrd, .first pbSubheader, .tertiaryPalette {
+    border: 0px solid white !important;
+}
+.pbButton, .pbBody {
+    background: white !important;
+}
+.pbError {
+    display: none !important;
+}
+
+@media only screen and (min-width:0px) and (max-width:1000px ) {
+    .mobile{
+        display: block ;
+    }
+    .desktop{
+        display: none ;
+    }
+    .detailList > tbody > tr > td:nth-child(3){
+        display:none !important;
+    }
+    .mobileSeperator {
+        border-bottom:1px solid lightgray;
+        padding-bottom:7px;
+    }
+    .detailList > tbody > tr > td{
+        padding-top : 20px !important;
+        padding-bottom : 0px !important;
+        padding-left : 10px !important;
+        border-bottom: 0px solid lightgray !important;
+    }
+    .slds-button--neutral {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+    .slds-scope .slds-button {
+        line-height: 25px !important;
+    }
+    .mobile > .slds-icon {
+        width : 25px !important;
+        height : 25px !important;
+    }
+    .detailList > tbody > tr > td > div:hover {
+        cursor: pointer;
+        background: #f1f1f1;
+    }
+}
+@media only screen and (min-width:1001px) and (max-width:6000px ) {
+    .mobile{
+        display: none ;
+    }
+    .desktop{
+        display: block ;
+    }
+    .detailList > tbody > tr > td:hover {
+        cursor: pointer;
+        background: #f1f1f1;
+    }   
+}
+
+
+
+
+</style>
+<!-- Custom Styles End -->
+
+
+<!-- Job Edit PopUp -->
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <apex:include pageName="EditJobNewLightning"/>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+var btn1 = document.getElementById("myBtn1");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    window.scrollTo(0, 0);
+    modal.style.display = "block";
+}
+btn1.onclick = function() {
+    window.scrollTo(0, 0);
+    modal.style.display = "block";
+}
+var tdCellList = j$('.detailList > tbody > tr > td');
+for(var i=0; i<tdCellList.length; i++){
+    tdCellList[i].ondblclick = function() {
+        window.scrollTo(0, 0);
+        modal.style.display = "block";
+    }
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 3; /* Sit on top */
+    padding-top: 2%; /* Location of the box */
+    padding-bottom: 2%;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 96%;
+}
+
+/* The Close Button */
+.close { 
+    color: #aaaaaa;
+    float: right;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dateFormat{
+    display:none !important;
+}
+</style>
+
+
+
+<!-- Job Edit Popup Ending -->
+
+<!--  Add Team PopUp -->
+
+<!-- The Modal -->
+<div id="myModal01" class="modal01">
+
+  <!-- Modal content -->
+  <div class="modal-content01">
+    <span class="close01">&times;</span>
+    <apex:include pageName="JobTeamAddEditStaff_Lightning"/>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal01 = document.getElementById('myModal01');
+
+// Get the button that opens the modal
+var btn01 = document.getElementById("myBtn01");
+
+// Get the <span> element that closes the modal
+var span01 = document.getElementsByClassName("close01")[0];
+
+// When the user clicks the button, open the modal 
+btn01.onclick = function() {
+    modal01.style.display = "block";
+}
+
+
+// When the user clicks on <span> (x), close the modal
+span01.onclick = function() {
+    modal01.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal01) {
+        modal01.style.display = "none";
+    }
+}
+</script>
+
+<style>
+/* The Modal (background) */
+.modal01 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 3; /* Sit on top */
+    padding-top: 2%; /* Location of the box */
+    padding-bottom: 2%;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content01 {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 96%;
+}
+
+/* The Close Button */
+.close01 { 
+    color: #aaaaaa;
+    float: right;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+.close01:hover,
+.close01:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+.ui-dialog{
+                width: 360px !important;
+            }
+table.list > thead > tr > th{
+    padding:10px !important;
+}
+table.list > tbody > tr > td{
+    padding:10px !important;
+}
+
+</style>
+
+
+
+<!-- Add Team Popup Ending -->
+</html>
+</apex:page>

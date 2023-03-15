@@ -1,0 +1,317 @@
+<apex:page standardController="Job__c" extensions="ProductionEstimateReportExtension"  showHeader="false" sidebar="false" standardStylesheets="false" renderAs="pdf"> 
+ 
+ <head>
+    <style type="text/css">
+
+    .rightalign
+    {
+        text-align:right;
+    }
+    .leftalign
+    {
+        text-align:left;
+    }
+    .centeralign
+    {
+        text-align:center;
+    }
+
+    div.tab
+    {
+        width:100%;
+        border:solid black;
+    }
+    @page
+    {
+
+        /* Landscape orientation */
+        size:landscape;
+
+        /* Put page numbers in the bottom right corner of each
+        page in the pdf document. */
+        @bottom-right {
+          content: "Page " counter(page);
+          font-family: sans-serif !important;
+          font-size:8pt;
+        }
+   
+        @bottom-left 
+         {
+            content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+            background-repeat: no-repeat;
+            font-size:8pt;
+            font-family: sans-serif !important;
+        }
+      }
+
+  body 
+  {
+   font-family: sans-serif !important;
+   font-size:9pt;
+  }
+  
+  th
+  {
+      font-size:13pt
+      font-style:bold;
+      font-family: sans-serif !important;
+  }
+
+
+  td
+  {
+    font-size:11pt;
+    font-family: sans-serif !important;
+  }
+  
+  div.footer {
+    position : running(footer) ;
+}
+
+  /* you can even define custom classes that utilize your static resources */
+ 
+
+</style>
+</head>
+
+<body>
+   <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+    <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+<div style="float:right;padding-right:10px;font-size:15pt;font-style:normal;font-family: sans-serif !important;font-weight:bold">
+Estimate Report
+</div>
+<br/><br/>
+
+        <table width="100%">
+        
+          <tr>
+              <td align="left">
+                   <hr color="black" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                    <tr style="page-break-inside: avoid;">
+                          <td width = "20%">
+                               <b> <apex:outputText value="Details" style="font-size:12pt;font-weight:bold;font-color:#0000FF;font-family: sans-serif !important;"/>  </b>
+                          </td>
+                    </tr>
+                </table>
+               </td>
+            </tr>
+            
+            <br/>
+        
+        
+              <tr width="100%">
+                 <td width="50%" align="left">
+                    <table width="100%" align="left" style="font-family: sans-serif !important;font-size:10pt;">
+                    
+                        <tr width="100%">
+                            <td width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputText value="{!Job__c.Campaign__r.name}"/>
+                            </td>
+                            <td  width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputText value="{!Job__c.Schedule_Template__r.Name}"/>
+                            </td>
+                        </tr> 
+                        
+                        
+                        <tr width="100%">
+                            <td width="20%">
+                               <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" style="font-weight: bold;"/> 
+                            </td>
+                            <td width="30%">
+                                <apex:outputText value="{!Job__c.Job_Auto_Number__c}"/>
+                            </td>
+                            <td  width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                               <apex:outputText value="{!Job__c.Status__c}"/>
+                            </td>
+                        </tr> 
+                        
+                        
+                        
+                        <tr width="100%">
+                            <td width="20%">
+                               <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputText value="{!Job__c.Name}"/>
+                            </td>
+                            <td  width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputfield value="{!Job__c.Start_Date__c}"/> 
+                            </td>
+                        </tr> 
+                        
+                        
+                        <tr width="100%">
+                            <td width="20%">
+                               <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Description__c.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                               <apex:outputText value="{!Job__c.Job_Description__c}"/>
+                            </td>
+                            <td  width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" style="font-weight: bold;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputfield value="{!Job__c.Due_Date__c}"/> 
+                            </td>
+                        </tr> 
+                    
+            </table>  
+             </td>
+        </tr>
+     </table>
+         
+        <!-- 
+          <tr>
+              <td colspan="2" width="50%" align="left"> <b> TEAM </b>
+              <apex:dataTable value="{!vq}" var="vquote" columns="2" columnsWidth="50%,50%" width="50%" rendered="{!vq.Size>0}">
+              
+                <apex:column value="{!vquote.Name}" headerValue="Role"/>
+              
+                <apex:column value="{!vquote.GL_Code__r.Name}" headerValue="Staff"/>
+              
+            </apex:dataTable>
+            </td>
+          </tr>
+          <tr>
+               <td width="100%" colspan="2">
+                 <hr/>
+               </td>
+          </tr>  -->
+             
+     
+       <table width="100%" >
+       
+       
+         <tr>
+            <td align="left">
+               <hr color="black" />
+            </td>
+         </tr>
+        
+        <tr>
+          <td >
+            <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                <tr style="page-break-inside: avoid;">
+                      <td width = "20%" >
+                           <b> <apex:outputText value="Line Items" style="font-size:12pt;font-weight:bold;font-color:#0000FF;font-family: sans-serif !important;"/>  </b>
+                      </td>
+                </tr>
+            </table>
+           </td>
+        </tr>
+        
+        <br/>
+        
+        
+        
+        
+         <table width="100%" style="font-family: sans-serif !important;font-size:10pt;">
+                <tr width="100%" styele="font-size:11pt;">
+             
+                    <th width="25%"><b>{!$ObjectType.Production_Estimate__c.Fields.Name.Label}</b></th>
+                           
+                    <th width="25%"><b>{!$ObjectType.Production_Estimate__c.Fields.Vendor__c.Label}</b></th>
+                    
+                    <th width="25%"><b>{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label}</b></th>
+                           
+                    <th width="10%"><b>{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}</b></th>
+                    
+                    <th width="15%"><b>{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}</b></th>
+                    
+                </tr> 
+                
+               <tr width="100%">
+             
+                    <td colspan="5">
+                        <hr/>
+                    </td>
+                    
+               </tr>
+                
+               <tr width="100%">
+                  <td width="100%" colspan="5">
+                    
+                        <apex:repeat value="{!MapPE}" var="mpe">
+                       
+                       
+                            <b>{!mpe}</b>
+                                       <apex:repeat value="{!MapPE[mpe]}"  var="vquote" rendered="{!vq.Size > 0}">
+                                       
+                                           <table width="100%">
+                                            <tr style="font-size:10pt;">
+                                                         
+                                                <td width="25%" style="text-align:left;"  valign="top"><apex:outputField value="{!vquote.Name}"/></td> 
+                                                <td width="25%" style="text-align:leftt;" valign="top"><apex:outputfield value="{!vquote.Vendor__r.Name}"/></td>
+                                                <td width="25%" style="text-align:left;"  valign="top"><apex:outputField value="{!vquote.GL_Code__r.Name}"/></td> 
+                                                <td width="10%" style="text-align:leftt;" valign="top"><apex:outputField value="{!vquote.Quantity__c}"/></td>
+                                                <td width="15%" style="text-align:left;"  valign="top"><apex:outputfield value="{!vquote.Total_Cost__c}"/></td> 
+                                               
+                                                
+                                            </tr>
+                                       </table>
+                                        
+                              </apex:repeat><br/>
+                       
+                       
+                        </apex:repeat>
+                     </td>
+                    
+               </tr>
+        
+            
+         
+            
+            
+            <tr >
+                <td colspan="4">
+                  <b>     <apex:outputLabel value="Estimate Total Cost" style="font-style:italic;float:right;padding-right:20px;" />  </b>
+                </td>
+                <td>
+                   <b>  <apex:outputText value="{0,Number, $###,###,###.00}" style="font-style:italic;float:right;padding-right:25px;" ><apex:param value="{!sumCash}"/>
+                     </apex:outputText></b>
+                </td>
+            </tr>
+            
+            
+         
+          
+          <tr style="display:{!IF((vq.size <= 0), 'block','none')};">
+               <td width="100%" colspan="2">
+               <apex:form >
+                  <apex:pageBlock >
+                      <apex:pageBlockSection >
+                              <apex:pageBlockSectionItem >
+                                      <b>No records to display</b>
+                              </apex:pageBlockSectionItem>
+                      </apex:pageBlockSection>
+                  </apex:pageBlock>
+               </apex:form>
+                 <hr/>
+               </td>
+          </tr> 
+          </table> </table>
+</body>
+ 
+ 
+ 
+ 
+  
+</apex:page>

@@ -1,0 +1,16 @@
+<aura:component controller="PicklistPath" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+<lightning:notificationsLibrary aura:id="notifLib"/>
+<aura:attribute name="case" type="case" />
+    
+<force:recordData aura:id="record"
+    layoutType="FULL"
+    recordId="{!v.recordId}"
+    targetFields="{!v.case}"
+    mode="EDIT"/>
+    
+<lightning:picklistPath recordId="{!v.recordId}"
+        				variant="non-linear"
+        				picklistFieldApiName="Status"
+                onselect="{!c.handleSelect}" />
+
+</aura:component>

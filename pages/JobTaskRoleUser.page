@@ -1,0 +1,20 @@
+<!-- This page is used for job task role functionality -->
+<apex:page standardController="Job_Task_Role__c" tabStyle="Job_Task_Role__c">
+     <apex:form >
+          <apex:pageBlock >
+                <apex:pagemessages />
+
+                 <apex:pageBlockButtons >
+                     <apex:commandButton action="{!save}" value="Save"></apex:commandButton>
+                     <apex:commandButton action="{!cancel}" value="Cancel"></apex:commandButton>
+                 </apex:pageBlockButtons>
+             
+                 <apex:pageBlockSection >
+                      <apex:pageBlockSectionItem >
+                           <apex:outputLabel Value="{!$ObjectType.Job_Task_Role__c.Fields.Name.Label}"/><apex:outputField value="{!Job_Task_Role__c.Name}"/> 
+                      </apex:pageBlockSectionItem>
+             </apex:pageBlockSection>
+         </apex:pageBlock>
+     </apex:form>
+</apex:page>
+<!-- End of Page -->

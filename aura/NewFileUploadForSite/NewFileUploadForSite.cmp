@@ -1,0 +1,17 @@
+<aura:component controller="SiteFileUploadClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="FileSectionAccess" type="String" />
+    <aura:attribute name="pageReference" type="Object"/>  
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="fileName" type="String" default="No File Selected.." />
+    <aura:attribute name="parentId" type="Id"  />
+   
+                                <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="Filesec"> 
+                                    <lightning:accordionSection name="Filesec" label="Files" class="slds-card" > 
+                                        <div class="slds-text-body_small slds-text-color_error"><b> Note: Upload upto 2MB File only</b> </div>
+                                        <lightning:input aura:id="fuploader" onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload File" multiple="false"/>
+                                        <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>
+                                        <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                                    </lightning:accordionSection>
+                                </lightning:accordion> 
+                           
+</aura:component>

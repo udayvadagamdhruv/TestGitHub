@@ -1,0 +1,11 @@
+<apex:page standardController="Billboard__c" tabStyle="Billboard__c" showHeader="false" sidebar="false" recordSetVar="bb">
+    <script>
+    var compDefinition = { 
+        "componentDef" : "JobSuite:Search_Billboard", 
+    };
+    // Base64 encode the compDefinition JS object
+    var encodedCompDef = btoa(JSON.stringify(compDefinition));
+    window.parent.location = "/one/one.app#"+encodedCompDef;
+    </script>
+    
+</apex:page>

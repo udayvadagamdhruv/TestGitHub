@@ -1,0 +1,16 @@
+<!-- This Page is used for Unapprove Quote Functionality... Button is added to the Quote detail -->
+<apex:page standardController="Quote__c" extensions="UnapproveQuote" showHeader="false" sidebar="false">
+     
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+       <apex:form >
+        <apex:actionFunction name="doInit" action="{!autoRun}"/> 
+       </apex:form>
+       
+</apex:page>
+<!-- End of Page -->

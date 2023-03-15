@@ -1,0 +1,138 @@
+<aura:component controller="Job_Search_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="data" type="List"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="String"/>
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="50" />
+    <aura:attribute name="rowsToLoad" type="Integer" default="50"/>
+    <aura:attribute name="CSdata" type="Object"/>
+    
+    
+    <aura:attribute name="loadMoreStatus" type="String" default="" /> 
+    <aura:attribute name="enableInfiniteLoading" type="boolean" default="true" /> 
+    <aura:attribute name="totalAcitveJobRows" type="Integer" /> 
+    
+    <aura:attribute name="CampaignList" type="Object"/>
+    <aura:attribute name="MediaTypeList" type="Object"/>
+    <aura:attribute name="ScheduleTempList" type="Object"/>
+    <aura:attribute name="ClientList" type="Object"/>
+    
+    
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="Selected_Jobs" type="Job__c[]" default=""/>  
+    <aura:attribute name="isMarkDoneAllTasks" type="boolean" default="false" />
+    <aura:attribute name="isApproveAllPE" type="boolean" default="false" />
+    <aura:attribute name="overlayPanelForTask" type="Aura.Component"  />
+    <aura:attribute name="overlayPanelForPE" type="Aura.Component"  />
+    <lightning:overlayLibrary aura:id="overlayLibForPE" />
+    <lightning:overlayLibrary aura:id="overlayLibForTask" />
+    
+    
+    
+    <!-- handlers-->
+    
+    <aura:handler name="init" value="{! this }" action="{!c.doInIt }"/>
+    
+    <lightning:card iconName="standard:entity"  title="Mass Complete Jobs">
+        <aura:set attribute="actions">
+        <!-- <aura:if isTrue="{!(v.CSdata.Active__c)}"> -->
+                    <lightning:button label="Mark Complete"  title="Mark Complete" onclick="{! c.markCompletehandler}"/>
+             <!--   </aura:if> -->
+                <lightning:button label="Cancel"   title="Cancel" onclick="{! c.cancelnaviagtion}"/> 
+            </aura:set>
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="4" padding="around-small"> 
+          
+            <div class="slds-form-element slds-size--1-of-1 slds-p-horizontal_x-small">
+                <label class="slds-form-element__label" for="text-input-id-1"> Campaign</label>
+                <div class="slds-form-element__control">
+                    <select name="CampList" size="3" class="slds-select" id="CampAuraId" multiple="true" onchange="{!c.doFilter}" >
+                        <option value="">--None--</option>
+                        <aura:iteration items="{!v.CampaignList}" var="item">
+                            <option value="{!item.Name}">{!item.Name}</option>
+                        </aura:iteration>
+                    </select> 
+                </div>
+            </div>
+            
+            
+            
+             <div class="slds-form-element slds-size--1-of-1 slds-p-horizontal_x-small">
+                <label class="slds-form-element__label" for="text-input-id-1"> MediaType</label>
+                <div class="slds-form-element__control">
+                    <select name="MTList" size="3" class="slds-select" id="MTAuraId" multiple="true" onchange="{!c.doFilter}">
+                       <option value="">--None--</option>
+                        <aura:iteration items="{!v.MediaTypeList}" var="item">
+                            <option value="{!item.Name}">{!item.Name}</option>
+                        </aura:iteration>
+                    </select> 
+                </div>
+            </div>
+            
+            <div class="slds-form-element slds-size--1-of-1 slds-p-horizontal_x-small">
+                <label class="slds-form-element__label" for="text-input-id-1"> Schedule Template</label>
+                <div class="slds-form-element__control">
+                    <select name="STList" size="3" class="slds-select" id="STAuraId" multiple="true" onchange="{!c.doFilter}">
+                          <option value="">--None--</option>
+                        <aura:iteration items="{!v.ScheduleTempList}" var="item">
+                            <option value="{!item.Name}">{!item.Name}</option>
+                        </aura:iteration>
+                    </select> 
+                </div>
+            </div>
+            
+             <div class="slds-form-element slds-size--1-of-1 slds-p-horizontal_x-small">
+                <label class="slds-form-element__label" for="text-input-id-1"> Client</label>
+                <div class="slds-form-element__control">
+                    <select name="ClientList" size="3" class="slds-select" id="ClientAuraId" multiple="true" onchange="{!c.doFilter}">
+                       <option value="">--None--</option>
+                        <aura:iteration items="{!v.ClientList}" var="item">
+                            <option value="{!item.Name}">{!item.Name}</option>
+                        </aura:iteration>
+                    </select> 
+                </div>
+            </div>
+          
+            <br/>
+            <center> 
+                <lightning:button label="Reset" title="Reset" onclick="{! c.resetFilters}"/>
+            </center>
+            
+        </lightning:layoutItem> 
+
+        <lightning:layoutItem size="8" padding="around-small">
+            <aura:if isTrue="{!!empty(v.data)}">
+                 <h1>Selected Rows: {! v.selectedRowsCount }</h1>
+              <div style="height:500px">
+                <lightning:datatable class="completeJobscss"
+                                     columns="{!v.columns}"
+                                     data="{!v.data}"
+                                     keyField="Id"
+                                     showRowNumberColumn="true"
+                                     sortedBy="{!v.sortedBy}"
+                                     sortedDirection="{!v.sortedDirection}"
+                                     maxRowSelection="{! v.maxRowSelection }"
+                                     onsort="{!c.updateColumnSorting}"
+                                     onrowselection="{! c.updateSelectedText }"
+                                     enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                                     onloadmore="{! c.loadMoreData }"
+                                     />
+                </div>
+                <br/>
+                <div class="slds-float_left">
+                    <strong>Total Active rows : {!v.totalAcitveJobRows}</strong>
+                </div>
+                <div class="slds-float_right">
+                   <!-- <strong>{!v.loadMoreStatus}</strong> -->
+                </div>
+                
+                <aura:set attribute="else">                      
+                    No records to display.
+                </aura:set>
+            </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+    </lightning:card>
+</aura:component>

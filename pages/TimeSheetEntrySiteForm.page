@@ -1,0 +1,431 @@
+<apex:page standardController="Timesheet_Entries__c" extensions="TimeSheetEntrySiteFormExt" id="Page" sidebar="false" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="False">
+
+
+     <style>
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+       .detailPage .bPageBlock, .editPage .bPageBlock
+                  {
+                      border-top-width: 0px;
+                  }
+                  
+       .slds table{     height: 50px; }
+       body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons{     margin-top: -19px; }
+       
+       
+       .dateInput {
+     white-space: inherit;
+                }
+                
+                
+        .slds .slds-text-heading--large
+       {
+               font-size: 27px;
+               
+                line-height: 0.50;
+       }
+       
+        .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                   
+                    .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   
+                   
+                   
+                   body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock
+                   {
+                       border-bottom:0px;
+                   }
+                   
+                   
+                   
+     
+    </style>  
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+           <script>
+                   var j$ = jQuery.noConflict();
+                   
+                   
+                            j$(document).ready(function(){
+                            j$(".errorMsg").css("color","red");
+                            j$("div .messageText h4").css("color","white"); 
+                                       clearValue();    
+                            });
+                            function messagelink()
+                            {
+                            j$(".errorMsg").css("color","red");
+                            j$("div .messageText h4").css("color","white"); 
+                            
+                            }
+                            
+                    function clearValue()
+                    {
+                
+                        j$(".startcls").val("");
+                        j$(".endcls").val("");
+                
+                    }
+                    
+                    
+           </script>
+       
+           <body>
+           
+                <div style="padding-left:2px;padding-right:25px;">
+                   <apex:image id="JS_logo" value="{!$Resource.JobsuiteLogo}" rendered="{!imageNotFound == True}" />
+                      <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+               </div>
+           
+           
+                <div class="slds">
+                      <ul class="slds-list--vertical slds-has-dividers">
+                           <li class="slds-list__item slds-large-size">  
+                               <!-- <div class="slds-text-heading--large"><center>Job Time</center></div> -->
+                                  <div class="slds-text-heading--large" style="font-weight:bold;font-size:24px;font-family:Arial;">
+                                       <center> Job Time </center>       
+                                </div>
+                           </li>
+                      </ul>
+                      
+                      <br/>
+                      
+                      
+                     <apex:form html-novalidate="novalidate" id="frm">
+                       
+                          <apex:pageBlock mode="edit" id="pg_ts">
+             
+                               <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                    <apex:pageMessages id="pgMsg"/>
+                               </div> 
+                               
+                               <br/>
+                               
+                               <div style="background-color:#A9A9A9;color:white;display:{!watchRender};" onclick="toggle('watchsection');">
+                                   
+                                   <h3 class="slds-section-title" id='watchsectionheading'>
+                                   &nbsp;<img src="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/LeftArrow.png')}" width="20px" height="20px" id="img"/>
+                                       <b>Watch Section</b>
+                                   </h3>
+                               </div>
+                               
+                               <div id="watchsection">
+                              <div class="slds-grid slds-wrap"  style="display:{!watchRender};" >
+                                 
+                                  <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--2-of-8 slds-large-size--3-of-12" >
+                                     
+                                    <apex:outputPanel id="pbs1">
+                                       <div class="slds-grid slds-wrap">  
+                                       
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-8 slds-large-size--3-of-12" id="starttime">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium" >
+                                                    <label class="slds-form-element__label"><b>Start Watch</b></label>
+                                                    <div class="slds-form-element__control"> 
+                                                        <apex:actionRegion >
+                                                            <apex:inputfield value="{!objTSDetail.Start_Watch__c}"   styleClass="slds-input startcls" id="start" >
+                                                                <apex:actionSupport event="onchange" reRender="pbs,pgMsgs"/> 
+                                                            </apex:inputfield>
+                                                        </apex:actionRegion>
+                                                    </div>
+                                               </div>
+                                            </aside>  
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-8 slds-large-size--3-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:commandButton value="Start Time" reRender="Start,pbs,pg_ts,tde" action="{!start}" style="margin-top: 8px;" />
+                                                    <!--style="height:35px;font-size:16px;font-weight:bold;color:white;background:#A9A9A9;"-->
+                                                </div>
+                                                </div>
+                                           </aside>
+                                           
+                                           <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-8 slds-large-size--3-of-12" id="endtime">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium" >
+                                                    <label class="slds-form-element__label"><b>End Watch</b></label>
+                                                    <div class="slds-form-element__control"> 
+                                                        <apex:actionRegion >
+                                                            <apex:inputfield value="{!objTSDetail.End_Watch__c}"  styleClass="slds-input endcls" id="End">
+                                                                <apex:actionSupport event="onchange" reRender="pbs,pgMsgs"/> 
+                                                            </apex:inputfield>
+                                                        </apex:actionRegion>
+                                                    </div>
+                                               </div>
+                                            </aside>  
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-8 slds-large-size--3-of-12">
+                                                <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                 <label class="slds-form-element__label"></label>
+                                                <div class="slds-form-element__control">
+                                                      <apex:commandButton value="End Time" reRender="End,pbs,pg_ts,tde" action="{!End}" style="margin-top: 8px;"/> 
+                                                </div>
+                                                </div>
+                                           </aside>
+                                           
+                                        <apex:commandButton value="Clear" onclick="clearValue()" reRender="End,pbs,pg_ts,tde" style="margin-left:40%;"/> 
+                                       </div> 
+                                        </apex:outputPanel>
+                                  </main>
+                                  
+                              </div>
+                              
+                         </div>
+                              
+                              <br/><br/>
+                              
+                              
+                              <!-- ************************************************************** Entry Section ********************************************************************************* -->
+                              
+                              
+                              <div style="background-color:#A9A9A9;color:white;">
+                                   <h3 class="slds-section-title">
+                                       <b>&nbsp;Entry Section</b>
+                                   </h3>
+                               </div>
+                               
+                               
+                              <div class="slds-grid slds-wrap"  >
+                                 
+                                  <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                  
+                                  <apex:outputPanel id="pbs">
+                                       <div class="slds-grid slds-wrap" >  
+                                       
+                                              
+                                                 
+                                                  <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                        <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                        <label class="slds-form-element__label" ><b> Staff </b></label>
+                                                        <div class="slds-form-element__control" >
+                                                            <apex:actionRegion >
+                                                                 <apex:outputPanel >
+                                                                      <span Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                                                           <div> </div>
+                                                                           <apex:selectList id="StaffName" value="{!StaffName}" size="1"   styleClass="slds-input" >
+                                                                               <apex:actionSupport event="onchange" rerender="txtjob,txtTask,txtGL,txtHrs,txtRemain"/>
+                                                                                   <apex:selectOptions value="{!Staff}">
+                                                                                   </apex:selectOptions>
+                                                                           </apex:selectList> 
+                                                                       </span>
+                                                                  </apex:outputPanel>  
+                                                             </apex:actionRegion>
+                                                        </div>
+                                                        </div>
+                                                    </aside>
+                                                 
+                                       
+                                       
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                        <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                        <label class="slds-form-element__label" ><b> Job Name </b></label>
+                                                        <div class="slds-form-element__control" >
+                                                            <apex:actionRegion >
+                                                                 <apex:outputPanel id="txtjob">
+                                                                      <span Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                                                           <div> </div>
+                                                                           <apex:selectList value="{!JobNameStr}" size="1" styleClass="slds-input" >
+                                                                                <apex:actionSupport event="onchange" rerender="txtTask,txtGL,txtHrs,txtRemain"/>
+                                                                                     <apex:selectOptions value="{!JobName}">
+                                                                                </apex:selectOptions> 
+                                                                           </apex:selectList>
+                                                                       </span>
+                                                                  </apex:outputPanel>  
+                                                             </apex:actionRegion>
+                                                        </div>
+                                                        </div>
+                                                    </aside>
+                                                    
+                                                    
+                                                    
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                        <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                        <label class="slds-form-element__label"><b> Task Name </b></label>
+                                                        <div class="slds-form-element__control" >
+                                                            <apex:actionRegion >
+                                                                 <apex:outputPanel >
+                                                                      <span Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                                                           <div> </div>
+                                                                           <apex:selectList value="{!JobTaskNameStr}" size="1" styleClass="slds-input" id="txtTask">
+                                                                                <apex:actionSupport event="onchange"  reRender="txtGL,txtHrs,txtRemain"/>
+                                                                                     <apex:selectOptions value="{!TaskName}">
+                                                                                </apex:selectOptions> 
+                                                                           </apex:selectList>
+                                                                       </span>
+                                                                  </apex:outputPanel>  
+                                                             </apex:actionRegion>
+                                                        </div>
+                                                        </div>
+                                                    </aside>
+                                                    
+                                               <!--    <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>GL Code</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:outputText value="{!GLCodeOfTask}"  id="txtGL" styleClass="slds-output" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> -->
+                                                  
+                                                  <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>Date</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:inputField value="{!objTSDetail.Date__c}" type="date" showDatePicker="false"  styleClass="slds-input" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" id="td" style="display:{!IF((objTSDetail.Start_Watch__c != null ), 'block','none')};">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label " ><b>Total Hours Worked</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:outputText value="{!calcTimeDiff}"  id="tde" styleClass="slds-output" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF((objTSDetail.Start_Watch__c == null && objTSDetail.End_Watch__c == null), 'block','none')};">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>Total Hours Worked</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:inputField value="{!objTSDetail.Hours_Worked__c}" styleClass="slds-input" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                  
+                                                    <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>Notes</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:inputTextarea value="{!objTSDetail.Notes__c}"  styleClass="slds-input" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                  
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>Total Hours Estimated</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:outputText value="{!if(GLCodeOfTask<>'',TotalHours,'0.00')}"  id="txtHrs" styleClass="slds-output" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                 
+                                                   
+                                                  
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>Total Hours Remaining</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <apex:outputText value="{!if(GLCodeOfTask<>'',RemainHours,'0.00')}"  id="txtRemain" styleClass="slds-output" />
+                                                                </div>
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                 
+                                                  
+                                                  
+                                                  
+                                                  <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                               
+                                                            </div>
+                                                  </aside> 
+                                                  
+                                                    <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF(($Profile.Name =='System Administrator' ), 'block','none')};">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                  <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12 slds-m-top--medium " >
+                                                                    <c:lookup SelectedID="{!objTSDetail.User__c}" CmpId="ULookupComp" SelectedValue="{!CompUser}" ObjectApi="User" Fields="{!UFields}" >
+                                                                    </c:lookup>
+                                                                </main>    
+                                                            </div>
+                                                  </aside>
+                                                  
+                                                 
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                    
+                                                     <br/>
+                                                   <apex:pageMessage summary=" End watch should  be greater than Start watch. " rendered="{!error}" id="pgMsgs" severity="FATAL" strength="1" />  
+                                                    
+                                                    
+                                       
+                                       </div> </apex:outputPanel>
+                                       
+                                  </main>
+                                  
+                              </div>
+                              
+                              
+                              
+                              <br/><br/>
+                              
+                              <center> <apex:commandButton action="{!save}" value="Save" ></apex:commandButton> </center>
+                              
+                              
+                          </apex:pageBlock>
+                          
+                          <script>
+                                
+                                document.getElementById('watchsection').style.display = "none";
+                                function toggle(id){
+                                    var t = document.getElementById(id);
+                                    if(t.style.display == "none"){
+                                        t.style.display = "block";
+                                        document.getElementById('img').setAttribute('src', "{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/down.png')}");
+                                    }
+                                    else{
+                                        t.style.display = "none";
+                                        document.getElementById('img').setAttribute('src', "{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/LeftArrow.png')}");
+                                    }
+                                }
+                          </script>
+                          
+                     </apex:form>  
+                        
+                </div> 
+           
+           </body>
+          
+    </html>
+
+ 
+</apex:page>

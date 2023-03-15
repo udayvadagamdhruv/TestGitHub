@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="ClientInvoiceSection" label="Client Invoice Section Label"  description="This will reflect the Client Invoice Section Label"/>
+</design:component>

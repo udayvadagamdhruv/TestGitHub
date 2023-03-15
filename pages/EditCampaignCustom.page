@@ -1,0 +1,176 @@
+<!-- This page is used to Edit Campaign. This page is used override the standard Campaign page-->
+<apex:page standardController="Campaign__c" tabStyle="Campaign__c" extensions="editCampaignCustomExtension">
+     <apex:sectionHeader title="{!Campaign__c.Name}"/>
+     <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+        
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!save}" value=" Save " ></apex:commandButton>
+                    <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+                 
+                 <apex:pageBlockSection title="Campaign Information">
+             <apex:repeat value="{!$ObjectType.Campaign__c.fieldsets.Campaign_field_sets}" var="fieldValue">
+              <apex:Inputfield value="{!Campaign__c[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="height:100px;width:400px" rendered="{!CONTAINS(LOWER(fieldValue) , LOWER('Description__c')) }"/>
+                 
+           <apex:Inputfield value="{!Campaign__c[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}"  rendered="{!Not(CONTAINS(LOWER(fieldValue) , LOWER('Description__c')))}"/>  
+                      
+            
+             </apex:repeat>
+          </apex:pageBlockSection>
+              
+         <!--     <apex:pageBlockSection title="Campaign Information" columns="2" collapsible="true"> 
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Name.Label}"/> 
+                           <apex:inputfield value="{!Campaign__c.Name}" required="true"/>
+                       </apex:pageBlockSectionitem>
+                       
+                       <apex:pageBlockSectionitem > 
+                            <apex:outputlabel value="{!$ObjectType.Campaign__c.Fields.Active__c.Label}"/>
+                            <apex:inputCheckbox value="{!Campaign__c.Active__c}" selected="true"/>
+                       </apex:pageBlockSectionitem>
+
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Start_Date__c.Label}"/>
+                           <apex:inputfield value="{!Campaign__c.Start_Date__c}"/>
+                       </apex:pageBlockSectionitem>
+                                              
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Status__c.Label}"/>
+                           <apex:inputfield value="{!Campaign__c.Status__c}"/>
+                       </apex:pageBlockSectionitem>
+
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.End_Date__c.Label}"/>
+                           <apex:inputfield value="{!Campaign__c.End_Date__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                        <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Actual_Cost__c.Label}"/> 
+                           <apex:outputfield value="{!Campaign__c.Actual_Cost__c}"/>
+                       </apex:pageBlockSectionitem>
+                       
+                
+                       
+                       <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                       
+                       <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Currency_1__c.Label!='Dummy Currency 1'}">
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Currency_1__c.Label}"/>
+                           <apex:inputField value="{!Campaign__c.Dummy_Currency_1__c}"/>
+                       </apex:pageBlockSectionItem>
+                
+                       <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Currency_2__c.Label!='Dummy Currency 2'}">
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Currency_2__c.Label}"/>
+                           <apex:inputField value="{!Campaign__c.Dummy_Currency_2__c}"/>
+                       </apex:pageBlockSectionItem>            
+                       
+              </apex:pageBlockSection>
+              
+               <apex:pageBlockSection title="Description Information" columns="2" collapsible="true"> 
+                       <apex:pageBlockSectionitem > 
+                           <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Description__c.Label}"/>
+                           <apex:inputtextarea value="{!Campaign__c.Description__c}" cols="55" rows="5" style="resize:none"/>
+                       </apex:pageBlockSectionitem>
+                
+                    <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                
+                
+                
+                
+               <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Text_1__c.Label}"/>
+                        <apex:inputField value="{!Campaign__c.Dummy_Text_1__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Date_1__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Date_1__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                 <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Text_2__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Text_2__c}"/>
+                 </apex:pageBlockSectionItem>  
+                
+                 <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Date_2__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Date_2__c}"/>
+                 </apex:pageBlockSectionItem>   
+                
+                 <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Text_3__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Text_3__c}"/>
+                </apex:pageBlockSectionItem>  
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Date_3__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Date_3__c}"/>
+                </apex:pageBlockSectionItem>   
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Text_4__c.Label!='Dummy Text 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Text_4__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Text_4__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Date_4__c.Label!='Dummy Date 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Date_4__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Date_4__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Text_5__c.Label!='Dummy Text 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Text_5__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Text_5__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Date_5__c.Label!='Dummy Date 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Date_5__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Date_5__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Text_6__c.Label!='Dummy Text 6'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Text_6__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Text_6__c}"/>
+                </apex:pageBlockSectionItem>    
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Date_6__c.Label!='Dummy Date 6'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Date_6__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Date_6__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_1__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Picklist_1__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_2__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Picklist_2__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+               <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_3__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Picklist_3__c}"/> 
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_4__c.Label!='Dummy Picklist 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_4__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Picklist_4__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+               <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_5__c.Label!='Dummy Picklist 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_5__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Picklist_5__c}"/> 
+                </apex:pageBlockSectionItem>
+               
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_6__c.Label!='Dummy Picklist 6'}">
+                    <apex:outputLabel value="{!$ObjectType.Campaign__c.Fields.Dummy_Picklist_6__c.Label}"/>
+                    <apex:inputField value="{!Campaign__c.Dummy_Picklist_6__c}"/> 
+                </apex:pageBlockSectionItem>
+                
+               
+                  </apex:pageBlockSection> -->
+              </apex:pageBlock>
+       </apex:form>
+</apex:page>
+<!-- End of Page -->

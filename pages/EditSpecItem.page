@@ -1,0 +1,50 @@
+<!-- This page is used to edit Spec Item of Specification Template. -->
+<apex:page standardController="Spec_Item__c" extensions="EditSpecItemExtension" tabStyle="MyAdmin__tab">
+<apex:form >
+     <apex:pageBlock >
+         <apex:pagemessages />
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <!--    <apex:commandButton action="{!SaveandNew}" value=" Save&New "></apex:commandButton>  -->
+                 <apex:commandButton action="{!cancel}" value="Cancel"></apex:commandButton>
+             </apex:pageBlockButtons>
+             
+             <apex:pageBlockSection title="Spec Item Detail" columns="2" collapsible="true">
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.Spec_Item__c.Fields.Name.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!Spec_Item__c.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.Spec_Item__c.Fields.Specification_Template__c.Label}"></apex:outputLabel>
+                     <apex:outputField value="{!Spec_Item__c.Specification_Template__c}"/>
+                 </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+            
+                 <apex:outputLabel Value="{!$ObjectType.Spec_Item__c.Fields.Sort_Order__c.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!Spec_Item__c.Sort_Order__c}"/>
+            </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.Spec_Item__c.Fields.Lock__c.Label}"></apex:outputLabel>
+                     <apex:inputField value="{!Spec_Item__c.Lock__c}"/>
+             </apex:pageBlockSectionItem>
+            
+            
+              <apex:pageBlockSectionItem > 
+                     <apex:outputLabel value="{!$ObjectType.Spec_Item__c.Fields.Value__c.Label}"/>
+                     <apex:inputField value="{!Spec_Item__c.Value__c}" style="width:95%;resize:none;"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.Spec_Item__c.Fields.Description__c.Label}"/>
+                     <apex:inputField value="{!Spec_Item__c.Description__c}" style="width:95%;resize:none;"/>
+                
+             </apex:pageBlockSectionItem>
+             
+            </apex:pageblocksection>
+          </apex:pageBlock>  
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

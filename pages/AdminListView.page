@@ -1,0 +1,241 @@
+<!-- This Page is Used to display related list of Admin (like GLCodes,Schedule Templates,Spec Templates,Holidays,Staffs,Roles,Campaigns,GL Departments and Media Types), we have override this page with Admin Tab of Admin Object (GoTo Setup->Create->Object->Admin->standard buttons and links) -->
+<apex:page showHeader="true" controller="AdminListViewController" tabStyle="MyAdmin__tab">
+
+<!--
+<script>
+    function customsearch()
+    {
+        alert('Test');
+        window.open("/apex/AdminListView?intFocus=2","_parent");
+    }
+
+</script>  --> 
+ 
+
+ <head>
+ <!-- Style Code Goes here -->
+ 
+ 
+ 
+
+  <style>
+  
+  <!-- style used for Active tab in TabPanel -->
+   .activeTab {font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #3090C7; color:white;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0 px;
+    border-bottom-right-radius: 0 px;
+    }
+   
+  <!-- style used for Inactive tab in TabPanel -->
+   .inactiveTab {font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #E0FFFF; color:black;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0 px;
+    border-bottom-right-radius: 0 px;
+    background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+    }
+ 
+   .labelCol{font-size:1.10em;vertical-align: middle!important;}
+
+   body .btn{font-size:0.8em;font=weight:bold;font-family: 'Calibri';font-style:normal;}
+
+   body .bodyDiv .bFilterView select, .listViewportWrapper .listViewport .topNav .title{font-size:0.9em;font-style:normal;font-weight:normal}
+        
+   .tabContent{background: #fff;}
+      
+   body .rich-tabpanel-content
+    {
+    border: 1px solid #D4DADC;
+    border-top: 3px solid #3090C7;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    background-color: #F8F8F8;
+    padding: 6px;
+    } 
+    
+    
+   body td[id$="Tab_lbl"] 
+    {
+    padding: 8px;
+    background-color: #f8f8f8;
+    border: 1px solid #eaeaea;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    }
+
+   .tabNavigation {
+     background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+     margin: 0 5px;
+     padding: 3px 0 0;
+     position: relative;
+     border-top-left-radius: 20px;
+     border-top-right-radius: 20px;
+     border-bottom-left-radius: 0 px;
+     border-bottom-right-radius: 0 px;
+     }
+     
+   .theTabPanel 
+    {
+    background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+    margin-top: 0.05em !important;
+    padding-top: 0px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 0 px;
+    border-bottom-right-radius: 0 px;
+    }
+    
+   .theTabPanel img
+    {
+    margin: 0px;
+    }
+
+   .rich-tabhdr-side-cell 
+    {
+    border-top-style: solid;
+    border-top-width: 0px;
+    }
+
+   .rich-tabhdr-side-border 
+    {
+    background-image: url("/img/alohaSkin/tabbar_sprite.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    }
+
+   .activeTab:hover 
+    {
+    cursor:pointer;
+    cursor:hand; 
+    text-decoration:underline;
+    color: white;
+    }
+
+   .inactiveTab:hover 
+    {
+    cursor:pointer;
+    cursor:hand; 
+    text-decoration:underline;
+    color: #007FFF;
+    }
+    
+  </style>
+ <!-- End Of Style -->
+ </head>
+ 
+
+   
+ <!-- Tab panel is created to display tabs for GLCode,Schedule Template,Spec Template,Holiday,Staff,Campaign,GL Department and Media Type Object -->  
+ <apex:tabPanel id="GLCodeTabPanel" value="{!tabInFocus}" tabClass="activeTab" activeTabClass="activeTab" inactiveTabClass="inactiveTab" width="100%" contentClass="tabContent" styleClass="theTabPanel">
+ 
+   <!-- Tab label for GL Code -->  
+     <apex:tab label="{!$ObjectType.GL_Code__c.label}s" name="GL Codes" id="glcodes" styleClass="labelCol" style="width:100px;" rendered="{!$ObjectType.GL_Code__c.accessible}"> 
+         <apex:enhancedList type="GL_Code__c" height="500" rowsPerPage="50" id="GLCodeList" customizable="true" /> 
+     </apex:tab>
+   <!-- End of GL Code Tab --> 
+ 
+ <!-- Tab label for Campagin Template -->  
+     <apex:tab label="{!$ObjectType.Campaign_Template__c.label}s" name="Campaign Templates" id="CampTemplate" style="width:150px;" styleClass="labelCol" rendered="{!$ObjectType.Campaign_Template__c.accessible}"> 
+      <apex:include pageName="CampaignTemplateEnhancedList"/> 
+     </apex:tab>
+  <!-- End of Campagin Template -->
+ 
+ 
+ 
+   <!-- Tab label for Schedule Template -->   
+     <apex:tab label="{!$ObjectType.Schedule_Template__c.label}s" name="Schedule Templates" id="schedules" style="width:150px;" styleClass="labelCol" rendered="{!$ObjectType.Schedule_Template__c.accessible}"> 
+       <apex:enhancedList type="Schedule_Template__c" height="500" rowsPerPage="50" id="Schedulelist" customizable="true" />  
+     </apex:tab>
+   <!-- End of Schedule Template -->
+   
+   <!--Specification Template Tab for other orgs-->   
+     <apex:tab label="{!$ObjectType.Specification_Template__c.label}s" name="Specification Templates" id="specifications" style="width:180px;" styleClass="labelCol" rendered="{!$ObjectType.Specification_Template__c.accessible}"> 
+         <apex:enhancedList type="Specification_Template__c" height="500" rowsPerPage="50" id="Specificationlist" customizable="true"/>
+     </apex:tab> 
+   <!-- End of Specification Template  Tab for other orgs-->
+<!-- Added code ends here -->   
+   
+    <!-- Tab label for Production Spec Templates -->   
+     <apex:tab label="{!$ObjectType.Production_Spec_Template__c.label}s" name="Production Spec Templates" id="Productions" style="width:180px;" styleClass="labelCol" rendered="{!$ObjectType.Production_Spec_Template__c.accessible}">
+        <apex:enhancedList type="Production_Spec_Template__c" height="500" rowsPerPage="50" id="Productionlist" customizable="true"/> 
+     </apex:tab> 
+   <!-- End of Production Spec Templates -->
+   
+ 
+   
+  
+    <!-- Tab label for Production Estimate Templates -->
+     <apex:tab label="{!$ObjectType.Production_Estimate_Template__c.label}s" name="Production Estimate Templates" id="ProductionsEst" style="width:220px;" styleClass="labelCol" rendered="{!$ObjectType.Production_Estimate_Template__c.accessible}">
+       <apex:include pageName="ProductionEstTempEnhancedList"/>
+     </apex:tab> 
+  <!-- End of Production Estimate Templates -->
+ 
+ 
+   <!-- Tab label for Holiday --> 
+     <apex:tab label="{!$ObjectType.Holiday__c.label}s" name="Holidays" id="holidays" styleClass="labelCol" rendered="{!$ObjectType.Holiday__c.accessible}">
+        <apex:enhancedList type="Holiday__c" height="500" rowsPerPage="50" id="Holidaylist" customizable="false"/> 
+     </apex:tab>  
+   <!-- End of Holiday Tab --> 
+  
+  <!-- Tab Label For Invoice Allocation template -->
+   
+     <apex:tab label="{!$ObjectType.Invoice_Allocation_Template__c.label}s" name="Invoice Allocation Templates" id="InvoiceAllocation" styleClass="labelCol" style="width:220px" rendered="{!$ObjectType.Invoice_Allocation_Template__c.accessible}">
+         <apex:include pageName="InvAllocationTempEnhancedList"/>
+     </apex:tab> 
+     
+   <!--End of Invoice Allocation template Tab --> 
+ 
+ 
+   <!-- Tab label for Staff --> 
+     <apex:tab label="Staff" id="staffs" styleClass="labelCol" name="Staff">
+        <apex:include pageName="StaffTab"/>
+     </apex:tab> 
+   <!-- End of Staff Tab -->   
+ 
+   <!-- Tab label for Role --> 
+     <apex:tab label="Roles" id="roles" Name="Roles" styleClass="labelCol">
+        <apex:include pageName="RoleTab"/> 
+</apex:tab>  
+   <!-- End of Role Tab -->   
+   
+   <!-- Tab label for Campaign -->  
+ <!--    <apex:tab label="Campaigns" name="Campaign" id="campaign" styleClass="labelCol">
+        <apex:enhancedList type="Campaign__c" height="300" rowsPerPage="50" id="Campaignlist" customizable="false"/> 
+     </apex:tab>  -->
+   <!-- End of Campaign Tab -->   
+ 
+   <!-- Tab Label For Media Type -->
+     <apex:tab label="{!$ObjectType.Media_Type__c.label}s" name="Media Type" id="mediatype" styleClass="labelCol" style="width:120px" rendered="{!$ObjectType.Media_Type__c.accessible}">
+         <apex:include pageName="MediaTypeEnhancedList"/>
+     </apex:tab> 
+     
+   <!--End of Media Type Tab --> 
+ 
+   <!-- Tab Label For GL Department -->
+     <apex:tab label="{!$ObjectType.GL_Department__c.label}s" name="GL Department" id="GLDept" styleClass="labelCol" style="width:140px" rendered="{!$ObjectType.GL_Department__c.accessible}">
+         <apex:include pageName="GLDepartmentEnhancedList"/>  
+     </apex:tab>   
+     
+   <!--End of GL Department Tab --> 
+ 
+ <!--Tab Label for Tag TEmplate-->
+ <!--added by yogini on 29-Apr-13-->
+    <apex:tab label="{!$ObjectType.Tag_Template__c.label}s" name="Tag Template" id="tagTemp" styleClass="labelCol" style="width:140px" rendered="{!$ObjectType.Tag_Template__c.accessible}">
+     <apex:include pageName="TagTempEnhancedList"/>  
+    </apex:tab> 
+ <!--end of tag template-->
+ </apex:tabPanel>  
+ <!-- End of Tab Panel -->
+
+</apex:page>
+<!-- End of page -->

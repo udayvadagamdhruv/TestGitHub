@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>e_Mail_Work_Order</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>e-Mail Work Order</masterLabel>
+    <openType>sidebar</openType>
+    <page>emailworkorder</page>
+    <protected>false</protected>
+</WebLink>

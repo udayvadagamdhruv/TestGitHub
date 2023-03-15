@@ -1,0 +1,29 @@
+<!-- This page is used to assign roles to selected Schedule Task from its detail page.(Overriding Add Role Button) -->
+<apex:page standardController="ScheduleTaskRole__c" extensions="SchedTaskRoleunderschedtempExt" tabStyle="MyAdmin__tab">
+    <apex:form >
+        <apex:pageBlock id="pb">
+           <apex:pagemessages />
+              <apex:pageBlockButtons >
+                 <apex:commandButton action="{!save}" value="Save"></apex:commandButton>
+                 <apex:commandButton action="{!cancel}" value="Cancel"></apex:commandButton>
+              </apex:pageBlockButtons>
+              <apex:pageBlockSection >
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$ObjectType.ScheduleTaskRole__c.Fields.Schedule_Task__c.Label}"/><apex:outputField value="{!ScheduleTaskRole__c.Schedule_Task__c}"/>
+                 </apex:pageBlockSectionItem>
+
+                 <apex:pageBlockSectionItem />
+                 
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$ObjectType.ScheduleTaskRole__c.Fields.Name.Label}"/>
+                    <apex:repeat value="{!roleWraps}" var="r">
+                       <apex:inputCheckbox value="{!r.checked}"/> 
+                       <apex:outputField value="{!r.u.Name}"/> 
+                       <br/>
+                    </apex:repeat>
+                 </apex:pageBlockSectionItem>
+              </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

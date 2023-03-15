@@ -1,0 +1,24 @@
+<apex:page standardController="Timesheet_Entries__c" extensions="EditTimesheetEntrySwitchExt" docType="html-5.0" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="true" >
+ 
+ 
+  <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/EditTimesheetEntry?id="+'{!TimeSheetId}', "_self");
+     }
+    
+    </script>
+    
+  
+      <!--   <apex:include pageName="JobRequestFormdetailpageMobile" rendered="{!$User.UITheme == 'Theme4t'}"/>-->
+      <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+          <apex:include pageName="EditTimesheetEntryLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+     </apex:outputPanel>
+     <apex:outputPanel rendered="{!$User.UITheme == 'Theme4t'}">
+     <apex:include pageName="EditTimesheetEntryMobile" rendered="{!$User.UITheme == 'Theme4t'}"/>
+      </apex:outputPanel>    
+    
+   
+ 
+</apex:page>

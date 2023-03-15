@@ -1,0 +1,52 @@
+<aura:component controller="Home_Page" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="JobLink"/>
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    <aura:attribute name="statusPicklist" type="String[]" default="Active"/>
+    <aura:attribute name="activeSections" type="List" default="['MyActiveJobs']" />
+    
+    <aura:attribute name="MyJobsSection" type="String" default="My Active Jobs" required="true" access="global"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <body>
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.activeSections}">
+        <lightning:accordionSection name="MyActiveJobs" label="{!v.MyJobsSection}"  class="slds-card" >
+            <lightning:card>
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                    <div class="slds-size_2-of-10">
+                        <div class="slds-m-around_x-small">
+                            <lightning:select name="select1" aura:id="pickJob" label="Job Status" onchange="{!c.StatusChange}">
+                                <aura:iteration items="{!v.statusPicklist}" var="option">
+                                    <option text="{!option}" value="{!option}" />
+                                </aura:iteration>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <aura:if isTrue="{!empty(v.data)}">
+                    <b>No records to display</b>
+                    <aura:set attribute="else" >
+                        <div style="height:420px;">
+                        <lightning:datatable aura:id="MyJobs"
+                                             class="tablecss"
+                                             columns="{! v.columns }"
+                                             data="{!v.data}"
+                                             keyField="Id"
+                                             hideCheckboxColumn="true"
+                                             showRowNumberColumn="true"
+                                             errors="{! v.errors }"
+                                             sortedBy="{!v.sortedBy}"
+                                             sortedDirection="{!v.sortedDirection}"
+                                             onsort="{! c.updateColumnSorting }"
+                                             />
+                            </div>
+                    </aura:set>
+                </aura:if>
+            </lightning:card>
+            
+        </lightning:accordionSection>
+    </lightning:accordion>
+    </body>
+    </aura:component>

@@ -1,0 +1,412 @@
+<apex:page Controller="DisplayInvoiceAllocationLIController" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false"  standardStylesheets="true"  >
+  <head>
+   <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+  </head>
+  
+ 
+  <style>
+   
+     .SectionHeader
+        {
+            background-color:Grey !important;
+            color:white;
+        }
+    
+    
+       .slds .slds-max-medium-table--stacked-horizontal td:before
+        {
+          text-transform:none;
+        }
+       
+        .slds .slds-text-body--small {
+            font-size: 13.5px;
+            color: black ! important;
+        }
+   
+       .customImage{ height: 10px; width: 10px; }
+       #rcorners1 
+                 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+                    #pagemessage
+                    {
+                        color:blue;
+                    }
+                   .required:after { content:" *";  color: Red;font:bold;}
+       
+                  /* .slds .slds-dropdown-trigger .slds-dropdown
+                   {
+                               margin-left: 37px !important;
+            
+                   }*/
+       
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                    }
+                    
+                    
+                    .slds .slds-modal__content {
+                        padding: 16px 0px 0px 0px !important;
+                        overflow: hidden;
+                        overflow-y: auto;
+                    }
+                    
+                    .slds .slds-modal__header {
+                            position: relative;
+                            border-top-right-radius: 4px;
+                            border-top-left-radius: 4px;
+                            border-bottom: 2px solid #d8dde6;
+                            padding: 10px 13px;
+                            text-align: center;
+                            font-size: 21px;
+                            background: #851225;
+                            color: white;
+                        }
+                    
+                    .slds .slds-modal__content {
+                        background-color:white !important;
+                    }
+                    
+                    .slds .slds-modal__footer {
+                border-top: 2px solid #d8dde6;
+                border-bottom-right-radius: 4px;
+                border-bottom-left-radius: 4px;
+                padding: 6px 10px;
+                background-color: #f4f6f9;
+                text-align: right;
+                background-color: #851225;
+                box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+            }
+               
+               .slds .slds-icon-text-default:hover {
+                    fill: red;
+                }     
+                   
+                <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:white;
+             }
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white ! important;
+                }
+                
+                .messageText br
+            {
+               display:none !important;
+            }
+            .messageTable tr
+            {
+               padding-top:10px !important;
+               padding-bottom:10px !important;
+            }
+            .messageCell{
+            color:white;
+            }
+            .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+            {
+                border-radius: 15px !important;
+            }
+            .pbBody
+            {
+                padding:10px !important;
+            }
+              
+           .pbBody td {
+    color: black !important;
+}   
+                
+            <!--- error Mesgg-------------------------------------->
+                
+             
+           .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                      
+                
+    </style>  
+    
+   
+    
+ 
+ <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+     
+   
+ <div class="slds">
+  <apex:form id="form111" >
+  <apex:actionFunction name="InlineSave" action="{!save}" reRender="InvAlloTemp" >
+   <apex:param name="firstParam" value="" assignTo="{!rowIndex}" />
+   </apex:actionFunction>
+  
+<apex:outputPanel id="InvAlloTemp">
+   <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+           <apex:pageMessages />
+    </div><br/>
+ 
+  
+   <table width="100%" >
+   
+   <tr >
+          <td align="left" width="30%"  >
+        <apex:outputLabel value="Invoice Allocation Template" for="SpecTemp" style="color:black" ></apex:outputLabel>&nbsp;&nbsp;
+        
+           <apex:selectList id="theSelectList" value="{!InvAllocationTempName}" size="1"  styleClass="slds-select slds-m-right--medium" >
+              <apex:selectOptions value="{!InvAllocationTemplates}" id="sp"></apex:selectOptions>
+              <!----<apex:actionSupport event="onchange" action="{!importIATLI}" reRender="InvAlloTemp,norecords" /> ---->
+          </apex:selectList>
+          
+      </td>
+      
+      <td valign="middle" style="padding-top:19px;"  >    
+           &nbsp; &nbsp; &nbsp;
+            <apex:commandButton value="Import Invoice Allocation Template" action="{!importIATLI}" reRender="InvAlloTemp,norecords" onclick="if(!confirm('This will import new Invoice Allocation Line Items')){return false;}" id="btn1" styleClass="slds-button slds-button--neutral" status="InvAlloLineItemsStaus"/>
+            <apex:commandButton action="{!createIALI}" value="Add Invoice Allocation Line Items" id="btn2" styleClass="slds-button slds-button--neutral"/> 
+            <apex:commandButton value="Save" action="{!save}" id="saveButton1" reRender="InvAlloTemp" style="display:none;" styleClass="slds-button slds-button--neutral"/>  
+           <apex:commandButton value="Cancel" id="cancelButton1" reRender="InvAlloTemp" immediate="true" style="display:none;" styleClass="slds-button slds-button--neutral"/> 
+           </td>
+      
+      </tr> 
+     
+                                                   
+   </table>
+  <br/>
+  
+  
+  <apex:outputpanel rendered="{!IALI.Size>0}">
+   <div class="slds-card">
+   <div class="slds-card__body">
+     <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+            <thead class="slds-truncate">
+                <tr class="slds-text-title ">
+                
+                  <th class="slds-size--1-of-4 slds-cell-fixed" scope="col">Action</th>
+                  
+                  <th class="slds-size--1-of-4 slds-cell-fixed" scope="col">{!$ObjectType.Invoice_Allocation_Line_Item__c .Fields.Client_Name__c.Label}</th>
+                  <th class="slds-size--1-of-4 slds-cell-fixed" scope="col">{!$ObjectType.Invoice_Allocation_Line_Item__c .Fields.Allocation_Qty__c.Label}</th>
+                 <th class="slds-size--1-of-4 slds-cell-fixed" scope="col">{!$ObjectType.Invoice_Allocation_Line_Item__c .Fields.Allocation_Amount__c.Label}</th>
+                  </tr>
+             </thead>
+          <apex:variable value="{!0}" var="rowIndexNum"/>
+         <apex:repeat value="{!IALI}" var="IALItem" rendered="{!IALI.Size>0}" > 
+         <tbody>
+         <tr>
+             <td class="slds-size--1-of-4" data-label="Action">
+            
+                  <div class="slds-warp">
+                     
+                        <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open quotebutton">
+                         &nbsp;&nbsp;  
+                            <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                   <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                            </div>
+                            
+                 
+                            <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small quoteclass">
+                            
+                               <ul class="slds-dropdown__list" role="menu">
+                                   
+                                    
+                                    <li class="slds-dropdown__item" role="presentation">
+                                         
+                                          <apex:commandLink value="Delete" action="{!deleteIALI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="InvAlloTemp,norecords" styleClass="slds-button  slds-button--neutral" status="InvAlloLineItemsStaus">
+                                              <apex:param name="param2" value="{!IALItem.id}" assignTo="{!strIALI}"></apex:param>
+                                              &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                          </apex:commandLink>
+                                                                 
+                                    </li>
+                                    
+                                   
+                                </ul>
+                          </div> 
+                   </div>
+                  
+                  
+                  
+                  
+                  </div>
+              </td>
+         
+              <td class="slds-size--1-of-4" data-label="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Client_Name__c.Label}">
+                  <div class="slds-warp">
+                    <apex:outputfield value="{!IALItem.Client_Name__c}"  styleClass="slds-output"/> 
+                  </div>
+              </td>
+              
+              <td class="slds-size--1-of-4"    data-label="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Allocation_Qty__c.Label}">
+                  <div class="slds-warp">
+                <apex:outputfield value="{!IALItem.Allocation_Qty__c}">
+                            <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" changedStyleClass="myBoldClass" hideOnEdit="btn2" />
+                            
+                            <i class="material-icons icon1" style="float:right;font-size:15px;">&#xe254;</i>
+                  </apex:outputfield>
+             <!------
+                  <apex:outputPanel > 
+                  <apex:actionSupport event="ondblclick" reRender="InvAlloTemp" rendered="{! !AND(isEdit,rowIndexNum==rowIndex)}" action="{!inlineInAllTemp}"  focus="InvAlllFieldId"  >
+                    <apex:param name="firstParam" value="{!rowIndexNum}" assignTo="{!rowIndex}" />
+                  </apex:actionSupport>
+                    <apex:outputText value="{!IALItem.Allocation_Qty__c}" rendered="{! !AND(isEdit,rowIndexNum==rowIndex)}" > </apex:outputText>
+                    
+                 <apex:inputField id="InvAlllFieldId"  value="{!IALItem.Allocation_Qty__c}" rendered="{!AND(isEdit,rowIndexNum==rowIndex)}" styleClass="slds-input"  onchange="javascript:InlineSave({!rowIndexNum});"  /> 
+                </apex:outputPanel>
+                 ------------>
+                   
+                   
+                  </div>
+              </td>
+              
+              <td class="slds-size--1-of-4" data-label="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Allocation_Amount__c.Label}">
+                  <div class="slds-warp">
+                    <apex:outputField value="{!IALItem.Allocation_Amount__c}">
+                        
+                  </apex:outputfield>
+                  </div>
+              </td>
+              
+              </tr>
+              
+              
+              
+             
+              
+         </tbody>
+         <apex:variable value="{!rowIndexNum+1}" var="rowIndexNum" />
+         </apex:repeat>
+         
+     </table>
+     <br/>
+    
+   <div  style="float:right;padding-right:19.5%;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+       <apex:outputPanel rendered="{!IALI.Size > 0}">
+            <apex:outputLabel value="Total Allocation Qty" style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, ###,###,###}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumQuant}"/>
+            </apex:outputText>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           
+          <apex:outputLabel value="Total Allocation Amount" style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, $###,###,###.00}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+            </apex:outputText>
+           
+        </apex:outputPanel>
+     </div>
+      <br/> <br/>
+     
+   </div>
+   </div>
+    
+    
+     </apex:outputPanel>
+     
+     </apex:outputPanel>
+     
+     
+     
+      <apex:actionStatus id="InvAlloLineItemsStaus" >
+                   <apex:facet name="start">
+                      <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                         <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                           <span class="slds-assistive-text">Loading</span>
+                           <div class="slds-spinner__dot-a"></div>
+                           <div class="slds-spinner__dot-b"></div>
+                         </div></div>
+                    </apex:facet>
+                </apex:actionStatus>
+     
+     
+     
+         <apex:outputPanel id="norecords"> 
+         <apex:outputPanel rendered="{!IALI.size <= 0}">
+               <div> <b> No records to display </b></div>
+        </apex:outputPanel> 
+         </apex:outputPanel>
+         
+     
+     </apex:form>
+ </div>
+ 
+ </html>
+ 
+</apex:page>

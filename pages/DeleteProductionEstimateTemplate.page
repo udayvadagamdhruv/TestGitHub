@@ -1,0 +1,19 @@
+<apex:page standardController="Production_Estimate_Template__c" extensions="DeleteProductionEstimateTemplateExt" showHeader="false" sidebar="false">
+  
+  <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+        
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}" reRender="msg,po"/> 
+           <apex:outputPanel id="po">
+              <center> <apex:outputLink value="/apex/AdminListView?intFocus=13" rendered="{!(isError!=False)}">Click here to Go to List</apex:outputLink> </center>
+           </apex:outputPanel>
+        </apex:form>
+  
+</apex:page>

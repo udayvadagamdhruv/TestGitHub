@@ -1,0 +1,174 @@
+<aura:component  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+   
+   
+    <lightning:card title="">
+        <ul class="slds-has-dividers_bottom-space">
+            <div class="c-container">
+                
+                <lightning:layout multipleRows="true">
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.JobLogSheetReport}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Job Log Sheet" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:contact_list"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Job Log Sheet</li>
+                                            </ul>
+                                             <p>Jobs sorted by year then Campaign</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.CampaignStatusReport}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Campaign Status Report" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:lead_list"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Campaign Status Report</li>
+                                            </ul>
+                                             <p>Active jobs sorted by Campaign</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.StatusReport}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Status Report" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:product_item"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Status Report</li>
+                                            </ul>
+                                            <p>Active jobs sorted by Client  </p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                   
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.JobCostReport}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Job Cost Report" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:bot_training"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Job Cost Report</li>
+                                            </ul>
+                                             <p>Jobs sorted by Campaign, showing cost summaries</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                   
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.DailyHotSheetReport}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Daily Hot Sheet Report" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:product"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Daily Hot Sheet Report</li>
+                                            </ul>
+                                            <p>Tasks due today, sorted by staff </p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.StatusReportII}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Status Report II" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:template"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Status Report II</li>
+                                            </ul>
+                                            <p>Jobs, sorted by Client</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem size="4" flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <li class="slds-item">
+                                <a onclick="{!c.WeeklyHotSheetReport}" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-body"  title="Weekly Hot Sheet Report by Staff" style="padding: 1.5rem .75rem;">
+                                        
+                                        <lightning:tile label="">
+                                            <aura:set attribute="media">
+                                                <lightning:avatar src="/docs/component-library/app/images/examples/avatar1.jpg" fallbackIconName="standard:work_step"/>
+                                            </aura:set>
+                                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item titlecls">Weekly Hot Sheet Report by Staff</li>
+                                            </ul>
+                                            <p>Tasks due this week, sorted by staff</p>
+                                        </lightning:tile>
+                                        
+                                    </div>
+                                </a>
+                            </li>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    
+                </lightning:layout>
+            </div>
+        </ul>
+        
+        
+        
+    </lightning:card>
+</aura:component>

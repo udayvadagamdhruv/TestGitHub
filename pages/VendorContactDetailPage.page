@@ -1,0 +1,7 @@
+<!-- This Page is Used to display Detail of Client Contact -->
+<apex:page standardController="Vendor_Contact__c" tabStyle="Vendor__c">
+  <apex:form >
+    <apex:detail relatedList="true" showChatter="true"/>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

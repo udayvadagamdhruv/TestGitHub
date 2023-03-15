@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Jobs_Due_This_Month</fullName>
+    <columns>Job_Auto_Number__c</columns>
+    <columns>NAME</columns>
+    <columns>JS_Client__c</columns>
+    <columns>Due_Date__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Due_Date__c</field>
+        <operation>equals</operation>
+        <value>THIS_MONTH</value>
+    </filters>
+    <label>Jobs Due This Month</label>
+</ListView>

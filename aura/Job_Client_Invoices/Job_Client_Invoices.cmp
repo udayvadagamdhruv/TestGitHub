@@ -1,0 +1,250 @@
+<aura:component controller="Job_Billing_Tab"  implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="DESC" />
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isCLIOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="CLIRecordid" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="ClientRecords" type="Object"/>
+    <aura:attribute name="CntInvAccess" type="List" default="false"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="ClientInvoiceSection" type="String" default="Client Invoice" required="true" access="global"/>
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <!-- This attribute will hold the update records from data table-->
+    <aura:attribute name="updatedRecord" type="Object[]" />
+    
+    <aura:attribute name="helpText" type="List"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.CntInvAccess[0]}"> 
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ClientInvoice">
+            <lightning:accordionSection name="ClientInvoice" label="{!v.ClientInvoiceSection}" class="slds-card">  
+                <aura:if isTrue="{!!v.isMobile}">
+                    <c:customHelpText text="{!v.helpText[0].Client_Invoice__c}"/>
+                    <div align="center">
+                        <lightning:button variant="neutral" label="New" title="New" onclick="{!c.CLICreate}"/>
+                    </div>
+                    <br/>
+                    <aura:if isTrue="{!empty(v.data)}">
+                        <b>No records to display</b>
+                        <aura:set attribute="else" >
+                            
+                            <lightning:card>
+                                <div>
+                                    <lightning:datatable class="tablecss"
+                                                         aura:id="CLIDataTable"
+                                                         columns="{!v.columns}"
+                                                         data="{!v.data}"
+                                                         keyField="Id"
+                                                         onsave ="{!c.onSave}"
+                                                         hideCheckboxColumn="true"
+                                                         showRowNumberColumn="true"
+                                                         errors="{!v.errors}"
+                                                         onsort="{!c.updateColumnSorting}"
+                                                         sortedBy="{!v.sortedBy}"
+                                                         sortedDirection="{!v.sortedDirection}" 
+                                                         onrowaction="{! c.handleRowAction }" />
+                                </div>
+                            </lightning:card>
+                            <aura:if isTrue="{!v.isLoading}">
+                                <lightning:spinner alternativeText="Loading"/>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{!v.isMobile}">
+                    <aura:if isTrue="{!empty(v.data)}">
+                        <b>No records to display</b>
+                        <aura:set attribute="else">
+                            <aura:iteration items="{!v.data}" var="CliInv">
+                                <table>
+                                    <tr>
+                                        <td colspan="2">
+                                            <a href="{!'/'+CliInv.Id}"> <b> <ui:outputText value="{!CliInv.Name}"/></b></a> 
+                                        </td>
+                                        <!--  <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                            <lightning:buttonMenu name="{!Shp.Id}" aura:id="EstItem" onselect="{! c.handleShpQuickAction }">
+                                                <lightning:menuItem value="Edit_Shp" label="Edit" iconName="utility:edit"/>
+                                                <lightning:menuItem value="Delete_Shp" label="Delete" iconName="utility:delete"/>
+                                            </lightning:buttonMenu>
+                                        </td>-->
+                                    </tr>                           
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].ClientName}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <ui:outputText value="{!CliInv.Client_Name__r.Name}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].Payment}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><lightning:formattedNumber value="{!CliInv.Payment_Term__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].InvoiceDate}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputDate value="{!CliInv.Invoice_Date__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].DueDate}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputDate value="{!CliInv.Date_Due__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].Status}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!CliInv.Invoice_Status__c}"/></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" >
+                                            <ui:outputText value="{!v.DynamicLabels[0].Total}"/>:
+                                        </td>
+                                        <td width="60%">
+                                            <p><ui:outputText value="{!CliInv.Invoice_Total_new__c}"/></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <hr style="margin: 0.4rem 0;"/>
+                            </aura:iteration>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+            </lightning:accordionSection>
+        </lightning:accordion>
+        
+        
+        <aura:if isTrue="{!v.isCLIOpen}">
+            <lightning:recordEditForm aura:id="CLIEditform" density="comfy" objectApiName="Client_Invoice__c" recordId="{!v.CLIRecordid}" onload="{!c.jobCLIload}"  onsubmit="{!c.jobCLIOnsubmit}" onsuccess="{!c.onCLIRecordSuccess}"  >
+                <lightning:messages />
+                <!--************************************************  MODAL BOX Start *************************************************--> 
+                
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.CLIRecordid==null?'New ':'Edit '} {!v.Labelname}</h2>
+                        </header>
+                        <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                        <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                            <lightning:layout multipleRows="true">  
+                                <aura:iteration items="{!v.fieldset}" var="field">
+                                    <aura:if isTrue="{!(field=='Job__c') || (field=='Client_Name__c')|| (field=='Tax_Rate__c') || (field=='Name')}">    
+                                        <aura:set attribute="else">   
+                                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="{!field}" aura:id="JobCLIField"  class="slds-form-element  slds-p-horizontal_x-small" /> 
+                                            </lightning:layoutItem>
+                                        </aura:set>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!(field=='Name') &amp;&amp; (v.CLIRecordid!=null)}"> 
+                                        <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:outputField fieldName="Name" class="slds-form-element  slds-p-horizontal_x-small"/> 
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!field=='Job__c'}"> 
+                                        <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <div class="slds-form-element  slds-p-horizontal_x-small">
+                                                <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Client_Invoice__c.Job__c.label}</label>
+                                                <div class="slds-form-element__control">
+                                                    <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                                </div>
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!field=='Client_Name__c'}">
+                                        
+                                        <aura:if isTrue="{!v.CLIRecordid==null}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <div class="slds-form-element  slds-p-horizontal_x-small">
+                                                    <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Client_Invoice__c.Client_Name__c.label}</label>
+                                                    <div class="slds-form-element__control">
+                                                        <ui:outputText value="{!v.simpleRecord.JS_Client__r.Name}"  />
+                                                    </div>
+                                                </div>
+                                            </lightning:layoutItem>
+                                            
+                                            <aura:set attribute="else"> 
+                                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                    <div class=" slds-p-horizontal_x-small"> 
+                                                        <lightning:select  name="Client Name" aura:id="ClientId" label="{!v.ObjectType.Client_Invoice__c.Client_Name__c.label}">
+                                                            <aura:iteration items="{!v.ClientRecords}" var="Cli">
+                                                                <option text="{!Cli.value}" value="{!Cli.key}" />
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                    </div>
+                                                </lightning:layoutItem>
+                                            </aura:set>
+                                        </aura:if> 
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!(field=='Tax_Rate__c') &amp;&amp; (v.CLIRecordid!=null)}"> 
+                                        <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="Tax_Rate__c" class="slds-form-element  slds-p-horizontal_x-small"/> 
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                </aura:iteration>
+                                <br></br>
+                            </lightning:layout>
+                        </div>
+                        <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button variant="neutral" 
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{! c.closeModel }"/>
+                            <lightning:button variant="brand" 
+                                              label="Save"
+                                              title="Save"
+                                              type="submit" />
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+            </lightning:recordEditForm> 
+        </aura:if>
+    </aura:if>
+    
+</aura:component>

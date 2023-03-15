@@ -1,0 +1,219 @@
+<aura:component controller="CustoReportCpController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    
+    <aura:attribute name="CampaignRec" type="String[]" description="It stores the All Campaign records"/>
+    <aura:attribute name="ClientRec" type="String[]" description="It stores the All Active Client records"/>
+    <aura:attribute name="JobstatusPicklist" type="String[]" default="Active" description="It stores the Job Status values"/>
+    <aura:attribute name="SearchValRec" type="object"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:card>
+        
+        <div class="c-container">
+            <lightning:layout multipleRows="true">
+                <lightning:layoutItem padding="around-small" size="12">
+                    <lightning:layout horizontalAlign="space">
+                        <lightning:layoutItem size="4" padding="around-small">
+                            
+                            <lightning:select name="Campaign" aura:id="Camp" label="Campaigns" onchange="{!c.CampChange}">
+                                <option text="--None--" value=""/>
+                                <aura:iteration items="{!v.CampaignRec}" var="option">
+                                    <option text="{!option.Name}" value="{!option.Name}" />
+                                </aura:iteration>
+                            </lightning:select> 
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="4" padding="around-small">
+                            <lightning:select name="Status" aura:id="JobStatus" label="Status" onchange="{!c.JobStatusChange}">
+                                <aura:iteration items="{!v.JobstatusPicklist}" var="option">
+                                    <option text="{!option}" value="{!option}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="4" padding="around-small">
+                            <lightning:select name="Client" aura:id="Client" label="Client" onchange="{!c.ClientChange}">
+                                <option text="--None--" value=""/>
+                                <aura:iteration items="{!v.ClientRec}" var="option">
+                                    <option text="{!option.Name}" value="{!option.Name}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </lightning:layoutItem>
+                        
+                    </lightning:layout>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem padding="around-small" size="12">
+                    <lightning:layout horizontalAlign="space">
+                        <lightning:layoutItem size="4" padding="around-small">
+                            <lightning:input aura:id="DueDateFrom" label=" Due Date From" 
+                                             displayDatePicker="true"
+                                             labelClass="slds-form-element__label"
+                                             required="true"
+                                             dateStyle="short"
+                                             type="date"
+                                             />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="4" padding="around-small">
+                            <lightning:input aura:id="DueDateTo" label="Due Date To" 
+                                             displayDatePicker="true"
+                                             labelClass="slds-form-element__label"
+                                             required="true"
+                                             format="mm/dd/yyyy"
+                                             dateStyle="short"
+                                             type="date"
+                                             />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="4" padding="around-small">
+                            
+                        </lightning:layoutItem>
+                        
+                    </lightning:layout>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12">
+                    <lightning:layout horizontalAlign="center">
+                        <lightning:layoutItem >
+                            <lightning:button variant="neutral" label="Search" onclick="{!c.doSearch}" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem >
+                            <lightning:button variant="neutral" label="Clear" />
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </lightning:layoutItem>
+                
+            </lightning:layout>
+            
+            
+            
+        </div>
+        
+        
+    </lightning:card>  
+    <div id="data" style="padding-top:10px;">
+        <lightning:card>          
+            <aura:set attribute="title">          
+                
+            </aura:set> 
+            <aura:set attribute="actions">  
+                <aura:if isTrue="{!!empty(v.SearchValRec)}">
+                    <lightning:button label="Print to PDF" onclick="{!c.downloadPdf}"/>
+                </aura:if>
+            </aura:set>
+            <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Results">   
+                <lightning:accordionSection name="Results" label="Results"  class="slds-card" >
+                 
+                            <aura:iteration items="{!v.SearchValRec}" var="item">
+                                <aura:iteration items="{!item.sWrapper}" var="sw" >
+                                   
+                                           <table width="100%" >
+                                                    
+                                                    <tr>
+                                                        <td width = "25%">
+                                                            
+                                                               
+                                                        </td>
+                                                        
+                                                        <td width = "75%">
+                                                           <table width="100%" >
+                                                           <tr>
+                                                                <td align="left" width = "100%" style ="vertical-align:bottom;">
+                                                                     <aura:iteration items="{!sw.tskST}" var="StTsk" >
+                                       
+                                            <div style="width:74px;float:left; align:center" align = "center">
+                                                 {!StTsk.Name}
+                                            </div> 
+                                                     </aura:iteration>
+                                                                    </td>
+                                                               </tr>
+                                                               </table>
+                                                             </td>
+                                                    </tr>
+                                                </table>
+                                            
+                                      
+                           
+                                    
+                                                   <div style="background-color:#DFDFDF;width:100%;font-weight: bolder;width:100%">
+                                            <b  style="font-size:14.5px;font-weight:bold;padding-bottom:10px;">{!item.strClient} </b>
+                                        </div>                                   
+                                        <hr style="margin-bottom:-5px;margin-top:-4px;noshade;"/><br/>   
+                                     <table width="100%" >
+                                                        
+                                                        <tr>
+                                                            <td width = "25%">
+                                                                
+                                  
+                                        <div style="padding-bottom:5px;padding-left:var(--lwc-spacingLarge,1.5rem);">
+                                            <b style="font-size:14.5px;font-weight:bold;padding-bottom:10px;"> {!sw.strschedule}</b> 
+                                        </div>
+                                                                 </td>
+                                                            
+                                                            <!-- td width = "75%">
+                                                               <table width="100%" >
+                                                               
+                                                                
+                                                                </table>                
+                                                            </td -->
+                                                        </tr>
+                                                    </table>
+                                
+                                    
+              
+                                        <aura:iteration  items="{!sw.jWrapper}" var="jw">
+                                          <table width="100%">
+                                                                <tr>
+                                                                    <td width="25%">
+                                                                        <table width="100%" style="float:left;">
+                                                                            <tr>
+                                                                                <td style="width:100%;vertical-align:top;" >
+                                                <div style="padding-bottom:5px;padding-left:var(--lwc-spacingLarge,1.5rem);">
+                                                    <b style="font-size:14.5px;font-weight:bold;padding-bottom:10px;"> {!jw.job.Name} {!jw.job.Job_Auto_Number__c}</b> 
+                                                </div>
+                                                {!jw.job.createdDate}
+                                                
+                                            <aura:iteration  items="{!jw.lstStaff}" var="JTL">
+                                                {!JTL},
+                                            </aura:iteration>
+                                            {!jw.job.Status_Notes__c}
+                                            
+                                                                            </td>
+                                                                                <!-- td style="width:17%;vertical-align:top;">
+                                                                                    <apex:outputText value="{!jw.job.Job_Auto_Number__c}" style="font-size:10px;"/>&nbsp;&nbsp;&nbsp;<br/>
+                                                                                   
+                                                                                </td -->
+                                                                                
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                            <td width="75%" style="vertical-align:top;">
+                                                                        <table width="100%">
+                                                                            <tr>
+                                                                                <td width = "100%"   >
+                                                        <aura:iteration  items="{!jw.jobTasks}" var="TSL">
+                                                            
+                                                            <aura:if isTrue="{!TSL.Revised_Due_Date__c !=null}">
+                                                                <lightning:formattedDateTime value="{!TSL.Revised_Due_Date__c}" year="numeric" month="numeric" day="numeric"/>
+                                                            </aura:if>                        
+                                                        </aura:iteration>
+                                                        
+                                                          </td>
+                                                                            </tr>
+                                                                             
+                                                                        </table>
+                                                                    </td>
+                                                                </tr><hr/>
+                                                                 
+                                                            </table>
+                                        </aura:iteration>
+                                 
+                                </aura:iteration>
+                            </aura:iteration>
+                       
+                    <aura:if isTrue="{!!empty(v.ResultsList)}">
+                        <lightning:button label="Print to PDF" class="slds-float_right margins" onclick="{!c.downloadPdf}"/>
+                        <br/> </aura:if>
+                </lightning:accordionSection>
+            </lightning:accordion>
+        </lightning:card>
+    </div>    
+    
+</aura:component>

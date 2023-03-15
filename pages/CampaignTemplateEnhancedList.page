@@ -1,0 +1,45 @@
+<apex:page standardController="Campaign_Template__c"  tabStyle="MyAdmin__tab" extensions="displayCampaginTemplateAdminExt" >
+ <head>
+        <style>
+         .actionLink 
+        {
+            color: #015BA7 !important;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        </style>
+    </head>
+
+<apex:form >
+<apex:pageMessages ></apex:pageMessages>
+     <table>
+          <tr>
+              <td align="left"> <apex:image url="{!$Resource.BigTop}" width="40" height="40" /> </td>
+              <td valign="bottom"><apex:commandButton action="{!createCampTemp}" value="New {!$ObjectType.Campaign_Template__c.Label}" /></td>
+          </tr>
+      </table>
+      
+     <apex:pageBlock >
+        <apex:pageBlockTable value="{!lstCTempls}" var="CampTemp" rendered="{!lstCTempls.size > 0}">
+            <apex:column headerValue="Action" width="6%">
+                <apex:commandLink value="Edit" action="{!editCampTemp}" styleClass="actionLink">
+                      <apex:param id="param1" name="param1" assignTo="{!strCamTempId}" value="{!CampTemp.Id}"/>  
+                </apex:commandLink>
+                &nbsp; | &nbsp;
+                <apex:commandLink action="{!deleteCampTemp}" onclick="return confirm(' Are You sure? You Want to delete this Campaign Template');" styleClass="actionLink">Del
+                    <apex:param id="param2" name="param2" assignTo="{!strCamTempId }" value="{!CampTemp.Id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="{!$ObjectType.Campaign_Template__c.Fields.Name.Label}" width="80%">
+                <apex:outputLink value="/apex/detailCampaignTemplate?id={!CampTemp.Id}">{!CampTemp.Name}</apex:outputLink>
+            </apex:column>
+        </apex:pageBlockTable>
+        
+        <apex:outputPanel rendered="{!lstCTempls.size <= 0}">
+            <b> No records to display</b>
+        </apex:outputPanel>
+        
+    </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

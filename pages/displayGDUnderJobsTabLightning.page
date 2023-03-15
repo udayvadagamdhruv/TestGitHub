@@ -1,0 +1,335 @@
+<apex:page controller="displayGraphicsDeliverablesUnderJobsTab" tabStyle="Job__c" id="frm" sidebar="flase" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true">
+  
+        <head>
+       
+      <style>
+
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        .dateOnlyInput input {
+            width: 10.5em !important;
+        }
+               
+               
+       .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                         
+                        
+     </style>
+       
+        
+    </head>
+    
+    
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+     
+   <apex:slds />
+    
+
+         <apex:outputPanel id="pbload"> 
+            <div class="slds">
+              
+                <apex:form html-novalidate="novalidate" id="frmid">
+              
+                
+                 <apex:pageBlock mode="edit">
+                     
+                       <br/>
+
+                       <div align="center">
+                      
+                            <apex:commandButton id="btnAddGraphics1" value="Add Graphics Deliverable"  styleClass="slds-button slds-button--neutral slds-button-group" action="{!createNewGraphics}" rendered="{!If(orgId='00DE0000000Xp80MAC'|| orgId = '00DL00000027DtxMAE',true,false)}"/>
+                            <apex:commandButton id="btnAddGraphics" value="Add {!$ObjectType.Graphics_Deliverables__c.Label}" title="Press to Add Graphics Deliverable" styleClass="slds-button slds-button--neutral slds-button-group" action="{!createNewGraphics}" rendered="{!If(orgId='00DE0000000Xp80MAC'|| orgId = '00DL00000027DtxMAE',false,true)}"/>
+                            <apex:commandButton id="btnSave" value="Save" title="Save" action="{!saveGraphics}" style="display:none" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                            <apex:commandButton id="btnCancel" value="Cancel" title="Cancel" action="{!cancelGraphics}" style="display:none" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        </div>
+                         <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                         <apex:pageMessages />
+                      </div>
+                        <br/>
+                        
+                   <apex:outputPanel id="pdiv">   
+                    <apex:outputPanel rendered="{!lstGD.size > 0}">
+                    
+                    
+                        
+                          <div class="slds-card" id="tab">             
+                               <div class="slds-card__body">     
+                         
+                           <div class="gdco1"   style="height:{!if(lstGD.size==1,'210px',if(lstGD.size==2,'260px',if(lstGD.size==3,'310px','')))};background-color:#f4f6f9;">   
+                             <div style="overflow:auto;overflow-y:hidden;width: 100%;height:100%;">
+                                
+                                 <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                 
+                                  
+                                        <thead class="slds-truncate">
+                                            <tr class="slds-text-title">
+                                                <th class="slds-size--1-of-6" scope="col">Action</th>
+                                                <apex:repeat var="f" value="{!$ObjectType.Graphics_Deliverables__c.FieldSets.Job_List_GD}">  
+                                                
+                                                      <apex:outputPanel rendered="{!NOT(OR(CONTAINS(LOWER(f.label) , LOWER('Job'))))}" layout="none">    
+                                                     <th class="slds-size--1-of-6" scope="col" style="color: #0070d2 !important;">
+   
+                                                       <apex:commandLink value="{!SUBSTITUTE(f.label, 'Deliverable',' ')}{!IF(sortExpression==f,IF(sortDirection='ASC','▼','▲'),'')}" action="{!LoadGraphics}" rendered="{!NOT(f=='Graphics_Description__c' || f=='Graphics_Note__c')}" reRender="pdiv">
+                                                           <apex:param value="{!f}" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                                       </apex:commandLink>
+                                                     
+                                                       <apex:outputText rendered="{!f=='Graphics_Description__c' || f=='Graphics_Note__c'}">{!SUBSTITUTE(f.label, 'Deliverable',' ')}</apex:outputText>
+                                                        
+                                                     </th>
+                                                      </apex:outputPanel>
+                                                   <!-- <th class="slds-size--1-of-8" scope="col">{!f.label}</th>-->
+                                                </apex:repeat>
+                                            </tr>
+                                        </thead>
+                                        
+                                      <script>
+                                                                  
+                      $(document).ready(function(){
+                      
+                      
+                       $(".gdbutton").mouseover(function(){
+                            var gdt1=$(this).children(".gdclass");
+                            
+                          if(($(this).offset().top+$(this).outerHeight()-$(".gdco1").offset().top)+gdt1.outerHeight()>$(".gdco1").outerHeight()){
+                          
+                            $(this).children(".slds-dropdown_xx--small").addClass('slds-dropdown--bottom');
+                            
+                            }
+                            
+                           else{
+                        
+                             $(this).children(".slds-dropdown_xx--small").removeClass('slds-dropdown--bottom');
+                           }
+                                  
+                        });
+                       
+                         
+                      });
+                      
+                    </script>    
+                                        
+                                    <tbody>  
+                                         
+                                      <apex:repeat value="{!lstGD}" var="gd" rendered="{!lstGD.size > 0}">
+                                        <tr class="slds-hint-parent">   
+                                            
+                                                    <td class="slds-size--1-of-6" data-label="Action">
+                                                           <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open gdbutton">
+                                                                 &nbsp;&nbsp;  
+                                                                    <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                                           <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                    </div>
+                                                                    
+                                                         
+                                                                    <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small gdclass">
+                                                                    
+                                                                       <ul class="slds-dropdown__list" role="menu">
+                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                <apex:commandLink value="Edit" action="{!editGraphics}" reRender="hiddenBlock1">  
+                                                                                      <apex:param name="param1" value="{!gd.Id}" assignTo="{!editGDId}"/>
+                                                                                      &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                                  </apex:commandLink>
+                                                                            </li>
+                                                                            
+                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                 
+                                                                                  <apex:commandLink value="Delete" action="{!deleteGraphics}" reRender="panelId,hiddenBlock2,pdiv" onclick="if(!confirm('Are you sure?')){return false;}">
+                                                                                      <apex:param name="param2" value="{!gd.Id}" assignTo="{!deleteGDId}"/>
+                                                                                      &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                                  </apex:commandLink>
+                                                                                                         
+                                                                            </li>
+                                                                            
+                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                <apex:commandLink value="Duplicate" action="{!duplicateGD}" reRender="pdiv">
+                                                                                      <apex:param name="param2" value="{!gd.Id}" assignTo="{!dupGDId}"/> &nbsp; &nbsp;              
+                                                                                     &nbsp; &nbsp; <i  class="fa fa-clone" style="font-size:20px;color:black"></i>
+                                                                                </apex:commandLink>
+                                                                             </li>  
+                                                                       
+                                                                        </ul>
+                                                                  </div> 
+                                                           </div>
+                                                        </td>
+                                                        
+                                                          
+                                                        
+                                                       <apex:repeat var="f" value="{!$ObjectType.Graphics_Deliverables__c.FieldSets.Job_List_GD}"> 
+                                                          
+                                                           
+                                                            <td class="slds-size--1-of-6"  data-label="{!f.label}">
+                                                                
+                                                                 
+                                                                    <apex:outputLink tabindex="tab1" value="/apex/GraphicsDetailPageLightning?id={!gd.Id}" rendered="{!OR(CONTAINS(LOWER(f) , LOWER('name')))}">{!gd.Name}</apex:outputLink>
+                                                                    
+                                                                     
+                                                                       <div class="slds-truncate">
+                                                                            <apex:outputText rendered="{!OR(CONTAINS(LOWER(f),LOWER('Graphics_Description__c')))}" value="{!gd.Graphics_Description__c}" title="{!gd.Graphics_Description__c}"/>
+                                                                       
+                                                             
+                                                                     
+                                                                      <apex:outputField value="{!gd[f]}" rendered="{!NOT(OR(CONTAINS(LOWER(f) , LOWER('name')),CONTAINS(LOWER(f) , LOWER('Graphics_Description__c'))))}" style="border-top:0px !important;">
+                                                                         <apex:inlineEditSupport event="ondblclick" hideOnEdit="btnAddGraphics,btnAddGraphics1" showOnEdit="btnSave,btnCancel"/>
+                                                                               <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(NOT(OR(CONTAINS(LOWER(f.label) , LOWER('job')),CONTAINS(LOWER(f.label) , LOWER('created date')))),'block','none')}">&#xe254;</i>
+                                                                      </apex:outputField>
+                                                                     </div>
+                                                            </td>
+                                                            
+                                                       </apex:repeat> 
+                                                 </tr>
+                                          </apex:repeat>
+                                         
+                                    </tbody>
+                                           
+                                      
+                            </table> 
+                            
+                            </div></div>
+                           </div>
+                        </div>  
+                     </apex:outputPanel>   </apex:outputPanel>  
+                     
+                      <apex:outputPanel rendered="{!lstGD.Size == 0}">
+                              <b>No records to display</b>
+                       </apex:outputPanel>     
+                        
+                        
+                    </apex:pageBlock> 
+              </apex:form>
+          </div>
+      </apex:outputPanel>
+      
+    </html>
+      
+</apex:page>

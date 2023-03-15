@@ -1,0 +1,326 @@
+<apex:page Controller="DisplayClientInvoiceLIController" docType="html-5.0" showHeader="false" standardStylesheets="true" >
+<apex:slds />
+<head>
+<style>
+#table_id td
+        {
+            border:0px;
+        }
+        .lookupHoverDetail{
+                display: none !important;
+        }
+        
+</style>
+<style>
+            
+           .icon1
+           {
+              color:darkgrey;
+              //margin-top:-21px !important;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+    
+          .slds .slds-dropdown-trigger .slds-dropdown
+           {
+               margin-left: 56px;
+    
+           }
+         .hd
+          {
+              text-align:right;
+              padding-right:20px!important;
+          }
+          .cellstyle
+          {
+              text-align:right;
+              padding-right:20px;
+          }
+        #table_qty td
+        {
+        border:0px;
+        }
+        
+        #table_uc td
+        {
+        border:0px;
+        }
+
+        #table_rd1 td
+        {
+        border:0px;
+        }
+
+        .labelCol2{font-size:1.0em};
+        
+      
+        .slds .slds-max-medium-table--stacked-horizontal td:before
+        {
+             text-transform:none;
+        }
+          
+        .customImage{ height: 10px; width: 10px; }
+        #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                   }
+                    
+                   .slds .slds-table tr > td:first-child 
+                   {
+                        padding-left: 6px;
+                        padding: 15px;
+                   }
+                   
+                   .slds-checkbox .slds-checkbox--faux
+                   {
+                       border: 1px solid lightslategrey !important;
+                    }    
+                    .slds .slds-card__footer 
+                    {
+                       padding: 0px 16px 0px 0px;
+                  }
+          .slds .slds-card__header 
+          {
+            padding: 0px 10px 0px 0px;
+           }
+           .slds .slds-card__body 
+           {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card 
+          {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+            }
+            
+            .slds .slds-table--bordered 
+            {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+            }
+            
+            .slds .slds-card__body {
+         margin-bottom: -0.25rem;
+          margin-top: -0.15rem;
+      }
+        
+    </style>
+</head>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        
+         <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            
+             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+         
+           <body>    
+           
+           
+               <div class="slds">
+ <apex:form html-novalidate="novalidate" id="formInvEstimate" >
+  <apex:outputPanel >
+       <div style="text-align:center;">
+       <apex:commandButton styleclass="slds-button slds-button--neutral" action="{!add_Eli}" value="Add Estimate Line Items" id="importbtn1" rendered="{!(Not(ShowProductionEstimate))}"/> 
+       <apex:commandButton styleclass="slds-button slds-button--neutral" action="{!add_PEli}" value="Add Production Estimate Line Items" id="importbtn2" rendered="{!(ShowProductionEstimate)}"  /> 
+       <apex:commandButton styleclass="slds-button slds-button--neutral" reRender="formInvEstimate" value="Save" action="{!save}" id="saveButtonIA" style="display: none;"/>  
+       <apex:commandButton styleclass="slds-button slds-button--neutral" reRender="formInvEstimate" value="Cancel" id="cancelButtonIA" immediate="true" style="display:none;"/> 
+       </div>
+       
+ 
+  <br/> <br/> 
+  
+  
+   <apex:repeat value="{!MapPE}" var="mpe">
+      
+      
+        <apex:outputPanel >
+  
+     <div class="slds-card">
+     <div class="slds-card_body">
+     <apex:dataTable value="{!MapPE[mpe]}" var="CILItem" rendered="{!CILI.Size>0}" styleclass="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+         <apex:column headerValue="Action" width="10%">
+             
+              
+              <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open quotebutton">
+                         &nbsp;&nbsp;  
+                            <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                   <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                            </div>
+                            
+                 
+                            <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small quoteclass">
+                            
+                               <ul class="slds-dropdown__list" role="menu">
+                                   
+                                    
+                                    <li class="slds-dropdown__item" role="presentation">
+                                       
+                                           <apex:commandLink styleclass="slds-button slds-button--neutral" status="InvLIStatus" value="Delete" action="{!deleteCILI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="formInvEstimate" >
+                                              <apex:param name="param2" value="{!CILItem.id}" assignTo="{!strCILI}"></apex:param>
+                                               &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                          </apex:commandLink>
+                                                                 
+                                    </li>
+                                    
+                                   
+                                </ul>
+                          </div> 
+              
+               </div> 
+          </apex:column>
+          
+         
+        
+        <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Estimate_Line_Item__c.Label}" rendered="{!(Not(ShowProductionEstimate))}">
+              <apex:outputfield value="{!CILItem.Estimate_Line_Item__c}"/>
+          </apex:column>
+          
+         <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Production_Estimate__c.Label}" rendered="{!(ShowProductionEstimate)}">
+              <apex:outputfield value="{!CILItem.Production_Estimate__c}"/>
+          </apex:column> 
+          
+           <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.GL_Code__c.Label}">
+              <apex:outputfield value="{!CILItem.GL_Code__c}"/>
+          </apex:column> 
+          <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.GL_Code_No__c.Label}">
+              <apex:outputfield value="{!CILItem.GL_Code_No__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Unit_Type__c.Label}">
+              <apex:outputfield value="{!CILItem.Unit_Type__c}"/>
+          </apex:column> 
+          
+           
+          
+          
+          <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Quantity__c.Label}">
+              
+                  <apex:outputfield value="{!CILItem.Quantity__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButtonIA,cancelButtonIA" changedStyleClass="myBoldClass" hideOnEdit="importbtn1,importbtn2" />
+                  <i class="material-icons icon1" style="float:right;font-size:15px;">&#xe254;</i>
+                  </apex:outputfield> 
+          </apex:column> 
+          
+           <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Billable_Amount__c.Label}">
+              
+                  <apex:outputfield value="{!CILItem.Billable_Amount__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButtonIA,cancelButtonIA" changedStyleClass="myBoldClass" hideOnEdit="importbtn1,importbtn2" />
+                  <i class="material-icons icon1" style="float:right;font-size:15px;">&#xe254;</i>
+                  </apex:outputfield> 
+          </apex:column> 
+          
+          <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Equipment_Type__c.Label}">
+              <apex:outputfield value="{!CILItem.Equipment_Type__c}"/>
+          </apex:column> 
+          
+          
+         
+          
+         <apex:column headerValue="{!$ObjectType.Client_Invoice_Line_Item__c.Fields.Tax__c.Label}">
+               
+                  <apex:outputfield value="{!CILItem.Tax__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButtonIA,cancelButtonIA" changedStyleClass="myBoldClass" hideOnEdit="importbtn1,importbtn2" />
+                  <i class="material-icons icon1" style="float:right;font-size:15px;">&#xe254;</i>
+                  </apex:outputfield>
+          </apex:column>   
+     
+     </apex:dataTable>
+     </div>
+     </div>
+     </apex:outputPanel>
+     </apex:repeat>
+     
+     
+     
+      <apex:actionStatus id="InvLIStatus" >
+                   <apex:facet name="start">
+                      <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                         <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                           <span class="slds-assistive-text">Loading</span>
+                           <div class="slds-spinner__dot-a"></div>
+                           <div class="slds-spinner__dot-b"></div>
+                         </div></div>
+                    </apex:facet>
+                </apex:actionStatus>
+     
+     
+     
+                <apex:outputPanel rendered="{!CILI.size <= 0}">
+                   <apex:outputPanel >
+                       <b>No records to display</b>
+                   </apex:outputPanel>              
+                </apex:outputPanel> 
+              </apex:outputPanel>
+ </apex:form>
+</div>
+
+</body>
+</html>
+
+
+
+
+</apex:page>

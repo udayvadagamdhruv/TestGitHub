@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>TS_Date__c</columns>
+    <columns>Duration__c</columns>
+    <columns>Dev_Item__c</columns>
+    <columns>NAME</columns>
+    <columns>Developer__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Developer__c</field>
+        <operation>contains</operation>
+        <value>vara</value>
+    </filters>
+    <label>All</label>
+    <language>en_US</language>
+</ListView>

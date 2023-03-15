@@ -1,0 +1,189 @@
+<!-- This page is used to Edit Session for a particular job -->
+<apex:page standardController="Session__c" tabstyle="Job__c" extensions="EditSessionExtension">
+ <apex:form >
+    <apex:sectionHeader title="{!$ObjectType.Session__c.Label} Details"/>
+    <apex:pageBlock >
+       <apex:pagemessages id="pgMsg"/>
+   
+       <apex:pageBlockButtons >
+          <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+          <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+       </apex:pageBlockButtons>
+             
+       <apex:actionRegion >
+       <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Name.Label}"/>
+             <apex:inputField value="{!Session__c.Name}" required="true"/>
+          </apex:pageBlockSectionItem>
+             
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Job__c.Label}"/>
+             <apex:outputField value="{!Session__c.Job__c}"/>
+          </apex:pageBlockSectionItem>
+      
+          <apex:pageBlockSectionItem >                  
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.GL_Department__c.Label}" for="GLDept" ></apex:outputLabel>
+             <apex:actionRegion >
+                <apex:outputPanel >
+                   <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList id="GLDName" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>  
+          </apex:pageBlockSectionItem>
+             
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.GL_Code__c.Label}" for="usr"></apex:outputLabel>
+             <apex:actionRegion >
+                <apex:outputPanel >
+                   <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+          </apex:pageBlockSectionItem>  
+             
+          <apex:pageBlockSectionItem id="pbs">
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Vendor__c.Label}" for="JT"></apex:outputLabel>
+                <apex:outputPanel >
+                   <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                      <div class="requiredBlock"> </div>
+                      <apex:selectList id="ST" value="{!VName}" size="1" title="Vendors">
+                         <apex:selectOptions value="{!Vendors}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel>  
+          </apex:pageBlockSectionItem> 
+          
+           <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Session_Type__c.Label}"/>
+             <apex:inputField value="{!Session__c.Session_Type__c}"/>
+          </apex:pageBlockSectionItem>  
+             
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Quantity__c.Label}"/>
+             <apex:inputField value="{!Session__c.Quantity__c}" required="true"/>
+          </apex:pageBlockSectionItem> 
+          
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Session_Status__c.Label}"/>
+             <apex:inputField value="{!Session__c.Session_Status__c}"/>
+          </apex:pageBlockSectionItem>  
+          
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Unit_Cost__c.Label}"/>
+             <apex:inputField value="{!Session__c.Unit_Cost__c}"/>
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Session_Date__c.Label}"/>
+             <apex:inputField value="{!Session__c.Session_Date__c}"/>
+          </apex:pageBlockSectionItem>
+          
+           <apex:pageBlockSectionItem >
+              <apex:outputLabel Value="{!$ObjectType.Session__c.fields.Producer__c.Label}" for="prol">  </apex:outputLabel>
+                    <apex:selectList value="{!StaffProducerName}" multiselect="false" size="1" id="selectedProducerId" onselect="{!Session__c.Producer__c}">
+                       <apex:selectOptions value="{!ProducerStaffs}"/>
+                    </apex:selectList>
+           </apex:pageBlockSectionItem> 
+           
+           
+           
+           
+           <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Session__c.fields.Session_Time__c.Label}"/>
+             <apex:inputField value="{!Session__c.Session_Time__c}"/>
+          </apex:pageBlockSectionItem> 
+          
+           
+          
+          <apex:pageBlockSectionItem >
+              <apex:outputLabel Value="{!$ObjectType.Session__c.fields.Technician__c.Label}" for="pro2">  </apex:outputLabel>
+                    <apex:selectList value="{!StaffTechnicianName}" multiselect="false" size="1" id="selectedTechnicianId" onselect="{!Session__c.Technician__c}">
+                       <apex:selectOptions value="{!TechnicianStaffs}"/>
+                    </apex:selectList>
+           </apex:pageBlockSectionItem>      
+         
+         
+          
+    <!-- Added 4 Dummy Text Fields,4 Dummy Date and 4 Dummy Picklist Fields -->
+                  
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Text_1__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Text_1__c}"/>
+          </apex:pageBlockSectionItem>    
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Date_1__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Date_1__c}"/>
+          </apex:pageBlockSectionItem>    
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Text_2__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Text_2__c}"/>
+          </apex:pageBlockSectionItem>  
+                            
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Date_2__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Date_2__c}"/>
+          </apex:pageBlockSectionItem>   
+                    
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Text_3__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Text_3__c}"/>
+          </apex:pageBlockSectionItem>  
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Date_3__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Date_3__c}"/>
+          </apex:pageBlockSectionItem>   
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Text_4__c.Label!='Dummy Text 4'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Text_4__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Text_4__c}"/>
+          </apex:pageBlockSectionItem>  
+               
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Date_4__c.Label!='Dummy Date 4'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Date_4__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Date_4__c}"/>
+          </apex:pageBlockSectionItem>    
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Picklist_1__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Picklist_1__c}"/>
+          </apex:pageBlockSectionItem>   
+             
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Picklist_2__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Picklist_2__c}"/>
+          </apex:pageBlockSectionItem>
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Picklist_3__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Picklist_3__c}"/>
+          </apex:pageBlockSectionItem>
+                
+          <apex:pageBlockSectionItem rendered="{!$ObjectType.Session__c.Fields.Dummy_Picklist_4__c.Label!='Dummy Picklist 4'}">
+            <apex:outputLabel value="{!$ObjectType.Session__c.Fields.Dummy_Picklist_4__c.Label}"/>
+            <apex:inputField value="{!Session__c.Dummy_Picklist_4__c}"/>
+          </apex:pageBlockSectionItem>
+                
+ <!-- End Of "Added 4 Dummy Text Fields and 4 Dummy Date Fields and 4 dummy picklist fields" -->        
+           
+           
+             
+       </apex:pageBlockSection>
+       </apex:actionRegion>  
+    </apex:pageBlock>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

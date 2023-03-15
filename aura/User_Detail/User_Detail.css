@@ -1,0 +1,9 @@
+.THIS .borderLine {
+  border-bottom: 1px solid rgb(221, 219, 218);
+   padding:4px;
+}
+.THIS .header {
+    font-size:16px;
+    font-family: 'Salesforce Sans',Arial,sans-serif;
+    border-bottom: 1px solid rgb(221, 219, 218)
+}

@@ -1,0 +1,86 @@
+<aura:component controller="AdminController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+      <aura:attribute name="STaskId" type="String"   />  
+     <aura:attribute name="STaskRolesWrapper" type="Object"  />  
+     <aura:attribute name="isSTAddRolesOpen" type="boolean" default="true" />
+    
+     <aura:handler name="init" value="{!this}" action="{!c.doInitAddSTRoles}"/>
+    
+    <aura:method name="refreshSTaskRoles" action="{!c.refreshSTaskRoles}" access="public">
+    </aura:method>
+    
+     <aura:if isTrue="{!v.isSTAddRolesOpen}"> 
+    
+    <!--************************************************  MODAL BOX Start *************************************************--> 
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add/Edit Roles</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:messages />
+                    <aura:if isTrue="{!empty(v.STaskRolesWrapper)}">
+                   <center>   <b>  There are no roles records to assign Schedule Task.</b> </center>
+                        <aura:set attribute="else">
+                    <div style="border : 1px solid #e2e4e6; border-radius:5px;" >
+                        <lightning:layout multipleRows="true">    
+                            <aura:iteration items="{!v.STaskRolesWrapper}" var="s">  
+                                <lightning:layoutItem size="12" class="layoutpadding" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" >
+                                   <div style="border-bottom : 1px solid lightgrey;padding: 10px;"> 
+                                       
+                                         <ul id="draggable">
+                                            <li class="slds-item">
+                                                 <lightning:input style="float:right" type="checkbox" label="" name="SelectedStaff" checked="{!s.checked}" /> 
+                                                <lightning:tile  label="{!s.URole.Name}">
+                                                    <aura:set attribute="media">
+                                                      <!--  <lightning:avatar src="{!$Resource.SLDS0122 +'/assets/images/avatar2.jpg'}" fallbackIconName="standard:person_account" alternativeText="{!s.URole.Name}"/> -->
+                                                         <lightning:icon iconName="standard:user_role" alternativeText="Role" size="x-small" />
+                                                    </aura:set>
+                                                   
+                                                 <!--   <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                        <li class="slds-item">{!s.URole.Name}</li>
+                                                    </ul> -->
+                                                     
+                                                </lightning:tile>
+                                            </li>
+                                        </ul>
+                                    </div> 
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                              <lightning:layoutItem size="12" class="layoutpadding" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" >
+                            </lightning:layoutItem>
+                            
+                        </lightning:layout>
+                    </div>
+                        </aura:set>    
+                        </aura:if>
+                </div>
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand" 
+                                      label="Save"
+                                      title="Save"
+                                      onclick="{!c.AddRolestoSTask}" disabled="{!empty(v.STaskRolesWrapper)}" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        
+   
+    </aura:if>
+  
+    
+</aura:component>

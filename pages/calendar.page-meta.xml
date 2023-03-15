@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>This page is used to display Tasks of selected Job in Calendar View.
+(Overriding Calender button used under job task tab for selected Job).</description>
+    <label>calendar</label>
+    <packageVersions>
+        <majorNumber>2</majorNumber>
+        <minorNumber>8</minorNumber>
+        <namespace>Quip</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>19</minorNumber>
+        <namespace>sf_chttr_apps</namespace>
+    </packageVersions>
+</ApexPage>

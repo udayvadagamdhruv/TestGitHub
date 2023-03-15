@@ -1,0 +1,39 @@
+<apex:page standardController="Invoice_Allocation_Template_Line_Item__c" extensions="CreateInvAllocTempLItemExt" tabStyle="MyAdmin__tab">
+  
+  <head>
+   </head>
+   <apex:form >
+      <apex:pageBlock mode="edit">
+            <apex:pageMessages />
+  
+            <apex:pageBlockButtons >
+               <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+               <apex:commandButton value="Save & New" action="{!savenew}"></apex:commandButton>
+               <apex:commandButton action="{!cancelme}" value="Cancel"></apex:commandButton>
+            </apex:pageBlockButtons>
+              
+            <apex:pageBlockSection title="Invoice Allocation Template Line Items" columns="2" collapsible="false"> 
+             
+               
+              
+               <apex:pageBlockSectionitem > 
+                  <apex:outputLabel value="{!$ObjectType.Invoice_Allocation_Template_Line_Item__c.Fields.Client__c.Label}"/> 
+                 <apex:selectList id="ClientName" value="{!ClientName}" size="1" >
+                     <apex:selectOptions value="{!Clients}"></apex:selectOptions>
+                  </apex:selectList> 
+               </apex:pageBlockSectionitem>
+                   
+               <apex:pageBlockSectionitem > 
+                  <apex:outputLabel value="{!$ObjectType.Invoice_Allocation_Template_Line_Item__c.Fields.Allocation_Qty__c.Label}"/> 
+                  <apex:inputfield value="{!Invoice_Allocation_Template_Line_Item__c.Allocation_Qty__c}" />
+               </apex:pageBlockSectionitem>
+                   
+               
+                   
+            </apex:pageBlocksection>
+      </apex:pageblock>
+   </apex:form>
+  
+  
+  
+</apex:page>

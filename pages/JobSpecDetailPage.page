@@ -1,0 +1,7 @@
+<!-- This page is used to display detail of Job Spec -->
+<apex:page standardController="Job_Spec__c" tabStyle="Job__c">
+    <apex:form >
+        <apex:detail inlineEdit="true" showChatter="true" relatedList="true"/>    
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,16 @@
+<apex:page standardController="Production_Estimate_Temp_Line_Items__c" tabStyle="MyAdmin__tab" extensions="PEstimateSpecItemsdetailpageSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/PEstimateSpecItemsdetailpage?id="+'{!PELIId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="PEstimateSpecItemsdetailpageLightning"/>
+    </apex:outputPanel>
+</apex:page>

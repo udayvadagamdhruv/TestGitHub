@@ -1,0 +1,51 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="iseditMode" type="boolean" default="false" />
+    <aura:attribute name="isLoading" type="boolean" default="false" />
+    
+    <aura:attribute name="StatusNotesSection" type="String" default="Status Notes" required="true" access="global" />
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="StatusNotes">   
+       <lightning:accordionSection name="StatusNotes" label="{!v.StatusNotesSection}"  class="slds-card" > 
+            <lightning:card> 
+                <aura:if isTrue="{!v.isLoading}" >
+                    <lightning:spinner alternativeText="Loading" size="medium" />
+                </aura:if>
+                <aura:if isTrue="{!v.iseditMode}" >
+                    <div> 
+                        <lightning:recordEditForm aura:id="recordEditForm" density="comfy" recordId="{!v.recordId}" objectApiName="{!v.sObjectName}" onsubmit="{!c.handlesubmit}" onsuccess="{!c.handleSuccess}">
+                            <lightning:messages />
+                            <lightning:inputField fieldName="Creative_Overview__c" />
+                            <center>
+                                <lightning:button aura:id="cancel" variant="neutral" label="Cancel" class="slds-m-top_medium" onclick="{!c.handleCancel}" />
+                                <lightning:button aura:id="submit" type="submit" variant="brand" label="Save"  class="slds-m-top_medium" />
+                            </center>
+                        </lightning:recordEditForm>
+                    </div>
+                    
+                    <aura:set attribute="else">
+                        <div>
+                            <lightning:recordViewForm aura:id="recordViewForm" density="comfy" recordId="{!v.recordId}" objectApiName="{!v.sObjectName}">
+                                <div class="slds-box">
+                                    <lightning:outputField fieldName="Creative_Overview__c" ondblclick="{!c.handleClick}" />
+                                    <p ondblclick="{!c.handleClick}" >
+                                        <lightning:icon iconName="utility:edit" alternativeText="edit"  size="x-small" />
+                                    </p>
+                                </div>
+                            </lightning:recordViewForm>
+                        </div>
+                    </aura:set>
+                </aura:if>  
+            </lightning:card>
+        </lightning:accordionSection>  
+           
+    <!-- <lightning:accordionSection name="StatusNotes" label="{!v.StatusNotesSection}"  class="slds-card" > 
+        <lightning:card>
+        <lightning:recordForm recordId="{!v.recordId}" density="comfy"
+                              objectApiName="{!v.sObjectName}"
+                              fields="Creative_Overview__c" />
+          </lightning:card>
+        </lightning:accordionSection> -->
+    </lightning:accordion>
+</aura:component>

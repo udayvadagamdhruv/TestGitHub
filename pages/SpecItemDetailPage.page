@@ -1,0 +1,7 @@
+<!-- This page displays detail of Spec Item under Admin->Specification Template. -->
+<apex:page standardController="Spec_Item__c" tabStyle="MyAdmin__tab">
+    <apex:form >
+        <apex:detail inlineEdit="true" relatedList="false"/>
+     </apex:form>
+</apex:page>
+<!-- End of Page -->

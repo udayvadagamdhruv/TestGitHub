@@ -1,0 +1,62 @@
+<apex:page docType="html-5.0" standardStylesheets="true" showHeader="false">
+<!--jQuery CDN-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!--Salesforce Lightning Design System Static Resource-->
+<apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+<script>
+var j$ = jQuery.noConflict();
+</script>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+<head>
+</head>
+<!--The Salesforce Lightning Design System Wrapping Div with Scoping Class -->
+           <body>
+
+<!--SLDS Section Start-->
+    <div class="slds-section">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS0102}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Section Title 1</button>
+      </h3>
+      <div class="slds-section__content">
+        <p>Section 1 Content</p>
+      </div>
+    </div>
+<!--SLDS Section End-->  
+      
+            </body>
+
+  
+
+<script>
+/*SLDS Sections*/
+j$('.slds-section__content').hide();
+j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+j$('.slds-section__title').click(function(){
+    if(j$(this).parent().parent().hasClass('Minerva18SectionGroupSingle')){
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().removeClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+        else{
+            j$(this).parent().parent().find('.slds-section').removeClass('slds-is-open');
+            j$(this).parent().parent().find('.slds-section__content').hide();
+            j$(this).parent().toggleClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').show();
+        }    
+    }
+    else{
+        j$(this).parent().toggleClass('slds-is-open');
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().find('.slds-section__content').show();
+        }else{
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+    }
+});
+/*SLDS Sections*/
+</script>
+</html>
+</apex:page>

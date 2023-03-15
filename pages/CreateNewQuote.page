@@ -1,0 +1,77 @@
+<!-- This page is used to create Quotes for a Job -->
+<apex:page standardController="Quote__c" tabStyle="Job__c" extensions="CreateNewQuoteExtension"  >
+   <apex:form >
+      <apex:sectionHeader title="Quote Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages id="pgMsg"/>    
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:actionRegion >       
+            <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+          
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.Name.Label}"/>
+                  <apex:inputField value="{!Quote__c.Name}" required="true"/>
+               </apex:pageBlockSectionItem>
+             
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.Job__c.Label}"/>
+                  <apex:outputField value="{!Quote__c.Job__c}"  />
+               </apex:pageBlockSectionItem>
+      
+               <apex:pageBlockSectionItem >                  
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.GL_Department__c.Label}" for="GLDept" ></apex:outputLabel>
+                  <apex:actionRegion >
+                     <apex:outputPanel >
+                        <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                           <div class="requiredBlock"> </div>
+                           <apex:selectList id="GLDName" value="{!GLDName}" size="1" >
+                              <apex:actionSupport event="onchange" rerender="selectedDepartment"/>
+                              <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                           </apex:selectList>
+                        </span>
+                     </apex:outputPanel> 
+                  </apex:actionRegion>  
+               </apex:pageBlockSectionItem>
+       
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.GL_Code__c.Label}" for="usr"></apex:outputLabel>
+                  <apex:outputPanel dir="{!abc}">
+                     <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                        <div class="requiredBlock"> </div>
+                        <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment">
+                           <apex:selectOptions value="{!GLCodes}" />
+                        </apex:selectList>
+                     </span>
+                  </apex:outputPanel> 
+               </apex:pageBlockSectionItem>  
+             
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.Request_Date__c.Label}"/>
+                  <apex:inputField value="{!Quote__c.Request_Date__c}"  />
+               </apex:pageBlockSectionItem>
+              
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.Due_Date__c.Label}"/>
+                  <apex:inputField value="{!Quote__c.Due_Date__c}"/>
+               </apex:pageBlockSectionItem>
+             
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.Quantity__c.Label}"/>
+                  <apex:inputField value="{!Quote__c.Quantity__c}" required="true"/>
+               </apex:pageBlockSectionItem>  
+             
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote__c.Fields.Description__c.Label}"/>
+                  <apex:inputtextarea value="{!Quote__c.Description__c}" cols="55" rows="3" style="resize:none"/>
+               </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+         </apex:actionRegion>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

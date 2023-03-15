@@ -1,0 +1,178 @@
+<aura:component controller="job_Cost_Tab_cmp"  implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="ProEstSpecRecords" type="Object" />
+    <aura:attribute name="ProEstimateSpecColumns" type="Object" />
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="DESC" />
+    <aura:attribute name="proestspecerrors" type="Object" />
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/> 
+    
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isProEstSpecOpen" type="boolean"  />
+    <aura:attribute name="proEstSpecRecId" type="String"/>
+    
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:attribute name="ProEstimateSpecSection" type="String" default="Production Estimate Spec Items" required="true" access="global"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/> 
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="PEstSpecs">
+        <lightning:accordionSection name="PEstSpecs" label="{!v.ProEstimateSpecSection}" class="slds-card"> 
+            <lightning:card title="">
+                <aura:if isTrue="{!!v.simpleRecord.Approved__c}" >
+                    <center>   
+                        <lightning:button  label="{!'Add '+ v.ProEstimateSpecSection}" title="{!'Add '+ v.ProEstimateSpecSection}" onclick="{!c.NewProEstimateSpec}"/> 
+                    </center>
+                </aura:if>
+                <br/>
+                <aura:if isTrue="{!!v.isMobile}">
+                    <lightning:datatable class="tablecss"
+                                         aura:Id="ProEstSpecsTableId"
+                                         data="{!v.ProEstSpecRecords}"
+                                         columns="{!v.ProEstimateSpecColumns}"
+                                         keyField="Id"
+                                         errors="{!v.proestspecerrors}"
+                                         onsave="{!c.onProEstimateSpecsSave}"
+                                         hideCheckboxColumn="true"
+                                         onsort="{!c.updateColumnSorting}"
+                                         sortedBy="{!v.sortedBy}"
+                                         sortedDirection="{!v.sortedDirection}"
+                                         onrowaction="{!c.handleRowSpecActions}"
+                                         />
+                    
+                    <!-- 
+        <lightning:layout multipleRows="true"> 
+            <aura:iteration items="{!v.ProEstSpecRecords}" var="proestSpec">
+                <lightning:layoutItem padding="around-small" size="6">  
+                    <div class="slds-grid slds-wrap" >
+                        <div class="slds-size_5-of-6">
+                            <ul>
+                                <li class="slds-item">
+                                    <lightning:tile  label="{!proestSpec.Name}" >
+                                        <aura:set attribute="media">                
+                                            <lightning:icon iconName="standard:record" size="small" alternativeText="Event" />
+                                        </aura:set>
+                                        <ul class="slds-list_horizontal slds-has-dividers_right">
+                                            <li class="slds-item" style="white-space:pre-line;word-break:keep-all;" >{!proestSpec.Description__c}</li>
+                                        </ul>
+                                    </lightning:tile>
+                                </li>
+                                
+                            </ul> 
+                        </div>
+                        <div class="slds-size_1-of-6">
+                              <aura:if isTrue="{!!v.simpleRecord.Approved__c}" >
+                            <lightning:buttonMenu aura:id="menu" alternativeText="Show menu" value="{!proestSpec.Id}" onselect="{!c.handleSelect}"  >
+                                <lightning:menuItem aura:id="menuItems" label="Edit" value="EditProEstSpec"  iconName="utility:edit"/>
+                                <lightning:menuItem aura:id="menuItems" label="Delete" value="DeleteProEstSpec" iconName="utility:delete"/>
+                            </lightning:buttonMenu>
+                            </aura:if>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                
+            </aura:iteration>
+            
+        </lightning:layout>
+-->
+                </aura:if>
+                <aura:if isTrue="{!v.isMobile}">
+                    <aura:iteration items="{!v.ProEstSpecRecords}" var="PEstSpec">
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <b> <ui:outputText value="{!PEstSpec.Name}"/></b>
+                                </td>
+                                <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                    <lightning:buttonMenu name="{!PEstSpec.Id}" aura:id="PEstSpecItem" onselect="{!c.handlePEstSpecQuickAction}">
+                                        <lightning:menuItem value="Edit_PEstSpec" label="Edit" iconName="utility:edit"/>
+                                        <lightning:menuItem value="Delete_PEstSpec" label="Delete" iconName="utility:delete"/>
+                                    </lightning:buttonMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="40%" style="vertical-align:top;">                                   
+                                    <ui:outputText value="{!v.DynamicLabels[0].Desc}"/>:                                   
+                                </td>
+                                <td width="60%">
+                                    <ui:outputDate value="{!PEstSpec.Description__c}"/>	
+                                </td>
+                            </tr>
+                        </table>
+                        <hr style="margin: 0.4rem 0;"/>
+                    </aura:iteration>
+                </aura:if>
+            </lightning:card>
+        </lightning:accordionSection>
+    </lightning:accordion>  
+    
+    <aura:if isTrue="{!v.isProEstSpecOpen}">
+        <lightning:recordEditForm aura:id="ProEstSpecEditform" density="comfy" objectApiName="Production_Estimate_Spec_Item__c" recordId="{!v.proEstSpecRecId}"  onsubmit="{!c.ProEstSpecOnsubmit}" onsuccess="{!c.onProEstSpecRecordSuccess}"  >
+            <lightning:messages /> 
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.proEstSpecRecId==null?'New':'Edit'} Production Estimate Spec Item</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        
+                        <aura:iteration items="{!v.fieldset}" var="field">
+                            <aura:if isTrue="{!field=='Production_Estimate__c'}">
+                                <div class="slds-form-element slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Production_Estimate_Spec_Item__c.Production_Estimate__c.label}</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                    </div>
+                                </div> 
+                                
+                                <aura:set attribute="else" >
+                                    <lightning:inputField fieldName="{!field}" aura:id="ProEstimateSpecField"  class="{!'slds-form-element slds-p-horizontal_x-small' + ' ' +((field=='Name') ? 'frequired' :' ')}"/>      
+                                </aura:set>
+                            </aura:if>
+                        </aura:iteration>
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    
+    
+</aura:component>

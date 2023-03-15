@@ -1,0 +1,6 @@
+<apex:page standardController="Job__c" showHeader="false" >
+  <!--<chatter:feed entityId="{!Job__c.Id}"/>-->
+  
+   <chatter:feedWithFollowers entityId="{!Job__c.Id}" /> 
+  
+</apex:page>

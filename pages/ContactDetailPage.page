@@ -1,0 +1,8 @@
+<!-- This Page is Used to display Detail of Client Contact -->
+<apex:page standardController="Client_Contact__c" tabStyle="Client__c">
+  
+    <apex:detail relatedList="false" showChatter="true"/>
+    <apex:include pageName="displayjobunderClientContactdetail"/>
+  
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,176 @@
+<apex:page Controller="ProductionSpecItemsController" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true" >
+
+
+<style>
+    .slds .slds-dropdown-trigger .slds-dropdown
+           {
+               margin-left: 56px;
+    
+           }
+           
+    .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }        
+
+</style>
+
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+          
+          
+       <div class="slds" >
+        <apex:form html-novalidate="novalidate">
+                <br/>
+                  <div align="center">
+                       <apex:commandButton value="New Production Spec Item" action="{!CreateNewSpecItem}" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                  </div>
+                <br/>
+                
+                <apex:outputPanel rendered="{!prospecitems.Size > 0}" > 
+                
+                            
+                    
+                      
+                 <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-3" scope="col">Action</th>
+                                        <th class="slds-size--1-of-3" scope="col"> {!$ObjectType.Production_Spec_Item__c.Fields.Name.Label} </th>
+                                        <th class="slds-size--1-of-3" scope="col">{!$ObjectType.Production_Spec_Item__c.Fields.Description__c .Label} </th>
+                                        
+                                  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <apex:repeat value="{!prospecitems}" var="a" rendered="{!prospecitems.Size > 0}">
+                                            <tr class="slds-hint-parent">
+                                           
+                                            
+                                            <td class="slds-size--1-of-3" data-label="Action">
+                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                                       &nbsp;&nbsp;  
+                                                         <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon "  >
+                                                           <!---- &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Show More</span>-------->
+                                                             
+                                                              <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                
+                                                        </div>
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                              <li class="slds-dropdown__item" role="presentation">
+                                                                 <a href="/apex/EditProductionSpecItemLightning?id={!a.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>
+                                                                            
+                                                                           <!---  <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                            </svg> ---->
+                                                                            &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                                   <li class="slds-dropdown__item" role="presentation">
+                                                                      <a href="/apex/DeleteProductionSpecItem?id={!a.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Delete">Delete</span>
+                                                                            
+                                                                            <!--- <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                            </svg>
+                                                                            ---->
+                                                                            &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>
+                                                                        </a>
+                                                                    
+                                                                    
+                                                                                                                                  
+                                                                </li>
+                                                                </ul>
+                                                            </div> 
+                                                       </div>  
+                                            
+                                                </td>
+                                                
+                                                <td class="slds-size--1-of-3" data-label="{!$ObjectType.Production_Spec_Item__c.Fields.Name.Label}">
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/apex/ProductionSpecItemDetailLightning?id={!a.id}">{!a.Name}</apex:outputLink>
+                                                </div>
+                                                
+                                                </td>
+                                                
+                                                <td class="slds-size--1-of-3" data-label="{!$ObjectType.Production_Spec_Item__c.Fields.Description__c.Label}">
+                                                <div>
+                                                  <apex:outputText value="{!a.Description__c}" />
+                                                </div>
+                                                </td>
+                                                
+                                                
+                                            </tr>
+                                        
+                                        
+                                        </apex:repeat>
+                                
+                                </tbody>
+                                
+                                </table>
+                                
+                                
+                          
+                      </apex:outputPanel>
+                      
+                      <apex:outputPanel rendered="{!prospecitems.Size <= 0}" > 
+                      <p>No Records to display</p>
+                      </apex:outputPanel>
+         </apex:form> 
+        </div>
+   
+ </html>
+ 
+ <!-----------------------
+<apex:form >
+<apex:pageBlock >
+<apex:pageMessages ></apex:pageMessages>
+    <div align="center">
+       <apex:commandButton value="New Production Spec Item" action="{!CreateNewSpecItem}" styleClass="slds-button slds-button--neutral slds-button-group"/>
+    </div>
+ <apex:pageBlockTable value="{!prospecitems}" var="a" rendered="{!prospecitems.size>0}">
+ 
+    <apex:column headerValue="Action">
+    <apex:commandLink value="Edit" action="{!editmethod}" >
+          <apex:param name="prospeid" value="{!a.id}" assignTo="{!prospeid}"/>
+    </apex:commandLink>
+          &nbsp;|&nbsp;
+    <apex:commandLink value="Delete" action="{!deletemethod}" >
+            <apex:param name="prospeid" value="{!a.id}" assignTo="{!prospeid}"/>
+    </apex:commandLink>
+     </apex:column>
+ 
+     <apex:column headerValue="Name" >
+         <apex:outputLink value="/apex/ProductionSpecItemDetail?id={!a.id}" >{!a.name}
+     </apex:outputLink>
+     </apex:column>
+      
+     <apex:column value="{!a.Description__c }" />
+     
+     
+  </apex:pageBlockTable>
+   </apex:pageBlock>
+
+</apex:form>
+ --------------------------------->
+</apex:page>

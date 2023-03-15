@@ -1,0 +1,6 @@
+<!-- This page is used to display Job Task Detail Page. -->
+<apex:page standardController="Job_Task__c" tabStyle="Job__c"  >
+    <apex:detail showChatter="true"/>
+    <apex:include pageName="TaskRoleStaffSection"/>
+</apex:page>
+<!-- End of Page -->

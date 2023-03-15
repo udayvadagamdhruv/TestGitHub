@@ -1,0 +1,36 @@
+<!-- This page is used to edit Quote Spec item for particular Quote -->
+
+<apex:page standardController="Quote_Spec_Item__c" extensions="EditQuoteSpecItem">
+
+    <apex:sectionHeader title="Item Details"/>
+     <apex:form >
+     <apex:pageBlock >
+         <apex:pagemessages />
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+                 <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+             
+             <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+          
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote_Spec_Item__c.Fields.Name.Label}"/>
+                  <apex:inputField value="{!Quote_Spec_Item__c.Name}" required="true"/>
+             </apex:pageBlockSectionItem>
+              
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Quote_Spec_Item__c.Fields.Quote__c.Label}"/>
+                  <apex:outputField value="{!Quote_Spec_Item__c.Quote__c}"/>
+               
+                </apex:pageBlockSectionItem>   
+       
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Quote_Spec_Item__c.Fields.Description__c.Label}"/>
+                  <apex:inputtextarea value="{!Quote_Spec_Item__c.Description__c}" cols="55" rows="4" style="resize:none;"/>
+             </apex:pageBlockSectionItem>
+ 
+       </apex:pageBlockSection>
+
+      </apex:pageBlock>
+      </apex:form>       
+</apex:page>

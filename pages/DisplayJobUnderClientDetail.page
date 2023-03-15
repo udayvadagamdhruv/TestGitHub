@@ -1,0 +1,73 @@
+<apex:page controller="DisplayJobUnderClientDetail">
+<head>
+<style>
+  .hd{text-align:right;padding-right:20px!important;}
+ 
+.labelCol2{font-size:1.0em};
+</style>
+</head>
+ <apex:form >
+ <apex:pageBlock tabStyle="Job__c">
+    <table>
+          <tr>
+              <td> <apex:image url="{!$Resource.JobLogo}" width="25" height="25" /> </td>
+              <td>  <h1 class="mainTitle">Jobs</h1> </td>
+          </tr>
+      </table>  
+     
+       <table ><tr><td  width="10%;">
+                             <b> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}" /> </b>
+                            </td><td style="margin-right:15px;">&nbsp;&nbsp; 
+                             <apex:selectList id="StatusList" value="{!strStatus}" size="1" >                              
+                                          <apex:selectOptions value="{!StatusList}"/>
+                                          <apex:actionSupport event="onchange" rerender="pgt1" action="{!populateJobList}"/>
+                                 </apex:selectList></td>
+                                
+         </tr>
+         
+         </table>   <br/>  
+          <b> <apex:outputLabel value="You are Viewing recent thousand Jobs" rendered="{!job.size ==1000}"/> </b> 
+     <!--apex:outputPanel layout="block" style="overflow:auto;height:150px;" rendered="{!job.size > 0}"-->
+     <apex:pageBlock id="pgt1" >
+      <apex:pageBlockTable value="{!job}" var="j" width="100%" rendered="{!job.Size > 0}"> <br/><br/><br/> 
+           
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+              <apex:outputfield value="{!j.Job_Auto_Number__c}"/>
+          </apex:column> 
+           
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Name.Label}">
+              <apex:outputLink value="/apex/JobListView?id={!j.id}" tabindex="tab1">{!j.Name}</apex:outputLink>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+              <apex:outputfield value="{!j.Start_Date__c}"/>
+          </apex:column>
+                    
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Completion_Date__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+              <apex:outputfield value="{!j.Completion_Date__c}"/>
+          </apex:column> 
+          
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+              <apex:outputField value="{!j.Due_Date__c}"/>
+          </apex:column>  
+     
+           <apex:column headerValue="{!$ObjectType.Job__c.Fields.Status__c.Label}">
+              <apex:outputField value="{!j.Status__c}"/>
+          </apex:column>  
+          
+           <apex:column headerValue="{!$ObjectType.Job__c.Fields.JS_Client_Contact__c.Label}">
+              <apex:outputField value="{!j.JS_Client_Contact__c}"/>
+          </apex:column>  
+       </apex:pageBlockTable>
+     
+            
+         <apex:pageBlockSection rendered="{!job.size == 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+       </apex:pageBlock>
+   </apex:pageBlock>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

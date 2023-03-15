@@ -1,0 +1,4 @@
+<apex:page standardController="Production_Estimate__c" extensions="ProductionEstimateViewSwitchExt" tabStyle="Job__c" sidebar="true" docType="html-5.0" applyBodyTag="False" action="{!pagedir}" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+ 
+</apex:page>

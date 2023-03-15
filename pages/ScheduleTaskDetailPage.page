@@ -1,0 +1,6 @@
+<!-- This page is used to override detail of Schedule Task -->
+<apex:page standardController="Schedule_Task__c" tabStyle="MyAdmin__tab">
+    <apex:detail showChatter="true" title="true" relatedList="true"/>
+    <apex:include pageName="AdminTabAssignRolesToTask"/>
+</apex:page>
+<!-- End of Page -->

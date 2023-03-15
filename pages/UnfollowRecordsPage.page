@@ -1,0 +1,65 @@
+<apex:page controller="UnfollowRecordsPageCntr">
+  
+  
+  <apex:form >
+  
+  
+     <apex:pageBlock title="Unfollow the Completed Jobs" id="pb">
+     
+        <apex:pagemessages />
+          <apex:commandButton value="Unfollow Jobs" action="{!Unfollowrecords}"/>
+    
+           <apex:pageblocktable value="{!EnJWrap}" var="job">
+        
+              <apex:column headervalue="Action">
+                <apex:inputcheckbox value="{!job.Checked}"/>
+             
+              </apex:column>
+               <apex:column value="{!job.j.Job_Auto_Number__c}"/>
+             <apex:column value="{!job.j.name}"/>
+            
+          </apex:pageblocktable>
+     
+    
+    
+    
+   
+     
+        
+   
+     
+     </apex:pageBlock>
+    
+    
+    
+    
+    <apex:pageBlock title="Unfollow the Chatter Files" id="pb1">
+    
+     <apex:commandButton value="Unfollow Files" action="{!FileUnfollowrecords}"/>
+        <apex:pageblocktable value="{!EnFWrap}" var="File">
+        
+           <apex:column headervalue="Action">
+            <apex:inputcheckbox value="{!File.Checked}"/>
+         
+           </apex:column>
+        
+         <apex:column value="{!File.c.Title}"/>
+         <apex:column value="{!File.c.Createddate}"/>
+
+        
+        </apex:pageblocktable>
+     
+    
+  
+    
+  
+  </apex:pageBlock>
+  
+  
+ 
+  </apex:form>
+  
+  
+  
+  
+</apex:page>

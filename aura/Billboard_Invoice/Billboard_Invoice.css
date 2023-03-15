@@ -1,0 +1,54 @@
+.THIS  .tablecss {
+    line-height: 40px;
+}
+
+.THIS .frequired label:after { 
+    content:" *";
+    color: #e32;
+}
+
+@media (min-width: 48em) {
+    .THIS .slds-modal__container {
+        margin: 0 auto;
+        width: 85% !important;
+        max-width: 90rem !important;
+        min-width: 30rem !important;
+    }
+}
+
+.THIS .slds-accordion__summary-action {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    min-width: 0;
+    background: #e2e4e6  !important;
+    line-height: 1.675rem  !important;
+    padding: 5px  !important;
+    font-size: 1.1em !important;
+    color: darkslategrey !important;
+}
+
+.THIS .slds-accordion__section {
+    padding: 0.65rem !important;
+}
+
+.THIS .slds-button_icon-border
+{
+    width: 1.5rem;
+    height: 1.5rem;
+    
+}
+
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+    height:150px !important;
+}
+
+.THIS .slds-accordion__summary
+{
+    margin-top: 5px;
+    margin-bottom: 18px;
+    
+}

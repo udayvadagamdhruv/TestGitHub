@@ -1,0 +1,3 @@
+<apex:page standardController="Specification_Template__c">
+    <apex:enhancedList type="Specification_Template__c" height="300" rowsPerPage="50" id="JobSpecslist" customizable="false"/>
+</apex:page>

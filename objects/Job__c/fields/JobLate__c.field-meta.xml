@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JobLate__c</fullName>
+    <description>If Due Date minus Competion Date is greater than 0 then the project is late, otherwise it is on time.</description>
+    <externalId>false</externalId>
+    <formula>IF( Days_Late__c &gt; 0, &quot;Late&quot;, &quot;On Time&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Job Late</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

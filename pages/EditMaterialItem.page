@@ -1,0 +1,712 @@
+<apex:page standardController="Material_Item__c" tabStyle="Material_Item__c" extensions="EditMaterialItemExtension">
+  
+ <apex:sectionHeader title="Material Item Details"/>
+  
+   <apex:form >
+      <apex:pageBlock id="pb">
+          <apex:pagemessages id="pgMsg"/>
+         <apex:pageBlockButtons >
+            <apex:commandButton value="Save" action="{!saveme}"></apex:commandButton>
+            <apex:commandButton action="{!cancel}" value="Cancel" ></apex:commandButton>
+         </apex:pageBlockButtons>
+         
+  <!------------------------------------------------------ Recordtype 'Size' fields -------------------------------------------------------------------->    
+         
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true" rendered="{!RecordtypeName =='Size'}">
+          
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Name.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Name}" required="true"/>
+              </apex:pageBlockSectionItem>
+              
+              <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Material_ID__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Material_ID__c}" />
+               
+               </apex:pageBlockSectionItem>
+              
+              
+               
+               
+              <!-- <apex:pageBlockSectionItem >
+                 
+               </apex:pageBlockSectionItem> -->
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Type__c}" />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Size__c.Label}" /> 
+                 <apex:inputField value="{!Material_Item__c.Size__c}" />    
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Calc_Unit__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Calc_Unit__c}" />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Width_inches__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Width_inches__c}" />
+                  
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Category__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Category__c}" />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Length_inches__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Length_inches__c}" />
+                 
+               
+               </apex:pageBlockSectionItem>
+               
+               
+              
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Item__c.Fields.GL_Department__c.Label}"/>
+               <apex:actionRegion >
+                <apex:outputPanel >
+                   <span>
+                     
+                      <apex:selectList id="GLDName" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+            
+            
+             <apex:pageBlockSectionItem >
+                
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Price_Each__c.Label}" /> 
+             <apex:inputField value="{!Material_Item__c.Price_Each__c}" />
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.GL_Code__c.Label}"/>
+                  <apex:actionRegion >
+                <apex:outputPanel >
+                   <span  >
+                      
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+               </apex:pageBlockSectionItem>
+               
+           <apex:pageBlockSectionItem >
+               
+                <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Machine_OH_Linear_Foot_Cost__c.Label}" /> 
+             <apex:inputField value="{!Material_Item__c.Machine_OH_Linear_Foot_Cost__c}" />
+               
+               </apex:pageBlockSectionItem>    
+               
+               
+            
+           
+            
+               
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Store_Type__c.Label}" /> 
+             <apex:inputField value="{!Material_Item__c.Store_Type__c}" />
+             
+            </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+             
+                <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Labor_Linear_Foot_Cost__c.Label}" /> 
+             <apex:inputField value="{!Material_Item__c.Labor_Linear_Foot_Cost__c}" />
+            
+            </apex:pageBlockSectionItem>
+            
+            
+               
+              
+               
+            <apex:pageBlockSectionItem >
+            
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Package_Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Package_Type__c}" />
+            
+            
+            </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Shipping_Location__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Shipping_Location__c}" />
+               </apex:pageBlockSectionItem>
+               
+            
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Material_Media_Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Material_Media_Type__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Min__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Min__c}" />
+             
+            </apex:pageBlockSectionItem>
+            
+            
+               
+            <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Manufacturer__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Manufacturer__c}" />
+             
+            </apex:pageBlockSectionItem>
+            
+            
+            
+            
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Dept_Contact__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Dept_Contact__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >
+              <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Manufacturer_Item_No__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Manufacturer_Item_No__c}" />
+            </apex:pageBlockSectionItem>
+            
+           
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Description__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Description__c}" />
+            </apex:pageBlockSectionItem>
+                  
+                  
+             <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Supplier_No__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Supplier_No__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Store_Front__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Store_Front__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Max_Qty__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Max_Qty__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+           
+               <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Creative_Brief_Template__c.Label}"/>
+                <apex:outputPanel >
+                   <span  >
+                      <apex:selectList value="{!CBTemp}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!CBTempName}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             
+            </apex:pageBlockSectionItem>
+            
+              <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Production_Estimate_Template__c.Label}"/>
+                <apex:outputPanel >
+                   <span  >
+                      <apex:selectList value="{!PETemp}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!PETempName}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             
+            </apex:pageBlockSectionItem>
+           
+            
+            
+            
+               
+               
+        </apex:pageBlockSection> 
+        
+<!----------------------------------------------------End Recordtype 'Size' fields ------------------------------------------------------------>        
+        
+<!---------------------------------------------------- Recordtype 'Each' fields ------------------------------------------------------------->        
+        <apex:pageBlockSection title="Information" columns="2" collapsible="true" rendered="{!RecordtypeName =='Each'}">
+         
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Name.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Name}" required="true"/>
+              </apex:pageBlockSectionItem>
+              
+              <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Material_ID__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Material_ID__c}"  />
+               
+               </apex:pageBlockSectionItem>
+              
+              
+               
+               <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Type__c}" />
+                  
+               </apex:pageBlockSectionItem>
+               
+               
+              
+              
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Case_Pack__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Case_Pack__c}" />
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Calc_Unit__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Calc_Unit__c}" />
+                  
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Price_Per_Unit__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Price_Per_Unit__c}" />
+               
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Category__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Category__c}" />
+               
+                  
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Price_Per_Case_Each__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Price_Per_Case_Each__c}" />
+               
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+              
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Item__c.Fields.GL_Department__c.Label}"/>
+               <apex:actionRegion >
+                <apex:outputPanel >
+                   <span>
+                     
+                      <apex:selectList id="GLDName1" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment1"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Labor_Charge__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Labor_Charge__c}" />
+               
+               
+               
+               </apex:pageBlockSectionItem>
+            
+            
+               
+             <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.GL_Code__c.Label}"/>
+                  <apex:actionRegion >
+                <apex:outputPanel >
+                   <span  >
+                      
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment1">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+               </apex:pageBlockSectionItem>
+               
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Shipping_and_Handling__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Shipping_and_Handling__c}" />
+               </apex:pageBlockSectionItem>   
+               
+               
+           
+            
+              <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Store_Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Store_Type__c}" />
+               </apex:pageBlockSectionItem>
+               
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Shipping_Location__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Shipping_Location__c}" />
+                   
+            </apex:pageBlockSectionItem>  
+               
+               
+            
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Package_Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Package_Type__c}" />
+                  
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+              <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Min__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Min__c}" />
+            
+            </apex:pageBlockSectionItem>
+               
+            
+               
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Manufacturer__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Manufacturer__c}" />
+                  
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Dept_Contact__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Dept_Contact__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+            
+               
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Manufacturer_Item_No__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Manufacturer_Item_No__c}" />
+                  
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Description__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Description__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+           
+            
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Supplier_No__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Supplier_No__c}" />
+                  
+            </apex:pageBlockSectionItem>
+            
+            
+             <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Store_Front__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Store_Front__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Max_Qty__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Max_Qty__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+            
+               <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Creative_Brief_Template__c.Label}"/>
+                <apex:outputPanel >
+                   <span  >
+                      <apex:selectList value="{!CBTemp}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!CBTempName}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             
+            </apex:pageBlockSectionItem>
+            
+            
+              <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Production_Estimate_Template__c.Label}"/>
+                <apex:outputPanel >
+                   <span  >
+                      <apex:selectList value="{!PETemp}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!PETempName}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+            </apex:pageBlockSectionItem>
+            
+            
+           
+           <!--  <apex:pageBlockSectionItem >
+           <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.File__c.Label}" /> 
+                <apex:inputField value="{!Material_Item__c.File__c}" />
+            </apex:pageBlockSectionItem>   -->
+               
+        </apex:pageBlockSection> 
+            
+           
+           
+               
+       
+<!----------------------------------------------------End Recordtype 'Each' fields ------------------------------------------------------------->        
+        
+<!---------------------------------------------------- Recordtype 'Sheet' fields ------------------------------------------------------------->        
+     
+        <apex:pageBlockSection title="Information" columns="2" collapsible="true" rendered="{!RecordtypeName =='Sheet'}">
+         
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Name.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Name}" required="true"/>
+              </apex:pageBlockSectionItem>
+              
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Material_ID__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Material_ID__c}"  />
+               
+               </apex:pageBlockSectionItem>
+               
+               
+              
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Type__c}" />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Case_Pack__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Case_Pack__c}" />
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Calc_Unit__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Calc_Unit__c}" />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Price_Per_M__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Price_Per_M__c}" />
+                
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Category__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Category__c}" />
+               </apex:pageBlockSectionItem>
+               
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Labor_Click_Charge__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Labor_Click_Charge__c}" />
+                
+               
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Material_Item__c.Fields.GL_Department__c.Label}"/>
+               <apex:actionRegion >
+                <apex:outputPanel >
+                   <span>
+                     
+                      <apex:selectList id="GLDName2" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment2"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Machine_Click_Charge__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Machine_Click_Charge__c}" />
+                
+               
+               </apex:pageBlockSectionItem>
+            
+            
+               
+               
+                <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.GL_Code__c.Label}"/>
+                  <apex:actionRegion >
+                <apex:outputPanel >
+                   <span  >
+                      
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment2">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Color_Click_Charge__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Color_Click_Charge__c}" />
+                
+               
+               </apex:pageBlockSectionItem>
+            
+           
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Store_Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Store_Type__c}" />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.B_W_Click_Charge__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.B_W_Click_Charge__c}" />
+                
+            
+            </apex:pageBlockSectionItem> 
+               
+           
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Package_Type__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Package_Type__c}" />
+            </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Shipping_Location__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Shipping_Location__c}" />
+            </apex:pageBlockSectionItem>
+            
+               
+            
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Manufacturer__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Manufacturer__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Min__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Min__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+            
+               
+           <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Manufacturer_Item_No__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Manufacturer_Item_No__c}" />
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Dept_Contact__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Dept_Contact__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+         
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Supplier_No__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Supplier_No__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Description__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Description__c}" />
+          </apex:pageBlockSectionItem>
+           
+               <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Creative_Brief_Template__c.Label}"/>
+                <apex:outputPanel >
+                   <span  >
+                      <apex:selectList value="{!CBTemp}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!CBTempName}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             
+            </apex:pageBlockSectionItem>
+            
+            
+              <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Production_Estimate_Template__c.Label}"/>
+                <apex:outputPanel >
+                   <span  >
+                      <apex:selectList value="{!PETemp}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!PETempName}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             
+            </apex:pageBlockSectionItem>
+            
+            
+            
+            <apex:pageBlockSectionItem >
+            <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Store_Front__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Store_Front__c}" />
+            </apex:pageBlockSectionItem>
+            
+           
+            
+            
+           <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Material_Item__c.Fields.Max_Qty__c.Label}" /> 
+                  <apex:inputField value="{!Material_Item__c.Max_Qty__c}" />
+            </apex:pageBlockSectionItem>
+            
+            
+        
+               
+               
+        </apex:pageBlockSection> 
+ <!----------------------------------------------------End Recordtype 'Sheet' fields ------------------------------------------------------------->        
+       
+        
+        
+        
+      </apex:pageBlock>
+   </apex:form> 
+  
+  
+  
+</apex:page>

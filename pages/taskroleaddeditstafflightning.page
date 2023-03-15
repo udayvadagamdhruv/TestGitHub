@@ -1,0 +1,137 @@
+<apex:page standardController="Job_Task__c" extensions="TaskRoleAddEditStaffExtension" tabStyle="Job__c" action="{!SerachStaff}" sidebar="false" showHeader="false" standardStylesheets="true"  applyBodyTag="false" applyHtmlTag="false" docType="html-5.0">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+  
+  <style>
+  
+  .individualPalette, .lookupHoverDetail, .lookupHoverDetailOverridable{
+          z-index:-10 !important;
+          display:none !important;
+      }
+  
+        .slds-checkbox--faux 
+        {
+            width: 1.2rem !important ;
+            height: 1.2rem !important;
+               border: 2px solid #d8dde6 !important;
+        }
+
+        .pageHeader
+        {
+            color:white;
+            background-color:#851225;
+            height:70px;
+            padding-top:25px; 
+            position:fixed;
+            z-index:999;
+            width:100% !important;
+            padding-left:23px;
+        }
+    
+        .SectionHeader
+        {
+            background-color:Grey !important;
+            color:white;
+        }
+        
+        .bPageBlock 
+        {
+             margin: 20px 20px 20px 20px !important;
+             background-color:white !important;
+        }
+        
+        
+        body
+        {
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed; 
+                margin:0px !important;
+        }
+
+  </style>
+  
+  
+  
+<div class="slds">
+
+ <apex:form >
+ 
+          <div class="slds-media__body pageHeader">
+               <span  class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" style="color:white;font-size:18px;"><b>Assign Staff</b></span>
+               <span style="float:right;padding-right:20px;">     
+                  <b>  
+                       <apex:commandButton action="{!Addstaff}" value="Add To Task" rendered="{!AllstaffWrappers.size > 0}" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                       <apex:commandButton action="{!cancel}" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                 </b>
+               </span>
+         </div> 
+         <br/><br/><br/>
+ 
+   
+           
+        <apex:pageMessages ></apex:pageMessages> 
+            <br/>   
+           
+         
+           
+           
+         <apex:outputPanel rendered="{!AllstaffWrappers.size > 0}" >
+            <div class="slds-box bPageBlock ">
+               <div class="slds-grid slds-wrap">
+                 <apex:repeat value="{!AllstaffWrappers}" var="s"  rendered="{!AllstaffWrappers.size > 0}" id="cTable">
+                               <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--3-of-6 slds-large-size--12-of-12" style="z-index:1 !important;">
+                                   <div class="demo-only" style="width: 30rem;">
+                                        <article class="slds-tile slds-media">
+                                               <div class="slds-media__figure">
+                                                    <span class="slds-avatar slds-avatar_circle slds-avatar--medium" style="border-radius: 50%;">
+                                                        <img alt="" src="{!URLFOR($Resource.SLDS0122, '/assets/images/avatar2.jpg')}"  />
+                                                    </span>
+                                                </div>
+                                        <div class="slds-media__body">
+                                        <h1 class="slds-tile__title slds-truncate" title="Staff">{!s.staff.Staff__c} </h1>
+                                              
+                                           
+                                           <div class="slds-tile__detail">
+                                              <dl class="slds-list_horizontal slds-wrap">
+                                                 <dd class="slds-item_detail slds-truncate" title="Role" >{!s.staff.Role__c}</dd>
+                                              </dl>
+                                          </div>
+                                       </div>
+                                       
+                                        <h1  title="Select Staff" style="float:right;">
+                                          <label class="slds-checkbox">
+                                              <apex:inputCheckbox value="{!s.selection}"  style="width:30px;height:30px"/>
+                                              <span class="slds-checkbox--faux"></span>
+                                           </label>
+                                        </h1>
+                                        
+                                     </article>
+                                         
+                                       </div>  <hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;"/>
+                             </div>
+                  </apex:repeat>
+         
+         </div>
+      </div>
+      
+      </apex:outputPanel>  
+           
+         
+            <apex:outputPanel rendered="{!AllstaffWrappers.size <= 0}">
+           
+                <p>No records to display </p>
+                     
+            </apex:outputPanel>  
+     
+    
+    
+</apex:form>
+</div>
+</html>
+</apex:page>

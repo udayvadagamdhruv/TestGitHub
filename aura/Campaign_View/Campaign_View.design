@@ -1,0 +1,7 @@
+<design:component>
+    
+    <design:attribute name="JobsSection" label="Jobs Section Label"  description="This will reflect the  Jobs Section Label"/>
+    <design:attribute name="JobNotesSection" label="Notes Section Label"  description="This will reflect the   Notes Section Label" />
+    <design:attribute name="JobFilesSection" label="File Section Label"  description="This will reflect the   Files Section Label"/>
+    
+</design:component>

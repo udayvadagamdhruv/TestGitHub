@@ -1,0 +1,134 @@
+<apex:page Controller="DisplayBillboardInvoiceLIController" >
+
+
+<head>
+<style>
+ #table_id td
+        {
+            border:0px;
+        }
+</style>
+
+</head>
+ 
+ <apex:form >
+  <apex:pageBlock >
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+    <apex:commandButton action="{!createIALI}" value="Billboard Invoice Line Items" id="btn2" rendered="{!$ObjectType.Billboard_Invoice_Line_Item__c.Createable}"/> 
+       <apex:commandButton value="Save" action="{!save}" id="saveButton1" style="display: none;"/>  
+       <apex:commandButton value="Cancel" id="cancelButton1" action="{!cancelme}" style="display: none;"/> 
+       </span>
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!BBILI}" var="Item" rendered="{!BBILI.Size>0}">
+         <apex:column headerValue="Action" width="10%">
+         
+             <apex:commandButton value="Edit" action="{!EditBBIL}" reRender="hiddenBlock2" rendered="{!$ObjectType.Billboard_Invoice_Line_Item__c.Updateable}">
+                  <apex:param name="param1" value="{!Item.id}" assignTo="{!strBBILI}" ></apex:param>
+              </apex:commandButton>
+         
+              <apex:commandButton value="Delete" action="{!deleteIALI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" rendered="{!$ObjectType.Billboard_Invoice_Line_Item__c.Deletable}">
+                  <apex:param name="param2" value="{!Item.id}" assignTo="{!strBBILI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+         
+        
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.name.Label}">
+              <apex:outputLink value="/{!Item.Id}">{!Item.Name}</apex:outputlink>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.GL_Department__c.Label}">
+              <apex:outputfield value="{!Item.GL_Department__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.GL_Code__c.Label}">
+              <apex:outputfield value="{!Item.GL_Code__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.GL_Code_No__c.Label}">
+              <apex:outputfield value="{!Item.GL_Code_No__c}"/>
+          </apex:column>
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.Unit_Type__c.Label}">
+              <apex:outputfield value="{!Item.Unit_Type__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.Quantity__c.Label}">
+              <table border="0" id="table_id">
+            <tr>
+               <td border="0">
+                  <apex:outputfield value="{!Item.Quantity__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" changedStyleClass="myBoldClass" hideOnEdit="btn2" />
+                  </apex:outputfield> </td>
+               <td> 
+
+                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Quantity" />  
+               </td>
+           </tr>
+           </table>
+          </apex:column> 
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.Amount__c.Label}">
+              <table border="0" id="table_id">
+            <tr>
+               <td border="0">
+                  <apex:outputfield value="{!Item.Amount__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" changedStyleClass="myBoldClass" hideOnEdit="btn2" />
+                  </apex:outputfield> </td>
+               <td> 
+
+                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Amount" />  
+               </td>
+           </tr>
+           </table>
+          </apex:column> 
+          
+          
+          
+          
+          
+           
+          
+          
+            
+     
+     </apex:pageBlockTable>
+     
+     
+     
+    
+   <!-- <div style="float:left;padding-left:530px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+       <apex:outputPanel rendered="{!BBILItem.Size > 0}">
+            <apex:outputLabel value="Total Allocation Qty" style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, ###,###,###}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumQuant}"/>
+            </apex:outputText> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <apex:outputLabel value="Total Allocation Amount" style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, $###,###,###.00}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+            </apex:outputText>
+           
+        </apex:outputPanel>
+      </div> <br/> -->
+     
+   
+    
+   
+     
+        <apex:pageBlockSection rendered="{!BBILI.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+
+
+
+</apex:page>

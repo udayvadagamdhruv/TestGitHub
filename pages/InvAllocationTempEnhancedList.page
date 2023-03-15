@@ -1,0 +1,51 @@
+<apex:page standardController="Invoice_Allocation_Template__c" tabStyle="MyAdmin__tab" extensions="InvAllocationTempEnhancedListExt" >
+
+
+ <head>
+        <style>
+         .actionLink 
+        {
+            color: #015BA7 !important;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        </style>
+    </head>
+<apex:form >
+<apex:pageMessages ></apex:pageMessages>
+     <table>
+          <tr>
+              <td align="left"> <apex:image url="{!$Resource.BigTop}" width="40" height="40" /> </td>
+              <td valign="bottom"><apex:commandButton action="{!createNewIAT}" value="New {!$ObjectType.Invoice_Allocation_Template__c.Label}" /></td>
+          </tr>
+      </table>
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!lstIAT}" var="Item" rendered="{!lstIAT.size > 0}">
+            <apex:column headerValue="Action" width="6%">
+                <apex:commandLink value="Edit" action="{!editIAT}" styleClass="actionLink">
+                      <apex:param id="param1" name="param1" assignTo="{!strIAT}" value="{!Item.Id}"/>  
+                </apex:commandLink>
+                &nbsp; | &nbsp;
+                <apex:commandLink action="{!deleteIAT}" onclick="return confirm(' Are You sure? You Want to delete this Invoice Allocation Template.');" styleClass="actionLink">Del
+                    <apex:param id="param2" name="param2" assignTo="{!strIAT}" value="{!Item.Id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Template__c.Fields.Name.Label}" width="80%">
+                <apex:outputLink value="/apex/InvAllocationTempDetailpage?id={!Item.Id}">{!Item.Name}</apex:outputLink>
+            </apex:column>
+          <!--  <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Template__c.Fields.Description__c.Label}" width="80%">
+                <apex:outputfield value="{!Item.Description__c}"></apex:outputfield>
+            </apex:column> -->
+            
+        </apex:pageBlockTable>
+        <apex:outputPanel rendered="{!lstIAT.size <= 0}">
+            <b> No records to display</b>
+        </apex:outputPanel>
+    </apex:pageBlock>
+    </apex:form>
+
+
+
+
+
+</apex:page>

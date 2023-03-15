@@ -1,0 +1,282 @@
+<apex:page standardController="Job__c" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" >
+        <!--jQuery CDN-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!--Salesforce Lightning Design System Static Resource-->
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+<script>
+var j$ = jQuery.noConflict();
+</script>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+        <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+        <script>
+            function selectTab(elmnt) {
+                // slds-active
+                $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+                $(elmnt).parent("li").addClass("slds-active");
+                
+                // tabindex
+                $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+                $(elmnt).attr("tabindex", 0);
+                
+                // aria-selected
+                $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+                $(elmnt).attr("aria-selected", true);
+                
+                // hiding previously selected tab (slds-show/slds-hide)
+                
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+                // displaying newly selected tab (slds-show/slds-hide)
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").addClass("slds-show");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").removeClass("slds-hide");
+            }
+      </script>
+
+    <apex:slds />
+    <div class="slds-scope">
+    
+  <!-- Header -->  
+  <div class="slds-page-header" style="position:fixed;width:100%;z-index:999;">
+  <div class="slds-grid">
+    <div class="slds-col slds-has-flexi-truncate">
+      <div class="slds-media slds-no-space slds-grow">
+        <div class="slds-media__figure">
+          <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+          
+          </svg>
+        </div>
+        <div class="slds-media__body">
+          <p class="slds-text-title--caps slds-line-height--reset">Job</p>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="this should match the Record Title">Job Name</h1>
+        </div>
+      </div>
+    </div>
+    <div class="slds-col slds-no-flex slds-grid slds-align-top">
+      
+      <div class="slds-button-group" role="group">
+        <button class="slds-button slds-button--neutral">Edit</button>
+        <button class="slds-button slds-button--neutral">Delete</button>
+        <button class="slds-button slds-button--neutral">Clone</button>
+        
+      </div>
+    </div>
+  </div>
+  </div>
+  <br/><br/><br/>
+  <!-- Tabs -->
+  
+  <div class="slds-tabs--scoped" >
+  <ul class="slds-tabs--scoped__nav" role="tablist" style="position:fixed;width:100%;z-index:999;">
+    <li class="slds-tabs--scoped__item slds-active" title="Item One" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item" onclick="selectTab(this);" style="text-decoration: none !important;">Details</a></li>
+    <li class="slds-tabs--scoped__item" title="Item Two" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2" id="tab-scoped-2__item" onclick="selectTab(this);" style="text-decoration: none !important;">Chatter</a></li>
+    <li class="slds-tabs--scoped__item" title="Item Three" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3" id="tab-scoped-3__item" onclick="selectTab(this);" style="text-decoration: none !important;">Charts</a></li>
+    <li class="slds-tabs--scoped__item" title="Item Four" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-4" id="tab-scoped-4__item" onclick="selectTab(this);" style="text-decoration: none !important;">Related</a></li>
+  
+  </ul>
+  <br/><br/>
+
+
+  <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item" >
+  
+  
+  
+  <div class="slds-col" style="padding-left:10px;padding-right:10px;">  
+<fieldset class="slds-box slds-theme--default slds-container">
+   <legend class="slds-text-heading--medium slds-p-vertical--medium">Details</legend>
+   
+<!--Multiple Sections Start-->
+    <apex:detail inlineEdit="true" relatedList="false" title="False" showChatter="false"  oncomplete="parent.location.href = '/{!Job__c.Id}'" />
+   
+<!--Multiple Sections End-->
+</fieldset>
+</div>
+  
+  
+  
+  
+  </div>
+  
+  <div id="tab-scoped-2" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-2__item" >
+        <fieldset class="slds-box slds-theme--default slds-container">
+   <legend class="slds-text-heading--medium slds-p-vertical--medium">Chatter</legend>
+
+      <div style="padding-left:20px;">
+           <chatter:feed entityId="{!Job__c.Id}"/>
+      </div>
+    
+</fieldset>
+       
+  </div>
+  <div id="tab-scoped-3" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-3__item" >Charts Section</div>
+  
+    <div id="tab-scoped-4" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-4__item" >
+    <div class="slds-grid" >
+<div class="slds-col" style="padding-left:10px;padding-right:10px;">
+<fieldset class="slds-box slds-theme--default slds-container">  
+   <legend class="slds-text-heading--medium slds-p-vertical--medium">Related List</legend>
+   <div class="slds-section slds-is-open">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Related List 1</button>
+      </h3>
+      <div class="slds-section__content">
+        <p>Related List 1 Content</p>
+      </div>
+    </div>
+    <div class="slds-section slds-is-open">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Related List 2</button>
+      </h3>
+      <div class="slds-section__content">
+        <p>Related List 2 Content</p>
+      </div>
+    </div>
+    <div class="slds-section slds-is-open">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Related List 3</button>
+      </h3>
+      <div class="slds-section__content">
+        <p>Related List 3 Content</p>
+      </div>
+    </div>
+    <div class="slds-section slds-is-open">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Related List 4</button>
+      </h3>
+      <div class="slds-section__content">
+        <p>Related List 4 Content</p>
+      </div>
+    </div>
+    <div class="slds-section slds-is-open">
+      <h3 class="slds-section__title">
+        <button class="slds-button slds-section__title-action">
+          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+            <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+          </svg>Related List 5</button>
+      </h3>
+      <div class="slds-section__content">
+        <p>Related List 5 Content</p>
+      </div>
+    </div>
+</fieldset>
+</div>
+</div>
+    </div>
+
+
+  </div>
+  
+  </div>
+  <script>
+/*SLDS Sections*/
+//j$('.slds-section__content').hide();
+j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+j$('.slds-section__title').click(function(){
+    if(j$(this).parent().parent().hasClass('Minerva18SectionGroupSingle')){
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().removeClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+        else{
+            j$(this).parent().parent().find('.slds-section').removeClass('slds-is-open');
+            j$(this).parent().parent().find('.slds-section__content').hide();
+            j$(this).parent().toggleClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').show();
+        }    
+    }
+    else{
+        j$(this).parent().toggleClass('slds-is-open');
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().find('.slds-section__content').show();
+        }else{
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+    }
+});
+/*SLDS Sections*/
+
+/* Detail Section Styles */
+j$('td.labelCol').removeClass('labelCol');
+j$('td.last').removeClass('last');
+//j$('td.pbButton').addClass('slds-button-group');
+var pbButton = j$('td.pbButton').html();
+j$('td.pbButton').html("");
+j$('td.pbButton').html("<center><div>"+pbButton+"</div></center>");
+//j$('td.pbButtonb').addClass('slds-button-group');
+var pbButtonb = j$('td.pbButtonb').html();
+j$('td.pbButtonb').html("");
+j$('td.pbButtonb').html("<center><div>"+pbButtonb+"</div></center>");
+j$('input.btn').addClass('slds-button slds-button--neutral');
+var trList = j$('.detailList > tbody > tr');
+for(var i=0;i<trList.length;i++){
+    var tdList = trList[i].getElementsByTagName('td');
+    
+    var label1 = tdList[0].innerHTML;
+    
+    tdList[0].innerHTML = '';
+    
+    j$(tdList[0]).append("<label class='slds-form-element__label'>"+label1+"</label><br/><span  class='slds-form-element__control'>"+ tdList[1].innerHTML+"</span>");
+    
+    if(tdList.length >= 3){
+        var label2= tdList[2].innerHTML;
+        tdList[2].innerHTML = '';
+        j$(tdList[2]).append("<label class='slds-form-element__label'>"+label2+"</label><br/><span  class='slds-form-element__control'>"+ tdList[3].innerHTML+"</span>");
+
+    }
+    
+}
+j$('td.dataCol').hide();
+j$('td.data2Col').hide();
+j$('td.pbTitle').hide();
+j$('.detailList > tbody > tr > td').width('50%');
+
+/* Detail Section Styles End */
+
+</script>
+
+<!-- Custom Styles -->
+<style>
+
+h3{
+    display:inline !important;
+}
+
+.brandTertiaryBrd {
+    border :none !important;
+}
+
+.mainTitle {
+    display: none !important;
+}
+.detailList > tbody > tr > td{
+    
+    padding-top : 15px !important;
+    padding-bottom : 7px !important;
+    padding-left : 10px !important;
+    border-bottom: 1px solid lightgray !important;
+}
+
+.pbSubsection {
+    padding-left: 20px;
+    padding-right: 10px;
+}
+</style>
+<!-- Custom Styles End -->
+
+  </html>
+</apex:page>

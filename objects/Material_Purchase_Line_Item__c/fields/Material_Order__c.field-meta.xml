@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Material_Order__c</fullName>
+    <externalId>false</externalId>
+    <label>Material Order</label>
+    <referenceTo>Material_Order__c</referenceTo>
+    <relationshipLabel>Material Purchase Line Items</relationshipLabel>
+    <relationshipName>Material_Purchase_Line_Items</relationshipName>
+    <relationshipOrder>1</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

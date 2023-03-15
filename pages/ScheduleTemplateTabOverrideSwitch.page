@@ -1,0 +1,17 @@
+<apex:page standardController="Schedule_Template__c" tabStyle="MyAdmin__tab" extensions="EditScheduleTemplateSwitchExt" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+
+    <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/ScheduleTemplateTabOverride?id="+'{!SchedId}', "_self");
+     }
+    
+    </script>
+   
+          <apex:include pageName="ScheduleTemplateTabOverrideLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+    
+   
+
+
+</apex:page>

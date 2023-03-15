@@ -1,0 +1,166 @@
+<!--------------------- Newjobfromsite --------------------------------------->
+<apex:page standardController="Job__c" showHeader="false" >
+
+    <!--style>
+    
+         td,th 
+         {
+            font-size:13px; font-family:Arial;
+         }
+         input ,select,textarea
+         {
+           
+            background-color: #EEEEEE;
+        }
+    
+    </style>
+    
+  <div style="padding-left:40px;padding-right:25px;">
+   <apex:image id="JS_logo" value="" rendered="{!imageNotFound == True}" />
+      <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+        
+       <br/>
+        
+         <div style="font-size:15px; font-family:Arial;font-weight:bold;">
+            <marquee behavior="alternate" direction="left"> <font color="red" size="2px;"> Please fill out ALL fields so we can provide you with excellent service!  </font></marquee> 
+         </div>
+        <br/>
+         <div style="font-weight:bold;font-size:24px;font-family:Arial;">
+               <center> Job Request Form</center>       
+        </div><br/>
+         <apex:pageMessages />
+         <apex:form >
+            <table width="100%">
+                 <tr width="100%">
+                  <td width="100%">
+                    <table width="100%" style = "background-color:#A9A9A9;margin-bottom:-10px;">
+                        <tr style="page-break-inside: avoid;">
+                              <td width="100%">
+                                   <b> <apex:outputText value="JOB DETAILS" style="font-size:14px;font-weight:bold;color:white;font-family:Arial;"/>  </b>
+                              </td>
+                        </tr>
+                    </table>
+                   </td>
+                </tr> 
+            </table>
+            
+            <br/><br/>
+                         <table width="90%" style="padding-left:30px;">
+                         
+                             <tr width="100%"  height="30px;">
+                             
+                                 <th width="10%">
+                                      <apex:outputLabel value="Requestor Name"></apex:outputLabel>
+                                 </th>
+                                 <td width="40%">
+                                     <apex:outputPanel >
+                                         <apex:inputField value="{!Job__c.Dummy_Text_1__c}" html-placeholder="Enter Name " />
+                                     </apex:outputPanel>
+                                 </td>
+                             
+                                 <th width="10%">
+                                      <apex:outputLabel value="Project Name"></apex:outputLabel>
+                                 </th>
+                                 <td width="40%">
+                                     <apex:outputPanel >
+                                         <apex:inputField value="{!Job__c.Name}" html-placeholder="Enter Project Name " />
+                                     </apex:outputPanel>
+                                 </td>
+                                 
+                             </tr>
+                             
+                              <tr width="100%"   height="30px;">
+                                
+                                 <th width="10%">
+                                      <apex:outputLabel value="Request Type"  for="JT" ></apex:outputLabel> 
+                                 </th>
+                                 <td width="40%" >  
+                                   
+                                         <span class="requiredInput" Style="padding:0px 0px 0px 0px; text-align:left; valign:middle;">
+                                            <div class="requiredBlock"></div>
+                                           
+                                            <apex:selectRadio value="{!ScheduleTemp}" style="margin-left: -20px;">
+                                               <apex:selectOptions value="{!ScheduleTemplates}" >
+                                               </apex:selectOptions>
+                                            </apex:selectRadio>
+                                         </span>
+                                      
+                                 </td>
+                                 
+                                 <th width="10%">
+                                      <apex:outputLabel value="Campaign Start Date" />
+                                 </th>
+                                 <td width="40%">
+                                    <apex:outputPanel >
+                                      <apex:inputfield value="{!Job__c.Due_Date__c}" html-placeholder="Enter Date "/>
+                                    </apex:outputPanel>
+                                 </td>
+                             </tr>
+                             
+                       </table>
+                     
+                   <br/>
+                   
+                   
+                    
+                         <table width="100%">
+                             <tr width="100%">
+                              <td width="100%">
+                                <table width="100%" style = "background-color:#A9A9A9;margin-bottom:-10px;">
+                                    <tr style="page-break-inside: avoid;">
+                                          <td width="100%">
+                                               <b> <apex:outputText value="Job Specs" style="font-size:14px;font-weight:bold;color:white;font-family:Arial;"/>  </b>
+                                          </td>
+                                    </tr>
+                                </table>
+                               </td>
+                            </tr> <br/>
+                        </table>
+                        
+                        <br/><br/>
+                     
+                      <table width="90%" style="padding-left:30px;">
+                         
+                             <tr width="100%"  height="30px;">
+                             
+                                 <th width="20%">
+                                      <apex:outputLabel value="Do you need help with content creation"></apex:outputLabel>
+                                 </th>
+                                 <td width="80%">
+                                     <apex:selectRadio value="{!spec1}" style="margin-left: -20px;">
+                                        <apex:selectOptions value="{!Specs}" >
+                                        </apex:selectOptions>
+                                     </apex:selectRadio>
+                                 </td>
+                             
+                             </tr>
+                             
+                              <tr width="100%"  height="30px;">
+                             
+                                 <th width="20%" valign="top">
+                                      <apex:outputLabel value="Campaign Vertical"></apex:outputLabel>
+                                 </th>
+                                 <td width="80%">
+                                     <apex:selectList value="{!SpecValue}" multiselect="true">
+                                        <apex:selectOptions value="{!SpecValues}" >
+                                        </apex:selectOptions>
+                                     </apex:selectList>
+                                 </td>
+                             
+                             </tr>
+              </table>
+            
+            <br/><br/>
+            <table width="70%" style="padding-left:50px;">
+                   
+            </table>
+            
+            
+               <br/><br/>
+                     <center>
+                        <apex:commandButton value="Save" action="{!saveme}" style="font-size:13px;"/>
+                        <apex:commandbutton value="Cancel" action="{!cancel}" style="font-size:13px;"/>
+                     </center><br/><br/>
+          </apex:form>
+          </div-->
+</apex:page>

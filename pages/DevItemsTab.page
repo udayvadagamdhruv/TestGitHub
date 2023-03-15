@@ -1,0 +1,3 @@
+<apex:page standardController="Development_Item__c" extensions="DevItemsTabExt" recordSetVar="DevItems" standardStylesheets="true" sidebar="false" showHeader="false" applyHtmlTag="false" applyBodyTag="false"  action="{!Devlistview}"  docType="html-5.0"  >
+ 
+</apex:page>

@@ -1,0 +1,22 @@
+<!-- This Page is used to Delete The Production Spec Template Record -->
+<apex:page standardController="Production_Spec_Template__c" extensions="DeleteProductionSpecTemplateExtension" sidebar="false" showHeader="false">
+    <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:pageMessages id="msg"></apex:pageMessages>
+       
+        <apex:form >
+          
+           <apex:actionFunction name="doInit" action="{!CheckDelete}" rerender="msg,po"/> 
+           <apex:outputPanel id="po">
+              <center> <apex:CommandLink action="{!proSpecListView}" value="Click here to Go to List" rendered="{!(isError!=False)}" ></apex:CommandLink> </center>
+           </apex:outputPanel>
+        
+        </apex:form> 
+        
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>When_Status_is_other_than_booked</fullName>
+    <active>true</active>
+    <description>If session is other than booked it will be editable.</description>
+    <label>When Status is other than booked</label>
+    <picklistValues>
+        <picklist>Dummy_Picklist_1__c</picklist>
+        <values>
+            <fullName>Dummy 1</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Dummy_Picklist_2__c</picklist>
+        <values>
+            <fullName>Dummy 1</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Dummy_Picklist_3__c</picklist>
+        <values>
+            <fullName>Dummy 1</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Dummy_Picklist_4__c</picklist>
+        <values>
+            <fullName>Dummy 1</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Session_Status__c</picklist>
+        <values>
+            <fullName>Booked</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Requested</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Session_Type__c</picklist>
+        <values>
+            <fullName>Audio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Video</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Spec_Item_picklist__c</fullName>
+    <externalId>false</externalId>
+    <label>Spec Item</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Web Spec</fullName>
+                <default>false</default>
+                <label>Web Spec</label>
+            </value>
+            <value>
+                <fullName>Job Spec</fullName>
+                <default>false</default>
+                <label>Job Spec</label>
+            </value>
+            <value>
+                <fullName>Spec Template</fullName>
+                <default>false</default>
+                <label>Spec Template</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

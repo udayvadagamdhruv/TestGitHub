@@ -1,0 +1,68 @@
+<apex:page standardController="Production_Estimate__c" extensions="DisplayProdEstSpecInProdEstimateTabExt">
+
+    <apex:form id="pb1">
+     <apex:pageBlock >      
+        <table width="100%" >
+          <tr>
+             <td colspan="2">
+                <h1 class="mainTitle">Production Estimate Spec Items</h1>
+             </td>
+          </tr>
+          <tr>
+             <td align="left" width="40%" style="padding-top:10px;" >
+                 <apex:outputLabel value="Production Spec Template"></apex:outputLabel>&nbsp;&nbsp;
+                        <apex:selectList id="theSelectList" value="{!ProductionSpecTempName}" size="1" >
+                             <apex:selectOptions value="{!ProductionSpecTemplate}" id="sp"></apex:selectOptions>
+                        </apex:selectList> &nbsp; 
+                        
+                          <apex:commandButton value="Import Spec Items" action="{!importSpecs}"  id="btn1"></apex:commandButton>&nbsp;
+             </td>   
+             
+             <td align="left" style="padding-top:10px;">  
+                 <apex:commandButton value="Add Spec Item" action="{!addNewSpecs}" id="addspec"/>&nbsp;
+                 <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display:none;"/>&nbsp;
+                 <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display:none;" reRender="pb1"/>&nbsp;                                   
+            </td>
+                
+          </tr>
+        </table>
+       <br/>
+       
+         <apex:pageBlockTable value="{!lstProdEstli}" var="lst" rendered="{!lstProdEstli.size>0}" id="results">
+             
+             <apex:column headerValue="Action" width="13%">
+                 <!--<apex:commandButton value="Edit" action="{!editSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Production_Estimate__c.updateable}">
+                    <apex:param name="param1" value="{!lst.id}" assignTo="{!SpecId}"></apex:param>
+                 </apex:commandButton> &nbsp;-->
+                 
+                <apex:commandButton value="Edit" action="/{!lst.id}/e?retURL=%2F{!ProdEstLIId}"/>
+                 
+                 
+                 <apex:commandButton value="Delete" action="{!DelSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Production_Estimate__c.updateable}">
+                    <apex:param name="param1" value="{!lst.id}" assignTo="{!Peid}"></apex:param>
+                 </apex:commandButton> &nbsp;
+             </apex:column>
+             
+             <apex:column headerValue="Name" width="25%">
+                <apex:outputField value="{!lst.name}">
+                    <apex:inlineEditSupport event="ondblclick" hideOnEdit="addspec" showOnEdit="saveButton,cancelButton"/>
+                   &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9"/> 
+                </apex:outputField>
+             </apex:column>
+                  
+             <apex:column headerValue="Description">
+                 <apex:outputField value="{!lst.Description__c}">
+                     <apex:inlineEditSupport event="ondblclick" hideOnEdit="addspec" showOnEdit="saveButton,cancelButton"/>
+                   &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9"/> 
+                </apex:outputField>
+            </apex:column>
+            
+        </apex:pageBlockTable> 
+       
+       
+      
+
+   </apex:pageBlock>
+</apex:form>
+ 
+</apex:page>

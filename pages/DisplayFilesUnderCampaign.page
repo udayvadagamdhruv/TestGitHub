@@ -1,0 +1,139 @@
+<apex:page controller="DisplayFilesUnderCampaignController" readOnly="true">
+    <apex:pageBlock >
+    
+  <apex:form > 
+     <table ><tr><td  width="10%;">
+                             <b> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}" /> </b>
+                            </td><td style="margin-right:15px;">&nbsp;&nbsp;  <apex:selectList id="StatusList" value="{!strStatus}" size="1" >                              
+                                          <apex:selectOptions value="{!StatusList}"/>
+                                          <apex:actionSupport event="onchange" rerender="pgt1" action="{!populateJobList}"/>
+                                 </apex:selectList></td>
+                                
+         </tr></table>   <br/>
+
+        <apex:pageBlockSection title="Notes Section" columns="1">
+
+            <apex:outputPanel >
+                <table  width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Job
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Body
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!lstJobNotes}" var="jt" rendered="{!lstJobNotes.size > 0}">
+                            <apex:repeat value="{!jt.Notes}" var="Notes">
+                                <tr>
+                                    <td width="25%">
+                                       <a href="/apex/JobListView?id={!jt.id}"> {!jt.Name} - {!jt.Job_Auto_Number__c} </a>
+                                    </td>
+                                    <td width="25%">
+                                        <a href="/apex/JobNoteDetailPage?id={!Notes.Id}"> {!Notes.Title}</a>
+                                    </td>
+
+                                    <td width="50%">
+                                        <apex:outputField value="{!Notes.Body}" />
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+
+            </apex:outputPanel>
+
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection title="Attachments Section" columns="1">
+        
+        
+                   <apex:outputPanel >
+                <table  width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Job
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!lstJobAttach}" var="jt" rendered="{!lstJobAttach.size > 0}">
+                            <apex:repeat value="{!jt.Attachments}" var="Att">
+                                <tr>
+                                    <td width="25%">
+                                       <a href="/apex/JobListView?id={!jt.id}"> {!jt.Name} - {!jt.Job_Auto_Number__c} </a>
+                                    </td>
+                                    <td width="25%">
+                                        <a href="/servlet/servlet.FileDownload?file={!Att.Id}"> {!Att.Name}</a>
+                                    </td>
+
+                                  
+                                </tr>
+                            </apex:repeat>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+
+            </apex:outputPanel>
+        
+        
+          
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection title="Chatter Files Section" columns="1">
+
+            
+               <apex:outputPanel >
+                <table  width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Job
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!lstJobChatter}" var="jt" rendered="{!lstJobChatter.size > 0}">
+                            <apex:repeat value="{!jt.ContentDocumentLinks}" var="Chat">
+                                <tr>
+                                    <td width="25%">
+                                       <a href="/apex/JobListView?id={!jt.id}"> {!jt.Name} - {!jt.Job_Auto_Number__c} </a>
+                                    </td>
+                                    <td width="25%">
+                                        <a href="/{!Chat.ContentDocumentId}"> {!Chat.ContentDocument.Title}</a>
+                                    </td>
+
+                                  
+                                </tr>
+                            </apex:repeat>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+
+            </apex:outputPanel>
+            
+            
+            
+            
+            
+            
+        </apex:pageBlockSection>
+</apex:form> 
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,517 @@
+<apex:page standardController="Billboard__c" extensions="BillboardSearchController"  tabStyle="Billboard__c" recordSetVar="Billboardset" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+     
+  <apex:slds />
+     <style>
+     
+            .pageHeader
+            {
+                color:white;
+                background-color:#851225;
+                height:70px;
+                padding-top:23px; 
+                position:fixed;
+                z-index:999;
+                width:100% !important;
+                padding-left:22px;
+            }
+        
+            .SectionHeader
+            {
+                background-color:Grey !important;
+                color:white;
+            }
+            
+            .bPageBlock 
+            {
+                 margin: 20px 20px 20px 20px !important;
+            }
+            
+            
+            body
+            {
+                    //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                    background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                    //background-image:none !important;
+                    //background-color:#D7D7D7 !important;
+                    background-repeat: repeat-x;
+                    background-position: left top;
+                    background-attachment: fixed; 
+                    margin:0px !important;
+            }
+         
+          .customImage{ height: 10px; width: 10px; }
+          #rcorners1 
+          {
+                 border-radius:0%;
+                 border: 1px solid #cccccc;
+                 padding: 0px; 
+                 width: 100%;
+                 height: 0%;
+          }
+          #pagemessage
+          {
+              color:blue;
+          }
+         
+          .required:after { content:" *";  color: Red;font:bold;}
+           
+           .slds table
+           {
+                height: 50px;
+           }
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+           {
+               margin-top: -19px; 
+           }
+           .detailPage .bPageBlock, .editPage .bPageBlock
+           {
+               border-top-width: 0px;
+           }
+          
+           .slds .slds-text-heading--large
+           {
+                font-size: 27px;
+           }
+           
+           .pbHeader
+           {
+               background: white !important;
+           }
+           
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+           {
+               background: white;
+           }
+          
+           .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+           {
+               border:none;
+           }
+           
+           body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+           {
+               border:none;
+           }
+                       
+           .slds .slds-checkbox .slds-checkbox--faux 
+           {
+                width: 25px;
+                height: 25px;
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                border-width: 2px;
+                border-style: solid;
+                border-color: lightgrey;
+                border-image: initial;
+                border-radius: 2px;
+                background: white;
+                transition: border 0.1s linear, background-color 0.1s linear;
+           }
+            
+           .slds .slds-checkbox [type=checkbox]:checked > .slds-checkbox--faux:after, .slds .slds-checkbox [type=checkbox]:checked ~ .slds-checkbox--faux:after 
+           {
+                height: 6px;
+                width: 11px;
+           }
+           
+           .bPageBlock .requiredInput .requiredBlock 
+           {
+                background-color:white;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+           
+            errorM6, .errorM4, .errorM3, .errorM2, .errorS1 
+            {
+                  border-color: #c00;
+            }
+            .message 
+            {
+                background-color: #c00;
+                border-style: solid;
+                border-width: 0px;
+                color: #000;
+                padding: 0px 0px 0px 0px;
+                margin: 0px 0px;
+            }
+            .errorM3 .msgIcon, .errorMedium 
+            {
+                background-image: url(); 
+                background-position: 0 0;
+                width:0px;
+                height: 0px;
+                padding-left: 4px;
+            }
+            .pbBody td
+            {
+                color:white;
+            }
+            .message .messageText h4 
+            {
+                 font-weight: bold; 
+                 display:block;
+                 color:white;
+            }
+            
+            .messageText br
+            {
+               display:none !important;
+            }
+            .messageTable tr
+            {
+               padding-top:10px !important;
+               padding-bottom:10px !important;
+            }
+            .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+            {
+                border-radius: 15px !important;
+            }
+            .pbBody
+            {
+                padding:10px !important;
+            }
+            
+            
+            .slds td {
+                padding: 0;
+                padding-left: 5px;
+            }
+            
+            
+            .dateFormat
+            {
+                display: block !important;
+            }
+            
+                
+            <!----------------------------------- error Mesgg-------------------------------------->
+       
+            .actionLink 
+            {
+                color: #015BA7 !important;
+                font-weight: normal;
+                text-decoration: none;
+            }
+            
+              .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                      
+                       .dateOnlyInput input {
+            width: 10.5em !important;
+        }
+        
+       
+    </style>  
+    
+    
+     <script type="text/javascript">
+      function doSearch() {
+        searchServer
+        (
+          document.getElementById("Name").value,
+          document.getElementById("clientName").value,
+          document.getElementById("clientCode").value,
+          document.getElementById("vendorName").value,
+          document.getElementById("location").value,
+          document.getElementById("duedt1").value,
+          document.getElementById("duedt2").value
+          
+         );
+      }
+      </script>
+      
+      <script type="text/javascript">
+         // function f1(jobId,ip)
+          //{
+         //     follow(jobId,ip);
+         // }
+        //  function imageOverCross(id2)
+         // {
+         //     id2.src='{!$Resource.Cross}';
+       //   }
+        //  function imageNormal(id2)
+         // {
+        //      id2.src='{!$Resource.Follow}';
+         // }
+      </script>
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+     
+           <body>
+     
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+              
+                  <apex:form html-novalidate="novalidate">
+                  
+                       <div class="slds-media__body pageHeader">
+                            <div class="slds-media slds-no-space slds-grow" >
+                                <div class="slds-media__figure">
+                                   <img src="{!$Resource.JobLogo}" width="50px" height="50px" style="margin-top: -15px;"/> 
+                                </div>                        
+                                <div class="slds-media__body">
+                                    <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"><b>Billboard</b></h1>
+                                </div>
+                            </div>
+                        </div>
+                        
+                     <br/><br/><br/><br/>
+                       
+                     
+                      
+         
+                           <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                               <apex:pageMessages id="errors" />
+                           </div> <br/>
+                           
+                          
+                      
+                         <apex:actionFunction name="searchServer" action="{!runSearch}" rerender="results,debug,errors,id1">
+                               <apex:param name="Name" value="" />
+                               <apex:param name="clientName" value="" />
+                               <apex:param name="clientCode" value="" />
+                               <apex:param name="vendorName" value="" />
+                               <apex:param name="location" value="" />
+                               <apex:param name="duedt1" value=""/>
+                               <apex:param name="duedt2" value=""/>
+                          </apex:actionFunction>
+                           
+                       
+                           
+                            <table style="width:100% !important;">
+                                <tr>
+                                
+                        <!--*********************************************************** Search Section *******************************************************************-->            
+                                
+                                    <td id="searchsection" style="padding-right:0px !important;" valign="top">
+                                       <div style="margin-left: -17px !important;">
+                                           <apex:pageBlock mode="edit">
+                                                <div style="background-color:SteelBlue;color:white;" class="SectionHeader">
+                                                    <h3 class="slds-section-title"><b>&nbsp;Search</b></h3>
+                                                </div>
+                                                
+                                                <div class="slds-grid slds-wrap">
+                                                    <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12" >
+                                                    
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Billboard__c.Fields.Name.Label}</b> </label>
+                                                                <div class="slds-form-element__control" styleClass="slds-input">
+                                                                    <input type="text" id="Name" onkeyup="doSearch();" />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Billboard__c.Fields.Client_Name__c.Label}</b> </label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <input type="text" id="clientName" onkeyup="doSearch();"/>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Client__c.Fields.Client_Code__c.Label}</b> </label>
+                                                                <div class="slds-form-element__control" >
+                                                                     <input type="text" id="clientCode" onkeyup="doSearch();"/>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Billboard__c.Fields.BB_Vendor__c.Label}</b> </label>
+                                                                <div class="slds-form-element__control" >
+                                                                     <input type="text" id="vendorName" onkeyup="doSearch();"/>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Billboard__c.Fields.Location__c.Label}</b> </label>
+                                                                <div class="slds-form-element__control" >
+                                                                     <input type="text" id="location" onkeyup="doSearch();"/>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--12-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Billboard__c.Fields.Expiration_Date__c.Label}</b> </label>
+                                                                <div class="slds-form-element__control" >
+                                                                    <input type="date" id="duedt1" name="ddt1" onfocus="DatePicker.pickDate(false,'duedt1', false);" size="10" onblur="doSearch();"/> &nbsp; >=<br/><br/>
+                                                                    <input type="date" id="duedt2" name="ddt2" onfocus="DatePicker.pickDate(false,'duedt2', false);" size="10" onblur="doSearch();"/> &nbsp; <apex:outputLabel value="<="/><br/>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                   </main>
+                                               </div>
+                                          </apex:pageBlock>
+                                      </div>
+                                  </td>
+                           <!--*********************************************************** End of Search Section *******************************************************************-->
+
+
+                           <!--*********************************************************** Print Section **************************************************************************-->         
+                                   
+                                      
+                                   <td style="width:80% !important;" valign="top">
+                                       <apex:pageBlock mode="edit" id="results">
+                                           <div style="background-color:SteelBlue;color:white;" class="SectionHeader">
+                                               <h3 class="slds-section-title"><b>&nbsp;Result</b></h3>
+                                           </div><br/>
+                                           <apex:commandButton action="{!createNewJob}" value="New Billboard" rendered="{!$ObjectType.Billboard__c.Createable}" styleclass="slds-button slds-button--neutral"/><br/><br/>
+                                          
+                                           <apex:outputPanel rendered="{!jobsW.size > 0}">
+                                               <div class="slds-card">             
+                                                   <div class="slds-card__body"  style="padding: 0px;">   
+                                                   <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                                        <thead class="slds-truncate">
+                        
+                                                            <tr class="slds-text-title">
+                                                            
+                                                                <th class="slds-size--1-of-6" scope="col">
+                                                                   Action
+                                                                </th>
+                                                                <th class="slds-size--1-of-6" scope="col"> 
+                                                                     <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Name.label}" action="{!toggleSort}" rerender="results,debug">
+                                                                         <apex:param name="sortField" value="Name" assignTo="{!sortField}"/>
+                                                                     </apex:commandLink>
+                                                                </th>
+                                                                <th class="slds-size--1-of-6" scope="col">
+                                                                       <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Client_Name__c.label}" action="{!toggleSort}" rerender="results,debug">
+                                                                            <apex:param name="sortField" value="Client_Name__r.Name" assignTo="{!sortField}"/>
+                                                                       </apex:commandLink>
+                                                                </th>
+                                                                <th class="slds-size--1-of-6" scope="col">
+                                                                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.BB_Vendor__c.label}" action="{!toggleSort}" rerender="results,debug">
+                                                                        <apex:param name="sortField" value="BB_Vendor__r.name" assignTo="{!sortField}"/>
+                                                                    </apex:commandLink>
+                                                                </th>
+                                                                <th class="slds-size--1-of-6" scope="col">
+                                                                     <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Location__c.label}" action="{!toggleSort}" rerender="results,debug">
+                                                                        <apex:param name="sortField" value="Location__c" assignTo="{!sortField}"/>
+                                                                    </apex:commandLink>
+                                                                </th>
+                                                                
+                                                                 <th class="slds-size--1-of-6" scope="col">
+                                                                    <apex:commandLink value="{!$ObjectType.Billboard__c.fields.Expiration_Date__c.label}" action="{!toggleSort}" rerender="results,debug">
+                                                                        <apex:param name="sortField" value="Expiration_Date__c" assignTo="{!sortField}"/>
+                                                                    </apex:commandLink>
+                                                                </th>
+                                                                
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!jobsW}" var="j" rendered="{!NOT(ISNULL(jobsW))}" rows="{!PageSize}">
+                                                                <tr class="slds-hint-parent">
+                                                                   
+                                                                   <td class="slds-size--1-of-6" data-label="Action">
+                                                                         <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open quotebutton">
+                                                                             &nbsp;&nbsp;  
+                                                                                <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon">
+                                                                                       <i id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                                </div>
+                                                                                
+                                                                     
+                                                                                <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small quoteclass" style="margin-left: 47px;">
+                                                                                
+                                                                                   <ul class="slds-dropdown__list" role="menu">
+                                                                                     
+                                                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                                            <apex:commandLink value="Edit" action="{!editJob}" rendered="{!$ObjectType.Billboard__c.updateable}" styleClass="actionLink">
+                                                                                                    <apex:param name="editId" value="{!j.objJOb.Id}" assignTo="{!strId}"/>
+                                                                                                     &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                                            </apex:commandLink>                                   
+                                                                                        </li>
+                                                                                        
+                                                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                                             <apex:commandLink value="Delete" action="{!deleteJob}" rendered="{!$ObjectType.Billboard__c.deletable}" onclick="return confirm('Are you sure?');" styleClass="actionLink">
+                                                                                                 <apex:param name="deleteId" value="{!j.objJob.Id}" assignTo="{!strId}"/>
+                                                                                                   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                                             </apex:commandLink>                                       
+                                                                                        </li>
+                                                                                     
+                                                                                    </ul>
+                                                                              </div> 
+                                                                       </div>
+                                                                    </td>
+                                                                   
+                                                                   
+                                                                    <td class="slds-size--1-of-6" data-label="{!$ObjectType.Billboard__c.fields.Name.label}">
+                                                                        <div>
+                                                                            <apex:commandLink target="_top" action="{!navigate}" ><apex:param assignTo="{!strId}" name="param1" id="p1" value="{!j.objJob.Id}"/><apex:outputField value="{!j.objJob.Name}" /></apex:commandLink>
+                                                                        </div>
+                                                                    </td>
+                                                                    
+                                                                     <td class="slds-size--1-of-6" data-label="{!$ObjectType.Billboard__c.fields.Client_Name__c.label}" style="color:black;">
+                                                                        <div>
+                                                                            <apex:commandLink /><apex:outputField value="{!j.objJob.Client_Name__r.Name}"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    
+                                                                     <td class="slds-size--1-of-6" data-label="{!$ObjectType.Billboard__c.fields.BB_Vendor__c.label}" style="color:black;">
+                                                                        <div>
+                                                                            <apex:outputField value="{!j.objJob.BB_Vendor__r.Name}"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    
+                                                                     <td class="slds-size--1-of-6" data-label="{!$ObjectType.Billboard__c.fields.Location__c.label}" style="color:black;">
+                                                                        <div>
+                                                                            <apex:outputField value="{!j.objJob.Location__c}"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    
+                                                                     <td class="slds-size--1-of-6" data-label="{!$ObjectType.Billboard__c.fields.Expiration_Date__c.label}" style="color:black;">
+                                                                        <div>
+                                                                            <apex:outputField value="{!j.objJob.Expiration_Date__c}"/>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </apex:repeat> 
+                                                        </tbody>
+                                                   </table>
+                                              </div>  
+                                            </div> <br/>
+                                             <font size="1pt">Page #:&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;out of&nbsp;<apex:outputLabel value="{!totalPageNumber}"/>&nbsp;&nbsp;&nbsp;&nbsp;</font>
+                                            <apex:commandButton value="Previous" action="{!previousBtnClick}" disabled="{!PreviousButtonEnabled}" reRender="results,id1" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                            <apex:commandButton value="Next" action="{!nextBtnClick}" disabled="{!nextButtonDisabled}" reRender="results,id1" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                            
+                                          </apex:outputPanel> 
+                                          <apex:outputPanel rendered="{!jobsW.size <= 0}">
+                                              <br/><b><p>No records to display</p></b>
+                                          </apex:outputPanel> 
+                                       </apex:pageBlock>
+                                   </td> 
+                                </tr>
+                            </table>
+                             
+                             
+                            
+                           
+                            
+              </apex:form>     
+           </div> 
+        </body>
+    </html>
+ 
+</apex:page>

@@ -1,0 +1,128 @@
+<apex:page controller="WeeklyHotSheetByStaffController1" standardStylesheets="false" renderAs="PDF">
+<head>
+        <style type="text/css">
+        div.tab
+        {
+            width:100%;
+            border:solid black;
+        }
+        @page
+      {
+            /* Landscape orientation */
+            size:landscape;
+
+            /* Put page numbers in the bottom right corner of each
+            page in the pdf document. */
+            @bottom-right 
+            {
+                content: "Page " counter(page);
+                font-family: sans-serif;
+                font-size:8pt;
+            }
+           @bottom-left 
+           {
+                content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+                background-repeat: no-repeat;
+                font-size:8pt;
+                font-family: sans-serif;
+           }
+      }
+
+      body 
+      {
+           font-family: sans-serif;
+           font-size:8pt;
+      }
+  
+      th
+      {
+          font-size:10pt
+          font-style:bold;
+          font-family: sans-serif;
+      }
+
+      td
+      {
+         font-size:8pt;
+         font-family: sans-serif;
+      }
+  
+      div.footer 
+      {
+        position : running(footer) ;
+      }
+
+   </style>
+   </head>
+   <body> 
+        <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+        <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+          <div style="float:right;padding-right:10px;font-size:15px;font-family: sans-serif;font-weight:bold">
+                WEEKLY HOT SHEET BY STAFF
+    </div><br/><br/>
+  <apex:form >
+      <apex:pagemessages ></apex:pagemessages>
+          <apex:pageBlock >
+           <table width="100%">
+                    <tr style="font-size:10pt;">
+                          <th width="50%" style="text-align:left;"><b>{!$ObjectType.Job__c.Fields.Name.Label}</b></th>
+                          <th width="35%" style="text-align:left;"><b>{!$ObjectType.Job_Task_Role__c.Fields.Job_Task__c.Label}</b></th>
+                          <th width="20%" style="text-align:right;"><b>Due Date</b></th> 
+                   </tr>
+                   <tr>
+                         <td colspan="7"><hr color="black"/></td>
+                   </tr>
+              <apex:repeat value="{!mapStaffTask}" var="varParent" rendered="{!if(listSize = 0,false,true)}">
+                  <table width="100%">
+                  
+                      <tr width="100%">
+                              <td width="100%">
+                                <table width="100%" style = "background-color:#EEEEEE;;margin-bottom:-10px;">
+                                    <tr>
+                                          <td width="100%">
+                                               <b> <apex:outputText value="{!varParent}" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                          </td>
+                                    </tr>
+                                </table>
+                               </td> 
+                            </tr>
+                            
+                            
+                         
+                  
+                   <!--   <tr>
+                            <td ><b><apex:outputtext value="{!varParent}"/></b></td>              
+                      </tr> -->
+                      <tr>
+                          <td><br/>
+                              <table width="100%" align="right" >
+                                  <apex:repeat value="{!mapStaffTask[varParent]}" var="varChild">
+                                      <tr>
+                                          <td width="50%"> 
+                                              <apex:outputText value="{!varChild.Job__r.Name}"/> &nbsp;&nbsp;
+                                              <apex:outputText value="({!varChild.Job__r.Job_Auto_Number__c})"/>
+                                          </td>
+                                          <td width="35%">  <apex:outputText value="{!varChild.Name}"/></td>
+                                          <td width="20%" valign="top" align="right"> <apex:outputField value="{!varChild.Revised_Due_Date__c}"/></td>
+                                      </tr>
+                                  </apex:repeat>
+                              </table>
+                          </td>
+                      </tr>
+              </table>
+              </apex:repeat>
+              </table>
+          </apex:pageBlock>
+          
+          <apex:outputPanel rendered="{!if(listSize = 0,true,false)}">
+                  <b>There are no tasks due for this week.</b>
+          </apex:outputPanel>
+          
+          <div class="footer">
+             <apex:outputLabel value="{!today}" style=" font-size:8pt;
+                  font-family:Helvetica;"></apex:outputLabel>
+             </div>
+             
+      </apex:form>
+  </body>
+</apex:page>

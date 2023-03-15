@@ -1,0 +1,68 @@
+<aura:component controller="Job_Task_View_Controller" implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasSObjectName,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="string" default="" />
+    <aura:attribute name="sObjectName" type="string" default="" />
+     <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="error" type="boolean" default="false" />
+    <aura:attribute name="errorMsg" type="string" default="" />
+    <aura:attribute name="ProfileInfo" type="string" default="" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{! c.profileInformation}" /> 
+    <ltng:require  styles="{!$Resource.LtngStyles + '/LCmpModalandChart/Styles/ModalHederFooterStyles.css'}"/>
+    
+     <!-- Custom Styles for Modal Header and Footer -->
+  
+     
+    <!--Modal Header-->  
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Job Delete</h4>
+    </div>
+    <!--End Modal Header-->  
+     
+    <!--Modal Body-->   
+    <div class="slds-modal__content slds-p-around--x-small slds-align_absolute-center slds-size_1-of-1 slds-is-relative">
+  
+        <aura:if isTrue="{!v.error}">
+            <div class="slds-size--1-of-1 slds-p-horizontal_x-small">
+                <ui:message title="Error" severity="error" closable="false">
+                    <span>{!v.errorMsg}</span>
+                </ui:message>  
+            </div>
+            
+            <aura:set attribute="else">
+                <form class="slds-form--stacked">
+                    <b>  Do you want to Delete the Job?</b> 
+                </form> 
+            </aura:set>  
+        </aura:if>
+        <br/>
+        
+    
+        
+      
+    </div>
+    <!--End of Modal Body--> 
+     
+    <!--Modal Footer-->  
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1"> 
+        <aura:if isTrue="{!v.error}">   
+              <lightning:button variant="brand" disabled="{! !(v.ProfileInfo=='System Administrator' || v.ProfileInfo=='Jobsuite Admin') }" label="Continue to Delete the job and it’s related records." title="Continue to Delete all the Job Data" onclick="{! c.doContinuedeleteJOb}"/>
+            <aura:set attribute="else">
+                <lightning:button variant="brand" label="Delete" title="Delete" onclick="{! c.dodeleteJOb}"/>
+            </aura:set>
+        </aura:if>
+     
+        <lightning:button variant="Neutral" class="slds-button" label="Cancel" onclick="{!c.handleClose}"/>
+    </div>
+    <!--End of Modal Footer-->
+
+    
+   <!-- <aura:html tag="style">
+        .slds-backdrop {
+        background: rgba(43, 40, 38, 0) !important;  
+        }
+        .slds-fade-in-open {
+        display:none !important;
+        }
+    </aura:html>    -->
+</aura:component>

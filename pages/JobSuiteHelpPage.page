@@ -1,0 +1,47 @@
+<apex:page controller="JobSuiteHelpPageController">
+    <apex:form >
+        <Html>
+            <Body>
+               
+                <apex:image url="{!imageBody}" height="54" width="150"/>
+                <center><font size="6">Job Suite Help</font></center>
+                  <ol>
+                      <li>
+                            <a href="#q1">Is Chatter a website that anyone can see or is it just for my company?</a>  
+                      </li> 
+                      <br/>
+                       
+                       <li>
+                            <a href="#q2">What are some of the ways that businesses are using Chatter?</a>
+                       </li>   
+                       <br/>
+                       
+                       <li>
+                            <a href="#q3">Who can use Chatter in my company?</a>
+                       </li>   
+                       <br/>
+                       <li>
+                            <a href="#q4">Who can see what I post?</a>
+                       </li>   
+                       <br/>
+                  </ol>      
+              
+                  <a name="q1"></a>
+                  <h2>1. Is Chatter a website that anyone can see or is it just for my company?</h2>
+                  <p>Chatter is completely private and secure for your company. Anything posted in Chatter is just for people within your company to see and collaborate on.</p>
+                  <a href="#top">Back to top</a> <br/>
+              
+                  <a name="q2"></a>
+                  <h2>2. What are some of the ways that businesses are using Chatter?</h2>
+                  <p>Everyday, we hear more great examples of how our customers—and even our own employees—are using Chatter. Generally, people are using Chatter to stay on top of what’s happening at work, share files, work more closely with each other, find internal experts, and reduce email traffic.</p>    
+                  <a href="#top">Back to top</a> <br/>
+              
+                  <a name="q3"></a>
+                  <h2>3. Who can use Chatter in my company?</h2> 
+                  <p>Chatter is included in all paid Salesforce licenses. You can also extend Chatter to everyone in your company for free with Chatter Invitations. Admins can either turn on this feature to allow current Salesforce users to invite coworkers to Chatter, or create Chatter users manually. </p>
+                  <a href="#top">Back to top</a> <br/>
+            </Body>
+        </Html>
+    </apex:form>  
+</apex:page>
+<!-- End of Page -->

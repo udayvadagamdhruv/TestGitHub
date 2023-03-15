@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="BBInvPaySection" label="BB Invoice Payment Section Label"  description="This will reflect the BB Invoice Payment Section Label"/>
+</design:component>

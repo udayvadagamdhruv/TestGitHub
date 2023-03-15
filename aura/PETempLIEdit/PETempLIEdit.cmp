@@ -1,0 +1,133 @@
+<aura:component controller="AdminController"  implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,lightning:actionOverride,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:hasSObjectName" access="global" >
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="recordError" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="fieldSet" type="List"  />
+    <aura:attribute name="Labelname" type="string"  />
+
+    <aura:attribute name="MItem_Records" type="Object"/> 
+    <aura:attribute name="GL_DepartmentRecords" type="Object"/>
+    <aura:attribute name="GL_CodeRecords" type="Object"/>
+    <aura:attribute name="VendorRecords" type="Object"/>
+    <aura:attribute name="isCalUnitEach" type="boolean"  default="false"/>
+    <aura:attribute name="isCalUnitSheet" type="boolean" default="false"/>
+    <aura:attribute name="isCalUnitSize" type="boolean"  default="false"/>
+    
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <lightning:recordEditForm aura:id="PEEditform" density="comfy" objectApiName="{!v.sObjectName}"  recordId="{!v.recordId}" onsubmit="{!c.RecordSubmit}" onload="{!c.onloadrecord}"  onsuccess="{!c.onRecordSuccess}" >
+        <lightning:messages /> 
+        <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+            <div aura:id="errorMsgs"></div>
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium"> 
+                        Edit {!v.simpleRecord.Name} 
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                       <lightning:messages /> 
+                        
+                        <aura:iteration items="{!v.fieldSet}" var="field">
+                            <aura:if isTrue="{!field=='Production_Estimate_Template__c' || field=='Calc_Unit__c' || field=='Material_Item__c' || field=='GL_Department__c' || field=='GL_Code__c' || field=='Vendor__c' || field=='Divide_Sheets_By_Two__c' || field=='Qty_Up__c' || field=='of_Pages__c'}">
+                                <aura:set attribute="else">
+                                    <lightning:inputField fieldName="{!field}" aura:id="ProEstField"  class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='Name') || (field=='Amount__c')  ? 'frequired' :' ')}"  />
+                                </aura:set>
+                            </aura:if>
+                            
+                            
+                            <aura:if isTrue="{!field=='Production_Estimate_Template__c'}">
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Production_Estimate_Temp_Line_Items__c.Production_Estimate_Template__c.label}</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Production_Estimate_Template__r.Name}"  />
+                                    </div>
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!field=='Calc_Unit__c'}">
+                                    <lightning:outputField fieldName="{!field}" aura:id="calcUnit" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!field=='Material_Item__c'}">
+                                    <lightning:outputField fieldName="{!field}" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                            </aura:if>
+                            
+                            
+                            <aura:if isTrue="{!field=='GL_Department__c'}">
+                                <div class="slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <lightning:select  name="GLDepatmentselect" aura:id="GLDSelectId" label="{!v.ObjectType.Production_Estimate_Temp_Line_Items__c.GL_Department__c.label}"  onchange="{!c.OnChangeGLDepatment}" class="frequired">
+                                        <option text="--None--" value="" /> 
+                                        <aura:iteration items="{!v.GL_DepartmentRecords}" var="GLD">
+                                            <option text="{!GLD.Name}" value="{!GLD.Id}" />
+                                        </aura:iteration>
+                                    </lightning:select>
+                                    
+                                </div>
+                            </aura:if> 
+                            <aura:if isTrue="{!field=='GL_Code__c'}">
+                                <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                                    <lightning:select  name="GL_Code" aura:id="GLCodeSelectId" label="{!v.ObjectType.Production_Estimate_Temp_Line_Items__c.GL_Code__c.label}" onchange="{!c.OnchangeGLCode}" class="frequired">
+                                        <option text="--None--" value="" /> 
+                                        <aura:iteration items="{!v.GL_CodeRecords}" var="GLC">
+                                            <option text="{!GLC.GL_ID__c +' '+GLC.Name}" value="{!GLC.Id}" />
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                            </aura:if> 
+                            <aura:if isTrue="{!field=='Vendor__c'}">
+                                <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                                    <lightning:select  name="Vendor" aura:id="VendorId" label="{!v.ObjectType.Production_Estimate_Temp_Line_Items__c.Vendor__c.label}" class="frequired" >
+                                        <option text="--None--" value="" /> 
+                                        <aura:iteration items="{!v.VendorRecords}" var="Ven">
+                                            <option text="{!Ven.Vendor__r.Name}" value="{!Ven.Vendor__c}" />
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                            </aura:if> 
+                            
+                            <!--- &amp;&amp; v.isCalUnitSheet
+                                 &amp;&amp; !v.isCalUnitSize     -->
+                            
+                            <aura:if isTrue="{!v.isCalUnitSheet}">
+                                <aura:if isTrue="{!field=='Divide_Sheets_By_Two__c'}">
+                                    <lightning:inputField fieldName="{!field}" aura:id="DivProEstField" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/>
+                                </aura:if>
+                                <aura:if isTrue="{!field=='of_Pages__c'}">
+                                    <lightning:inputField fieldName="{!field}" aura:id="PageProEstField" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/>
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!(v.isCalUnitEach || v.isCalUnitSheet)}">
+                                <aura:if isTrue="{!field=='Qty_Up__c'}">
+                                    <lightning:inputField fieldName="{!field}" aura:id="QtyupProEstField" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/>
+                                </aura:if>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                        <br></br>
+                    </div>
+                
+                <div class="slds-modal__footer">                
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.doCancel}" />
+                    <lightning:button  variant="brand"  label="Save" type="submit" />
+                </div>              
+            </div>
+        </div>
+    </lightning:recordEditForm> 
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop--open"></div>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            {!v.recordError}</div>
+    </aura:if>   
+    
+</aura:component>

@@ -1,0 +1,58 @@
+<apex:page controller="DisplayBillboardContractController">
+
+<apex:form >
+  <apex:pageBlock >
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+       <apex:commandButton action="{!createBBC}" value="New Billboard Contracts" id="btn2" rendered="{!$ObjectType.Billboard_Contract__c.Createable}"/> 
+       
+       </span>
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!BBC}" var="BBCItem" rendered="{!BBC.Size>0}">
+          <apex:column headerValue="Action" width="10%" rendered="{!$ObjectType.Billboard_Contract__c.Deletable}">
+              <apex:commandButton value="Delete" action="{!deleteBBC}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" >
+                  <apex:param name="param2" value="{!BBCItem.id}" assignTo="{!strBBC}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Contract__c.Fields.Name.Label}">
+              <apex:outputLink value="/{!BBCItem.Id}">{!BBCItem.Name}</apex:outputlink>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Contract__c.Fields.Contract_Number__c.Label}">
+              <apex:outputfield value="{!BBCItem.Contract_Number__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Contract__c.Fields.BB_Vendor_Name__c.Label}">
+              <apex:outputfield value="{!BBCItem.BB_Vendor_Name__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Contract__c.Fields.Start_Date__c.Label}">
+              <apex:outputfield value="{!BBCItem.Start_Date__c}"/>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Contract__c.Fields.End_Date__c.Label}">
+              <apex:outputfield value="{!BBCItem.End_Date__c}"/>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Billboard_Contract__c.Fields.Expiration_Date__c.Label}">
+              <apex:outputfield value="{!BBCItem.Expiration_Date__c}"/>
+          </apex:column>    
+          
+          
+     
+     </apex:pageBlockTable>
+     
+        <apex:pageBlockSection rendered="{!BBC.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+ 
+</apex:page>

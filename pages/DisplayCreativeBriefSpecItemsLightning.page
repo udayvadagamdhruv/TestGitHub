@@ -1,0 +1,243 @@
+<apex:page controller="DisplayCreativeBriefSpecItemsController" standardStylesheets="true"  showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  docType="html-5.0" >
+
+
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS,'assets/styles/salesforce-lightning-design-system-vf.css')}"/>
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+  
+   <head>
+   
+        <style>
+        #table_id td
+                {
+                    border:0px;
+                }
+                
+         .ss:hover{ color: black!important;}           
+                
+         .icon1
+           {
+              color:darkgrey;
+           }
+          .icon1:hover
+           {
+              color:black;
+           }    
+                
+                
+          
+           .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+              
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+           
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+                
+                
+                
+             .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                 
+                
+                
+        </style>
+
+    </head>
+   
+ 
+  
+   <apex:form >
+   
+  <div class="slds">
+   
+    <br/>
+     
+         <div align="center">
+           <apex:commandButton action="{!createSpecitems}" value="Add Spec Items" id="btn1" rendered="{!$ObjectType.Spec_Item__c.Createable}" styleClass="slds-button slds-button--neutral" /> 
+           <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;" styleClass="slds-button slds-button--brand" />  
+           <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" styleClass="slds-button slds-button--neutral" /> 
+         </div>
+         <br/>
+        
+ 
+            <apex:outPutPanel rendered="{!CSpecItem.size>0}"> 
+               <div class="slds-card"  >
+                            
+                      <div class="slds-card__body">
+ 
+                   <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-6" scope="col">Action</th>
+                                        <th class="slds-size--1-of-6" scope="col"> {!$ObjectType.Spec_Item__c.Fields.Name.Label} </th>
+                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Spec_Item__c.Fields.Description__c.Label} </th>
+                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Spec_Item__c.Fields.Lock__c.Label} </th>
+                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Spec_Item__c.Fields.Value__c.Label} </th>
+                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Spec_Item__c.Fields.Sort_Order__c.Label}</th>
+                                 
+                                    </tr>
+                                </thead>
+                               <tbody>
+                                    <apex:repeat value="{!CSpecItem}" var="Item" rendered="{!CSpecItem.size>0}">
+                                    
+                                    <tr>
+                                         <td class="slds-size--1-of-6" data-label="Action">
+                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                                     &nbsp;&nbsp;  
+                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon "  >
+                                                           <!---- &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Show More</span>-------->
+                                                             
+                                                              <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                
+                                                        </div>
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                             
+                                                               
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                      <a href="/apex/EditSpecItemLightning?id={!Item.Id}" role="menuitem" tabindex="0">
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>
+                                                                            
+                                                                            <!--- <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                            </svg>---->
+                                                                            &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                      <a href="/apex/DeleteSpecItem?id={!Item.Id}" role="menuitem" tabindex="0">
+                                                                            <span class="slds-truncate" title="Delete">Delete</span>
+                                                                            
+                                                                          <!----    <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                        </svg>  ----> 
+                                                                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                               
+                                                                 
+                                                                 
+                                                                
+                                                                 
+                                                                 
+                                                            </ul>
+                                                      </div> 
+                                               </div>
+                                            </td>
+                                      
+                                                                            
+                                         <td class="slds-size--1-of-6" data-label="{!$ObjectType.Spec_Item__c.Fields.Name.Label}">
+                                            <apex:outputLink tabindex="tab1" value="/apex/SpecItemDetailPageLightning?id={!Item.Id}">{!Item.Name}</apex:outputLink>
+                                         </td>
+                                        
+                                         <td class="slds-size--1-of-6" data-label="{!$ObjectType.Spec_Item__c.Fields.Description__c.Label}">
+                                             <apex:outputfield value="{!Item.Description__c}"/>
+                                         </td>
+                                        
+                                        
+                                         <td class="slds-size--1-of-6" data-label="{!$ObjectType.Spec_Item__c.Fields.Lock__c.Label}">
+                                             <apex:outputfield value="{!Item.Lock__c}"/>
+                                         </td>
+                                        
+                                          
+                                         
+                                          <td class="slds-size--1-of-6" data-label="{!$ObjectType.Spec_Item__c.Fields.Value__c.Label}">
+                                               <apex:outputfield value="{!Item.Value__c}"/>
+                                          </td>
+                                        
+                                           <td class="slds-size--1-of-6" data-label="{!$ObjectType.Spec_Item__c.Fields.Sort_Order__c.Label}">
+                                              <div class="ss">
+                                              <apex:actionRegion > 
+                                                <apex:outputfield value="{!Item.Sort_Order__c}" >
+                                                   <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btn2,btn6" />
+                                                        <i class="material-icons icon1" style="float:right; padding-right:50px;font-size:15px;">&#xe254;</i>
+                                                </apex:outputfield>
+                                                </apex:actionRegion>
+                                               </div>
+                                           </td>
+                                        
+                                         
+                                                   
+                                        
+                                    
+                                    </tr>
+                                 
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    </apex:repeat>
+                               
+                               
+                               
+                              </tbody>
+            </table>
+ 
+      </div>
+      </div>
+   </apex:outPutPanel>
+               
+        
+   
+           <apex:outputPanel rendered="{!CSpecItem.size <= 0}">
+           
+             <div>  <p>No records to display</p></div>
+                    
+           
+          </apex:outputPanel>
+     
+    </div>
+     
+  </apex:form>
+
+  
+  
+  
+</apex:page>

@@ -1,0 +1,23 @@
+<!-- this Page is used to override the delete button of Session object -->
+<apex:page standardController="Session__c" extensions="DeleteSessionExtension" sidebar="false" showHeader="false">
+ 
+   <script>
+      window.onload=function()
+        {
+          doInit();
+        };
+   </script>  
+
+   <apex:pageMessages id="msg"></apex:pageMessages>
+   
+   <apex:form >
+      
+      <apex:actionFunction name="doInit" action="{!CheckDelete}" reRender="msg,ssn"/>
+      <apex:outputPanel id="ssn">
+         <center> <apex:outputLink value="/apex/JobsTabOverride" rendered="{!(isError!=False)}">Click here to Go to Jobs List</apex:outputLink> </center>
+      </apex:outputPanel>
+
+   </apex:form>
+
+</apex:page>
+<!-- End of Page -->

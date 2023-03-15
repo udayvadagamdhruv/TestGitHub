@@ -1,0 +1,121 @@
+<aura:component controller="AdminController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,lightning:isUrlAddressable" access="global" >
+   
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    <aura:attribute name="isRolOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="RolRecordid" type="String"/>
+    <aura:attribute name="RoleName" type="string"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <div class="slds-page-header" style="padding: 1.2rem 1.2rem;">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="standard:user_role" alternativeText="Role" />
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1 class="slds-page-header__title slds-truncate" style="padding-top:7px;">
+                                        Roles
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <br/>
+   
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Roles">
+        <lightning:accordionSection name="Roles" label="Roles"  class="slds-card" >  
+            <div align="center" >
+                <lightning:button variant="neutral" label="New" title="New" onclick="{!c.NewRole}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="Roletablecss"
+                                                 aura:id="RoleDataTable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}" />
+                        </div>
+                        
+                    </lightning:card>
+                    <aura:if isTrue="{! v.isLoading }">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    <aura:if isTrue="{!v.isRolOpen}">
+    <!--    <lightning:recordEditForm aura:id="RolEditform" objectApiName="UserRole" recordId="{!v.RolRecordid}" onload="{!c.Rolload}" onsubmit="{!c.RolOnsubmit}" onsuccess="{!c.RolonRecordSuccess}"  >-->
+            
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+         <lightning:messages />   
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 class="slds-text-heading--medium"> 
+                            <aura:if isTrue="{!v.RolRecordid!=null}">
+                                Edit Role
+                                <aura:set attribute="else">
+                                    New Role
+                                </aura:set>
+                            </aura:if> 
+                        </h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-1">
+                      <ui:inputText label="Name" aura:id="RoleName" class="frequired"/>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          onclick="{!c.handleSaveRecord}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+      
+    </aura:if>
+    
+</aura:component>

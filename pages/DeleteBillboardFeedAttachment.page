@@ -1,0 +1,12 @@
+<apex:page standardController="FeedItem" extensions="DeleteBillboardFeedAttachmentExtension" showHeader="false" sidebar="false">
+ <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+</apex:page>

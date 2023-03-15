@@ -1,0 +1,4 @@
+<apex:page standardController="Invoice_Allocation_Template__c" extensions="EditInvAllocationTempSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+   
+</apex:page>

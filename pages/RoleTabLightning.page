@@ -1,0 +1,260 @@
+<apex:page standardController="UserRole" extensions="RoleList" tabStyle="MyAdmin__tab" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+    
+
+    <head>
+        <style>
+        
+          body
+       {
+               //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed; 
+              
+              
+               
+       }
+
+
+ 
+      
+        
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+               
+             .slds .slds-table tr > td:first-child {
+    padding-left: 24px !important;
+    padding: 7px;
+}  
+               
+        
+        
+     </style>
+        
+
+    </head>
+
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <body>
+    
+       <div class="slds" >
+        <apex:form html-novalidate="novalidate">
+        
+        
+                      <div class="slds-page-header" style="width:100%;{!if($User.UITheme == 'Theme1' || $User.UITheme == 'Theme2' || $User.UITheme == 'Theme3','position:fixed', 'position:fixed;z-index:15;')}" >
+                           <div class="slds-grid">
+                                <div class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-media slds-no-space slds-grow">
+                                        <div class="slds-media__figure">
+                                           <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                             <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom111"></use>
+                                             </svg>
+                        
+                   
+                                        </div>                        
+                                        <div class="slds-media__body">
+                                            <span class="slds-text-title slds-line-height--reset">Roles</span >
+                                          
+                                          <span style="float:right;padding-right:10px;">     
+                                                 <b>  
+                                                        <apex:commandButton value="New Role" action="{!createNewRole}" id="btn1" styleClass="slds-button slds-button--neutral" />
+                                                            
+                                                 </b>
+                                              </span>
+                                          
+                                        </div>
+                                   </div>
+                                </div>
+                          </div>
+                     </div>
+        
+        
+        
+
+            <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+                <apex:pageMessages id="pagemsgId2"></apex:pageMessages>
+            </div> <br/>
+
+            <br/><br/>
+                     
+                 <apex:outputPanel id="dq"> 
+                  <apex:outputPanel rendered="{!roles.size > 0}"> 
+                  
+                  <div class="slds-card"  style="display:{!IF(roles.size>0,'block','none')}; margin:15px 10px 10px 10px ! important;">
+                            
+                      <div class="slds-card__body" style="">
+                      
+                            <apex:outputPanel id="dv"> 
+                             <apex:outputPanel rendered="{!roles.size > 0}">   
+
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate" >
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-9" scope="col">
+                                             <apex:commandLink action="{!ViewData}" value="Roles{!IF(sortExpression=='name',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort" style="color:black;font-size:16px;">
+                                                 <apex:param value="name" name="column" assignTo="{!sortExpression}" ></apex:param>
+                                             </apex:commandLink> 
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <apex:repeat value="{!roles}" var="role">
+
+                                        <tr class="slds-hint-parent">
+                                        
+                                            <td class="slds-size--1-of-9" data-label="Roles">
+                                                <div>
+                                                   <apex:outputLink value="/apex/RoleDetailPageLightning?id={!role.Id}" tabindex="tab1">{!role.Name}</apex:outputLink>
+                                                </div>
+                                            </td>
+                                            
+                                        </tr>
+
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </apex:outputPanel>
+                       </apex:outputPanel> 
+                      
+                    </div>
+                    
+              </div>
+              </apex:outputPanel>
+             </apex:outputPanel>  
+                
+            <apex:outputPanel rendered="{!roles.size <= 0}">
+               <div> <b> No records to display </b></div>
+            </apex:outputPanel>
+             
+        </apex:form>
+      </div>
+     </body> 
+    </html>
+</apex:page>
+<!-- End of Page -->

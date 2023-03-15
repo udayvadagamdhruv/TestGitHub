@@ -1,0 +1,16 @@
+<apex:page standardController="Invoice_Allocation_Template__c" tabStyle="MyAdmin__tab" extensions="EditInvAllocationTempSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/InvAllocationTempDetailpage?id="+'{!InvAllId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="InvAllocationTempDetailpageLightning"/>
+    </apex:outputPanel>
+</apex:page>

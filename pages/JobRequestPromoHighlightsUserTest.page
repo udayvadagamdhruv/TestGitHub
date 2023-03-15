@@ -1,0 +1,176 @@
+<apex:page controller="JobRequestPromoHighlightsUserNew1" tabstyle="Job__c" sidebar="false">
+ <apex:form id="frm">
+ <apex:pageMessages id="pgMsg"></apex:pageMessages>
+   <apex:pageBlock title="Bulk Job Create" id="pbMain">
+   
+        <apex:pageBlockSection columns="1">
+        
+       <!--     <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" for="Campaign" ></apex:outputLabel>
+                  <apex:selectList id="CampName" value="{!CampaignName}" size="1">
+                  <apex:selectOptions value="{!Campaigns}"></apex:selectOptions>
+                  </apex:selectList> 
+           </apex:pageBlockSectionItem>
+          
+           <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_1__c.Label}"></apex:outputLabel>
+                        <apex:selectList id="makeList" value="{!makeListName}" size="1">
+                                <apex:selectOptions value="{!makeList}"> </apex:selectOptions>
+                         </apex:selectList>
+              </apex:pageBlockSectionItem> -->
+              
+              <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" for="Campaign"></apex:outputLabel>
+                         <apex:outputPanel >
+                               <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                    <div class="requiredBlock"> </div>
+                                        <apex:selectList id="CampName" value="{!CampaignName}" size="1">
+                                              <apex:selectOptions value="{!Campaigns}"></apex:selectOptions>
+                                        </apex:selectList>
+                                </span>
+                          </apex:outputPanel>  
+             </apex:pageBlockSectionItem> 
+                         
+             <apex:pageBlockSectionItem >
+                   <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Dummy_Picklist_1__c.Label}"></apex:outputLabel>
+                        <apex:outputPanel >
+                           <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                              <div class="requiredBlock"> </div>
+                                 <apex:selectList id="makeList" value="{!makeListName}" size="1">
+                                  <apex:selectOptions value="{!makeList}"></apex:selectOptions>
+                                 </apex:selectList>
+                           </span>
+                         </apex:outputPanel>  
+             </apex:pageBlockSectionItem> 
+               
+           </apex:pageBlockSection>
+    
+    
+      <apex:pageBlockTable value="{!wrappers}" var="wrapper" id="wtable">
+       
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Name.Label}" width="20%">
+              <apex:actionRegion id="ar2">      
+                     <apex:inputField value="{!wrapper.objJob.Name}" style="width:250px" required="true"/> 
+              </apex:actionRegion>      
+         </apex:column>
+        
+         
+  <!--         <apex:column headerValue="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}">
+               
+               <apex:selectList id="ClientName" value="{!wrapper.Client}" size="1" >
+                     <apex:selectOptions value="{!Clients}"></apex:selectOptions>
+               </apex:selectList>
+                
+         </apex:column>  -->
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Dummy_Text_3__c.Label}" width="15%">
+            
+             <apex:inputField value="{!wrapper.objJob.Dummy_Text_3__c}" style="width:100px"/>
+              
+         </apex:column>
+         
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Dummy_Text_1__c.Label}" width="15%">
+               
+             <apex:inputField value="{!wrapper.objJob.Dummy_Text_1__c}" style="width:100px"/>
+               
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" width="5%">
+              
+            <apex:inputField value="{!wrapper.objJob.Start_Date__c}"/>
+             
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Media_Types__c.Label}" width="8%">
+               
+                     <apex:outputPanel >
+                        <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                           <div class="requiredBlock"> </div>
+                           <apex:outputPanel rendered="{!LEN(wrapper.mediaError)==0}" id="mId1">
+                               <apex:selectList id="MtName1" value="{!wrapper.media}" size="1">
+                              <apex:selectOptions value="{!MediaTypes}">
+                              </apex:selectOptions> 
+                           </apex:selectList>
+                           </apex:outputPanel>
+                           </span>
+                        
+                         <apex:outputPanel rendered="{!LEN(wrapper.mediaError)!=0}" id="mId2">
+                             <apex:selectList id="MtName2" value="{!wrapper.media}" size="1" styleClass="error">
+                              <apex:selectOptions value="{!MediaTypes}">
+                              </apex:selectOptions> 
+                           </apex:selectList>
+                             <div class="errorMsg"><strong>Error:</strong>&nbsp;{!wrapper.mediaError}</div>
+                          </apex:outputpanel>   
+                     </apex:outputPanel>  
+                                     
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Dummy_Text_2__c.Label}" width="15%">
+                          
+             <apex:inputField value="{!wrapper.objJob.Dummy_Text_2__c}"/>
+                          
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Dummy_Picklist_2__c.Label}">
+                      
+             <apex:selectList id="priorityList" value="{!wrapper.priority}" size="1">
+                                <apex:selectOptions value="{!priorityList}"> </apex:selectOptions>
+             </apex:selectList>
+                          
+         </apex:column>
+         
+         <apex:column headerValue="{!$ObjectType.Job__c.Fields.Dummy_Text_6__c.Label}">
+                         
+                             <apex:inputField value="{!wrapper.objJob.Dummy_Text_6__c}" style="width:100px"/>
+                      
+         </apex:column>
+         
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Job_Description__c.Label}">
+                          
+             <apex:inputTextArea value="{!wrapper.objJob.Job_Description__c}" rows="3" cols="30"  style="resize:none"/>
+                        
+         </apex:column>
+         
+       
+          <apex:column headerValue="Action" >
+       <!--     <apex:actionRegion id="act1">  -->
+        <!--    <apex:commandButton value="Delete" action="{!delWrapper}" reRender="act1,pbMain,opId,ar1,ar2" immediate="true">
+                   <apex:param name="toDelIdent" value="{!wrapper.ident}" assignTo="{!toDelIdent}"/> 
+            </apex:commandButton>  -->
+        
+            <apex:commandButton value="Delete" action="{!delWrapper}" reRender="pbMain" immediate="true">
+                   <apex:param name="toDelIdent" value="{!wrapper.ident}" assignTo="{!toDelIdent}"/> 
+            </apex:commandButton>  
+            
+      <!--      <apex:commandLink value="Delete" action="{!delWrapper}" rerender="pbMain" immediate="true">
+                 <apex:param name="toDelIdent" value="{!wrapper.ident}" assignTo="{!toDelIdent}"/>
+            </apex:commandLink>  -->
+            
+        <!--   </apex:actionRegion> -->
+         </apex:column> 
+         
+        
+      </apex:pageBlockTable>
+      
+   
+      <br/>
+      <apex:outputPanel id="opId">
+          <apex:commandButton value="Add Promo" action="{!addRows}" rerender="wtable,opId,pbMain" rendered="{!wrappers.size < 5}" id="cmdAdd">
+         <apex:param name="addCount" value="1" assignTo="{!addCount}"/> 
+      </apex:commandButton>
+      &nbsp;
+      <apex:commandButton value="Add 5 Promos" action="{!addRows}" rerender="wtable,opId,pbMain" rendered="{!wrappers.size == 0}">
+         <apex:param name="addCount" value="5" assignTo="{!addCount}"/> 
+      </apex:commandButton>
+      &nbsp;
+      <apex:commandButton value="Cancel" action="{!cancel}" immediate="true"/>
+      &nbsp;
+     <apex:commandButton value="Save"  rendered="{!wrappers.size > 0}" action="{!saveJobs}" reRender="wtable,pbMain,opId,mId1,mId2"/>  <br/>
+    <b><apex:outputLabel value="{!message}" id="oL" ></apex:outputLabel> </b>
+      </apex:outputPanel>
+   </apex:pageBlock>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

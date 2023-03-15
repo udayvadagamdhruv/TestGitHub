@@ -1,0 +1,31 @@
+<!-- Thia page is used to Assign Role for selected Job Task from its detail page.(Overriding Add Role Button) -->
+<apex:page standardController="Job_Task_Role__c" extensions="JobTaskRoleExtension" tabStyle="Job__c">
+ <apex:form >
+    <apex:pageBlock >
+       <apex:pagemessages />
+          <apex:pageBlockButtons >
+             <apex:commandButton action="{!save}" value="Save"></apex:commandButton>
+             <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+          </apex:pageBlockButtons>
+          
+          <apex:pageBlockSection >
+             <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Job_Task_Role__c.Fields.Job_Task__c.Label}"/>
+                <apex:outputField value="{!Job_Task_Role__c.Job_Task__c}"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem />
+            
+             <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.UserRole.Fields.Name.Label}"/>
+                <apex:repeat value="{!roleWraps}" var="r">
+                   <apex:inputCheckbox value="{!r.checked}"/>
+                   <apex:outputField value="{!r.u.Name}"/>
+                   <br/>
+                </apex:repeat>
+             </apex:pageBlockSectionItem>
+          </apex:pageBlockSection>
+    </apex:pageBlock>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

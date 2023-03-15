@@ -1,0 +1,19 @@
+<aura:component >
+	<lightning:recordEditForm aura:id="TaskEditForm" density="comfy"  objectApiName="Job_Task__c"   >
+            <lightning:inputField fieldName="Task_Name__c" />
+            <lightning:inputField fieldName="Status__c" />
+            <lightning:inputField fieldName="GL_Code__c" />
+            <lightning:inputField fieldName="Start_Date__c" />
+            <lightning:inputField fieldName="Revised_Due_Date__c" />
+              <lightning:inputField fieldName="Task_Start_Time_Text__c" />
+            <lightning:inputField fieldName="Task_End_Time_Text__c" />
+            <lightning:inputField fieldName="Completion_Date__c" />
+            <lightning:inputField fieldName="Marked_Done__c" />
+            <lightning:inputField fieldName="Days__c" />
+            <lightning:inputField fieldName="Task_Order__c" />
+            <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+         </lightning:recordEditForm>
+</aura:component>

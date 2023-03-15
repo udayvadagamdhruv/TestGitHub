@@ -1,0 +1,38 @@
+<!-- This Page is used to Override the Delete Button of Specification Template  -->
+<apex:page standardController="Specification_Template__c" extensions="DeleteSpecificationTemplateExtension" sidebar="false" showHeader="false">
+ 
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:pageMessages id="msg"></apex:pageMessages>
+       
+        <apex:form >
+          
+           <apex:actionFunction name="doInit" action="{!CheckDelete}" rerender="msg,po"/> 
+           
+          
+       <!--      <apex:outputPanel id="po">
+           
+            <apex:outPutpanel >
+              <center> <apex:outputLink value="/apex/AdminListView?intFocus=3" rendered="{!(isError!=False)}">Click here to Go to List</apex:outputLink> </center>
+           </apex:outputPanel>
+           
+         <apex:outPutpanel rendered="{!$User.UITheme=='Theme4d'}">
+              <center> <apex:outputLink value="/+'{!CreativeBriefPrefix}'+/o" rendered="{!(isError!=False)}">Click here to Go to List</apex:outputLink> </center>
+           </apex:outputPanel> ----->
+           
+            <apex:outputPanel id="po">
+                <center>  <apex:commandLink action="{!pageback}" rendered="{!(isError!=False)}" value="Click here to Go to List" /> </center>
+             </apex:outputPanel>
+       
+        
+       
+        
+        </apex:form> 
+        
+</apex:page>
+<!-- End of Page -->

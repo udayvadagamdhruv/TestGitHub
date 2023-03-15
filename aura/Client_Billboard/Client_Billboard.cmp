@@ -1,0 +1,94 @@
+<aura:component controller="ClientController"  implements="force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="record" type="Object"/>
+    
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    
+    <aura:attribute name="enableInfiniteLoading" type="boolean" default="true"/>
+    <aura:attribute name="initialRows" type="Integer" default="10"/>
+    <aura:attribute name="rowsToLoad" type="Integer" default="10"/>
+    <aura:attribute name="totalNumberOfRows" type="Integer" default="10"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Please scroll down to load more data"/>
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false"/>
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0"/>
+    <aura:attribute name="rowsToAdd" type="Integer" default="10"/>
+    <aura:attribute name="currentCount" type="Integer" default="10"/>
+    <aura:attribute name="statusPicklist" type="String[]" default="Active,Active-Batch"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:attribute name="Labelname" type="string"  />
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ClientBillboards">
+        <lightning:accordionSection name="ClientBillboards" label="{!v.Labelname}"  class="slds-card" > 
+            <div class="slds-size_2-of-10">
+                <div class="slds-m-around_x-small">
+                   <!-- <lightning:select name="select1" aura:id="pickBB" label="Status" onchange="{!c.StatusChange}" >
+                        <aura:iteration items="{!v.statusPicklist}" var="option">
+                            <option text="{!option}" value="{!option}" />
+                        </aura:iteration>
+                    </lightning:select>  -->
+                    
+                    <ui:inputSelect multiple="true" label="Status" class="slds-select" aura:id="pickBB" change="{!c.StatusChange}">
+                        <aura:iteration items="{!v.statusPicklist}" var="option">
+                            <ui:inputSelectOption text="{!option}" aura:id="inputSelects"/>
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </div>
+            </div>
+            
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    <lightning:card>
+                         <div  style="height: 250px">
+                            <lightning:datatable class="tablecss"
+                                                 aura:id="DataTable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 hideCheckboxColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 enableInfiniteLoading="true"
+                                                 loadMoreOffset="{!v.loadMoreOffset}"
+                                                 onloadmore="{!c.handleLoadMoreRec}"
+                                                 rowNumberOffset="0"
+                                                 showRowNumberColumn="true"
+                                                  />
+                        </div>
+                        <br/>
+                        <div class="slds-float_left">
+                            <strong>Total Rows : {!v.totalNumberOfRows}</strong>
+                            
+                        </div>
+                        <div class="slds-float_right">
+                            <strong>{!v.loadMoreStatus}</strong>
+                        </div>
+                        <br/>
+              
+                        
+                    </lightning:card>
+                   
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>

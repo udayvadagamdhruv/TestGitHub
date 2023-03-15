@@ -1,0 +1,135 @@
+<apex:component controller="LookupSldsCompCtrl" selfClosing="true">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<style>
+.slds .slds-lookup__menu{
+    width:auto;
+}
+    
+.slds .slds-table td {
+    white-space: normal;
+}
+
+@media screen and (max-width: 768px) {
+    .slds .slds-lookup__menu{
+      
+        position:relative;        
+    }
+}
+
+</style>
+
+
+
+    <apex:attribute name="SelectedID" required="true" type="string" description="This will give selected RecordId" />
+    <apex:attribute name="SelectedValue" type="string" description="This will give selected RecordName"  assignTo="{!SelectdValue}"   />
+    <apex:attribute name="WhereCondition" type="string" assignTo="{!WhereCondi}" default=" where Id!=null" description="Pass Condition to retrieve records" />
+    <apex:attribute name="Fields" required="true" type="String[]" assignTo="{!FieldsToShow}" description="Pass a list of strings except Id,name" />
+    <apex:attribute name="ObjectApi" required="true" type="string" assignTo="{!SobjectName}" description="Pass Object Api" />
+    <apex:attribute name="ShowLabel"  type="Boolean"  default="true" description="make it false if you do not want to show label for input. By default it is true" />
+    <apex:attribute name="Limit"  type="string"  assignTo="{!RecordsLimit}" default="2000" description="Number of Records to retrieve" />
+    <apex:attribute name="oncompleteaction"  type="string"  default="InpId"  description="Add id to Input tag Dynamically" />
+    <apex:attribute name="CmpId"  type="string" required="true"  description="Id required. This is useful if we use this component multiple time. ex: We can use in pageblocktable." />
+
+    <apex:attribute name="ReRender" type="string" description="Rerender"  default="Nothing"/>
+    
+    <apex:pageBlock id="Tbalee">
+    <apex:actionFunction id="ActioFunc" name="{!CmpId}Mysearch"  action="{!keyupQuery}" reRender="Tablerender" status="inputclick">    
+    <apex:param name="ha" value="" assignTo="{!SelectdValue}"/>
+    </apex:actionFunction>     
+    <apex:actionFunction id="clickaction" name="{!CmpId}clickinput" action="{!MShowtable}" reRender="Tablerender" status="inputclick"/>
+        <main class="slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12 ">
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" style="display:{!if(ShowLabel==true,"grid","none")};">{!$ObjectType[ObjectApi].Label}</label>
+                <div class="slds-form-element__control">
+                    <apex:outputPanel id="InputPanel" >
+                    <apex:inputText value="{!SelectedValue}" styleClass="slds-input " id="MyCompInputId" html-name="MyCompInput" onclick="{!CmpId}clickinput();"   onkeyup="{!CmpId}Mysearch(this.value)"  >
+                                 
+                    </apex:inputText>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </main>
+        <apex:actionStatus id="inputclick">
+            <apex:facet name="start">
+                <div align="center">
+                    <div class="slds-spinner--small">
+                        <img src="{!URLFOR($Resource.SLDS0102,'assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+                    </div>
+                </div>
+            </apex:facet>
+            <apex:facet name="stop">
+        <apex:outputPanel id="Tablerender"  >
+
+        <apex:outputPanel rendered="{!Hidetable==false}" >
+        <div class="slds-lookup" data-select="single" data-scope="single" data-typeahead="false" >
+        <div class="slds-lookup__menu" role="listbox">
+        
+        <div style="text-align:center;" class="slds-size--1-of-1 slds-m-top--medium">
+            <H1 class="slds-section-title">{!$ObjectType[ObjectApi].labelPlural}</H1>
+        </div>        
+        <apex:outputPanel rendered="{!NoOfRecords==0}" >
+            <div style="width:300px;" class="slds-col slds-col--padded slds-notify slds-notify--alert slds-theme--inverse-text slds-theme--alert-texture slds-m-top--medium slds-m-horizontal--medium">
+                <apex:pageMessage severity="Info" rendered="{!Hidetable==false}" id="idd" summary="{!$ObjectType[ObjectApi].labelPlural} Not Found" strength="3"></apex:pageMessage>
+            </div>
+        </apex:outputPanel>
+
+        <apex:pageBlockTable id="Tabb" value="{!QueryRecordsList}" rendered="{!NoOfRecords>0}"   var="Record" styleClass="slds-table slds-table--bordered slds-m-top--medium slds-max-medium-table--stacked-horizontal">
+            <apex:column headerValue="{!$ObjectType[ObjectApi].Fields.Name.Label}" html-data-label="{!$ObjectType[ObjectApi].Fields.Name.Label}">
+                <apex:commandLink action="{!MHidetable}" rerender="Tbalee,{!ReRender}"  status="Command"  oncomplete="{!oncompleteaction}">{!Record['Name']}
+                    <apex:param name="MyParamID"  assignTo="{!SelectedID}"  value="{!Record['Id']}"  />
+                    <apex:param name="MyParamValue" assignTo="{!SelectedValue}" value="{!Record['Name']}" />
+
+                </apex:commandLink>
+                <apex:actionStatus id="Command">
+                    <apex:facet name="start">
+                        <div align="center">
+                            <div class="slds-spinner--small">
+                                <img src="{!URLFOR($Resource.SLDS0102,'assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+                            </div>
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+
+            </apex:column>
+            <apex:repeat value="{!Fields}" var="field">
+                <apex:column Value="{!Record[field]}" html-data-label="{!$ObjectType[ObjectApi].Fields[field].Label}">
+                   
+                </apex:column>
+            </apex:repeat>
+        </apex:pageBlockTable>
+        <apex:actionStatus id="ExpStatus">
+            <apex:facet name="start">
+                <div align="center">
+                    <div class="slds-spinner--small">
+                        <img src="{!URLFOR($Resource.SLDS0102,'assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+        <div>
+        <div style="float:left" class="slds-m-top--medium slds-m-left--medium">
+        
+        <apex:commandLink action="{!MHidetable}" value="Close" rerender="Tbalee" status="ExpStatus" styleClass="slds-button slds-button--brand" />
+        </div>
+        <div style="float:right" class="slds-m-top--medium slds-m-bottom--medium slds-m-right--medium">
+            <apex:commandLink action="{!Compfirst}" value="|<<" rerender="Tbalee" rendered="{!CompHasPrevious}"  status="ExpStatus" styleClass="slds-button slds-button--brand" />
+            <apex:commandLink action="{!CompPrevious}" value="<<" rerender="Tbalee" rendered="{!CompHasPrevious}"   status="ExpStatus" styleClass="slds-button slds-button--brand" />
+            <apex:commandLink action="{!CompNext}" value=">>" rerender="Tbalee" rendered="{!CompHasNext}"   status="ExpStatus" styleClass="slds-button slds-button--brand" />
+            <apex:commandLink action="{!Complast}" value=">>|" rerender="Tbalee" rendered="{!CompHasNext}"   status="ExpStatus" styleClass="slds-button slds-button--brand" />
+        </div>
+        <div style="clear:both"/>
+        </div>
+        </div>
+       </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+            
+            
+            </apex:facet>
+            
+        </apex:actionStatus>
+
+    </apex:pageBlock>
+
+</apex:component>

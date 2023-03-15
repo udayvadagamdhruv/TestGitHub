@@ -1,0 +1,12 @@
+<apex:page standardController="Vendor_GL_Code__c" extensions="EditJobTaskSwitchPageExtension" docType="html-5.0" applyBodyTag="False">
+  <apex:outputPanel rendered="{!if(isClassic,true,false)}">
+        <apex:include pageName="createNewVendorGLCode"/>
+    </apex:outputPanel> 
+    <!--apex:outputPanel rendered="{!if(isMobile,true,false)}">
+         <apex:include pageName="EditJobTaskMobile"/>
+    </apex:outputPanel>
+    -->
+    <apex:outputPanel rendered="{!if(isLight,true,false)}">
+         <apex:include pageName="createNewVendorGLCodeLightning"/>
+    </apex:outputPanel>
+</apex:page>

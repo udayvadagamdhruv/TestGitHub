@@ -1,0 +1,5 @@
+<!-- This page is used to display Vendor GL Code Detail Information. -->
+<apex:page standardController="Vendor_GL_Code__c" tabStyle="Vendor__c">
+ <apex:detail inlineEdit="false" showchatter="false" relatedlist="false"/>
+</apex:page>
+<!-- End of Page -->

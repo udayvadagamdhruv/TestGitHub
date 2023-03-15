@@ -1,0 +1,30 @@
+<aura:component controller="Material_Items_Controller" implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="latestFiles" type="Object" />
+    
+      <aura:attribute name="MIBIImagesSection" type="String" default="Images" required="true" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInIt}" />
+    
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MIBIFiles">
+        <lightning:accordionSection name="MIBIFiles" label="{!v.MIBIImagesSection}"  class="slds-card" >  
+            <aura:if isTrue="{!!empty(v.latestFiles)}">
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                        <div >Photo 1</div>   <lightning:fileCard fileId="{!v.latestFiles[0].ContentDocumentId}" description="{!v.latestFiles[0].Description}" hideDescription="true"/>
+                    </lightning:layoutItem>
+                    <aura:if isTrue="{!v.sObjectName=='Billboard__c'}">
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <div >Photo 2</div>  <lightning:fileCard fileId="{!v.latestFiles[1].ContentDocumentId}" description="{!v.latestFiles[1].Description}" hideDescription="true"/>
+                        </lightning:layoutItem>
+                    </aura:if>
+                </lightning:layout>
+                <aura:set attribute="else">
+                  <b>  No photos to display.</b>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+          
+</aura:component>

@@ -1,0 +1,15 @@
+<!-- This Page is used to override the delete button of Spec Item Object -->
+<apex:page standardController="Tag_Template_Item__c" extensions="DeleteTagLIItemExt" showHeader="false" sidebar="false">
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- End Of Page -->

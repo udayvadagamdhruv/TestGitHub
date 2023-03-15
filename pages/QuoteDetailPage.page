@@ -1,0 +1,20 @@
+<!-- This page is used to display Quote Detail information. -->
+<apex:page standardController="Quote__c" tabStyle="Job__c" extensions="QuoteDetailPageExtension">
+
+
+ 
+ <apex:pageMessages showDetail="true"/>
+ 
+ 
+ 
+    <apex:detail showChatter="true" relatedList="true"/>
+    
+    <apex:include id="estspecitems" pageName="DisplaySpecItemForQuote" rendered="{!vq.size <= 0}"/> <br/><br/>
+    <apex:include id="vendorquote" pageName="DisplayVendorQuote" rendered="{!vq.size <= 0}"/>
+     
+    <apex:include pageName="DisplaySpecItemWhenQuoteApproved" rendered="{!vq.size > 0}"/>  <br/><br/>
+          
+    <apex:include pageName="DisplayVQwhenQuoteApproved" rendered="{!vq.size > 0}"/>  
+   
+</apex:page>
+<!-- End of Page -->

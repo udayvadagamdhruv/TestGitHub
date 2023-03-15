@@ -1,0 +1,10 @@
+<apex:page standardController="Client__c" extensions="EditJobTaskSwitchPageExtension" docType="html-5.0" applyBodyTag="False">
+  <apex:outputPanel rendered="{!if(isClassic,true,false)}">
+        <apex:include pageName="EditClient"/>
+    </apex:outputPanel> 
+    
+    <apex:outputPanel rendered="{!if(isLight,true,false)}">
+         <apex:include pageName="EditClientLightning"/>
+    </apex:outputPanel>
+    
+</apex:page>

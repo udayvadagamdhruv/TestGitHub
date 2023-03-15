@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="ClientJobsSec" label="Client Job Label"  description="This will reflect the Client Job section Label"/>
+</design:component>

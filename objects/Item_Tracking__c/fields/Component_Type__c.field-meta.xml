@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Component_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Component Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Apex Classes</fullName>
+                <default>false</default>
+                <label>Apex Classes</label>
+            </value>
+            <value>
+                <fullName>Communities</fullName>
+                <default>false</default>
+                <label>Communities</label>
+            </value>
+            <value>
+                <fullName>Creating domains</fullName>
+                <default>false</default>
+                <label>Creating domains</label>
+            </value>
+            <value>
+                <fullName>Creating new buttons</fullName>
+                <default>false</default>
+                <label>Creating new buttons</label>
+            </value>
+            <value>
+                <fullName>Creating new objects</fullName>
+                <default>false</default>
+                <label>Creating new objects</label>
+            </value>
+            <value>
+                <fullName>Creating Sites</fullName>
+                <default>false</default>
+                <label>Creating Sites</label>
+            </value>
+            <value>
+                <fullName>Custom report types</fullName>
+                <default>false</default>
+                <label>Custom report types</label>
+            </value>
+            <value>
+                <fullName>Data Loader</fullName>
+                <default>false</default>
+                <label>Data Loader</label>
+            </value>
+            <value>
+                <fullName>Duplicate rule</fullName>
+                <default>false</default>
+                <label>Duplicate rule</label>
+            </value>
+            <value>
+                <fullName>Email Templates</fullName>
+                <default>false</default>
+                <label>Email Templates</label>
+            </value>
+            <value>
+                <fullName>Fields</fullName>
+                <default>false</default>
+                <label>Fields</label>
+            </value>
+            <value>
+                <fullName>Page Layout</fullName>
+                <default>false</default>
+                <label>Page Layout</label>
+            </value>
+            <value>
+                <fullName>Process Builder</fullName>
+                <default>false</default>
+                <label>Process Builder</label>
+            </value>
+            <value>
+                <fullName>Record types</fullName>
+                <default>false</default>
+                <label>Record types</label>
+            </value>
+            <value>
+                <fullName>Reports</fullName>
+                <default>false</default>
+                <label>Reports</label>
+            </value>
+            <value>
+                <fullName>Sharing and OWD settings</fullName>
+                <default>false</default>
+                <label>Sharing and OWD settings</label>
+            </value>
+            <value>
+                <fullName>Trigger</fullName>
+                <default>false</default>
+                <label>Trigger</label>
+            </value>
+            <value>
+                <fullName>Users and Profiles</fullName>
+                <default>false</default>
+                <label>Users and Profiles</label>
+            </value>
+            <value>
+                <fullName>Validation</fullName>
+                <default>false</default>
+                <label>Validation</label>
+            </value>
+            <value>
+                <fullName>VF Component</fullName>
+                <default>false</default>
+                <label>VF Component</label>
+            </value>
+            <value>
+                <fullName>VF Page</fullName>
+                <default>false</default>
+                <label>VF Page</label>
+            </value>
+            <value>
+                <fullName>WorkFlow</fullName>
+                <default>false</default>
+                <label>WorkFlow</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>6</visibleLines>
+</CustomField>

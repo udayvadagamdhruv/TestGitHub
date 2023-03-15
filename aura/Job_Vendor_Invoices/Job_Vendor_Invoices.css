@@ -1,0 +1,50 @@
+.THIS  .tablecss {
+    line-height: 40px;
+}
+.THIS .frequired label:after { 
+    content:" *";
+    color: #e32;
+}
+
+.THIS .slds-button_icon-border
+{
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    
+}
+
+.THIS .MobileMoreActions .slds-dropdown-trigger .slds-dropdown_left
+{
+    left:auto !important;
+    right:0 !important;
+    transform:translateX(0) !important;
+}
+
+.THIS .MobileMoreActions .slds-dropdown-trigger .slds-button
+{
+    line-height:1.5rem !important;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+      height:150px !important;
+}
+@media (min-width: 48em) {
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 90% !important;
+    max-width: 90rem !important;
+    min-width: 30rem !important;
+ }
+}
+
+.THIS .slds-p-horizontal_x-small{
+  /*added for edit layout fields alignment*/
+    padding-left:0px !important;
+    padding-right:0px !important;
+}
+.THIS .slds-p-around_small{
+    /*added for edit layout fields alignment*/
+    padding: 0 10px 0 10px !important;
+}

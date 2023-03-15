@@ -1,0 +1,57 @@
+<apex:page standardController="Production_Estimate_Template__c" tabStyle="MyAdmin__tab" extensions="ProductionEstTempEnhancedListExt" >
+
+
+ <head>
+        <style>
+         .actionLink 
+        {
+            color: #015BA7 !important;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        </style>
+    </head>
+    
+  <apex:form >
+      <apex:pageMessages ></apex:pageMessages>
+      <table>
+          <tr>
+              <td align="left"> <apex:image url="{!$Resource.BigTop}" width="40" height="40" /> </td>
+              <td valign="bottom"><apex:commandButton action="{!NewMethod}" value="New {!$ObjectType.Production_Estimate_Template__c.Label}" /></td>
+          </tr>
+      </table>
+      
+      <apex:pageBlock >
+    
+            <apex:pageBlockTable value="{!lstPET}" var="Item" rendered="{!lstPET.size > 0}">
+               
+                <apex:column headerValue="Action" width="6%">
+                     <apex:commandButton value="Edit" action="{!EditPE}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Production_Estimate_Template__c.updateable}">
+                            <apex:param name="param1" value="{!Item.id}" assignTo="{!Peid}"></apex:param>
+                       </apex:commandButton> 
+                     
+                       <apex:commandButton value="Delete" action="{!DelSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Production_Estimate_Template__c.updateable}">
+                            <apex:param name="param1" value="{!Item.id}" assignTo="{!Peid}"></apex:param>
+                       </apex:commandButton> &nbsp;
+                             
+                </apex:column>
+                
+                <apex:column headerValue="{!$ObjectType.Production_Estimate_Template__c.Fields.Name.Label}" width="80%">
+                   
+                     <apex:outputLink value="/{!Item.Id}">{!Item.Name}</apex:outputLink>
+                </apex:column>
+            </apex:pageBlockTable>
+            
+            <apex:outputPanel rendered="{!lstPET.size <= 0}">
+                <b> No records to display</b>
+            </apex:outputPanel>
+        
+      </apex:pageBlock>
+    
+  </apex:form>
+
+
+
+
+
+</apex:page>

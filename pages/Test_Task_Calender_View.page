@@ -1,0 +1,104 @@
+<apex:page controller="Test_Task_Calender_View_Controller" action="{!pageLoad}" >
+  
+  
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+      <!---  <link rel="stylesheet" href="/resources/demos/style.css" /> --------->
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.cs"></script>
+ 
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  
+  <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.css')}" rel="stylesheet" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.print.css')}" rel="stylesheet" media="print" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.print.min.css')}" rel="stylesheet" media="print" />
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/moment.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/jquery.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/jquery-ui.min.js')}"></script>
+
+
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.min.js')}"></script>
+  
+  <script>
+    //We need to wrap everything in a doc.ready function so that the code fires after the DOM is loaded
+    $(document).ready(function() {
+    
+    //$('#calendar').fullCalendar('gotoDate', '2018-02-02');
+       
+        //Call the fullCallendar method. You can replace the '#calendar' with the ID of the dom element where you want the calendar to go. 
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: false,
+           events:
+            [
+            //At run time, this APEX Repeat will reneder the array elements for the events array
+            <apex:repeat value="{!events}" var="e">
+                {
+                title: "{!e.title}",
+                start: '{!e.startString}',
+                end: '{!e.endString}',
+                url: '{!e.url}',
+                allDay: {!e.allDay},
+                className: '{!e.className}'
+                },
+            </apex:repeat>
+            ]
+        });
+    });
+    
+    
+    
+</script>
+  
+  <!--some styling. Modify this to fit your needs-->
+    <style>
+        #cal-options {float:left;}
+        #cal-legend { float:right;}
+        #cal-legend ul {margin:0;padding:0;list-style:none;}
+        #cal-legend ul li {margin:0;padding:5px;float:left;}
+        #cal-legend ul li span {display:block; height:16px; width:16px; margin-right:4px; float:left; border-radius:4px;}
+        #calendar {margin-top:20px;}
+        #calendar a:hover {color:#fff !important;}
+         
+        .fc-event-inner {padding:3px;}
+        .event-birthday {background:#56458c;border-color:#56458c;}
+        .event-campaign {background:#cc9933;border-color:#cc9933;}
+        .event-personal {background:#1797c0;border-color:#1797c0;}
+    </style>
+     
+    <apex:sectionHeader title="My Calendar Example"/>
+    <apex:outputPanel id="calPanel">
+        <apex:form >
+            <div id="cal-options">
+                
+            </div>
+            <div id="cal-legend">
+                
+                <div style="clear:both;"><!--fix floats--></div>
+            </div>
+            <div style="clear:both;"><!--fix floats--></div>
+            <div id="calendar"> </div>
+             <apex:commandButton value="Render" action="{!pageLoad}" reRender="calPanel"/>
+        </apex:form>
+       
+    </apex:outputPanel>
+  
+  
+</apex:page>

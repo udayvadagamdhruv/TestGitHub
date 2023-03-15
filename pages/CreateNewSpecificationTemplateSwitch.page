@@ -1,0 +1,23 @@
+<apex:page standardController="Specification_Template__c" tabStyle="MyAdmin__tab" standardStylesheets="true"  sidebar="false" showHeader="false">
+<script>
+
+var s= '{!$User.UITheme=='Theme3'}'
+
+
+
+    if(s=='true')
+    {
+       window.open("/apex/CreateNewSpecificationTemplate","_self");
+    }
+    
+
+</script>
+  
+  <apex:outputpanel rendered="{!$User.UITheme=='Theme4d'}" >
+  
+  <apex:include pageName="CreateNewSpecificationTemplateLightning" />
+  
+  </apex:outputpanel>
+  
+  
+</apex:page>

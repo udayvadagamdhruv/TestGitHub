@@ -1,0 +1,194 @@
+<!-- This page is used to display Estimate Report. -->
+<apex:page standardController="Job__c" showHeader="false" sidebar="false" standardStylesheets="false" extensions="POReportExtension" renderAs="pdf">
+
+<head>
+    <style type="text/css">
+        .rightalign
+        {
+            text-align:right;
+        }
+        
+        .leftalign
+        {
+            text-align:left;
+        }
+        
+        .centeralign
+        {
+            text-align:center;
+        }
+
+        div.tab
+        {
+            width:100%;
+            border:solid black;
+        }
+        
+        @page
+        {
+
+            /* Landscape orientation */
+            size:landscape;
+
+            /* Put page numbers in the bottom right corner of each
+            page in the pdf document. */
+            @bottom-right 
+            {
+                  content: "Page " counter(page);
+                  font-family:Arial;
+                  font-size:8pt;
+            }
+   
+            @bottom-left 
+            {
+                content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+                background-repeat: no-repeat;
+                font-size:8pt;
+                font-family:Arial;
+            }
+         }
+
+        body 
+        {
+           font-family: Arial Unicode MS;
+           font-size:9pt;
+       }
+  
+      th
+      {
+          font-size:13pt;
+          font-style:bold;
+          font-family:Arial;
+      }
+
+      td
+      {
+          font-size:11pt;
+          font-family:Arial;
+      }
+  
+      div.footer
+      {
+          position : running(footer) ;
+      }
+
+</style>
+</head>
+
+<body>
+    <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}"/>
+    <div style="float:right;padding-right:35px;font-size:2.0em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+        Purchase Order Report <br/><br/>
+    </div>
+
+    <table width="100%">
+              <tr>
+                 <td width="50%" align="left">
+                    <table width="100%" align="left">
+                       <tr>
+                            <td align="left" width="20%" valign="top"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" style="font-weight: bold;"/> </td>
+                            <td width="80%" align="left"> <apex:outputText value="{!Job__c.Campaign__r.name}"/> </td>
+                       </tr>
+                       
+                       <tr>
+                            <td align="left"  width="20%"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Id__c.Label}" style="font-weight: bold;"/> </td>
+                            <td  width="80%" align="left"><apex:outputText value="{!Job__c.Job_Id__c}"/> </td>
+                       </tr>
+                       
+                       <tr>
+                            <td align="left" width="20%" valign="top"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}" style="font-weight: bold;"/> </td>
+                            <td  width="80%" align="left"> <apex:outputText value="{!Job__c.Name}"/> </td>
+                       </tr>
+                       
+                       <tr>
+                            <td align="left" width="25%" valign="top"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Description__c.Label}" style="font-weight: bold;"/> </td>
+                            <td  width="75%" align="left"> <apex:outputText value="{!Job__c.Job_Description__c}"/> </td>
+                       </tr>
+                     </table>
+                  </td>
+                  
+                  <td width="50%" align="Right">
+                
+                     <table align="right">
+                       <tr>
+                            <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}" style="font-weight: bold;"/> </td>
+                            <td align="left"> <apex:outputText value="{!Job__c.Schedule_Template__r.Name}"/> </td>
+                       </tr>
+                       
+                       <tr>
+                            <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}" style="font-weight: bold;"/> </td>
+                            <td align="left"> <apex:outputText value="{!Job__c.Status__c}"/> </td>
+                       </tr>
+                       
+                       <tr>
+                            <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" style="font-weight: bold;"/> </td>
+                            <td align="left"> <apex:outputfield value="{!Job__c.Start_Date__c}"/> </td>
+                       </tr>
+                       
+                       <tr>
+                            <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" style="font-weight: bold;"/> </td>
+                            <td align="left"> <apex:outputfield value="{!Job__c.Due_Date__c}"/> </td>
+                       </tr>
+                      </table>
+                  </td>
+                  
+              </tr>
+              <tr>
+               <td width="100%" colspan="2">
+                 <hr/>
+               </td>
+              </tr>
+                      
+           <tr>
+            <td colspan="2" width="100%"> <b>Purchase Orders</b>
+                <apex:dataTable value="{!purchaseorder}" var="po" columns="7" columnsWidth="8%,10%,20%,10%,10%,10%,10%" width="100%" rendered="{!purchaseorder.Size>0}">
+                    <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Name.Label}" style="text-align:right" headerClass="rightalign">
+                        <apex:outputField value="{!po.Name}"/>
+                    </apex:column> 
+              
+                <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Invoice_Created__c.Label}" headerClass="centeralign">
+                    <center> <apex:outputField value="{!po.Invoice_Created__c}"/> </center>
+                </apex:column>
+                
+                <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Vendor__c.Label}" headerClass="centeralign">
+                   <center>  <apex:outputField value="{!po.Vendor__r.Name}"/>  </center>
+                </apex:column>
+                
+                <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}" headerClass="leftalign">
+                    <apex:outputField value="{!po.Status__c}"/>
+                </apex:column>
+                
+                <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}" style="text-align:right" headerClass="rightalign">
+                     <apex:outputField value="{!po.Issue_Date__c}"/>
+                </apex:column> 
+                
+               <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}" style="text-align:right" headerClass="rightalign">
+                   <apex:outputField value="{!po.Due_Date__c}"/>
+               </apex:column>
+               
+               <apex:column headervalue="{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}" style="text-align:right" headerClass="rightalign">       
+                   <apex:outputField value="{!po.Total_Amount__c}"/>
+               </apex:column>
+                           
+            </apex:dataTable>
+            <br/>
+              <div style="float:right;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                <apex:outputPanel rendered="{!purchaseorder.Size > 0}">
+                    <apex:outputLabel value="PO Total    " style="font-style:italic;" /> 
+                        <apex:outputText value="{0,Number, $###,###,###.00}">
+                       &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+                        </apex:outputText>
+                 </apex:outputPanel>
+              </div> 
+           </td>
+         </tr>  
+          
+          <tr>
+               <td width="100%" colspan="2">
+                 <hr/>
+               </td>
+          </tr> 
+     </table>
+</body>
+</apex:page>
+<!-- End of Page -->

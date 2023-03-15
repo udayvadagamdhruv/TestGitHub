@@ -1,0 +1,8 @@
+<apex:page standardController="Job__c" extensions="JobTeamAddEditStaffSwitchExt" docType="html-5.0" applyBodyTag="False" standardStylesheets="false">
+   <apex:outputPanel id="cls" rendered="{! !isMobile}">
+        <apex:include pageName="JobTeamAddEditStaff"/>
+    </apex:outputPanel> 
+    <apex:outputPanel id="ltng" rendered="{!isMobile}">
+         <apex:include pageName="jobteamaddeditstaffMobile"/>
+    </apex:outputPanel>
+</apex:page>

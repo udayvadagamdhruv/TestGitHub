@@ -1,0 +1,6 @@
+<!-- This page is used to display Detail and Related Schedule tasks of Schedule Templates-->
+<apex:page standardController="Schedule_Template__c" tabStyle="MyAdmin__tab" title="Schedule Template">
+    <apex:detail relatedList="false" title="true" showChatter="true"/>
+    <apex:include pageName="displayScheduleTasksUnderScheduleTemp"/> 
+</apex:page>
+<!-- End of Page -->

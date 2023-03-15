@@ -1,0 +1,22 @@
+<apex:page standardController="Production_Spec_Template__c"  tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false" extensions="EditProductionSpecTemplateExt"  >
+<script>
+ var sw='{!$User.UITheme=='Theme3'}';
+ if(sw=='true')
+ {
+ 
+ 
+   window.open("apex/ProductionSpecTemplateDetail?id="+'{!prospectempid}',"_self");
+ }
+ 
+ </script>
+ 
+ 
+  <apex:outputpanel rendered="{!$User.UITheme=='Theme4d'}" >
+ 
+       <apex:include pageName="ProductionSpecTemplateDetailLightning" />
+       
+  </apex:outputpanel>
+ 
+ 
+ 
+</apex:page>

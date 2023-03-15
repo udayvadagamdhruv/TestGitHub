@@ -1,0 +1,332 @@
+<!-- This Page is used for Import Product Spec Template functionality -->
+<apex:page standardController="Quote__c" extensions="Import_Production_Spec_Item_Extension" tabStyle="Job__c" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="False">
+ 
+    <style>
+    
+       .pageHeader
+       {
+           color:white;
+           background-color:#851225;
+           height:70px;
+           padding-top:23px; 
+           position:fixed;
+           z-index:999;
+           width:100% !important;
+           padding-left:22px;
+       }
+   
+       .SectionHeader
+       {
+           background-color:Grey !important;
+           color:white;
+       }
+       
+       .bPageBlock 
+       {
+            margin: 20px 20px 20px 20px !important;
+       }
+       
+       
+       body
+       {
+               //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed; 
+               margin:0px !important;
+       }
+
+
+
+       
+ .slds .slds-max-medium-table--stacked-horizontal td:before
+        {
+          text-transform:none;
+        }
+   
+      
+   
+   
+       .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                    }
+                   td {
+             font-family: Arial,Helvetica,sans-serif;
+              color:white;
+           }
+                   
+       
+   </style>
+   
+   
+       <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+     <apex:stylesheet value="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.css')}"/>
+    
+     
+       <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+       
+     
+           <body>
+             
+               <div class="slds">
+               
+                    
+        
+                      <apex:form id="pb1">
+                     <div class="slds-media__body pageHeader" style="font-weight: bold;" >
+                              <span  class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" style="color:white;font-size:18px;"><b>Import Production Spec Template</b></span>
+                              <span style="float:right;padding-right:20px;">     
+                             <!--    <b>  
+                                           <apex:commandButton value="Import Spec" action="{!importSpecs}" id="btn1" reRender="pgmsg" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                           <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" styleClass="slds-button slds-button--neutral"/>
+                                     </b>  -->
+                              </span>
+                             <!-- <p class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" title="Create Task" style="color:white;font-size:18px;"><b>Create Task</b> </p>-->
+                        </div> 
+                        <br/><br/><br/><br/>
+                                      
+                      
+                      
+                      
+                        
+                         
+                         
+                          <apex:pageBlock mode="edit" id="pb">
+                          
+                          
+                          
+                          
+                                 <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                <apex:pageMessages id="pgmsg"/>
+                                </div> <br/>   
+                             
+                                  <div class="SectionHeader" style="background-color:SteelBlue;color:white;">
+                                   <h3 class="slds-section-title"><b>&nbsp;Information</b></h3>
+                                 </div>
+                               
+                             
+                                                            
+                                <table width="80%" >
+                                      <tr>
+                                          <td align="left" width="50%" style="padding-top:10px;" >
+                                                 <apex:outputLabel value="{!$ObjectType.Production_Spec_Template__c.Label}" for="SpecTemp" ></apex:outputLabel>&nbsp;
+                                                          <apex:selectList id="theSelectList" value="{!ProductionSpecTempName}" size="1" styleClass="slds-select slds-m-right--medium">
+                                                               <apex:selectOptions value="{!ProductionSpecTemplates}" id="sp">
+                                                               </apex:selectOptions>
+                                                            </apex:selectList> &nbsp; 
+                                          </td>   
+                                          <td valign="middle">    
+                                               &nbsp; &nbsp; &nbsp;        
+                                              <apex:commandButton value="Import Spec" action="{!importSpecs}" id="btn1" reRender="pgmsg" styleClass="slds-button slds-button--brand"></apex:commandButton>&nbsp;
+                                                <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" styleClass="slds-button slds-button--neutral"/>
+                                          </td>      
+                                           
+                                          
+                                       </tr>
+                                 </table>
+                                 <br/><br/> <br/><br/> <br/><br/>
+               
+                 
+        </apex:pageBlock>
+              </apex:form>     
+           </div> 
+        </body>
+    </html>
+    
+    
+    
+    <style>
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+       
+         .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+       
+       
+        
+       
+          <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:black;
+             }
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white;
+                }
+                
+                .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                
+                 
+                
+               .messageCell{
+               color: white !important;
+               } 
+                
+                
+            <!--- error Mesgg-------------------------------------->
+                
+ 
+       
+       
+       
+    </style>  
+    
+    
+    
+    
+    
+</apex:page>  
+
+<!-- End of Page -->

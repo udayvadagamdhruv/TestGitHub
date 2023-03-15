@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Sent_when_the_A_Task_status_is_changed_to_Changes_Needed</fullName>
+        <ccEmails>steve@etrackit.com</ccEmails>
+        <description>Sent when the A Task status is changed to Changes Needed</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Submitter_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Approval_Task_Changes_Needed</template>
+    </alerts>
+    <alerts>
+        <fullName>Test_for_Email_alert_to_team_member</fullName>
+        <description>Test for Email alert to team member for custom</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Submitter_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Jobsuite_Email_for_send_email</template>
+    </alerts>
+</Workflow>

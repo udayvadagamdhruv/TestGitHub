@@ -1,0 +1,6 @@
+<!-- This page is used to display list of all Material_Item__c -->
+<apex:page showHeader="true" tabStyle="Material_Item__c" sidebar="true">
+   <!-- <apex:listViews type="Material_Item__c" rendered="true" id="Materiallist"/>  -->
+    <apex:enhancedList type="Material_Item__c" height="1000" rowsPerPage="50" customizable="true"/> 
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,15 @@
+<aura:component controller="Job_Detail_Section_Tab"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="Percentage" type="decimal" default="0"  />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c.UpdateRecordsforChanges" action="{!c.doInit}" /> 
+    <ltng:require  styles="{!$Resource.LtngStyles + '/LCmpModalandChart/Styles/TaskChartProgress.css'}"/>
+  
+    
+    
+    <div class="slds-card">
+        <progress   style="width:100%;"  max="100" value="{!v.Percentage}"></progress>
+    </div>
+    
+</aura:component>

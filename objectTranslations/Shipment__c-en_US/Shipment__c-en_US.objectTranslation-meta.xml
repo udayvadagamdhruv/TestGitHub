@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Shipment</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Shipments</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Shipment_FS</name>
+    </fieldSets>
+    <layouts>
+        <layout>Shipment Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Others</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Address Information</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Print</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Shipment_List_View</name>
+    </webLinks>
+</CustomObjectTranslation>

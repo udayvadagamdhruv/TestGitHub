@@ -1,0 +1,27 @@
+<!-- This page is used to Edit GL Department. -->
+<apex:page standardController="GL_Department__c" showHeader="true" sidebar="true" extensions="EditGLDepartmentExtension" tabStyle="MyAdmin__tab">
+<apex:sectionHeader title="{!GL_Department__c.Name}">
+  <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!save}" value="Save"></apex:commandButton>
+                   <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="GL Department Detail" columns="2" collapsible="false"> 
+                  <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.GL_Department__c.Fields.Name.Label}"></apex:outputLabel>
+                     <apex:inputField value="{!GL_Department__c.Name}" required="true" />
+                 </apex:pageBlockSectionItem>
+                  <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.GL_Department__c.Fields.GL_Dept_Code__c.Label}"></apex:outputLabel>
+                     <apex:inputField value="{!GL_Department__c.GL_Dept_Code__c}" />
+                 </apex:pageBlockSectionItem>
+                 
+               </apex:pageBlockSection>
+            </apex:pageBlock>
+    </apex:form>
+    </apex:sectionHeader>
+</apex:page>
+<!-- End of Page -->

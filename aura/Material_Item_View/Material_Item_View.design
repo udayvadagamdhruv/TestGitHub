@@ -1,0 +1,4 @@
+<design:component>
+    <design:attribute name="MaterialUsageItemsSection" label="Material Usage Items Section Label" description="This will reflect the Material Usage Items Section Label" />
+    <design:attribute name="MaterialInventorySection" label="Material Inventory Label" description="This will reflect the Material Inventory Section Label" />
+</design:component>

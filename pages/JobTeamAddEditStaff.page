@@ -1,0 +1,54 @@
+<apex:page standardController="Job__c" extensions="JobTeamAddEditStaffExtension" id="thePage">
+ <apex:form >
+     <apex:pageBlock >
+        
+      <table ><tr><td  width="10%;">
+                             <b> <apex:outputLabel value="Select Members Type" /> </b>
+                            </td><td style="margin-right:15px;">&nbsp;&nbsp;  <apex:selectList id="StatusList" value="{!StatusString}" size="1" >                              
+                                          <apex:selectOptions value="{!StatusList}"/>
+                                          <apex:actionSupport event="onchange" rerender="block" action="{!SerachStaff}"/>
+                                 </apex:selectList></td>
+                                 
+         </tr></table>   <br/>
+      
+     
+    <apex:pageBlock id="block" Title="Add Team Members" >
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:pageblockButtons location="top">
+   <!-- <apex:commandButton value="SerachStaff"  reRender="block"/> -->
+   <apex:commandButton value="Add To Team" action="{!Addstaff}" /> <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+    </apex:pageblockButtons>
+    
+    
+    <apex:pageBlockSection collapsible="false" columns="1" id="section" rendered="{!AllstaffWrappers.size >0}">
+          <apex:outputPanel layout="block" style="overflow:auto; height:500px; width:100%;" >    
+              <apex:pageblocktable value="{!AllstaffWrappers}" var="staffwrap">
+                  <apex:column >
+                      <apex:inputCheckbox value="{!staffwrap.selection}"/>
+                  </apex:column>
+                  <apex:column headervalue="Name" value="{!staffwrap.Sojw.Staffname}"/>
+                  
+                  <apex:column headervalue="User Name" value="{!staffwrap.Sojw.Username}"/>
+                  <apex:column headervalue="Role" value="{!staffwrap.Sojw.RoleName}" style="{!IF(staffwrap.sroles, 'color:red;font-weight:bold;','')}"/>
+                   <!--<apex:column headervalue="Active" value="{!staffwrap.Sojw.Active}" />-->
+                   <apex:column headervalue="Active">
+                      <apex:inputCheckbox value="{!staffwrap.Sojw.Active}" disabled="true"/>
+                  </apex:column>
+                  </apex:pageblocktable>
+            </apex:outputPanel>  
+          </apex:pageBlockSection>
+    
+    <apex:pageBlockSection rendered="{!AllstaffWrappers.size <= 0}">
+               <apex:pageBlockSectionItem >
+                   <b>No records to display</b>
+               </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection>
+    
+    
+    </apex:pageBlock>
+    
+    </apex:pageBlock>
+    
+    
+    </apex:form>
+</apex:page>

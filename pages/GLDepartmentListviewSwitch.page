@@ -1,0 +1,3 @@
+<apex:page standardController="GL_Department__c" extensions="GLDepartmentListviewSwitchExt" standardStylesheets="true" sidebar="false" showHeader="false" applyHtmlTag="false" applyBodyTag="false"  docType="html-5.0" action="{!gdlistview}" >
+
+</apex:page>

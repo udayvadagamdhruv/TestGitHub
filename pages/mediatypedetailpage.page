@@ -1,0 +1,5 @@
+<!-- This page is used to display media type detail page. -->
+<apex:page standardController="Media_Type__c" tabStyle="MyAdmin__tab">
+  <apex:detail showChatter="true" relatedList="false"/>
+</apex:page>
+<!-- End of Page -->

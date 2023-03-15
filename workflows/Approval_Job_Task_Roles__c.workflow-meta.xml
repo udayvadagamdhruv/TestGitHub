@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Email_sent_to_the_staff_assigned_to_a_task_when_the_status_is_changed_to_In_Prog</fullName>
+        <description>Email sent to the staff assigned to a task when the status is changed to “In Progress”</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>JobSuite_Email_Template/AP_Approval_Submitted</template>
+    </alerts>
+    <alerts>
+        <fullName>Email_sent_to_the_staff_assigned_to_a_task_when_the_status_is_changed_to_Inpro_T</fullName>
+        <description>Email sent to the staff assigned to a task when the status is changed to “In Progress” From Job Task Level</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>JobSuite_Email_Template/AP_Approval_Submitted_Job_Task</template>
+    </alerts>
+    <alerts>
+        <fullName>Send_mail_to_staff_task</fullName>
+        <description>Send mail to staff for task</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Jobsuite_Email_for_send_email</template>
+    </alerts>
+    <alerts>
+        <fullName>Undo_Email_Alert</fullName>
+        <description>Undo Email Alert</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>JobSuite_Email_Template/Undo_Email_Template</template>
+    </alerts>
+    <alerts>
+        <fullName>Undo_Email_Alert_from_Job_Task_Level</fullName>
+        <description>Undo Email Alert from Job Task Level</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>JobSuite_Email_Template/Undo_Email_Template_Job_Task</template>
+    </alerts>
+    <alerts>
+        <fullName>send_mail_to_assigned_staff</fullName>
+        <description>send mail to assigned staff</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Jobsuite_Email_for_send_email</template>
+    </alerts>
+    <rules>
+        <fullName>Inprogress Email Sent to staff</fullName>
+        <actions>
+            <name>Email_sent_to_the_staff_assigned_to_a_task_when_the_status_is_changed_to_In_Prog</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Status__c</field>
+            <operation>equals</operation>
+            <value>In Progress</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Created_From_Job_Task__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>Email sent to the staff assigned to a task when the status is changed to “In Progress”</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Inprogress Email Sent to staff form Job Task</fullName>
+        <actions>
+            <name>Email_sent_to_the_staff_assigned_to_a_task_when_the_status_is_changed_to_Inpro_T</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Status__c</field>
+            <operation>equals</operation>
+            <value>In Progress</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Created_From_Job_Task__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>Email sent to the staff assigned to a task when the status is changed to “In Progress” form Job Task</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Undo Email Sent to staff</fullName>
+        <actions>
+            <name>Undo_Email_Alert</name>
+            <type>Alert</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Undo__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Created_From_Job_Task__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>Email sent to the staff assigned to a task when the task has been retracted</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Undo Email Sent to staff form Job Task</fullName>
+        <actions>
+            <name>Undo_Email_Alert_from_Job_Task_Level</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Undo__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Approval_Job_Task__c.Created_From_Job_Task__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>Email sent to the staff assigned to a task when the task has been retracted from the Job Task Level</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

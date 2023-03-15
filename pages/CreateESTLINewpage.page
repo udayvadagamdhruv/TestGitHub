@@ -1,0 +1,44 @@
+<apex:page standardController="Estimate_Template_Line_Items__c" tabStyle="MyAdmin__tab" extensions="CreateESTLINewpageExtension">
+
+
+
+    <apex:sectionHeader title="Estimate Temp Line Items Edit"/>
+    <apex:pagemessages id="pgMsg"/>
+    <apex:form >
+    <apex:pageBlock >
+       
+   
+       <apex:pageBlockButtons >
+          <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+          <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+       </apex:pageBlockButtons>
+             
+       <apex:actionRegion >
+       <apex:pageBlockSection title="Information" columns="2" collapsible="true" id="pbs">
+        
+        
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Estimate_Template_Line_Items__c.Fields.Name.Label}"/>
+             <apex:inputField value="{!Estimate_Template_Line_Items__c.Name}" required="true"/>
+          </apex:pageBlockSectionItem>
+        
+        
+          <apex:pageBlockSectionItem >
+             <apex:outputLabel value="{!$ObjectType.Estimate_Template_Line_Items__c.Fields.Estimate_Template__c.Label}"/>
+             <apex:outputField value="{!Estimate_Template_Line_Items__c.Estimate_Template__c}"/>
+          </apex:pageBlockSectionItem>
+        
+      
+             
+          
+      
+        
+        
+          
+             
+       </apex:pageBlockSection>
+       </apex:actionRegion>  
+    </apex:pageBlock>
+ </apex:form>
+
+</apex:page>

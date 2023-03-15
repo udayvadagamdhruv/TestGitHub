@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ready_To_Bill</fullName>
+    <columns>Development_Item_Number__c</columns>
+    <columns>NAME</columns>
+    <columns>Customer_Name__c</columns>
+    <columns>Status__c</columns>
+    <columns>Item_Completion_Date__c</columns>
+    <columns>Duration__c</columns>
+    <columns>Actual_Hrs__c</columns>
+    <columns>TrackIT_Billing_Status__c</columns>
+    <columns>Inv__c</columns>
+    <columns>TrackIt_Billing_Date__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>TrackIT_Billing_Status__c</field>
+        <operation>contains</operation>
+        <value>Ready</value>
+    </filters>
+    <label>Ready To Bill</label>
+    <language>en_US</language>
+</ListView>

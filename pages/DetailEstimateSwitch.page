@@ -1,0 +1,23 @@
+<apex:page standardController="Estimate_Line_Items__c" extensions="EstimateSwitchExt" tabStyle="Estimate_Line_Items__c" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="false"   >
+ 
+ 
+ <script>
+ 
+   var s = '{!$User.UITheme == 'Theme3'}';
+ 
+    if(s=='true'){
+   
+     window.open("/apex/Estimatedetailpage?id="+'{!Estmid}',"_self");
+    }
+    
+
+ </script>
+ 
+ <apex:outputPanel rendered="{!$User.UITheme=='Theme4d'}">
+ 
+ <apex:include pageName="EstimatedetailpageLightning"/>
+ 
+ </apex:outputPanel>
+ 
+ 
+</apex:page>

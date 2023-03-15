@@ -1,0 +1,33 @@
+<apex:page Controller="JobFilesListExtension" sidebar="false" >
+<!-- <apex:iframe height="300" width="300" src="http://www.infallibletechie.com" scrolling="true"/> -->
+<apex:form >
+<apex:pageBlock >
+  <apex:pageBlockTable value="{!fwlist}" var="jf">
+      <apex:column value="{!jf.jfd.id}"/>
+      
+    <apex:column value="{!jf.dc}" />
+      
+      <apex:column >
+         <apex:commandButton title="Edit" value="Edit" action="{!send}"/>
+      </apex:column>
+      
+      <apex:column >
+         <!--{!jf.dc}-->
+         
+         {!jf.cd}
+      </apex:column> -->
+     
+    <!--  <apex:column headerValue="Content data" >
+          <apex:outputText value="{!jf.cd}">
+          <a href="data:application/pdf;base64,{!jf.cd}" >Hello</a>
+         
+          </apex:outputText>
+      </apex:column>  -->
+      <apex:column value="{!jf.jfd.ContentFileName}"/>
+      
+     {!dis}
+  
+  </apex:pageBlockTable>
+ </apex:pageBlock>
+</apex:form>
+</apex:page>

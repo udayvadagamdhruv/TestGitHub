@@ -1,0 +1,193 @@
+<aura:component controller="SiteJobRequestForm" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable" access="global" >
+    <aura:attribute name="fieldSet" type="List"   />
+    <aura:attribute name="JobactiveSections" type="List" default="['JobDetails','JobSpecs','Filesec']" />
+    <aura:attribute name="selectedLookUpRecord_MT" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_ST" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_CT" type="sObject" default="{}"/>
+    
+    <aura:attribute name="selectedLookUpRecord_CMP" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_C" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_CC" type="sObject" default="{}"/>
+     <aura:attribute name="jobid" type="string" />
+    <aura:attribute name="ClientContactsRecords" type="Object" />
+    <aura:attribute name="CreativeRecords" type="List" />
+    <aura:attribute name="MediaRecords" type="Object" />
+    <aura:attribute name="ScehduleRecords" type="Object" />
+    <aura:attribute name="CampRecord" type="String" default="" />  
+    <aura:attribute name="CRecord" type="String" default="" />
+    
+    <aura:attribute name="MTRecord" type="String" default="" />
+    <!--  <aura:attribute name="CTRecord" type="String" default="" />-->
+    <aura:attribute name="enable" type="boolean" default="false"/>
+    
+    <aura:attribute name="SpecTemplate" type="Object"/> 
+    <aura:attribute name="SpecRecords" type="List" default=""/>
+    <aura:attribute name="SpecOpen" type="Boolean" default="false"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:attribute name="orgImageURL" type="Object" />
+    <aura:attribute name="ImageWidth" type="String" />
+    <aura:attribute name="ImageHeight" type="String" />
+    <aura:attribute name="RequestNameHeader" type="String" />
+    <aura:attribute name="CustomText" type="String" />
+    <aura:attribute name="FileSectionAccess" type="String" />
+    <aura:attribute name="fileName" type="String" default="No File Selected.." />
+    <aura:attribute name="SpecObjName" type="String" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div style=" padding: 2rem 5rem 2rem 5rem; background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));">
+        <lightning:card>
+            <!-- <div style="padding-left:10%;padding-right:10%">-->
+            <div class="slds-hide" aura:id="LightningMsgToast" style="height: 4rem;">
+                <div class="slds-notify_container slds-is-relative">
+                    <div class="slds-notify slds-notify_toast" aura:id="LightningMsgToastTheme"  role="status">
+                        <div class="slds-notify__content">
+                            <h2 class="slds-text-heading_small">
+                                <ui:outputText aura:id="LightningMsgToastMessage"/>
+                            </h2>
+                        </div>
+                        <div class="slds-notify__close">
+                            <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close">
+                                <lightning:buttonIcon iconName="utility:close" aura:id="LightningMsgToastIcon" onclick="{!c.handleToast}" variant="bare-inverse" size="medium" alternativeText="close" iconClass="dark"/>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                        </div>
+                    </div>
+                </div> <br/>
+            </div>
+            
+            
+            <lightning:recordEditForm aura:id="createEditForm"  objectApiName="Job__c"  onsubmit="{!c.RecordSubmit}"  onsuccess="{!c.onRecordSuccess}" density="Comfy">
+                
+                <div  style="float:right;margin-right:20px;padding-top: 20px;">
+                    <lightning:button variant="neutral" 
+                                      label="Reset"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand" 
+                                      label="Save"
+                                      title="Save"
+                                      type="submit"
+                                      disabled="{!v.enable}"/>
+                </div>
+                <div style="float:left;margin-left:12px;">
+                    <img src="{!v.orgImageURL}" width="{!v.ImageWidth}" height="{!v.ImageHeight}"/>
+                </div>
+                <div align="center">
+                    <h1 class="slds-text-heading--label" style="font-size: 1.25rem;padding-top: 26px;"><b>{!v.RequestNameHeader}</b></h1>
+                </div>
+                <div style="margin-left:12px;margin-top:20px;margin-Right:12px;">
+                    <lightning:formattedText value="{!v.CustomText}"></lightning:formattedText>
+                </div>
+                <hr style="margin: 0.5rem 0;"/>
+                <div  class="slds-scrollable_y" style="height:650px;">
+                    <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="{!v.JobactiveSections}" > 
+                        <lightning:accordionSection name="JobDetails" label="Details"  class="slds-card" >    
+                            <lightning:layout multipleRows="true">  
+                                
+                                <aura:iteration items="{!v.fieldSet}" var="ff" indexVar="indx">
+                                    
+                                    <aura:if isTrue="{! (ff=='Campaign__c') || (ff=='Media_Types__c') || (ff=='Schedule_Template__c') || (ff=='JS_Client__c') || (ff=='JS_Client_Contact__c') || (ff=='Specification_Template__c')}">
+                                        
+                                        <aura:set attribute="else"> 
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                <lightning:inputField fieldName="{!ff}" aura:id="fsOne" class="{!((ff=='Name' || ff=='Due_Date__c')? ' frequired' :' ')}"  /> 
+                                            </lightning:layoutItem>
+                                        </aura:set>
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='Campaign__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <div  >
+                                                <c:customLookup aura:id="CampauraId" objectAPIName="Campaign__c" DepobjectAPIName="" IconName="standard:campaign" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_CMP}" 
+                                                                DepenselectedRecord="" label="{!V.ObjectType.Job__c.Campaign__c.label}" Depelabel="" RelationShipName="" ParentFilter="Status__c='Active'"  ChildFilter=""
+                                                                ParentRecId="{!v.CampRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                                                
+                                            </div>   
+                                        </lightning:layoutItem>
+                                    </aura:if> <br/><br/>
+                                    
+                                    <aura:if isTrue="{!ff=='Media_Types__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                            <div >
+                                                <c:customLookup aura:id="MT_STempId"  objectAPIName="Media_Type__c" DepobjectAPIName="Schedule_Template__c" IconName="custom:custom99" DepIconName="custom:custom40" selectedRecord="{!v.selectedLookUpRecord_MT}" 
+                                                                DepenselectedRecord="{!v.selectedLookUpRecord_ST}" label="{!V.ObjectType.Job__c.Media_Types__c.label}" Depelabel="{!V.ObjectType.Job__c.Schedule_Template__c.label}" RelationShipName="Media_Types__c" ParentFilter=""  ChildFilter="Active__c=True"
+                                                                ParentRecId="{!v.MTRecord}" ParentSortBy="Order By Name" ChildSortBy="Order By Name" IsParentReq="true" IsChildReq="true" />
+                                            </div> 
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                    
+                                    
+                                    <aura:if isTrue="{!ff=='Specification_Template__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <div class="slds-form-element__control slds-form-element  frequired"  >
+                                                <lightning:select name="SpecSelect" aura:id="SpecTemp" label="{!V.ObjectType.Job__c.Specification_Template__c.label}" onchange="{!c.SpecChanges}">
+                                                    <option text="-None-" value="" />
+                                                    <aura:iteration items="{!v.SpecTemplate}" var="Spec">
+                                                        <option text="{!Spec.Name}" value="{!Spec.Id}" />
+                                                    </aura:iteration>
+                                                </lightning:select> 
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </aura:if>  
+                                    <aura:if isTrue="{!ff=='JS_Client__c'}">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                            <div >       
+                                                <c:customLookup aura:id="C_CConId"  objectAPIName="Client__c" DepobjectAPIName="Client_Contact__c" IconName="standard:client" DepIconName="standard:groups" selectedRecord="{!v.selectedLookUpRecord_C}" 
+                                                                DepenselectedRecord="{!v.selectedLookUpRecord_CC}" label="{!V.ObjectType.Job__c.JS_Client__c.label}" Depelabel="{!V.ObjectType.Job__c.JS_Client_Contact__c.label}" RelationShipName="Client__c" ParentFilter="Active__c=true"  ChildFilter="Active__c=True"
+                                                                ParentRecId="{!v.CRecord}"  ParentSortBy="Order By Name" ChildSortBy="Order By Name" /> 
+                                            </div> 
+                                        </lightning:layoutItem>
+                                    </aura:if> 
+                                    
+                                    <aura:if isTrue="{!ff=='JS_Client_Contact__c'}">
+                                        
+                                    </aura:if> 
+                                </aura:iteration>
+                                
+                            </lightning:layout>
+                            
+                            <lightning:accordionSection name="JobSpecs" label="{!v.SpecObjName}"  class="slds-card" >  
+                                <!--   <lightning:layout multipleRows="true"> 
+                        <lightning:layoutItem size="12" smallDeviceSize="1" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <c:SiteSpecsForm aura:id="SpecTempId" SpecId="{!v.CTRecord}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>-->
+                                <aura:if isTrue="{!empty(v.SpecRecords)}">
+                                    <b>No records to display</b><br/> <br/> 
+                                    <aura:set attribute="else" >
+                                        
+                                        <aura:iteration items="{!v.SpecRecords}" var="item">
+                                            <lightning:layout multipleRows="true">  
+                                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="3" padding="around-small">    
+                                                    <ui:outputText value="{!item.Name}" />
+                                                </lightning:layoutItem>     
+                                                
+                                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="9" padding="around-small">    
+                                                    <ui:inputTextArea value="{!item.Description__c}" placeholder="Enter Description here" rows="6" cols="85"/> 
+                                                </lightning:layoutItem>  
+                                            </lightning:layout>
+                                        </aura:iteration><br/> <br/> <br/> 
+                                    </aura:set> 
+                                </aura:if> 
+                            </lightning:accordionSection>
+                            
+                            <aura:if isTrue="{!v.FileSectionAccess}">
+                                <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="Filesec"> 
+                                    <lightning:accordionSection name="Filesec" label="Files" class="slds-card" > 
+                                        <div class="slds-text-body_small slds-text-color_error"><b> Note: Upload upto 2MB File only</b> </div>
+                                        <lightning:input aura:id="fuploader" onchange="{!c.handleFilesChange}" type="file" name="file" label="Upload File" multiple="false"/>
+                                        <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>
+                                        <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                                    </lightning:accordionSection>
+                                </lightning:accordion> 
+                            </aura:if>
+                        </lightning:accordionSection>
+                    </lightning:accordion> 
+                </div>
+            </lightning:recordEditForm> 
+        </lightning:card></div>  
+</aura:component>

@@ -1,0 +1,316 @@
+<apex:page standardController="Material_Order__c" showHeader="false" sidebar="false" standardStylesheets="false" extensions="Print_MO_Apexclass" renderAs="PDF">
+    <head>
+        <style type="text/css">
+            
+            .rightalign
+            {
+            text-align:right;
+            }
+            
+            .leftalign
+            {
+            text-align:left;
+            }
+            
+            .centeralign
+            {
+            text-align:center;
+            }
+            
+            div.tab
+            {
+            width:100%;
+            border:solid black;
+            }
+            @page
+            {
+            /* Landscape orientation */
+            size:potrait;
+            
+            /* Put page numbers in the bottom right corner of each
+            page in the pdf document. */
+            
+            @bottom-right
+            {
+            content: "Page " counter(page);
+            font-family: sans-serif;
+            font-size:8pt;
+            }
+            
+            @bottom-left 
+            {
+            content: "<apex:outputText value="{0,date,MMMM dd, yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>"; 
+            background-repeat: no-repeat;
+            font-size:8pt;
+            font-family: sans-serif;
+            } 
+            }
+            
+            body 
+            {
+            font-family: sans-serif;
+            font-size:8pt;
+            }
+            
+            th
+            {
+            font-size:10pt
+            font-style:bold;
+            font-family: sans-serif;
+            }
+            
+            td
+            {
+            font-size:8pt;
+            font-family: sans-serif;
+            }
+            
+            div.footer
+            {
+            position : running(footer) ;
+            }
+        </style>
+    </head>
+    
+    <body>
+        
+        <!---------------------------------------------------- Logo and Title Details ---------------------------------------------------------->
+        
+        
+        <table width="100%" border="0">
+            <tr>
+                <td style="width:50%">
+                    <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+                    <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+                </td>
+                <!--Changed the td perc. and align for td-->
+                <td width="50%" align="right"> 
+                    <table width="100%" border="0">
+                        <tr >
+                            
+                            <td>
+                                <b><apex:outputLabel value="Material ORDER"  style="font-size:15px; font-family: sans-serif;"></apex:outputLabel><br/></b>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b> 
+                                    #<apex:outputField value="{!Material_Order__c.Name}" style="font-size:10px;font-family: sans-serif;"/></b>
+                            </td>
+                        </tr>
+                        
+                        <tr style="font-size:10px;">
+                            <td>
+                                <apex:outputText value="{!$Organization.Street} " rendered="{!$Organization.Street!=''}" style="font-size:10pt;font-family:sans-serif !important;"/> <br/>   
+                                <apex:outputText value="{!$Organization.City}"></apex:outputText> <apex:outputText value=", " rendered="{!$Organization.City!=''}" style="font-size:10pt;font-family:sans-serif !important;"/>                                           
+                                <apex:outputText value=" {!$Organization.State}" rendered="{!$Organization.State!=''}"  style="font-size:10pt;font-family:sans-serif !important;"/>                  
+                                <apex:outputText value="{!$Organization.Country}" rendered="{!$Organization.Country!=''}" style="font-size:10pt;font-family:sans-serif !important;"></apex:outputText><br/> 
+                                Phone:&nbsp;<apex:outputtext value=" {!$Organization.Phone}" rendered="{!$Organization.Phone!=''}" style="font-size:10pt;font-family:sans-serif !important;"/>
+                            </td>
+                        </tr>
+                        
+                        <!-- <tr style="font-size:10px;">
+<td>
+<apex:outputLabel value="{!$ObjectType.Material_Order__c.Fields.MO_Due_Date__c.Label}" style="font-size:12px;font-family: sans-serif;font-weight: bold;"/> &nbsp;&nbsp;
+<apex:outputfield value="{!Material_Order__c.MO_Due_Date__c}"/>
+</td>
+</tr>-->
+                        
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <!---------------------------------------------------- Logo and Title Details Ends ---------------------------------------------------------->
+        
+        <!---------------------------------------------------- Details ---------------------------------------------------------->
+        <table width="100%" style="padding-top:5px;">
+            <tr>
+                <td align="left">
+                    <hr color="black" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                        <tr style="page-break-inside: avoid;">
+                            <td width = "20%">
+                                <b> <apex:outputText value="DETAILS" style="font-size:11pt;font-weight:bold;font-color:#0000FF;font-family:sans-serif !important;"/>  </b>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <br/>
+            
+            <tr width="100%" style="font-size:9pt;">
+                <td width="100%" align="left" style="padding-left:20px;font-family:sans-serif !important;">
+                    
+                    <table width="110%" align="left" style="font-family:sans-serif !important;">
+                        
+                        <tr width="100%">
+                            
+                            <td width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Material_Order__c.Fields.Vendor_Name__c.Label}" style="font-weight: bold;font-family:sans-serif !important;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputField value="{!Material_Order__c.Vendor_Name__r.Name}" style="font-family:sans-serif !important;"/> 
+                            </td>
+                            
+                            <td width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Material_Order__c.Fields.Name.Label}" style="font-weight: bold;font-family:sans-serif !important;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputField value="{!Material_Order__c.Name}" style="font-family:sans-serif !important;"/> 
+                            </td> 
+                            
+                            
+                        </tr> 
+                        
+                        <tr></tr>
+                        
+                        <tr>
+                            
+                            <td width="20%">
+                                <b> <apex:outputText value="BILLING ADDRESS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                            </td>
+                            <td width="30%">
+                                <!--<apex:outputField value="{!Material_Order__c.Vendor_Name__r.Name}" /><br/>-->
+                                <apex:outputField rendered="{!Material_Order__c.Vendor_Name__r.Address_1__c != null}" value="{!Material_Order__c.Vendor_Name__r.Address_1__c}"> <br/> </apex:outputField>
+                                <apex:outputField rendered="{!Material_Order__c.Vendor_Name__r.Address_2__c != null}" value="{!Material_Order__c.Vendor_Name__r.Address_2__c}"> <br/> </apex:outputField>
+                                <apex:outputField value="{!Material_Order__c.Vendor_Name__r.City__c}"/><apex:outputText value=", " rendered="{!Material_Order__c.Vendor_Name__r.City__c!=''}"/><apex:outputField value="{!Material_Order__c.Vendor_Name__r.State__c}"/> &nbsp; <apex:outputField value="{!Material_Order__c.Vendor_Name__r.Zip__c}"/> <br/>
+                                <apex:outputField value="{!Material_Order__c.Vendor_Name__r.Phone_1__c}"/>    
+                            </td>
+                            
+                            <td>
+                                <apex:outputLabel value="{!$ObjectType.Material_Order__c.Fields.MO_Due_Date__c.Label}" style="font-size:12px;font-family: sans-serif;font-weight: bold;"/> &nbsp;&nbsp;
+                                <apex:outputfield value="{!Material_Order__c.MO_Due_Date__c}"/>
+                            </td>
+                        </tr>
+                        
+                        <tr width="100%">
+                            
+                            <td width="20%">
+                                <apex:outputLabel value="{!$ObjectType.Material_Order__c.Fields.Issue_Date__c.Label}" style="font-weight: bold;font-family:sans-serif !important;"/>
+                            </td>
+                            <td width="30%">
+                                <apex:outputField value="{!Material_Order__c.Issue_Date__c}" style="font-family:sans-serif !important;"/> 
+                            </td>
+                            
+                        </tr> 
+                        
+                    </table>
+                </td>
+            </tr>
+            <!---------------------------------------------------- End of Details ---------------------------------------------------------->
+            
+            <!---------------------------------------------------- Material Order Line Item ---------------------------------------------------------->
+            
+            <table width="100%" style="page-break-inside: avoid;">
+                
+                <tr width="100%">
+                    <td align="left">
+                        <hr color="black" width="100%"/>
+                    </td>
+                </tr>
+                <tr width="100%">
+                    <td width="100%">
+                        <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                            <tr style="page-break-inside: avoid;">
+                                <td width="100%">
+                                    <b> <apex:outputText value="{!upper($ObjectType.Material_Purchase_Line_Item__c.Label)}" style="font-size:11pt;font-weight:bold;font-color:#0000FF;font-family:sans-serif !important;"/>  </b>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr> <br/>
+            </table>
+            
+            
+            <table width="100%" style="font-family:sans-serif !important;">
+                
+                <tr width="100%" style="padding-left:20px;font-size:10pt;">
+                    <th width="14%"><b>Name</b></th>
+                    <th width="37%"  ><b>Material Item</b></th>
+                    <th width="10%"><b>Calc Unit</b></th>
+                    <th width="10%"><b>Status</b></th>
+                    <th width="14%"><b>Qty</b></th>
+                    <th width="14%"  ><b>Qty Outstanding</b></th>
+                </tr> 
+                
+                <tr width="100%">
+                    <td align="left" colspan="7" width="100%">
+                        <hr color="black" width="100%"/>
+                    </td>
+                </tr>
+                <apex:repeat value="{!molircds}" var="MOLIFields"  rendered="{!molircds.Size>0}"> 
+                    <tr width="100%" style="padding-left:20px;font-size:9pt;font-family:sans-serif !important;">
+                        <td width="14%" height="5"> <apex:outputField value="{!MOLIFields.Name}"/></td>
+                        <td width="37%" height="5" ><apex:outputField value="{!MOLIFields.Material_Item__r.Name}"/></td> 
+                        <td width="10%" height="5"><apex:outputField value="{!MOLIFields.Calc_Unit__c}"/></td>
+                        <td width="10%" height="5"><apex:outputField value="{!MOLIFields.MPLI_Status__c}"/></td>
+                        <td width="14%" height="5"><apex:outputField value="{!MOLIFields.Qty__c}"/></td>
+                        <td width="14%" height="5" ><apex:outputField value="{!MOLIFields.Qty_Outstanding__c}"/></td>
+                    </tr>
+                </apex:repeat>
+            </table>  <br/>
+            
+            
+            <!---------------------------------------------------- MOLI Ends ---------------------------------------------------------->
+            
+            <!---------------------------------------------------- MOLI Receipt ---------------------------------------------------------->
+            
+            <table width="100%" style="page-break-inside: avoid;">
+                
+                <tr width="100%">
+                    <td align="left">
+                        <hr color="black" width="100%"/>
+                    </td>
+                </tr>
+                <tr width="100%">
+                    <td width="100%">
+                        <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                            <tr style="page-break-inside: avoid;">
+                                <td width="100%">
+                                    <b> <apex:outputText value="{!upper($ObjectType.Material_Order_Line_Item_Receipt__c.Label)}" style="font-size:11pt;font-weight:bold;font-color:#0000FF;font-family:sans-serif !important;"/>  </b>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr> <br/>
+            </table>
+            
+            
+            <table width="100%" style="font-family:sans-serif !important;">
+                
+                <tr width="100%" style="padding-left:20px;font-size:10pt;">
+                    <th width="30%"><b>Name</b></th>
+                    <th width="20%"  ><b>Material Order Line Item</b></th>
+                    <th width="15%"><b>Receipt Date</b></th>
+                    <th width="15%"><b>Receipt Qty</b></th>
+                    <th width="14%"><b>Status</b></th>
+                </tr> 
+                
+                <tr width="100%">
+                    <td align="left" colspan="7" width="100%">
+                        <hr color="black" width="100%"/>
+                    </td>
+                </tr>
+                <apex:repeat value="{!moliReceiptrcds}" var="MOLIReceiptFields"  rendered="{!moliReceiptrcds.Size>0}"> 
+                    <tr width="100%" style="padding-left:20px;font-size:9pt;font-family:sans-serif !important;">
+                        <td width="30%" height="5"> <apex:outputField value="{!MOLIReceiptFields.Name}"/></td>
+                        <td width="20%" height="5" ><apex:outputField value="{!MOLIReceiptFields.Material_Purchase_Line_Item__r.name}"/></td> 
+                        <td width="15%" height="5"><apex:outputField value="{!MOLIReceiptFields.MOLI_Receipt_Date__c}"/></td>
+                        <td width="15%" height="5"><apex:outputField value="{!MOLIReceiptFields.MOLI_Receipt_Qty__c}"/></td>
+                        <td width="14%" height="5"><apex:outputField value="{!MOLIReceiptFields.MPLI_Receipt_Status__c}"/></td>
+                    </tr>
+                </apex:repeat>
+            </table>  <br/>
+            
+            
+            <!---------------------------------------------------- MOLI Receipt Ends ---------------------------------------------------------->
+            
+        </table>
+        
+        
+    </body>
+    
+</apex:page>

@@ -1,0 +1,1352 @@
+<apex:page controller="MyWIPTabPageCntrl" showHeader="false" standardStylesheets="true"  applyBodyTag="false" applyHtmlTag="false" docType="html-5.0" >
+
+
+ 
+ 
+                  
+                  
+
+
+
+<style>
+    td > .msgIcon {
+    display:none !important;
+}
+.messageCell{
+text-align:center !important;
+}
+#calendar {
+    margin-top: 2px !important;; 
+}
+body{
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed;
+      }
+      .slds-page-header{
+      margin-top: -13px !important;
+              background-color: #851225 !important;
+              border-bottom: 3px solid #851255 !important;
+              color: white !important;
+      }
+      .slds-page-header p {
+          color: white !important;
+      }
+      .slds .slds-tabs--scoped__nav {
+            background-color: #e2e4e6 !important;
+            font-size: 15px;
+        }
+        .SectionHeader
+       {
+           background-color:Grey !important;
+           color:white;
+       }
+       
+       .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                   
+    </style>
+     <html  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  style="padding-left:10px !important;padding-right:10px !important;">  
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+        <link rel="stylesheet" href="/resources/demos/style.css" />
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        
+        
+        
+        <script>
+           
+        function getParameterByName(name, url) {
+        //alert(url);
+            if (!url) url = window.location.href;
+            //alert(url);
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        
+        
+      $(document).ready(function () {
+        // Handler for .ready() called. 
+            if(getParameterByName('section') != null){
+           //alert(getParameterByName('section'));
+                
+                  //alert(getParameterByName('section'));
+                
+                $('html, body').animate({
+              
+                    scrollTop: $('#'+getParameterByName('section')).offset().top
+                }, 'fast');
+            }
+            
+           
+            
+        });
+        
+      </script>
+             
+        
+        
+        
+     
+      
+     <div class="slds">    
+    
+    <div style="background:#851225;margin-left:-10px;margin-right:-10px;">    
+        <div style="text-align:center;padding:20px">
+            <b><h1 style="color: white;font-size:20px;" >Work in Progress</h1></b>
+        </div>
+        
+    </div>
+    
+    <apex:relatedList list="MyWIPTabPageCntrl" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.css')}" rel="stylesheet" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.print.css')}" rel="stylesheet" media="print" />
+
+    <link href="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.print.min.css')}" rel="stylesheet" media="print" />
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/moment.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/jquery.min.js')}"></script>
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/jquery-ui.min.js')}"></script>
+
+
+
+    <script src="{!URLFOR($Resource.FullCalendar380,'/fullcalendar-3.8.0/fullcalendar.min.js')}"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+    
+     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    
+    <script>
+            var ss=null;
+            function selectTab(elmnt) {
+                
+            
+                // slds-active
+                $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+                $(elmnt).parent("li").addClass("slds-active");
+                
+                // tabindex
+                $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+                $(elmnt).attr("tabindex", 0);
+                
+                // aria-selected
+                $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+                $(elmnt).attr("aria-selected", true);
+                
+                // hiding previously selected tab (slds-show/slds-hide)
+                
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+                // displaying newly selected tab (slds-show/slds-hide)
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").addClass("slds-show");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").removeClass("slds-hide");
+                
+                ss = elmnt.id;
+                tabSelection(ss);
+            }
+      </script>
+      
+      
+    
+    <!--some styling. Modify this to fit your needs-->
+
+    <style>
+
+        #cal-options {float:left;}
+
+        #cal-legend { float:right;}
+
+        #cal-legend ul {margin:0;padding:0;list-style:none;}
+
+        #cal-legend ul li {margin:0;padding:5px;float:left;}
+
+        #cal-legend ul li span {display:block; height:16px; width:16px; margin-right:4px; float:left; border-radius:4px;}
+
+        #calendar {margin-top:20px;}
+
+        #calendar a:hover {color:#fff !important;}
+
+        #formID\3A scheduleID table.fc-agenda-slots
+        {
+            display:none;
+        }
+
+        .fc-event-inner {padding:3px;}
+        
+           .event-JSCampaign{background:#cc9933;border-color:#cc9933;}
+           
+           .center {
+                    margin: auto;
+                    width: 60%;
+                    border:3px solid #73AD21;
+                    padding: 10px;
+                    }
+
+         <!--  .event-Jobs{background:#56458c;border-color:#56458c;}-->
+
+    </style>
+
+     
+    <apex:outputPanel id="calPanel">
+    
+    <apex:form >
+    
+    <apex:actionstatus id="sts">
+            <apex:facet name="start">
+                <div class="slds-spinner_container">
+                    <div id="mySpinner" role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>  
+    
+    
+    <apex:actionFunction name="tabSelection" action="{!tabSelection}" rerender="dragdrop">     
+        <apex:param id="tabSelection" name="tabSelection" value="" />
+    </apex:actionFunction>
+    
+    <apex:outputPanel id="newTimeSheetEntry"> 
+        
+        <apex:actionFunction name="saveNewTimeSheetEntry" action="{!saveNewTimeSheetEntry}" rerender="newTimeSheetEntry,rList" oncomplete="if(ss != null){selectTab(document.getElementById(ss));}"/>
+        <apex:actionFunction name="cancelNewTimeSheetEntry" action="{!cancelNewTimeSheetEntry}" rerender="newTimeSheetEntry" />
+        
+        <apex:outputPanel rendered="{!newTimeSheetEntryBool}">
+        <style>
+            .dateFormat{display:none !important;}
+            //.datePicker{display:none !important;}
+        </style>
+        <div class="demo-only" style="position:absolute;">
+          <section style="width:100% !importnat;background:rgba(200,205,255,0.7);" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"><b>New Time Sheet Entry</b></h2>
+              </header>
+              <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                  <div class="slds-grid slds-wrap" >
+                      <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                          <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                              <label class="slds-form-element__label" ><b> Task Name </b></label>
+                              <div class="slds-form-element__control" >
+                                  <apex:outputField value="{!tse.Task_Name__c}"  styleClass="slds-output" />
+                              </div>
+                          </div>
+                       </aside>
+                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                          <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                              <label class="slds-form-element__label" ><b> Job Name </b></label>
+                              <div class="slds-form-element__control" >
+                                  <apex:outputField value="{!tse.Job__c}"  styleClass="slds-output" />
+                              </div>
+                          </div>
+                       </aside>
+                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                          <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                              <label class="slds-form-element__label" ><b> Date </b></label>
+                              <div class="slds-form-element__control" >
+                                  <apex:inputField value="{!tse.Date__c}"  styleClass="slds-input" showDatePicker="true"  style="width:250px;" />
+                              </div>
+                          </div>
+                       </aside>
+                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                          <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                              <label class="slds-form-element__label" ><b> Total Hours Worked </b></label>
+                              <div class="slds-form-element__control" >
+                                  <apex:inputField value="{!tse.Hours_Worked__c}"  styleClass="slds-input" />
+                              </div>
+                          </div>
+                       </aside>
+                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                          <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                              <label class="slds-form-element__label" ><b> User </b></label>
+                              <div class="slds-form-element__control" >
+                                  <apex:outputField value="{!tse.User__c}"  styleClass="slds-output" />
+                              </div>
+                          </div>
+                       </aside>
+                  </div>
+                  <br/>
+              </div>
+              <footer class="slds-modal__footer">
+                
+                <apex:commandLink value="Cancel" action="{!null}" onclick="cancelNewTimeSheetEntry();" reRender="dragdrop" styleclass="slds-button slds-button--neutral"/>
+                <apex:commandLink value="Save" action="{!null}" onclick="saveNewTimeSheetEntry();" reRender="dragdrop" styleclass="slds-button slds-button--brand"/>
+                
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        </apex:outputPanel>
+    </apex:outputPanel>
+        
+        <apex:actionFunction name="updateSchedule" action="{!updateRestSchedule}" rerender="dragdrop" >
+            <apex:param name="strTaskId1" value="" assignTo="{!taskId}"/>
+            <apex:param name="strdt" value="" assignTo="{!dt}"/>
+            <apex:param name="r" value="" assignTo="{!updateRestScheduleRevDt}"/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="deleteTimeSheet" action="{!deleteTimeSheet}" rerender="timeSheets">     
+            <apex:param id="deleteTimeSheet" name="deleteTimeSheet" value="" />
+        </apex:actionFunction>
+    
+    
+        <apex:actionFunction name="makeInProgress" action="{!makeInProgress}" rerender="proTasks">     
+            <apex:param id="aname" name="makeInProgressId" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="taskDone" action="{!taskDone}" rerender="proTasks,rList">     
+            <apex:param id="aname11" name="taskDone" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="notWip" action="{!notWip}" rerender="proTasks,rList">     
+            <apex:param id="aname1111" name="notWip" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="newTimeSheetEntry" action="{!newTimeSheetEntry}" rerender="newTimeSheetEntry">     
+            <apex:param id="aname111" name="newTimeSheetEntry" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="selectInProgress" action="{!selectInProgress}" rerender="rList" oncomplete="if(ss != null){selectTab(document.getElementById(ss));}">     
+            <apex:param id="aname1" name="selectInProgressId" value="" />
+        </apex:actionFunction>
+        
+        <apex:outputPanel id="dragdrop"></apex:outputPanel>
+        <apex:actionFunction name="TeamDragDrop" action="{!TeamDragDrop}" rerender="dragdrop" >     
+            <apex:param id="aname2" name="parentId" value="" />
+            <apex:param id="aname3" name="itemId" value="" />
+            <apex:param id="aname4" name="senderId" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="taskDrag" action="{!updateJSCampaign1}" rerender="proTasks" status="sts"  >     
+            <apex:param id="namess" name="namess" value="" />
+            <apex:param id="cntidss" name="cntidss" value="" />
+            <apex:param id="endatess" name="endatess" value="" />
+            <apex:param id="stdate" name="stdate" value="" />
+            <apex:param id="jnss" name="jnss" value="" />
+        </apex:actionFunction>
+    
+        <div style="background:white;margin-top:10px !important;padding:10px;">
+        
+        <apex:outputPanel id="cal">
+        <script>
+    
+    
+        //We need to wrap everything in a doc.ready function so that the code fires after the DOM is loaded
+
+        $(document).ready(function() {   
+          
+            //Call the fullCallendar method. You can replace the '#calendar' with the ID of the dom element where you want the calendar to go. 
+           
+
+            $('#calendar').fullCalendar({
+
+                 customButtons: { Print: { text: 'Print', click: function() {  window.print();  } } },
+                header: {
+
+                   center: 'prev title next today',
+                
+                   right:'',
+                   
+                   left: ''
+
+                },
+               defaultView: 'basicWeek',
+                editable: true,
+                themeSystem: 'jquery-ui',
+                eventDurationEditable: true,
+                eventStartEditable: true,
+                firstDay: 0,
+                height: 350,
+                // contentHeight: 600,
+                
+
+                events:
+
+                [
+
+                    //At run time, this APEX Repeat will reneder the array elements for the events array
+
+                    <apex:repeat value="{!events}" var="e">
+
+                        {
+
+                            title: "{!e.title}",
+
+                            start: '{!e.startString}',
+
+                            end: '{!e.endString}',
+
+                            //url: '{!e.url}',
+
+                            allDay: {!e.allDay},
+                            
+                            color:'{!e.color} !important',
+                            
+                            jn: '{!e.JN1}',
+                             
+                            client: '{!e.client1}',
+                            
+                            staff: '{!e.Staff}',
+                            
+                            className: '{!e.className}'
+                            
+                        },
+
+                    </apex:repeat>
+
+                ],
+                
+               eventMouseover: function(event, jsEvent) {
+                   // alert('invokeddd...........');
+                   event.title = event.title.split(' - ')[0]+', Job - # '+event.title.split(' - ')[1];
+                  if(event.title.substring(0, 3)== 'Job'){
+                    var tooltip = '<div class="tooltipevent" style="width:250px;height:100px;background: linear-gradient(to right, rgb(234,185,45) 0%,rgb(199,152,16) 100%);position:absolute;z-index:10001;">' +
+                                        '<B>Job Name: </B>'+ event.title.substring(5, event.title.length) +
+                                        '<br>'+'<B>Campaign : </B>'+event.staff+
+                                        '<br>'+'<B>Job Client : </B>'+event.client+
+                                        '<br>'+'<B>Start Date: </B>'+event.start.format()+
+                                        '<br>'+'<B>End Date: </B>'+event.end.format()+
+                                        
+                                   '</div>';
+                    var tooltip = '<div class="tooltipevent" style="box-shadow: 4px 4px 4px 4px '+event.color+';padding:10px;background-color:'+event.color+';color:white;position:absolute;z-index:10001;">' +
+                            '<B>Job Name: </B>' + event.title.substring(5, event.title.length) +
+                            '<br>' + '<B>Campaign : </B>' + event.staff +
+                            '<br>' + '<B>Job Client : </B>' + event.client +
+                            '<br>' + '<B>Start Date: </B>' + event.start.format() +
+                            '<br>' + '<B>End Date: </B>' + event.end.format() +
+
+                            '</div>';
+                    $("body").append(tooltip);
+                    $(this).mouseover(function(e) {
+                        $(this).css('z-index', 10000);
+                        $('.tooltipevent').fadeIn('500');
+                        $('.tooltipevent').fadeTo('10', 1.9);
+                        }).mousemove(function(e) {
+                                $('.tooltipevent').css('top', e.pageY + 10);
+                                $('.tooltipevent').css('left', e.pageX + 20);
+                        });}
+                        
+                        // task Mouse Over
+                    //
+                    else if(event.title.substring(0, 11) != 'JS Campaign'){
+                    //alert('event.title.substring(0, 11) :::'+event.title.substring(0, 11));
+                   
+                    //Substringing the event tile to get Job# and Task name
+                    var titlepos = event.title.indexOf(",");
+                    var taskName = event.title.substring(0, titlepos);
+                    var jobNo = event.title.substring(titlepos+7,event.title.length); 
+                    
+                    //Substringing the event JN to get Job Name and campaign name
+                    var jnpos = event.jn.indexOf(":");
+                    var campName = event.jn.substring(0, jnpos );
+                    var jobName = event.jn.substring(jnpos +2,event.jn.indexOf("id="));
+                    
+                    
+                    var tooltip = '<div class="tooltipevent" style="width:250px;height:120px;background: linear-gradient(to right, rgb(234,185,45) 0%,rgb(199,152,16) 100%);position:absolute;z-index:10001;">' +
+                                        '<br>'+
+                                         '<B>Job : </B>'+jobName+' - '+jobNo+'<br>'+
+                                         '<B>'+ taskName +' :: '+event.start.format()+'</B>'+'<br>'+
+                                         '<B>Client : </B>'+event.client+'<br>'+
+                                         '<B>Campaign: </B>'+campName +'<br>'+
+                                         '<B>Staff: </B>'+event.staff+'<br>'+
+                                         
+                                   '</div>';
+                    var tooltip = '<div class="tooltipevent" style="box-shadow: 4px 4px 4px 4px '+event.color+';padding:10px;background-color:'+event.color+';color:white;position:absolute;z-index:10001;">' +
+                            '<B>Job : </B>' + jobName + ' - ' + jobNo + '<br>' +
+                            '<B>' + taskName + ' :: ' + event.start.format() + '</B>' + '<br>' +
+                            '<B>Client : </B>' + event.client + '<br>' +
+                            '<B>Campaign: </B>' + campName + '<br>' +
+                            '<B>Staff: </B>' + event.staff + '<br>' +
+
+                            '</div>';
+                  // alert('event.title.substring(0, 11) :::'+event.title.substring(0, 11));
+                    $("body").append(tooltip);
+                    $(this).mouseover(function(e) {
+                        $(this).css('z-index', 10000);
+                        $('.tooltipevent').fadeIn('500');
+                        $('.tooltipevent').fadeTo('10', 1.9);
+                        }).mousemove(function(e) {
+                                $('.tooltipevent').css('top', e.pageY + 10);
+                                $('.tooltipevent').css('left', e.pageX + 20);
+                        });}
+                    },
+
+                    eventMouseout: function(event, jsEvent)
+                    {
+                         $(this).css('z-index', 8);
+                         $('.tooltipevent').remove();
+                    },
+                
+              // Drag and Drop Calendar event
+
+                eventDrop: function(event, delta, revertFunc) {
+                    // alert('Dragged Event');
+                    // alert('Event start date :'+event.start.format());
+                    // alert('Event end date :'+event.end.format());
+                    if (!confirm("Do you want to Update..!!!!!")) {
+                        revertFunc();
+                    } else {
+                        // alert('Invoked..................');
+                        if (event.title.substring(0, 3) == 'Job' || event.title.substring(0, 11) == 'JS Campaign') {
+                            var enddate = event.end.format();
+                            var startdate = event.start.format();
+                        } else {
+
+                            var enddate = event.start.format();
+                            var startdate = event.start.format();
+                        }
+                        //          alert('Invoked..................'+enddate );
+                        var cntctName = event.title;
+                        var jn1 = event.jn;
+                        
+                        taskDrag(cntctName, event.url, enddate, startdate, jn1);
+                    }
+                },
+
+                // Resize the events 
+
+                eventResize: function(event, delta, revertFunc) {
+                    
+                      
+                        revertFunc();
+                    
+                    
+                },
+              
+              
+                
+                eventRender: function(event, element) { 
+                    element.bind('dblclick', function() { 
+                        //alert(event.className);
+                        makeInProgress(event.className); 
+                    }); 
+                } 
+
+            });
+
+             var ele = $("h2");
+             var eleData  = ele.html();
+            // alert(eleData);
+             
+        });
+     
+
+    </script>
+        
+        
+        <div class="SectionHeader" >
+                           <h3 class="slds-section-title"><b>&nbsp;My Assignments</b></h3>
+        </div>
+        
+        <table class="slds-table"><tr><td style="width:120px !important;">
+      <b>Tasks Filter: </b> </td><td><apex:selectList id="filter" value="{!filter}" size="1" styleClass="slds-select slds-m-right--small" >                              
+                                          <apex:selectOptions value="{!filters}"/>
+                                          <apex:actionSupport event="onchange" rerender="cal" action="{!JobTask}"/>
+                                 </apex:selectList></td></tr></table>
+                                 
+        
+           <apex:pageMessages />
+            
+            <div id="calendar" style="background-color:white !important;padding:10px !important;"></div>
+
+        </apex:outputPanel>        
+        </div>
+        <div style="margin-top:10px !important;">
+            <table width="100%"><tr>
+            <td width="50%" valign="top">
+            <div style="background:white;margin-top:10px !important;width:98.5%;padding:10px;height:350px;">
+                <div class="SectionHeader"  id="mywip" >
+                           <h3 class="slds-section-title"><b>&nbsp;My WIP</b></h3>
+                </div>
+                <apex:outputPanel id="proTasks">
+                <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout" >
+                    <thead>
+                    <tr class="slds-line-height_reset" >
+                        <th class="slds-text-align_right"><b>Job #</b></th>
+                        <th class="slds-text-align_right"><b>Job Name</b></th>
+                        <th class="slds-text-align_right"><b>Task Name</b></th>
+                        <th class="slds-text-align_right"><b>Due Date</b></th>
+                        <th style="text-align: center;"><b>Actions</b></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!progressTask}" var="r" id="proTasksList">
+                        <tr class='prsTask' id="{!r.id}" ondblclick="$('.prsTask').css('background', 'white');this.style.background='lightgreen';selectInProgress(this.id);" style="{!if(selectedTask == r.id,'background:lightgreen;','')}">
+                            <td><apex:outputField value="{!r.Job__r.Job_Auto_Number__c}"/></td>
+                            <td><apex:outputField value="{!r.Job__c}"/></td>
+                            <td><apex:outputField value="{!r.name}"/></td>
+                            <td><apex:inputField value="{!r.Revised_Due_Date__c}" onchange="scheduleUpdateRevDate('{!r.Id}',this);"  showDatePicker="true"  /></td>
+                            <td  style="text-align: center;">
+                                        <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" >
+                                                       
+                                                       <!---- <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none">
+                                                            &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Show More</span>
+                                                        </div>---->
+                                                        
+                                                              <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                                    <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                                </div>
+                                                                                                           
+                                              <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                           
+                                                           
+                                                                <li class="slds-dropdown__item" role="presentation" onclick="taskDone('{!r.id}');">
+                                                                     <apex:commandLink value="Done" action="{!null}" reRender="proTasks">
+                                                                            
+                                                                       
+                                                                        <!-----<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:15px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#approval')}"></use>
+                                                                        </svg> ---->
+                                                                        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<i  class="material-icons" style="font-size:20px;color:black">check</i>   
+                                                                    </apex:commandLink> 
+                                                                </li>
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation" onclick="newTimeSheetEntry('{!r.id}');">
+                                                                     <apex:commandLink value="Log Time" action="{!null}" reRender="newTimeSheetEntry">
+                                                                            
+                                                                       
+                                                                        <!---<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:25px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/custom-sprite/svg/symbols.svg#custom95')}"></use>
+                                                                        </svg>  ----> 
+                                                                          &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">av_timer</i>                                                                     
+                                                                          </apex:commandLink> 
+                                                                </li>
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation" onclick="notWip('{!r.id}');">
+                                                                     <apex:commandLink value="Not WIP" action="{!null}" reRender="proTasks">
+                                                                            
+                                                                       
+                                                                       <!---- <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:15px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#remove')}"></use>
+                                                                        </svg> ----> 
+                                                                           &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">close</i>                                                                     
+                                                                           </apex:commandLink> 
+                                                                </li>
+                                                                 
+                                                            </ul>
+                                                      </div> 
+                                                       
+                                               </div>
+                            
+                            </td>
+                        </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+                </apex:outputPanel>
+            </div>
+            </td>
+            <td valign="top">
+            <div style="background:white;margin-top:10px !important;width:100%;padding:10px;">
+                <div class="SectionHeader" >
+                           <h3 class="slds-section-title"><b>&nbsp;Related Lists</b></h3>
+                </div>
+                
+                <apex:outputPanel id="rList">
+                <div class="slds-tabs--scoped" style="margin-top:5px;" >
+                  <ul class="slds-tabs--scoped__nav" role="tablist" style="width:100%;">
+                    <li class="slds-tabs--scoped__item slds-active" title="Item One" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item" onclick="selectTab(this);" style="text-decoration: none !important;">Team</a></li>
+                    <li class="slds-tabs--scoped__item" title="Item Two" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2" id="tab-scoped-2__item" onclick="selectTab(this);" style="text-decoration: none !important;">Job Chatter</a></li>
+                    <li class="slds-tabs--scoped__item" title="Item Three" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3" id="tab-scoped-3__item" onclick="selectTab(this);" style="text-decoration: none !important;">Time Sheets</a></li>
+                  </ul>
+                  
+                  
+                  <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item" >
+  
+                      
+                      <apex:pageMessage rendered="{!prsTaskId==null}" title="" Summary="Please click on task row in My WIP Section." severity="info" /> 
+                      
+                      <apex:outputPanel rendered="{!prsTaskId!=null}">
+                      
+                      
+             <script>
+    $(document).ready(function () {
+    
+    selectTab(document.getElementById('{!selectedTab}'));
+    
+    $(function () {
+        $("#list1, #list2").sortable({
+            connectWith: ".lists1, .lists2",
+            cursor: "move", 
+            placeholder: "sortable-placeholder",
+            update: function( event, ui ) {
+                if(ui.sender != null){
+                    console.log(ui);
+                    console.log(ui.item[0].parentElement.id);
+                    console.log(ui.item[0].id);
+                    console.log(ui.sender[0].id);
+                    TeamDragDrop(ui.item[0].parentElement.id, ui.item[0].id, ui.sender[0].id);
+                }
+            }
+        });
+    });
+
+
+});
+
+  
+
+    </script>          
+                  
+                  
+      
+                  
+                  
+                      
+                      
+                      
+                      <div class="slds-grid slds-wrap">
+                      <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--2-of-6 slds-large-size--6-of-12 draggableSpan" style="padding:10px !important;">
+                      <h1><b>Task Assigned To:</b></h1><br/>
+                      <div class="slds-grid slds-wrap">
+                      <ul id="list1" class="lists1" style="min-height:200px;min-width:200px;">
+                      <apex:repeat value="{!lstTR}" var="lst" id="thePageBlockable" rendered="{!lstTR.size > 0}">
+                          <li id="{!lst.User__c+'###'+lst.name}">
+                          <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12 draggableSpan" style="cursor:move;z-index:1 !important;">
+                                                            <div class="demo-only" >
+                                                                <article class="slds-tile slds-media">
+                                                                    <div class="slds-media__figure">
+                                                                        <span class="slds-avatar slds-avatar_circle slds-avatar--medium" style="border-radius: 50%;">
+                                                                            <img alt="" src="{!URLFOR($Resource.SLDS0122, '/assets/images/avatar2.jpg')}" title="{!lst.User__c}" />
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="slds-media__body">
+                                                                        <h1 class="slds-tile__title slds-truncate" title="Staff Name">{!lst.User__c}</h1>
+                                                                        <div class="slds-tile__detail">
+                                                                            <dl class="slds-list_horizontal slds-wrap">
+                                                                                
+                                                                                <dd class="slds-item_detail slds-truncate" title="Role" >{!lst.name}</dd>
+                                                                                
+                                                                            </dl>
+                                                                        </div>
+                                                                    </div>
+                                                                </article>
+                                                            </div>  <hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;"/>
+                        </div>
+                        </li>  
+                      </apex:repeat>
+                      </ul>
+                      </div> 
+                      </div>
+                      <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--3-of-6 slds-large-size--6-of-12 draggableSpan" style="padding:10px !important;">
+                          <h1><b>Job Team:</b></h1><br/>
+                          <div class="slds-grid slds-wrap">
+                          <ul id="list2" class="lists2" style="min-height:200px;min-width:200px;">
+                      <apex:repeat value="{!jTeam}" var="lst" id="thePageBlockable1" rendered="{!lstTR.size > 0}">
+                          <li id="{!lst.Staff__c+'###'+lst.Role__c}">
+                          <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12 draggableSpan" style="cursor:move;z-index:1 !important;">
+                                                            <div class="demo-only" >
+                                                                <article class="slds-tile slds-media">
+                                                                    <div class="slds-media__figure">
+                                                                        <span class="slds-avatar slds-avatar_circle slds-avatar--medium" style="border-radius: 50%;">
+                                                                            <img alt="" src="{!URLFOR($Resource.SLDS0122, '/assets/images/avatar2.jpg')}" title="{!lst.Staff__c}" />
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="slds-media__body">
+                                                                        <h1 class="slds-tile__title slds-truncate" title="Staff Name">{!lst.Staff__c}</h1>
+                                                                        <div class="slds-tile__detail">
+                                                                            <dl class="slds-list_horizontal slds-wrap">
+                                                                                
+                                                                                <dd class="slds-item_detail slds-truncate" title="Role" >{!lst.Role__c}</dd>
+                                                                                
+                                                                            </dl>
+                                                                        </div>
+                                                                    </div>
+                                                                </article>
+                                                            </div>  <hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;"/>
+                        </div>
+                         </li> 
+                          </apex:repeat>
+                          </ul>
+                          </div> 
+                      </div>
+                      </div>
+                       <apex:outputPanel rendered="{!lstTR.size <= 0}">
+                          
+                               <b>No records to display</b>
+                                 
+                       </apex:outputPanel>  
+                      </apex:outputPanel>
+                      
+                      
+                      
+                  </div>
+                  
+                  <div id="tab-scoped-2" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-2__item" >
+                        
+                      <apex:pageMessage rendered="{!prsTaskId==null}" title="" Summary="Please click on task row in My WIP Section." severity="info" /> 
+                      
+                      <apex:outputPanel rendered="{!prsTaskId!=null}">
+                      
+                          <chatter:feedWithFollowers entityId="{!ptjId}" />
+                          
+                          <style>
+                            .sortable-placeholder{
+                                width:200px;
+                                height:50px;
+                                background:lightgreen;
+                                margin-bottom:8px;
+                            }
+                            
+                            #chatterFindExistingContent {
+                            width: 95% !important;
+                            }
+                            
+                            .feedSearch a,
+                            .feedcontainer .comboMenu.feedsupermenu input {
+                            display: none;
+                            }
+                            
+                            .feedcommentactions .commentActionMenu .zen-options {
+                            width: auto;
+                            }
+                            
+                            .publishercontainer .LinkPost .postInput input[type="text"] {
+                            width: auto;
+                            }
+                            
+                            .publishercontainer input[type="text"] {
+                            width: auto;
+                            }
+                            
+                            .publishercontainer .contentPublisherSlideDown table.postInput {
+                            width: auto;
+                            }
+                            
+                            .feedpage {
+                            width: auto !important;
+                            }
+                            
+                            .feedmain {
+                            width: auto !important;
+                            }
+                            
+                            .feeditemActionMenu .zen-options {
+                            margin: -1px;
+                            margin-left: -83px;
+                            }
+                            
+                            .feeditemActionMenuButton {
+                            margin: -11px;
+                            }
+                            
+                            .publishercontainer .bottomBar {
+                            height: 49px !important;
+                            }
+                            
+                            .customImage {
+                            height: 10px;
+                            width: 10px;
+                            }
+                            
+                            #rcorners1 {
+                            border-radius: 0%;
+                            border: 1px solid #cccccc;
+                            padding: 0px;
+                            width: 100%;
+                            height: 0%;
+                            }
+                            
+                            .required:after {
+                            content: " *";
+                            color: Red;
+                            font: bold;
+                            }
+                            
+                            .detailPage .bPageBlock,
+                            .editPage .bPageBlock {
+                            border-top-width: 0px;
+                            }
+                            
+                            /*.ui-state-default {
+                            background: gray !important;
+                            }
+                            
+                            
+                            .ui-state-active {
+                            border: 1px solid #2a61f3 !important;
+                            background: #2a61f3 !important;
+                            }*/
+                            
+                            .ui-accordion-header-icon,
+                            .ui-icon ui-icon-triangle-1-e {
+                            background-color: white !important;
+                            }
+                            
+                            .chatterPublisherFileActionContainerLeft {
+                            display: none !important;
+                            }
+                            
+                            #InlineEditDialog {
+                            //margin-left: -209.5px !important;
+                            max-width: Auto !important;
+                            width: 80%
+                            }
+                            
+                            .inlineEditCompoundDiv > textarea {
+                            width: 80% !important;
+                            }
+                            
+                            .feedcontainer .feeditemfooter,
+                            .feedcontainer .feedcommentfooter {
+                            border-top: 1px solid #ededed !important;
+                            line-height: 39px !important;
+                            }
+                            
+                            .feedcontainer .feeditemfooter {
+                            margin-bottom: -54px;
+                            }
+                            
+                            .feeditemtimestamp {
+                            display: table-row-group !important;
+                            }
+                            
+                            .feedcontainer .feeditem {
+                            border: 1px solid #ededed;
+                            line-height: 2em;
+                            }
+                            
+                            .feeditembody {
+                            margin-top: 16px !important;
+                            }
+                            
+                            .chatter-photo {
+                            border-radius: 50% !important;
+                            }
+                            
+                            .feeditemclientinfo {
+                            display: none !important;
+                            }
+                            
+                            
+                            .feedrightbar {
+                            margin-right:0px !important;
+                            padding: 0px 0px 0px !important;
+                            
+                            }
+                            
+                            
+                            .feeditemactionlink.cxaddcommentaction {
+                            float: right !important;
+                            padding-right: 19px;
+                            }
+                            
+                            .chatter-avatarRegular,
+                            .chatter-avatarRegular .chatter-photo,
+                            .chatter-avatarRegular .chatter-avatarStyle {
+                            width: 40px;
+                            height: 40px;
+                            line-height: 48px;
+                            margin: 4px;
+                            }
+                            
+                            .cxfeeditemlikedot.feeditemseparatingdot {
+                            display: none !important;
+                            }
+                            
+                            .cxfeeditemcommentdot.feeditemseparatingdot {
+                            display: none !important;
+                            }
+                            
+                            .feedcontainer .feeditemcontent {
+                            margin-left: 2px;
+                            }
+                            
+                            .feeditemactionlink.cxlikeitemaction {
+                            padding-left: 31px;
+                            }
+                            
+                            .feeditemattachments.cxfeeditemattachments {
+                            margin: 22px;
+                            }
+                            
+                            .feeditemaux.cxfeeditemaux.FilesCapabilityAuxBody {
+                            margin-right: 0px;
+                            }
+                            
+                            .zen-smlineSep {
+                            display: none !important;
+                            }
+                            
+                            .feedcontainer .zen-select .feeditemActionMenuButton,
+                            .feedcontainer .zen-select .commentActionMenuButton {
+                            padding: 6px 6px 6px 7px;
+                            }
+                            
+                            .comboMenu.zen-line.feedsupermenu {
+                            display: none;
+                            }
+                            
+                            .publishercontainer {
+                            padding-top: 0px;
+                            padding-bottom: 29px;
+                            }
+                            
+                            .chatterexpando .feedpage {
+                            padding-left: 6px;
+                            }
+                            
+                            .actionsOnHoverEnabled .feeditembody {
+                            padding-right: 34px !important;
+                            padding-left: 50px !important;
+                            }
+                            
+                            .chatter-avatar .chatter-avatarStyle {
+                            position: absolute;
+                            left: 0px;
+                            z-index: 1;
+                            background: url(/img/chatter/avatar-sprite.png?v=182-1) 0px -9999px no-repeat;
+                            }
+                            .ui-helper-reset {
+                            line-height: 0.9 !important;
+                            }
+                            
+                            .ui-accordion,
+                            .ui-accordion-content {
+                            padding: 1em 1.2em 1em 1.2em !important;
+                            }
+                            
+                            .ui-widget input,
+                            .ui-widget select,
+                            .ui-widget textarea,
+                            .ui-widget button 
+                            {
+                            font-size: 0.8em !important;
+                            }
+                            
+                            
+                            
+                            .btn 
+                            {
+                            font-weight: normal !important;
+                            }
+                            
+                            .slds .slds-page-header__detail-row 
+                            {
+                            margin: -10px 0px 0px 0px;
+                            border-radius:10px;
+                            }
+                          
+                            
+                        </style>
+                          
+                      </apex:outputPanel>
+                       
+                  </div>
+                  
+                  
+                  <div id="tab-scoped-3" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-3__item" >
+                      <apex:pageMessage rendered="{!prsTaskId==null}" title="" Summary="Please click on task row in My WIP Section." severity="info" /> 
+                      
+                      <apex:outputPanel rendered="{!prsTaskId!=null}" id="timeSheets">
+                      
+                      <apex:outputPanel rendered="{!timeSheets.size > 0}">
+                      <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout" >
+                        <thead>
+                        <tr class="slds-line-height_reset" >
+                            <th class="slds-text-align_right"><b>Task</b></th>
+                            <th class="slds-text-align_right"><b>User</b></th>
+                            <th class="slds-text-align_right"><b>Date</b></th>
+                            <th class="slds-text-align_right"><b>Hours Worked</b></th>
+                             <th class="slds-text-align_right"><b>Delete</b></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!timeSheets}" var="r" >
+                            <tr>
+                                <td><apex:outputField value="{!r.Task_Name__c}"/></td>
+                                <td><apex:outputField value="{!r.User__c}"/></td>
+                                <td><apex:outputField value="{!r.Date__c}"/></td>
+                                <td><apex:outputField value="{!r.Hours_Worked__c}"/></td>
+                                <td>
+                                    <a class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="cursor: pointer;fill:#333;width:30px !important;height:15px !important;" onclick="deleteTimeSheet('{!r.id}');">
+                                        <i  class="material-icons" style="font-size:20px;color:black">delete</i>   
+                                    </a >
+                                </td>
+                           </tr>
+                            </apex:repeat>
+                        </tbody>
+                        </table>
+                        </apex:outputPanel> 
+                        <apex:outputPanel rendered="{!timeSheets.size <= 0}">
+                          
+                               <b>No records to display</b>
+                                 
+                       </apex:outputPanel> 
+                      
+                      </apex:outputPanel>
+                  </div>
+                  
+               </div>
+  
+               </apex:outputPanel>
+                
+                
+                
+               
+            </div>
+            </td></tr></table>
+        </div>
+    </apex:form>
+    </apex:outputPanel>
+</div>
+
+
+<style>
+    
+    .pbBottomButtons{
+        margin-top:0px !important;
+    }
+    @page {
+  @top-center {
+    content: element(pageHeader);
+  }
+}
+#pageHeader{
+  position: running(pageHeader);
+}
+    
+    @media print {
+    
+   @top-center {
+    content: element(pageHeader);
+  }
+    
+    
+    span.fc-title{
+        color:white !important;
+        text-decoration:none !important;
+    }
+    
+  a[href]:after {
+    content: none !important;
+  }
+  header.oneHeader{
+      display: none !important;
+  }
+  .slds .slds-icon-standard-user {
+    background-color: #34becd !important;
+    }
+    
+    .fc-day-grid-event,
+        .fc-h-event,
+        .fc-event,
+        .fc-start,
+        .fc-not-end,
+        .event-Jobs,
+        .fc-draggable {
+            -webkit-print-color-adjust: white !important;
+            color: white !important;
+        }
+}
+        #cal-options {
+            float: left;
+        }
+        
+        #cal-legend {
+            float: right;
+        }
+        
+        #cal-legend ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        #cal-legend ul li {
+            margin: 0;
+            padding: 5px;
+            float: left;
+        }
+        
+        #cal-legend ul li span {
+            display: block;
+            height: 16px;
+            width: 16px;
+            margin-right: 4px;
+            float: left;
+            border-radius: 4px;
+        }
+        
+        #calendar {
+            margin-top: 20px;
+        }
+        
+        #calendar a:hover {
+            //color: #fff !important;
+        }
+        
+        #formID\3A scheduleID table.fc-agenda-slots {
+            display: none;
+        }
+        
+        .fc-event-inner {
+            padding: 3px;
+        }
+        
+        .event-JSCampaign {
+            background: #cc9933;
+            border-color: #cc9933;
+        }
+        
+        .center {
+            margin: auto;
+            width: 60%;
+            border: 3px solid #73AD21;
+            padding: 10px;
+        }
+        
+        
+        .bPageBlock{
+            border-top:0px solid white !important;
+        }
+        .slds .slds-col--padded{
+            padding-left:0px !important;
+        }
+        .requiredLegend{
+        display:none !important;
+        }
+        .pbSubheader {
+        background-color: SteelBlue !important;
+        color: white !important;
+        background-image: none !important;
+        }
+        .pbBody{
+            padding-bottom:10px !important;
+        }
+        
+        span.fc-title{
+        color:white !important;
+        text-decoration:none !important;
+    }
+        
+        
+        .event-Jobs {
+            background: #56458c;
+            border-color: #56458c;
+        }
+        
+        .fc-day-grid-event,
+        .fc-h-event,
+        .fc-event,
+        .fc-start,
+        .fc-not-end,
+        .event-Jobs,
+        .fc-draggable {
+            -webkit-print-color-adjust: exact !important;
+            color: white !important;
+        }
+        
+        
+        
+        div.fc-content {
+            white-space: inherit !important;
+        }
+        
+        //#printSection1 { page-break-inside:avoid !important; }
+        //#outputsection { page-break-inside:avoid !important; }
+        //#calendar {  page-break-inside:avoid !important; page-break-before:avoid !important;}
+        //#calendar {  page-break-inside:auto !important;}
+        
+        #printSection1 { page-break-inside:always !important; }
+        #outputsection { page-break-inside:avoid !important; }
+                #outputsection1 { page-break-inside:avoid !important; }
+
+        //#calendar {  page-break-inside:avoid !important; page-break-before:avoid !important;}
+        #calendar {  page-break-before:avoid !important;}
+
+   
+    .dateOnlyInput input {
+        width: 12em !important;
+    }
+    .dateFormat{
+        display:none !important;
+    }
+        
+        
+    </style>
+    <div id="dialog-confirm1" title="Schedule Update" style="display:none;width:60px !important;"> 
+        <p>
+            Do you want to update rest of the schedule?
+        </p>
+    </div>
+    <script>
+    var strTaskId1, strdt, strr,strr1,strDays, strTaskId2,strTaskId3,strHours,strIndex;
+    function scheduleUpdateRevDate(taskId,dt)
+    {
+                strTaskId1 = taskId;
+                strdt = dt.value;
+                if(strdt=="")
+                {
+                    alert('Please select date');
+                    return false;
+                }
+                else
+                {
+                    $( "#dialog-confirm1" ).dialog( "open" );
+                }    
+    }
+    
+    
+    $(document).ready(function(){
+        $( "#dialog-confirm1" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:150,
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    
+                    // Call ActionFunction to update Rest of the Schedule
+
+                   updateSchedule(strTaskId1,strdt,true);
+                    
+                    
+                    $( this ).dialog( "close" );
+                },
+                "No": function() {
+                
+                   // Call ActionFunction to update only the current Tasks Revised Due Date
+                   
+                    updateSchedule(strTaskId1,strdt,false);
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+    </script>
+   
+<br/><br/>
+</html>
+  
+</apex:page>

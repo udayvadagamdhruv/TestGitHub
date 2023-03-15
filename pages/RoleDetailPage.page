@@ -1,0 +1,22 @@
+<!-- This page is used to display Role Detail Information.-->
+<apex:page standardController="UserRole" tabStyle="MyAdmin__tab" extensions="DisplayTasksInRoleCalendar">   <!-- <apex:detail title="false" relatedList="false"/> -->
+    <apex:form >
+        <apex:pageBlock mode="edit">
+            <apex:pageMessages />
+                <apex:pageBlockButtons >
+                      <apex:commandButton action="{!EditRole}" value="Edit"/>
+                            <apex:commandButton action="{!deleteRole}" value="Delete" onclick="if(!confirm('Are you sure?')){return false;}"/>
+                            <apex:commandButton action="{!RolesView}" value="List View"></apex:commandButton>
+                            <!-- apex:commandButton action="{!roleCalendarTask}" value="Calendar View"> </apex:commandButton> -->
+                      </apex:pageBlockButtons>
+                    
+                      <apex:pageBlockSection title="Role Detail" columns="2" collapsible="false">  
+                          <apex:pageBlockSectionItem >
+                               <apex:outputLabel Value="{!$ObjectType.UserRole.Fields.Name.Label}"></apex:outputLabel>
+                               <apex:outputField value="{!UserRole.Name}"/> 
+                          </apex:pageBlockSectionItem>
+                      </apex:pageBlocksection>
+       </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

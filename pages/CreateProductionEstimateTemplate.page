@@ -1,0 +1,26 @@
+<apex:page standardController="Production_Estimate_Template__c" extensions="CreateProductionEstimateTemplateExt" tabStyle="MyAdmin__tab">
+
+     <apex:sectionHeader title=" Production Estimate Template"/>
+       <apex:form >
+          <apex:pageBlock mode="edit">
+             <apex:pageMessages />
+             
+             <apex:pageBlockButtons >
+                <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+                  
+             <apex:pageBlockSection title="Production Estimate Template Information" columns="2" collapsible="false"> 
+                <apex:pageBlockSectionItem >
+                          <apex:outputLabel Value="{!$ObjectType.Production_Estimate_Template__c.Fields.Name.Label}"></apex:outputLabel>
+                          <apex:inputField value="{!Production_Estimate_Template__c.Name}" required="true" />
+                  </apex:pageBlockSectionItem>
+                  
+                
+             </apex:pageBlockSection>
+          </apex:pageBlock>
+       </apex:form>
+
+
+  
+</apex:page>

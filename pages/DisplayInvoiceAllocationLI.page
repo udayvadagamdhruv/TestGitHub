@@ -1,0 +1,149 @@
+<apex:page Controller="DisplayInvoiceAllocationLIController"  >
+ 
+ <head>
+<style>
+ #table_id td
+        {
+            border:0px;
+        }
+</style>
+
+</head>
+ 
+ <apex:form >
+ 
+ 
+  <apex:pageBlock id="pbtable" >
+     
+     <table width="100%" >
+                          <tr>
+                          <td colspan="2" style="font-size:15px;">
+                           
+                          </td>
+                          </tr><tr>
+                               <td align="left" width="45%" style="padding-top:10px;" >
+                                     <apex:outputLabel value="Invoice Allocation Template" for="SpecTemp" style="font-size:13px;font-weight:bold"></apex:outputLabel>&nbsp;&nbsp;&nbsp;
+                                              <apex:selectList id="theSelectList" value="{!InvAllocationTempName}" size="1" >
+                                                  <apex:selectOptions value="{!InvAllocationTemplates}" id="sp"></apex:selectOptions>
+                                              </apex:selectList> &nbsp;  &nbsp; &nbsp; &nbsp;
+                                            
+                                           <apex:commandButton value="Import Invoice Allocation Template" status="statusforInvAlloLI" action="{!importIATLI}" onclick="if(!confirm('This will import new Invoice Allocation Line Items')){return false;}" id="btn1"></apex:commandButton>
+                               </td>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+                               
+                               <td align="left" style="padding-top:10px;">  
+                                     <apex:commandButton action="{!createIALI}" value="Add Invoice Allocation Line Items" id="IALbtn2"/> 
+                                       <apex:commandButton value="Save" action="{!save}" id="saveButton1111"  style="display:none;"  reRender="pbtable"/>  
+                                       <apex:commandButton value="Cancel" id="cancelButton1111" immediate="true" style="display:none;" reRender="pbtable" /> </td>
+                        </tr>
+      </table><br/>
+  
+  
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+       
+       </span>
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!IALI}" var="IALItem" rendered="{!IALI.Size>0}">
+         <apex:column headerValue="Action" width="10%">
+              <apex:commandButton value="Delete" action="{!deleteIALI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="pbtable" status="statusforInvAlloLI">
+                  <apex:param name="param2" value="{!IALItem.id}" assignTo="{!strIALI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+         
+        
+        <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Client_Name__c.Label}">
+              <apex:outputfield value="{!IALItem.Client_Name__c}"/>
+          </apex:column>
+          
+       <!--   <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.GL_Department__c.Label}">
+              <apex:outputfield value="{!IALItem.GL_Department__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.GL_Code__c.Label}">
+              <apex:outputfield value="{!IALItem.GL_Code__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.GL_Code_No__c.Label}">
+              <apex:outputfield value="{!IALItem.GL_Code_No__c}"/>
+          </apex:column>
+          
+          -->
+           <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Allocation_Qty__c.Label}">
+              <table border="0" id="table_id">
+            <tr>
+               <td border="0">
+                  <apex:outputfield value="{!IALItem.Allocation_Qty__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1111,cancelButton1111" changedStyleClass="myBoldClass" hideOnEdit="IALbtn2" /> 
+                  </apex:outputfield> </td>
+               <td> 
+
+                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Allocation Qty" />  
+               </td>
+           </tr>
+           </table>
+          </apex:column> 
+          
+           
+          <apex:column headerValue="{!$ObjectType.Invoice_Allocation_Line_Item__c.Fields.Allocation_Amount__c.Label}">
+              
+                  <apex:outputfield value="{!IALItem.Allocation_Amount__c}"/>
+
+                 
+          </apex:column> 
+          
+            
+     
+     </apex:pageBlockTable>
+     
+     <br/>
+     
+    
+    <div style="float:left;padding-left:400px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+       <apex:outputPanel rendered="{!IALI.Size > 0}">
+            <apex:outputLabel value="Total Allocation Qty" style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, ###,###,###}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumQuant}"/>
+            </apex:outputText> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <apex:outputLabel value="Total Allocation Amount" style="font-style:italic;" /> 
+            <apex:outputText value="{0,Number, $###,###,###.00}">
+               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+            </apex:outputText>
+           
+        </apex:outputPanel>
+      </div> <br/>
+     
+   
+     <apex:actionStatus id="statusforInvAlloLI">
+    <apex:facet name="start">
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+        &nbsp;
+    </div>
+    <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+        <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+            <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+            <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+        </div>
+    </div>
+    </apex:facet>
+</apex:actionStatus>
+   
+    
+        <apex:pageBlockSection rendered="{!IALI.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+        
+      
+     </apex:pageBlock>
+ </apex:form>
+ 
+ 
+ 
+</apex:page>

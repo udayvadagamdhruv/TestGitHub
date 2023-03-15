@@ -1,0 +1,191 @@
+<apex:page controller="TestAmcTvReportExt" renderAs="pdf" applyBodyTag="false">
+
+    <head>
+          <style type="text/css" media="print">
+             
+                     @page{
+                                size:portait;
+                                margin : 1.6in .3in 1in .5in;
+                              
+                                    @bottom-right
+                                    {
+                                        content:  "Page " counter(page);
+                                        font-family:Arial;
+                                        font-size:10pt;
+                                         
+                                        
+                                    }
+                                    
+                                     @bottom-left 
+                                     {
+                                        content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+                                        background-repeat: no-repeat;
+                                        font-size:8pt;
+                                        font-family:Helvetica;
+                                     }
+                                     
+                                     @top-Left
+                                     {
+                                            content:element(header) ;
+                                            Background-repeat:no-repeat;
+                                            font-size:20px;
+                                            font-Weight:bold;
+                                     }   
+                            
+                                }
+               
+                            
+                                div.header 
+                                {
+                                      padding: 10px;
+                                      position: running(header);
+                                }
+                                
+                                div.footer 
+                                {
+                                     display: block;
+                                     padding: 5px;
+                                     position: running(footer);
+                                }
+                                .pagenumber:before 
+                                {
+                                    content: counter(page);
+                                }
+                                .pagecount:before
+                                {
+                                    content: counter(pages);
+                                }
+                    </style>
+              </head>
+
+
+
+  <apex:form >
+    
+    
+    <apex:pageBlock >
+    
+    
+    
+           <div class="header">
+           
+            <table border="0" cellspacing="0" cellpadding="0" width="100%" id="table1">
+                  <tr>
+                    <td rowspan="3" width="60%"><Br/>
+                     <apex:image id="JS_logo" value="{!$Resource.JS_Logo}" rendered="{!imageNotFound == True}" />
+                       <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}" />
+                       
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td align= "right" style="font-size:15px; font-family: Verdana-Bold;padding-right:15px;font-weight:bold;">
+                     STATUS REPORT
+                   </td>
+                 </tr>
+              </table> <br/>
+              
+          
+                  <table width="100%">
+
+                        <tr style="font-size:13px; font-family: Verdana-Bold;">
+                          <th width="25%" style="text-align:justify;padding-left:60px;"><b>Task Name</b></th>
+                          <th width="20%" style="text-align:justify;padding-left:60px;"><b>Due Date</b></th>
+                          <th width="30%" style="text-align:justify;padding-left:60px;"><b>Staff</b></th> 
+                          <th width="25%" style="text-align:justify;padding-left:60px;"><b>Task Status</b></th>
+                        </tr>
+                        <tr>
+                             <td colspan="7">
+                                 <hr color="black"/>
+                             </td>
+                        </tr>
+                  
+                   </table>    
+                  </div>
+            <div>      
+                  
+                        <apex:repeat value="{!MapCampaign}" var="c">
+                        
+                                <div style="width:100%;font-weight: bolder;width:100%;margin-left:10px;page-break-inside:always;">
+                                        
+                                            <b>   <apex:outputText value="{0,date,MM/dd/yy}"  style="font-size:12px;font-weight:bold;">
+                                                      <apex:param value="{!c}"/>
+                                                  </apex:outputText> 
+                                                  
+                                                 
+                                                  
+                                            </b>
+                                 </div>       
+                                    
+                            <br/>
+                           
+                          
+                            <apex:repeat value="{!MapCampaign[c]}" var="cname">
+                                    <div style="background-color:#EDC9AF;width:100%;font-weight:bolder;width:100%;margin-left:15px;margin-top:-10px;page-break-inside:avoid">
+                                                <b> <apex:outputtext value="{!CampNames[cname]}" style="font-size:12px;font-weight:bold;"/>  </b>
+                                     </div>         
+                              <br/>
+                              
+                           
+                           
+                            <div style="">
+                              <apex:repeat value="{!CampJobMap[cname]}" var="T">
+                               <apex:outputPanel rendered="{!IF(JobTaskMap[T.id] != '0', true, false)}">
+                              
+                                           <div style="background-color:#EEEEEE;width:100%;font-weight: bolder;width:100%;margin-left:30px;margin-top:-10px;page-break-inside:avoid;">
+                                                <b> <apex:outputtext value="{!T.name}" style="font-size:12px;font-weight:bold;"/> 
+                                                
+                                                     <apex:outputText value="# {!T.Job_Auto_Number__c}" style="font-size:12px;font-weight:bold;font-color:#0000FF;margin-left:30px;"/>       
+                                                 </b>
+                                                <br/>
+                                                <hr color="black"/>
+                                            </div>  
+                                            
+                                            <br/>
+                                            
+                                  <table style="margin-left:60px;margin-top:-10px;font-size:11px;" width="100%" >
+                                 
+                                      <apex:repeat value="{!TaskMap[T.id]}" var="TName">
+                                              
+                                             
+                                               <tr >
+                                                  <td width="25%" >
+                                                    <apex:outputtext value="{!TName.name}" />  
+                                                  </td>
+                                                   <td width="15%">
+                                                      <apex:outputText value="{0,date,MM/dd/yy}"  >
+                                                              <apex:param value="{!TName.Revised_Due_Date__c}"/>
+                                                          </apex:outputText>  
+                                                  </td>
+                                                   <td width="35%" >
+                                                    <apex:outputtext value="{!TName.Assigned_Users__c}" />  
+                                                  </td>
+                                                   <td width="25%" >
+                                                        <apex:outputtext value="{!TName.Status__c}" />  
+                                                  </td>
+                                               </tr>
+                                               
+                                              
+                              
+                                      </apex:repeat>
+                                        
+                                        <br/>
+                                       
+                                         </table>
+                                         </apex:outputPanel>  
+
+                              
+                              </apex:repeat>
+                        </div>
+                            </apex:repeat> 
+                        </apex:repeat>
+                        
+                    
+                     </div>
+                         
+                 
+                         
+     </apex:pageBlock>
+    
+    </apex:form>
+</apex:page>

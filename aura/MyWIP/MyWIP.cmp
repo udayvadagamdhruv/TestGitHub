@@ -1,0 +1,208 @@
+<aura:component controller="MyWipComponentController" implements="force:appHostable" access="global">
+    <aura:attribute name="progressTasks" type="Object" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="taskInformation" type="Object" />
+    <aura:attribute name="taskTimeSheets" type="Object" />
+    <aura:attribute name="tscolumns" type="List" />
+    
+    <aura:attribute name="calenderFilters" type="Object[]" />
+    
+    <aura:attribute name="taskTsErrors" type="Object" />
+    <aura:attribute name="proTasksErrors" type="Object" />
+    <aura:attribute name="sortedBy" type="String" default="Name" />
+    <aura:attribute name="sortedDirection" type="String" default="asc" />
+    <aura:attribute name="taskId" type="String" />
+    <aura:attribute name="isaddEditStaff" type="boolean" default="false"/>
+    <aura:attribute name="draftValues" type="Object" default="[]"/>
+    
+    <aura:attribute name="isTimeSheetOpen" type="boolean" default="false"/>
+    <aura:attribute name="timeStheettaskId" type="String" />
+    
+    <aura:attribute name="overlayPanel" type="Aura.Component"  />
+    <lightning:overlayLibrary aura:id="overlayLib1" />
+    
+    <aura:handler event="c:UpdateRecordsforChanges"  action="{!c.refetchTaskTeamInfo}" />
+    
+    <ltng:require styles="{!join(',',
+                          $Resource.FullCalendar380 + '/fullcalendar-3.8.0/fullcalendar.css'
+                          )}"
+                  scripts="{!join(',',
+                           $Resource.FullCalendar380 + '/fullcalendar-3.8.0/moment.min.js',
+                           $Resource.FullCalendar380 + '/fullcalendar-3.8.0/jquery.min.js',
+                           $Resource.FullCalendar380 + '/fullcalendar-3.8.0/jquery-ui.min.js',
+                           $Resource.FullCalendar380 + '/fullcalendar-3.8.0/fullcalendar.min.js'
+                           )}"
+                  afterScriptsLoaded="{!c.afterScriptsLoaded}" /> 
+    <lightning:card iconName="standard:waits" title="Work In Progress"> 
+        <lightning:layout multipleRows="true"> 
+            
+            
+            <lightning:layoutItem size="2" class="layoutPadding">   
+               
+                 <lightning:select aura:id="task_status_change" name="TaskFilters" label="Task Filters" onchange="{!c.OnchangeStatus}">
+                        <option text="My Tasks (Ready)" value="1" />
+                        <option text="My Tasks (All)" value="2" />
+                        <option text="All Tasks " value="3" />
+                </lightning:select>
+       
+                <lightning:select aura:id="campignIds" name="Campaigns" label="Campagins" onchange="{!c.OnchangeStatus}">
+                    <option text="--None--" value="" />
+                    <aura:iteration items="{!v.calenderFilters[0]}" var="cmp">
+                        <option text="{!cmp.Name}" value="{!cmp.Name}" />
+                    </aura:iteration>
+                </lightning:select>
+                
+                <lightning:select aura:id="scheduleIds" name="ScheduleTemplates" label="Schedule Templates" onchange="{!c.OnchangeStatus}">
+                    <option text="--None--" value="" />
+                    <aura:iteration items="{!v.calenderFilters[1]}" var="st">
+                        <option text="{!st.Name}" value="{!st.Name}" />
+                    </aura:iteration>
+                </lightning:select>
+           
+             
+                <lightning:select aura:id="staffIds" name="Staff" label="Staff" onchange="{!c.OnchangeStatus}">
+                    <option text="--None--" value="" />
+                    <aura:iteration items="{!v.calenderFilters[2]}" var="s">
+                        <option text="{!s}" value="{!s}" />
+                    </aura:iteration>
+                </lightning:select>
+            
+              
+                <lightning:select aura:id="roleIds" name="Role" label="Roles" onchange="{!c.OnchangeStatus}">
+                    <option text="--None--" value="" />
+                    <aura:iteration items="{!v.calenderFilters[3]}" var="ur">
+                        <option text="{!ur.Name}" value="{!ur.Name}" />
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            
+          
+            <lightning:layoutItem size="10" class="layoutPadding">   
+                <div id="calendar" class="slds-card">
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>     
+    </lightning:card>   
+    
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="7" class="layoutPadding">
+            <lightning:card iconName="standard:recent" title="My WIP Section">
+                <aura:if isTrue="{!empty(v.progressTasks)}">
+                    No records to display.
+                    <aura:set attribute="else">
+                        <div>
+                            <lightning:datatable class="tableClass" aura:id="progessTasksId"
+                                                 data="{!v.progressTasks}"
+                                                 columns="{!v.columns}"
+                                                 keyField="Id"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 maxRowSelection="1"
+                                                 errors="{!v.proTasksErrors}"
+                                                 sortedDirection="{!v.sortedDirection}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 onrowaction="{!c.rowselectionActions}"
+                                                 onrowselection="{!c.rowselection}"
+                                                 oncellchange="{!c.inlinedueDateChanges}"
+                                                 >
+                            </lightning:datatable>
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </lightning:card>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="5" class="layoutPadding">
+            <lightning:card iconName="standard:task" title="{!!v.taskInformation?'Task Information':v.taskInformation.Name+' (Job - # '+v.taskInformation.Job__r.Job_Auto_Number__c+')'}"> 
+                <lightning:tabset variant="scoped" selectedTabId="Chatter">
+                    
+                    <lightning:tab label="Chatter" id="Chatter"> 
+                        <aura:if isTrue="{!v.taskInformation.Job__c}">
+                            <div aura:id="chatterPublisher">
+                                <forceChatter:publisher context="RECORD" recordId="{!v.taskInformation.Job__c}" />
+                            </div>
+                            <div aura:id="feedContainer">
+                                <forceChatter:feed feedDesign="DEFAULT" type="Record" subjectId="{!v.taskInformation.Job__c}" />
+                            </div>
+                            
+                            <aura:set attribute="else">
+                                <ui:message  severity="info" closable="false">
+                                    Please select the task in the My WIP Section.
+                                </ui:message>
+                            </aura:set>   
+                        </aura:if>
+                    </lightning:tab>
+                    
+                    <lightning:tab label="Staff" id="Team">
+                        <aura:if isTrue="{!v.taskInformation}">
+                            <center>  <lightning:button label="Add/Edit Staff" onclick="{!c.AddEditStaffMembersforTask}" iconName="action:edit_groups" iconPosition="right" variant="brand"  /> </center>
+                            <aura:if isTrue="{!v.isaddEditStaff}">
+                                <c:Add_Edit_Staff_Task aura:id="AddEditStaffMembers" TaskId="{!v.taskId}"  /> 
+                            </aura:if>
+                            <lightning:layout multipleRows="true">
+                                <aura:iteration items="{!v.taskInformation.Job_Task_Roles__r}" var="item">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" >
+                                        <ul class="slds-has-dividers_bottom-space">
+                                            <li class="slds-item">
+                                                <lightning:tile  label="{!item.User__c}" href="">
+                                                    <aura:set attribute="media">
+                                                        <lightning:avatar src="{!$Resource.SLDS0122 +'/assets/images/avatar2.jpg'}" fallbackIconName="standard:person_account" alternativeText="{!item.User__c}"/>
+                                                    </aura:set>
+                                                    <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                        <li class="slds-item">{!item.Name}</li>
+                                                    </ul>
+                                                </lightning:tile>
+                                            </li>
+                                        </ul>
+                                    </lightning:layoutItem>
+                                </aura:iteration> 
+                            </lightning:layout>
+                            <aura:if isTrue="{! !v.taskInformation.Job_Task_Roles__r}">
+                                No record to display.
+                            </aura:if>
+                            
+                            <aura:set attribute="else">
+                                <ui:message  severity="info" closable="false">
+                                    Please select the task in the My WIP Section.
+                                </ui:message>
+                            </aura:set>
+                        </aura:if>     
+                    </lightning:tab>
+                    
+                    <lightning:tab label="Time Sheets" id="TimeSheet">
+                        <aura:if isTrue="{!v.taskInformation}" >
+                        <center>  <lightning:button label="Log Time" onclick="{!c.LogTimetoTask}" iconName="utility:clock" iconPosition="right" variant="brand"  /> </center>    
+                            <aura:if isTrue="{!empty(v.taskTimeSheets)}">
+                                No records to display.
+                                <aura:set attribute="else">
+                                    <div>
+                                        <lightning:datatable class="tableClass" aura:id="taskTimesheetId"
+                                                             data="{!v.taskTimeSheets}"
+                                                             columns="{!v.tscolumns}"
+                                                             keyField="Id"
+                                                             hideCheckboxColumn="true"
+                                                             sortedBy="{!v.sortedBy}"
+                                                             errors="{!v.taskTsErrors}"
+                                                             sortedDirection="{!v.sortedDirection}"
+                                                             onsort="{!c.sortingForTimeSheets}"
+                                                             onrowaction="{!c.rowsActionForTimeSheets}"
+                                                             />
+                                    </div>
+                                </aura:set>
+                            </aura:if>
+                            <aura:set attribute="else">
+                                <ui:message  severity="info" closable="false">
+                                    Please select the task in the My WIP Section.
+                                </ui:message>
+                            </aura:set>
+                        </aura:if>
+                    </lightning:tab>
+                </lightning:tabset>
+            </lightning:card> 
+        </lightning:layoutItem>
+    </lightning:layout> 
+    
+    <aura:if isTrue="{!v.isTimeSheetOpen}">
+        <c:Task_Log_Time  aura:id="timeSheetId" taskId="{!v.timeStheettaskId}" />
+    </aura:if>
+    
+    
+</aura:component>

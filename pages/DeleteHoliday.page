@@ -1,0 +1,16 @@
+<!-- This Page is used to override the delete button of Holiday Object -->
+<apex:page standardController="Holiday__c" extensions="DeleteHoliday" showHeader="false" sidebar="false">
+ <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+ </script> 
+  
+  
+ <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}"/> 
+ </apex:form>
+ 
+</apex:page>
+<!-- End of Page -->

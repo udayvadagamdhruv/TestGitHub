@@ -1,0 +1,117 @@
+<apex:page standardController="Job__c" extensions="LovesBussinessCardTemplateController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" >
+<html>
+<head>
+ 
+<!--div style="padding-left:38%;padding-top:20px;"-->
+
+<style type="text/css">
+
+@font-face {
+    font-family: Neutraface2Text-Bold;
+    src: url({!URLFOR($Resource.LovesBusinessCardFonts, '/Neutraface2Text-Bold.otf')});
+}
+@font-face {
+    font-family: MyriadPro-LightIt;
+    src: url({!URLFOR($Resource.LovesBusinessCardFonts, '/MyriadPro-LightIt.otf')});
+}
+@font-face {
+    font-family: MyriadPro-Bold;
+    src: url({!URLFOR($Resource.LovesBusinessCardFonts, '/MyriadPro-Bold.otf')});
+}
+@font-face {
+    font-family: MyriadPro-Light;
+    src: url({!URLFOR($Resource.LovesBusinessCardFonts, '/MyriadPro-Light.otf')});
+}
+@font-face {
+    font-family: MyriadPro-Regular;
+    src: url({!URLFOR($Resource.LovesBusinessCardFonts, '/MyriadPro-Regular.otf')});
+}
+</style>
+
+<script language="javascript" type="text/javascript">
+        function printDiv(divID) {
+            //Get the HTML of div
+            var divElements = document.getElementById(divID).innerHTML;
+            //Get the HTML of whole page
+            var oldPage = document.body.innerHTML;
+
+            //Reset the page's HTML with div's HTML only
+            document.body.innerHTML = 
+              "<html><head><title></title></head><body>" + 
+              divElements + "</body>";
+
+            //Print Page
+            window.print();
+
+            //Restore orignal HTML
+            document.body.innerHTML = oldPage;
+
+          
+        }
+        
+        function openJobDetail(){
+            window.location = 'https://jobsuite.cs9.visual.force.com/apex/JobListView?id=' + '{!jobId}';
+        }
+        
+</script>
+
+</head>
+
+    <body>
+<div id="printablediv">
+<div style="padding-left:120px;padding-top:20px;" >
+
+  <div style="width:252pt;height:144pt;border:1px solid black;z-index:1;" id="LovesBusinessCard">
+  
+                               <div style="width:100%;height:94pt;background:white;">
+                                   <div style="padding-left:30px;padding-top:5px;">
+                                       
+                                       <p style="line-height: 150%;"><span id="name" style="font-family: Neutraface2Text-Bold;font-size:20pt;">{!SpecsMap['Name']}</span><br />
+                                       <span id="title" style="font-family: MyriadPro-LightIt;font-size:9pt;">{!SpecsMap['Title']}</span></p>
+                                       <table>
+                                       <tr style="line-height:100%;"><td><span style="font-family:MyriadPro-Bold;font-size:10pt;">F: </span><span id="fax" style="font-size:10pt;font-family:MyriadPro-Light;">{!SpecsMap['Fax']}</span></td><td></td></tr>
+                                        <tr style="line-height:100%;"><td><span style="font-family:MyriadPro-Bold;font-size:10pt;">P: </span><span id="phone" style="font-size:10pt;font-family:MyriadPro-Light;">{!SpecsMap['Phone']}</span></td><td>&nbsp; <span style="font-size:10pt;font-family:MyriadPro-Light;">{!SpecsMap['Email']}</span></td></tr>
+                                        <tr style="line-height:100%;"><td><span style="font-family:MyriadPro-Bold;font-size:10pt;">M: </span><span id="mail" style="font-size:10pt;font-family:MyriadPro-Light;">{!SpecsMap['Mobile']}</span></td><td>&nbsp; <span style="font-size:10pt;font-family:MyriadPro-Light;">www.loves.com</span></td></tr>
+                                        </table>
+                                   </div>
+                               </div>
+                               
+                               <div style="z-index:-1;width:100%;height:50pt;background-image : url({!URLFOR($Resource.LovesBusinessCardFooter, 'LovesFooter.PNG')});background-repeat: round;">
+                                   <div style="padding-left:30px;padding-top:30px;width:130px;font-size:7pt;;font-family:MyriadPro-Regular;" id="address">
+                                       {!SpecsMap['Address']}
+                                   </div>
+                               </div>
+                               
+                               
+                           </div>
+                           
+                           </div>
+                           
+                           <br/><br/><br/>
+                           
+                           
+                            
+<div style="padding-left:120px;padding-top:20px;">
+                                         
+                               
+                               
+                          
+                               <div style="border:1px solid black;width:252pt;height:144pt;">
+                               <img src="/servlet/servlet.FileDownload?file={!BachOptionId}"  style="width:252pt;height:144pt;display:{!if(BachOptionId == 'none','none', 'block')}"/>
+                               </div>
+                           
+                           
+                          
+                           
+        </div> 
+        </div>     
+        <br/><br/>
+        <div style="padding-left:120px;padding-top:20px;">
+        <!--button onclick="javascript:openJobDetail()">Go Back to Job Detail Page</button-->
+        <button onclick="javascript:printDiv('printablediv')">Print Business Card</button>     
+        </div>   
+          
+                             </body>
+   </html>
+
+</apex:page>

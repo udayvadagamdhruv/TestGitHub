@@ -1,0 +1,28 @@
+<apex:page standardController="Specification_Template__c" extensions="EditSpecificationTemplateExtension" tabStyle="MyAdmin__tab">
+  <apex:sectionHeader title="{!Specification_Template__c.Name}">
+  <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="Creative Brief Template Information" columns="2" collapsible="false"> 
+                  
+                   <apex:pageBlockSectionitem > 
+                      <apex:outputLabel Value="{!$ObjectType.Specification_Template__c.Fields.Name.Label}"/>
+                          <apex:inputField value="{!Specification_Template__c.Name}" required="true"/>
+                    </apex:pageBlockSectionitem> 
+                    
+                    <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                  
+                    <apex:pageBlockSectionitem > 
+                       <apex:outputLabel Value="{!$ObjectType.Specification_Template__c.Fields.Description__c.Label}"/> <apex:inputtextarea value="{!Specification_Template__c.Description__c}" rows="3" cols="55" style="resize:none"/>
+                   </apex:pageBlockSectionitem>
+               </apex:pageBlockSection>
+             </apex:pageBlock>
+    </apex:form>
+  </apex:sectionHeader>
+</apex:page>
+<!-- End of Page -->

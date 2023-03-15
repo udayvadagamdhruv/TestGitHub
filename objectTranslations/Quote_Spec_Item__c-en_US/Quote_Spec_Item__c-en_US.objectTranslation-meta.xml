@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Quote Spec Items</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Quote Spec Items</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Quote_Spec_Item_Fieldset</name>
+    </fieldSets>
+    <layouts>
+        <layout>Quote Spec Item Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Import_Template</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Quote_Detail</name>
+    </webLinks>
+</CustomObjectTranslation>

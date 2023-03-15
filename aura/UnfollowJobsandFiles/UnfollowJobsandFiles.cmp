@@ -1,0 +1,117 @@
+<aura:component controller="UnfollowRecordsExt" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="Jobdata" type="Object"/>
+    <aura:attribute name="Jobcolumns" type="List"/>
+    <aura:attribute name="JobsortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="JobsortedDirection" type="String" default="DESC" />
+    <aura:attribute name="selectValue" type="String" default="Completed" />
+    <aura:attribute name="ChatterFilesdata" type="Object"/>
+    <aura:attribute name="ChatterFilescolumns" type="List"/>
+    <aura:attribute name="ChatterFilessortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="ChatterFilessortedDirection" type="String" default="DESC" />
+    
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="selectedCFRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="selectedJobs" type="List"/>
+    <aura:attribute name="selectedCF" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+     <!-- **************************************** Job Table *************************************************** -->
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="JobList">
+        <lightning:accordionSection name="JobList" label=" Unfollow the Jobs"  class="slds-card" >  
+           
+               <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+            
+            <div class="slds-size_2-of-10">
+                <div class="slds-m-around_x-small">
+                    <lightning:select aura:id="StatusField" name="Status" label="Job Status" required="true" value="{!v.selectValue}" onchange="{!c.StatusChange}">
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="On Hold">On Hold</option>
+                </lightning:select> 
+                
+            </div>
+                   </div>
+                     <div class="slds-size_2-of-10">
+                           <div class="slds-m-around_x-small" style="padding-top: 22px !important;">
+                         <lightning:button variant="neutral" label="Unfollow" title="Unfollow" onclick="{!c.UnfollowJobs}"/>
+                   </div>
+                   </div>
+                </div>
+            
+            <br/>
+            <aura:if isTrue="{!empty(v.Jobdata)}">
+                <b>No Records to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                         
+                        <div>
+                            <h1>Selected Rows: {! v.selectedRowsCount }</h1>
+                            <lightning:datatable class="Jobtablecss"
+                                                 aura:id="JobDataTable"
+                                                 columns="{!v.Jobcolumns}"
+                                                 data="{!v.Jobdata}"
+                                                 keyField="Id"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.JobupdateColumnSorting}"
+                                                 sortedBy="{!v.JobsortedBy}"
+                                                 sortedDirection="{!v.JobsortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}"
+                                                 onrowselection="{!c.handleSelect}"/>
+                                                
+                        </div>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+    
+    
+     <!-- **************************************** Chatter Files Table *************************************************** -->
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ChatterFilesList">
+        <lightning:accordionSection name="ChatterFilesList" label="Unfollow the Chatter Files"  class="slds-card" >  
+            <div align="center">
+                <lightning:button variant="neutral" label="Unfollow" title="Unfollow" onclick="{!c.UnfollowCF}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.ChatterFilesdata)}">
+                <b>No Records to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                        <div>
+                             <h1>Selected Rows: {! v.selectedCFRowsCount }</h1>
+                            <lightning:datatable class="CFtablecss"
+                                                 aura:id="CFDataTable"
+                                                 columns="{!v.ChatterFilescolumns}"
+                                                 data="{!v.ChatterFilesdata}"
+                                                 keyField="Id"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.CFupdateColumnSorting}"
+                                                 sortedBy="{!v.ChatterFilessortedBy}"
+                                                 sortedDirection="{!v.ChatterFilessortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}" 
+                                                 onrowselection="{!c.handleSelectCF}"/>
+                        </div>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    
+</aura:component>

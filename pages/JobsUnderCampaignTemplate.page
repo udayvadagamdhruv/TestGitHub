@@ -1,0 +1,71 @@
+<apex:page controller="JobsUnderCampaignTemplateController"  >
+  <head>
+   
+        <style>
+        #table_id td
+                {
+                    border:0px;
+                }
+        </style>
+
+    </head>
+   
+  
+   <apex:form >
+   
+   
+     <apex:pageBlock title="Campaign Jobs">
+     
+         <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+         <apex:commandButton value="New Campaign Job" action="{!NewCampaignJob}"  id="btn1" rendered="{!$ObjectType.Campaign_Jobs__c.Createable}"/> 
+        </span>
+       
+ 
+        <br/> <br/>
+        
+       
+      
+      
+         <apex:pageBlockTable value="{!CTempJobs}" var="Item" rendered="{!CTempJobs.Size>0}">
+         
+          <apex:column headerValue="Action" width="10%">
+         
+             <apex:outputLink tabindex="tab1" value="/apex/EditCampaignJob?id={!Item.Id}">Edit</apex:outputLink>  |    <apex:outputLink tabindex="tab1" value="/apex/DeleteCampaignJob?id={!Item.Id}">Delete</apex:outputLink> 
+         
+             
+          </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Campaign_Jobs__c.Fields.Name.Label}">
+              
+                <apex:outputLink tabindex="tab1" value="/apex/DetailCampaignJob?id={!Item.Id}">{!Item.Name}</apex:outputLink> 
+                  
+              </apex:column>
+              
+             <apex:column headerValue="{!$ObjectType.Campaign_Jobs__c.Fields.Media_Type__c.Label}">
+              
+                 <apex:outputfield value="{!Item.Media_Type__c}"/>
+                  
+              </apex:column>
+              <apex:column headerValue="{!$ObjectType.Campaign_Jobs__c.Fields.Schedule_Template__c .Label}">
+              
+                 <apex:outputfield value="{!Item.Schedule_Template__c }"/>
+                  
+              </apex:column>
+              
+              
+             
+         
+         </apex:pageBlockTable>
+         
+   
+           <apex:pageBlockSection rendered="{!CTempJobs.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection> 
+     </apex:pageBlock>
+  </apex:form>
+
+  
+ 
+</apex:page>

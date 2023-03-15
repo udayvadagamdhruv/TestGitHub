@@ -1,0 +1,356 @@
+<apex:page controller="PurchaseOrdersUnderVendorContacts" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+    
+
+    <head>
+        <style>
+        
+        
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        
+     </style>
+        
+        
+
+   <script>
+   
+        function glview() {
+            glview1();
+            document.getElementById('glviewlink').style.display = 'none';
+            document.getElementById('gllesslink').style.display = 'block';
+            
+          }
+        
+        function glless() {
+            glless1();
+            document.getElementById('glviewlink').style.display = 'block';
+            document.getElementById('gllesslink').style.display = 'none';
+            
+         }
+         
+         function popup() 
+         {
+               window.open('/apex/EditQuoteLightning?jobid={!theId}');
+         }
+              
+     
+            function popup() {
+               window.open('/apex/CreateNewQuoteLightning?jobid={!theId}');
+            }
+              
+        
+        
+        </script>
+
+
+
+
+    </head>
+
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    
+       <div class="slds" >
+        <apex:form html-novalidate="novalidate">
+
+            <apex:actionFunction action="{!ViewAll}" name="glview1" reRender="dv" status="LoadingStatus"  />
+            
+            <apex:actionFunction action="{!Showless}" name="glless1" reRender="dv" status="LoadingStatus"  />
+
+         <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+                <apex:pageMessages id="pagemsgId2"></apex:pageMessages>
+                
+            </div>  
+
+            
+                                 <div align="center">
+                             
+                                   
+                                   
+                             
+                                                                                  
+                                         
+                                         
+                                   <apex:commandButton value="New Purchase Order" action="{!CreateQuote}" id="btn1" styleClass="slds-button slds-button--neutral slds-button-group" />
+                                    
+                                   </div>
+                               
+                                <br/>
+             
+                     
+                 <apex:outputPanel id="dq"> 
+                  <apex:outputPanel rendered="{!q.size > 0}"> 
+                  
+                  <div class="slds-card"  style="display:{!IF(q.size>0,'block','none')}">
+                            
+                      <div class="slds-card__body" style="">
+                      
+                            <apex:outputPanel id="dv"> 
+                             <apex:outputPanel rendered="{!q.size > 0}">   
+
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th   scope="col" width="100px">Action</th>
+                                        <th   scope="col" > PO# </th>
+                                        
+                                  
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <apex:repeat value="{!q}" var="quote" rendered="{!q.Size > 0}">
+
+                                        <tr class="slds-hint-parent">
+                                        
+                                            <td   data-label="Action">
+                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                                     &nbsp;&nbsp;  
+                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none">
+                                                            &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Show More</span>
+                                                        </div>
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                             
+                                                               
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                      <a href="/apex/editPurchaseorderLightning?id={!quote.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+                                                                            
+                                                                             <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                            </svg>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                                
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                      <a href="/apex/deletePO?id={!quote.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Delete">Delete</span>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+                                                                            
+                                                                             <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                            </svg>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                 
+                                                                 
+                                                                 
+                                                                 
+                                                                 
+                                                                 
+                                                            </ul>
+                                                      </div> 
+                                               </div>
+                                            </td>
+                                      
+                                       
+                                        
+                                           
+                                            <td  >
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/apex/PODetailPageLightning?id={!quote.id}">{!quote.Name}</apex:outputLink>
+                                                    
+                                                </div>
+                                            </td>
+                                            
+
+                                            
+                                        </tr>
+
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </apex:outputPanel>
+                       </apex:outputPanel> 
+                      
+                    </div>
+                   
+                            
+                           
+                   <apex:outputPanel id="dv1"> 
+                         <div class="slds-card__footer" style="display:{!IF(q2.size>4,'block','none')}"  >
+                            <br/>
+
+                            <a href="javascript:glview();" id="glviewlink">View All ({!q.size}{!IF(q2.size>4,'+','')})
+                               <span class="slds-assistive-text" style="float:right">entity type</span>
+                            </a>
+                            <a href="javascript:glless();" id="gllesslink" style="display:none">Show Less ({!q2.size})
+                                  <span class="slds-assistive-text" style="float:right">entity type</span>
+                            </a>
+                        </div>
+                    </apex:outputPanel>
+                    
+              </div>
+              </apex:outputPanel>
+             </apex:outputPanel>  
+                 
+                 
+                 <apex:actionStatus id="LoadingStatus" >
+                   <apex:facet name="start">
+                      <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                         <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                           <span class="slds-assistive-text">Loading</span>
+                           <div class="slds-spinner__dot-a"></div>
+                           <div class="slds-spinner__dot-b"></div>
+                         </div></div>
+                    </apex:facet>
+                </apex:actionStatus>
+                 
+                 
+           <apex:outputPanel id="deqt" >
+            <apex:outputPanel rendered="{!q.Size <=0}" >
+               <div> <b> No records to display </b></div>
+            </apex:outputPanel>
+          </apex:outputPanel>
+                 
+                 
+        
+                  
+
+        </apex:form>
+      </div>
+      
+      
+     
+      
+         
+    
+ 
+    </html>
+</apex:page>
+<!-- End of Page -->

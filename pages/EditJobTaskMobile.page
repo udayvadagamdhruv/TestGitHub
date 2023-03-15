@@ -1,0 +1,422 @@
+<!-- This page is used to edit Job Task under Job tab-->
+<apex:page standardController="Job_Task__c" extensions="EditJobTaskExtension" tabStyle="Job__c" sidebar="false" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="False">
+
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+         <script>
+               var j$ = jQuery.noConflict();
+         </script>
+        
+         <style>
+         
+        html,html body{
+   overflow: auto;
+   -webkit-overflow-scrolling:touch;
+   }
+   body{
+   position:absolute;
+   left:0;right:0;top:0;bottom:0;
+   margin:0px !important;
+   }
+   .pbBody{
+   margin:0px 2px 0px 2px !important;
+   }
+   
+         
+            
+           
+           .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+       .detailPage .bPageBlock, .editPage .bPageBlock
+                  {
+                      border-top-width: 0px;
+                  }
+                  
+       .slds table{     height: 50px; }
+       body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons{     margin-top: -19px; }
+       
+       
+       .dateInput {
+     white-space: inherit;
+                }
+                
+                
+        .slds .slds-text-heading--large
+       {
+               font-size: 27px;
+               
+                line-height: 0.50;
+       }
+       
+        .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                   
+                    .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+           
+            <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:white;
+             }
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white;
+                }
+                
+                .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                
+                 .slds td {
+                    padding: 0;
+                    padding-left: 5px;
+                }
+                
+            <!--- error Mesgg-------------------------------------->
+                
+              .slds .slds-button {
+               padding: 0px 12px 0px 12px;
+               line-height: 30px;
+             }
+            .slds .slds-text-heading--small {
+              line-height: 1.8 !important;
+             }
+           
+        </style> 
+        
+        
+        
+        <head><script>         
+              function scheduleRevisedDateUpdate(strvalue,scheduleCalc)
+                {  
+                    var x;
+                    var r=confirm(" This will update all existing tasks dates on the schedule. Do you want to continue?");
+                    if (r==false)
+                      {
+                        var theText = scheduleCalc; 
+                        scheduleCalc.value = strvalue;                       
+                      }
+                }
+                
+                 function scheduleDaysUpdate(strvalue,schedule)
+                {  
+                    var x;
+                    var r=confirm("  This will update all existing tasks dates on the schedule. Do you want to continue?");
+                    if (r==false)
+                      {
+                        schedule.value = strvalue;                       
+                      }
+                }
+            </script>
+     </head>
+        
+        
+        
+         <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+         
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+           
+               <body>
+         
+                 <!-- REQUIRED SLDS WRAPPER -->
+                  <div class="slds">
+                     
+                      <apex:form html-novalidate="novalidate">
+                      
+                      
+                       <div class="slds slds-page-header" style="position:fixed;z-index:999;width:100% !important;border-bottom: 3px solid #ccc !important;padding: 0px 0px 0px 0px !important;">
+                        <div class="slds-media__body pageHeader">
+                            <div class="slds-grid" style="width:100%;">
+                                <div class="slds-size--7-of-12" style="padding: 8px;">
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                       <div class="slds-media slds-no-space slds-grow">
+                                       
+                                          <div class="slds-media__figure" style="margin-right: 7px;">
+                                              <svg class="slds-icon slds-icon-standard-user" aria-hidden="true" style="background-color:#2896D9 !important;">
+                                                  <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#task')}" ></use>
+                                              </svg>
+                                          </div>
+                                          <div class="slds-media__body">
+                                            
+                                             <h1  style="color:#333;height: 14px;font-size: 11px;">Job Task Edit</h1>
+                                             <p style="font-size: 14px;" class="slds-truncate"><b> {!Job_Task__c.Name} </b></p>
+                                           
+                                          </div>
+                                       </div>
+                                    </div>
+                                </div>
+                      
+                      
+                      
+                       
+                                <div class="slds-size--5-of-12" style="padding: 8px;">
+                                    <apex:commandButton action="{!cancelme}" style="float:right ! important;margin-left:3px;" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                    <apex:commandButton action="{!saveme}" style="float:right ! important;" value=" Save" styleClass="slds-button slds-button--brand"></apex:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                      
+
+                <div class="slds">
+                    <br/>
+                    <br/>  <br/>
+                </div>
+         
+                           
+                          <apex:pageBlock mode="edit">
+                              
+              <!--- 
+                               <apex:pageBlockButtons location="top">
+                             <div align="center">
+                                    <apex:commandButton action="{!saveme}" value="Save" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                    </div>
+                                 
+                               </apex:pageBlockButtons>    ---->
+                                <br/>
+                               
+                               <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                    <apex:pageMessages />
+                               </div> <br/>
+                               
+                               <div style="background-color:SteelBlue;color:white;border-radius:5px;padding-left:10px">
+                                   <h3 class="slds-section-title"><b>&nbsp;Task Detail</b></h3>
+                               </div>
+                           
+                           
+                               <div class="slds-grid slds-wrap" style="width:97%" >
+                                 
+                                   <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                            
+                                       <div class="slds-grid slds-wrap" >  
+                                       
+                                           
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF((Job_Task__c.Locked__c==false), 'block','none')};">
+                                                 <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                     <label class="slds-form-element__label required" ><b>{!$ObjectType.Job_Task__c.Fields.Name.Label}</b></label>
+                                                     <div class="slds-form-element__control" >
+                                                         <apex:inputfield value="{!Job_Task__c.Name}"  styleClass="slds-input" required="true"  />
+                                                     </div>
+                                                 </div>
+                                            </aside>
+                                           
+                                           
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF((Job_Task__c.Locked__c==True), 'block','none')};">
+                                                 <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                     <label class="slds-form-element__label" ><b>{!$ObjectType.Job_Task__c.Fields.Name.Label}</b></label>
+                                                     <div class="slds-form-element__control" >
+                                                         <apex:outputfield value="{!Job_Task__c.Name}"  styleClass="slds-output"/>
+                                                     </div>
+                                                 </div>
+                                            </aside>
+                                            
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                 <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                     <label class="slds-form-element__label" ><b>{!$ObjectType.Job_Task__c.Fields.Job__c.Label}</b></label>
+                                                     <div class="slds-form-element__control" >
+                                                          <apex:outputfield value="{!Job_Task__c.Job__c}" styleClass="slds-output"/>
+                                                     </div>
+                                                 </div>
+                                            </aside>
+                                            
+                                            <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                 <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                     <label class="slds-form-element__label required" ><b>{!$ObjectType.Job_Task__c.Fields.Status__c.Label}</b></label>
+                                                     <div class="slds-form-element__control" >
+                                                           <apex:inputField value="{!Job_Task__c.Status__c}" required="true" styleClass="slds-input"/>
+                                                     </div>
+                                                 </div>
+                                            </aside>
+                                            
+                                            
+                                           
+                                            
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                 <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                     <label class="slds-form-element__label required" ><b>{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}</b></label>
+                                                     <div class="slds-form-element__control" >
+                                                           <apex:inputField value="{!Job_Task__c.Revised_Due_Date__c}" required="true" onchange="scheduleRevisedDateUpdate('{!Job_Task__c.Due_Date__c}',this);" styleClass="slds-input"/>
+                                                     </div>
+                                                 </div>
+                                            </aside>
+                                            
+                                      <!---
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                            <label class="slds-form-element__label" ><b>Staff</b></label>
+                                                            <div class="slds-form-element__control" >
+                                                                <apex:actionRegion >
+                                                                     <apex:outputPanel >
+                                                                          <span Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                                                                               <div> </div>
+                                                                               <apex:selectList id="staff" value="{!selectedStaff}" multiselect="true" size="5" styleClass="slds-input" >
+                                                                                         <apex:selectOptions value="{!StaffoptionList}">
+                                                                                    </apex:selectOptions> 
+                                                                               </apex:selectList>
+                                                                           </span>
+                                                                      </apex:outputPanel>  
+                                                                 </apex:actionRegion>
+                                                            </div>
+                                                            </div>
+                                                        </aside>
+                                        
+                                          ------->
+                                         
+                                         <!--
+                                            
+                                          
+                                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                 <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                     <label class="slds-form-element__label required" ><b>{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}</b></label>
+                                                     <div class="slds-form-element__control" >
+                                                           <apex:inputField value="{!Job_Task__c.Assigned_Users__c}" styleClass="slds-input"/>
+                                                     </div>
+                                                 </div>
+                                            </aside>
+                                            
+                                            -->
+                                       
+                                       </div>
+                                    
+                                   </main>
+                               
+                                </div>
+                                 <br/>
+                               <!-------------------- 
+                                <div style="background-color:SteelBlue;color:white;border-radius:5px">
+                                   <h3 class="slds-section-title"><b>&nbsp;Select Staff</b></h3>
+                               </div>
+                                <br/>
+                                
+                                <apex:outputPanel rendered="{!AllstaffWrappers.size > 0}" >
+                                            <div class="slds-box bPageBlock ">
+                                               <div class="slds-grid slds-wrap">
+                                                 <apex:repeat value="{!AllstaffWrappers}" var="s"  rendered="{!AllstaffWrappers.size > 0}" id="cTable">
+                                                               <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12" style="z-index:1 !important;">
+                                                                   <div class="demo-only" style="width: 18rem;">
+                                                                        <article class="slds-tile slds-media">
+                                                                               <div class="slds-media__figure">
+                                                                                    <span class="slds-avatar slds-avatar_circle slds-avatar--medium" style="border-radius: 50%;">
+                                                                                        <img alt="" src="{!URLFOR($Resource.SLDS0122, '/assets/images/avatar2.jpg')}"  />
+                                                                                    </span>
+                                                                                </div>
+                                                                        <div class="slds-media__body">
+                                                                        <h1 class="slds-tile__title slds-truncate" title="Staff">{!s.staff.Staff__c} </h1>
+                                                                              
+                                                                           
+                                                                           <div class="slds-tile__detail">
+                                                                              <dl class="slds-list_horizontal slds-wrap">
+                                                                                 <dd class="slds-item_detail slds-truncate" title="Role" >{!s.staff.Role__c}</dd>
+                                                                              </dl>
+                                                                          </div>
+                                                                       </div>
+                                                                       
+                                                                        <h1  title="Select Staff">
+                                                                          <label class="slds-checkbox">
+                                                                              <apex:inputCheckbox value="{!s.selection}"/>
+                                                                              <span class="slds-checkbox--faux"></span>
+                                                                           </label>
+                                                                        </h1>
+                                                                        
+                                                                     </article>
+                                                                         
+                                                                       </div>  <hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;"/>
+                                                             </div>
+                                                  </apex:repeat>
+                                         
+                                         </div>
+                                      </div>
+                                      
+                                      </apex:outputPanel>  
+                                           
+                                         
+                                            <apex:outputPanel rendered="{!AllstaffWrappers.size <= 0}">
+                                           
+                                                <p>No records to display </p>
+                                                     
+                                            </apex:outputPanel>  
+                                     
+                                
+                                
+                                ----------------->
+                                 
+                                
+                             </apex:pageBlock>    
+                    </apex:form> 
+                 </div>      
+              </body>
+       </html>
+  
+</apex:page>
+<!-- End of Page -->

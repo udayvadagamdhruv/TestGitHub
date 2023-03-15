@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Estimate_Line_Items_Page_layout_non_edit</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>Estimate_Copied_from_Quote</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Estimate Line Items Page layout non edit</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Layout_Changed</fullName>
+        <description>When ELI is UnApproved,its layout will be changed, (This layout will allow to Edit the Record).</description>
+        <field>RecordTypeId</field>
+        <lookupValue>When_UnApproved</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Layout Changed</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Page_Layout_will_be_Changed</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>Estimate_Copied_from_Quote</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Page Layout will be Changed</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Read_Only_when_Approved</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>When_Approved</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Read Only when Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Unit_Cost_Default_Value</fullName>
+        <field>Amount__c</field>
+        <formula>GL_Code__r.Unit_Cost__c</formula>
+        <name>Unit Cost Default Value</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Unit Cost Default Value</fullName>
+        <actions>
+            <name>Unit_Cost_Default_Value</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Estimate_Line_Items__c.Amount__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </criteriaItems>
+        <description>when Estimate Line Item is created its Unit Cost will be populated based on ELI&apos;s GLCode.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>When Estimate is Approved</fullName>
+        <actions>
+            <name>Read_Only_when_Approved</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Estimate_Line_Items__c.Approved__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>when any Esimate gets approve it wll be read only (Record type will be updated).</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>When Estimate is Copied from Quote</fullName>
+        <actions>
+            <name>Estimate_Line_Items_Page_layout_non_edit</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Estimate_Line_Items__c.Restrict__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>if Estimate (Estimate Line Item) is created from Quote (once quote is approved estimate line item will be created) then that record will be read only.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Wnen ELI is unapproved</fullName>
+        <actions>
+            <name>Layout_Changed</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Estimate_Line_Items__c.Approved__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Estimate_Line_Items__c.Restrict__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>when estimate line item is unapproved it will be editable.</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

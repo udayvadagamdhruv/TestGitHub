@@ -1,0 +1,474 @@
+<apex:page controller="DisplayPOunderjobtabextension" id="frm" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+    
+    <head>
+        <style>
+   
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        
+        .dateFormat{
+          display:block !important;
+         }
+        
+        .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             } 
+        
+     </style>
+         
+    </head>
+
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    
+    
+       <div class="slds">
+           <apex:form html-novalidate="novalidate" id="pb11">
+           
+           <apex:actionFunction name="inlinesavePO" rerender="pb11" action="{!inlineSavePO}"  status="LoadingStatus" >
+                <apex:param name="firstParam" assignTo="{!porowIndex}" value="" />
+                 <apex:param name="SecondParam" assignTo="{!editPOField}" value="" />
+              </apex:actionFunction>
+           
+            <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+                <apex:pageMessages id="pagemsgId4"></apex:pageMessages>
+            </div>
+
+            <div align="center">
+            
+                 <apex:commandButton action="{!CreatePO}" value="New Purchase Order" title="Press to create New Pucrchase Order" id="btn1" styleClass="slds-button slds-button--neutral slds-button-group" />   
+                 <apex:commandButton value="Save" action="{!save}" id="posaveButton" style="display: none;" styleClass="slds-button slds-button--brand slds-button-group"/>  
+                 <apex:commandButton value="Cancel" id="pocancelButton"  style="display: none;" reRender="pb11" immediate="true" styleClass="slds-button slds-button--neutral slds-button-group"/> 
+               
+            </div>
+                               
+        <br/>
+        
+        <apex:outputPanel id="dp">
+             <apex:outputPanel rendered="{!porderlst.size > 0}">
+            
+         <div class="slds-card" style="display:{!IF(porderlst.size > 0,'block','none')}">
+                            
+             <div class="slds-card__body" >
+                
+                <apex:outputPanel id="abc">
+                  <apex:outputPanel rendered="{!porderlst.size > 0}">
+                  
+                       <div class="posco1"   style="height:{!if(porderlst.size==1,'155px',if(porderlst.size==2,'205px',if(porderlst.size==3,'','')))};background-color:#f4f6f9;">
+                         
+                                   <div   style="overflow:auto;overflow-y:hidden;width: 100%;height:100%;">
+                   
+                  
+                
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-8" scope="col">Action</th>
+
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Name.Label}</th>
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Invoice_Created__c.Label}</th>
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Vendor__c.Label}</th>
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}</th>
+
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}</th>
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}</th>
+                                        <th class="slds-size--1-of-8" scope="col">{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}</th>
+                                         
+                                  
+                                    </tr>
+                                </thead>
+                                
+                    <script>
+                                                                  
+                    $(document).ready(function(){
+                      
+                       $(".porderbutton").mouseover(function(){
+                       
+                           var pord1=$(this).children(".porderclass");
+                          
+                              if(($(this).offset().top+$(this).outerHeight()-$(".posco1").offset().top)+pord1.outerHeight()>$(".posco1").outerHeight()){
+                          
+                                  $(this).children(".slds-dropdown_xx--small").addClass('slds-dropdown--bottom');
+                                 }
+                            
+                              else{
+                                  $(this).children(".slds-dropdown_xx--small").removeClass('slds-dropdown--bottom');
+                                  }
+                                  
+                          });
+                       
+                     });
+                      
+                    </script>
+                    
+                                
+                                
+                                <tbody>
+
+                                    <apex:repeat value="{!porderlst}" var="po" rendered="{!porderlst.Size > 0}">
+
+                                        <tr class="slds-hint-parent">
+                                        
+                                            <td class="slds-size--1-of-8" data-label="Action">
+                                            
+                                                 <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open porderbutton">
+                                                     &nbsp;&nbsp;  
+                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon  ">
+                                                          <!---  &nbsp;<svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--small">
+                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#down')}"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Show More</span> 
+                                                            ---->
+                                                             <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                        </div>
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left slds-dropdown_xx--small porderclass">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                             
+                                                               
+                                                             <!--  <li class="slds-dropdown__item" role="presentation">
+                                                                 
+                                                                     
+                                                                        <a href="/apex/EditEstimateLightning?id={!vquote.id}" role="menuitem" tabindex="0" style="display:{!IF(vquote.Approved__c==false, 'block','none')};">
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                                                                            <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                            </svg>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>-->
+                                                                
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Log Invoice" action="{!CreateInvoice}" rendered="{!po.porec.Status__c = 'Sent' && (po.porec.Invoice_Created__c = 'No' || po.porec.Invoice_Created__c = 'Partially')}" reRender="Hiddenblock1">
+                                                                         <apex:param name="param1" value="{!po.porec.id}" assignTo="{!strID}"> </apex:param> &nbsp; &nbsp; 
+                                                                          
+                                                                        <!-----
+                                                                        <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:18px !important;">
+                                                                               <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#relate')}"></use>
+                                                                           </svg>
+                                                                           ----->
+                                                                           &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">add_circle_outline</i>
+                
+                                                                    </apex:commandLink>                                                               
+                                                                </li>
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Log Invoice" onclick="alert('Change the Status of the Purchase Order to “Sent” to log an invoice against it');" rendered="{!po.porec.Invoice_Created__c = 'Created' || (po.porec.Status__c = 'Open' || po.porec.Status__c = 'Cancelled' || po.porec.Status__c = 'Pending' || po.porec.Status__c = null)}" reRender="pb11">
+                                                                         <!--- &nbsp; &nbsp;<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:18px !important;">
+                                                                               <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/utility-sprite/svg/symbols.svg#relate')}"></use>
+                                                                           </svg>  ---> 
+                                                                            &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">add_circle_outline</i>     
+                                                                    </apex:commandLink>                                                               
+                                                                </li>
+                                                               
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Delete" action="{!del}" reRender="hiddenBlock1,abc,div2,depo,dp" rendered="{!po.porec.Invoice_Created__c = 'No'}" onclick="if(!confirm('Are you sure?')){return false;}" status="POLoadingStatus">
+                                                                         <apex:param name="param1" value="{!po.porec.Id}" assignTo="{!poid}"> </apex:param> &nbsp; &nbsp;
+                                                                        
+                                                                         <!----
+                                                                         <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:18px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                        </svg> ---->
+                                                                        &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>                
+                                                                    </apex:commandLink>                                                               
+                                                                </li>
+                                                               
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Delete" title="Delete PO Line Item" onclick="alert('You can not Delete this PO Line Item because its Invoice is fully or partially created' );" rendered="{!po.porec.Invoice_Created__c != 'No'}" reRender="pb11">
+                                                                         
+                                                                       <!---  <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:18px !important;">
+                                                                            <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                        </svg>   
+                                                                        ---->
+                                                                       &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>                 
+                                                                    </apex:commandLink>                                                               
+                                                                </li>
+                                                                 
+                                                                 
+                                                            </ul>
+                                                      </div> 
+                                               </div>
+                                                  
+                                            </td>
+                                      
+                                       
+                                        
+                                           
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Name.Label}">
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/apex/PODetailpageLightning?id={!po.porec.Id}">{!po.porec.Name}</apex:outputlink>
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Invoice_Created__c.Label}">
+                                                <div>
+                                                    <apex:outputField value="{!po.porec.Invoice_Created__c}"/> 
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Vendor__c.Label}">
+                                                <div>
+                                                    <apex:outputField value="{!po.porec.Vendor__c}"/>
+                                                </div>
+
+                                            </td>
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}">
+                                                 <div>
+                                                   <apex:outPutpanel > 
+                                                        <apex:actionSupport event="ondblclick" rerender="pb11" rendered="{!(po.porec.Status__c != 'Sent' && NOT(po.isEditPOIssDt))}" action="{!inlineEditPO}"  status="LoadingStatus" focus="POIssueDate">
+                                                           <apex:param name="rowNumber" value="{!po.porowNo}" assignTo="{!porowIndex}" />
+                                                           <apex:param name="rowField" value="IssueDate" assignTo="{!editPOField}" />
+                                                          </apex:actionSupport>
+                                                          
+                                                          <apex:outputfield value="{!po.porec.Issue_Date__c}" rendered="{!NOT(po.isEditPOIssDt)}"> 
+                                                             <span style="display:{!IF(po.porec.Issue_Date__c==null,'inline','none')}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                             <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(po.porec.Status__c != 'Sent','inline','none')}">&#xe254;</i>
+                                                          </apex:outputfield>
+                                                        <apex:inputField id="POIssueDate" value="{!po.porec.Issue_Date__c}" rendered="{!po.isEditPOIssDt}"   onchange="inlinesavePO({!po.porowNo},'IssueDate');" style="width:90%" />
+                                                 </apex:outPutpanel>  
+                                                          
+                                                          
+                                                </div>
+                                            </td>
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}">
+                                                <div>
+                                                   <apex:outPutpanel > 
+                                                        <apex:actionSupport event="ondblclick" rerender="pb11" rendered="{!(po.porec.Status__c != 'Sent' && NOT(po.isEditPODueDt))}" action="{!inlineEditPO}"  status="LoadingStatus" focus="PODueDate">
+                                                           <apex:param name="rowNumber" value="{!po.porowNo}" assignTo="{!porowIndex}" />
+                                                           <apex:param name="rowField" value="DueDate" assignTo="{!editPOField}" />
+                                                          </apex:actionSupport>
+                                                          
+                                                          <apex:outputfield value="{!po.porec.Due_Date__c}" rendered="{!NOT(po.isEditPODueDt)}">
+                                                           <span style="display:{!IF(po.porec.Due_Date__c==null,'inline','none')}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                             <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(po.porec.Status__c != 'Sent','inline','none')}">&#xe254;</i>
+                                                          </apex:outputfield>
+                                                        <apex:inputField id="PODueDate" value="{!po.porec.Due_Date__c}" rendered="{!po.isEditPODueDt}" onchange="inlinesavePO({!po.porowNo},'DueDate');" style="width:90%" />
+                                                 </apex:outPutpanel>       
+                                                        
+                                                </div>
+                                            </td>
+
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}">
+                                                <div>
+                                                  
+                                                
+                                                 <apex:outPutpanel > 
+                                                        <apex:actionSupport event="ondblclick" rerender="pb11" rendered="{!(po.porec.Status__c != 'Sent' && NOT(po.isEditPOStatus))}" action="{!inlineEditPO}"  status="LoadingStatus" focus="POStatus">
+                                                           <apex:param name="rowNumber" value="{!po.porowNo}" assignTo="{!porowIndex}" />
+                                                           <apex:param name="rowField" value="Status" assignTo="{!editPOField}" />
+                                                          </apex:actionSupport>
+                                                          
+                                                          <apex:outputfield value="{!po.porec.Status__c}" rendered="{!NOT(po.isEditPOStatus)}">
+                                                            <span style="display:{!IF(po.porec.Status__c==null || po.porec.Status__c=='' ,'inline','none')}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                          <i class="material-icons icon1" style="float:right;font-size:15px;display:{!if(po.porec.Status__c != 'Sent','inline','none')}">&#xe254;</i>
+                                                          </apex:outputfield>
+                                                        <apex:inputField id="POStatus" value="{!po.porec.Status__c}" rendered="{!po.isEditPOStatus}" onchange="inlinesavePO({!po.porowNo},'Status');" />
+                                                 </apex:outPutpanel>  
+                                                </div>
+                                                
+                                            </td>
+                                            
+                                            
+                                            <td class="slds-size--1-of-8" data-label="{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}" headerClass="hd">
+                                                <div>
+                                                   <apex:outputField value="{!po.porec.Total_Amount__c}"/>
+                                                </div>
+                                            </td>
+                                     
+                                            
+                                        </tr>
+
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                           </div>
+                         </div>
+                        
+                           <div style="float:right;padding-right:20px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                <apex:outputPanel rendered="{!purchaseorder.Size > 0}">
+                                        <apex:outputLabel value="PO Total    " style="font-style:italic;" /> 
+                                        <apex:outputText value="{0,Number, $###,###,###.00}">
+                                           &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+                                        </apex:outputText>
+                                </apex:outputPanel>
+                           </div> 
+                           </apex:outputpanel>
+                        </apex:outputpanel>          
+                        
+                    </div>
+                   <br/><br/>
+                   
+                    <apex:outputPanel id="div2" >
+                          <apex:outputPanel rendered="{!purchaseorder1.size>5}">
+                              <div class="slds-card__footer">
+                                    <apex:commandLink value="View All ({!porderlst.size}{!IF(purchaseorder1.size>5,'+','')})" action="{!ViewAllPO}" rendered="{!ViewAll}" status="POLoadingStatus"  reRender="pb11"/>
+                                    <apex:commandLink value="Show Less ({!porderlst.size})" action="{!ShowLessPO}" rendered="{!ShowLess}" status="POLoadingStatus"  reRender="pb11"/>
+                              </div>
+                          </apex:outputPanel>  
+                  </apex:outputPanel>
+                   
+                   
+         
+                      
+                   </div>
+                  
+              </apex:outputpanel>
+           </apex:outputpanel>   
+                   
+
+              <apex:outputPanel id="depo">   
+              <apex:outputPanel rendered="{!porderlst.Size<= 0}">
+                 
+                   <div> <b> No records to display </b></div>
+                 </apex:outputPanel>              
+              </apex:outputPanel> 
+              
+              
+                 <apex:actionStatus id="POLoadingStatus" >
+                           <apex:facet name="start">
+                              <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                                 <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                                   <span class="slds-assistive-text">Loading</span>
+                                   <div class="slds-spinner__dot-a"></div>
+                                   <div class="slds-spinner__dot-b"></div>
+                                 </div></div>
+                            </apex:facet>
+                </apex:actionStatus>
+                    
+     </apex:form>
+    </div>
+   </html>
+
+
+</apex:page>
+<!-- End of Page -->

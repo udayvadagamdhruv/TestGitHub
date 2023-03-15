@@ -1,0 +1,16 @@
+<!-- This page is used to Override delete button of Vendor Quote Object-->
+<apex:page standardController="Vendor_Quote__c" extensions="DeleteVendorQuoteExtension" showHeader="false" sidebar="false">
+      
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- End Of Page -->

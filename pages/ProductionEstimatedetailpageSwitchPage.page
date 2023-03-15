@@ -1,0 +1,9 @@
+<apex:page standardController="Production_Estimate__c"  docType="html-5.0" applyBodyTag="False" >
+  <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+         <apex:include pageName="ProductionEstimatedetailpage"/>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="ProductionEstimatedetailpageLightning"/>
+    </apex:outputPanel>
+    
+</apex:page>

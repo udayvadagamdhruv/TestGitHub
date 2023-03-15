@@ -1,0 +1,323 @@
+<apex:page controller="OnAirReportExtension" id="pageId" >
+
+    <!--head>
+    
+<!--[if IE]>
+   <style>
+      .rotate_text
+      {
+         writing-mode: tb-rl;
+         filter: flipH() flipV();
+      }
+   </style>
+<![endif]--
+    <!--[if !IE]><!---
+    <style type="text/css">
+        .rotate_text
+        {
+            -moz-transform: rotate(-90deg);
+            -moz-transform-origin: top left;
+            -webkit-transform: rotate(-90deg);
+            -webkit-transform-origin: top left;
+            -o-transform: rotate(-90deg);
+            -o-transform-origin: top left;
+            position: relative;
+            top: 20px;
+            font-weight:bold;
+        }
+    </style>
+    <!--<![endif]--
+    <style type="text/css">
+     table
+      {
+       
+         table-layout: fixed;
+         width: 100%; /*Table width must be set or it wont resize the cells*/
+      }
+       td .rotated_cell
+        {
+            padding-bottom: 5px;          
+            height: 120px;
+            vertical-align: bottom;
+            white-space:nowrap;
+        }
+    </style>
+    <style type="text/css">
+       td .b
+        {
+            text-align: left;
+            vertical-align: bottom;
+            font-weight: bold;
+        }
+    </style>    
+    
+    
+    
+   
+<style type="text/css"> 
+
+
+
+
+
+<!--
+.box_rotate 
+{
+         
+        -moz-transform: rotate(-50deg);  /* FF3.5+ */
+       -o-transform: rotate(-50deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-50deg);  /* Saf3.1+, Chrome */
+             filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+}
+---
+
+.a
+{
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+text-align:left;
+Padding-left:30px;
+
+
+}
+ 
+   
+<!--
+#a
+{
+position:relative;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+}
+--
+</style>
+
+         <script type="text/javascript">
+          function doSearch() {
+            searchServer
+            (
+                 document.getElementById("CampaignList").options[document.getElementById("CampaignList").selectedIndex].value,
+                 document.getElementById("statusList").options[document.getElementById("statusList").selectedIndex].value,
+                 document.getElementById("promoDueDt1").value,
+                 document.getElementById("JobTeamList").options[document.getElementById("JobTeamList").selectedIndex].value,
+               document.getElementById("MediaList").options[document.getElementById("MediaList").selectedIndex].value
+            );
+          }
+          
+           function clearFields()
+      {
+             document.getElementById("CampaignList").selectedIndex = 0;
+             document.getElementById("statusList").selectedIndex = 0;
+             document.getElementById("promoDueDt1").value="";
+           document.getElementById("JobTeamList").selectedIndex = 0;
+           document.getElementById("MediaList").selectedIndex = 0;
+      }
+          </script>
+    </head>
+        
+         
+       
+    
+  <apex:form id="formId" >
+        <apex:actionFunction name="searchServer" action="{!searchJobs}" reRender="results,debug" >
+            <apex:param name="CampaignList" value=""/>
+            <apex:param name="statusList" value=""/>
+             <apex:param name="promoDueDt1" value=""/>
+            <apex:param name="JobTeamList" value=""/>
+            <apex:param name="MediaList" value=""/>
+            
+           
+         
+        </apex:actionFunction>
+        
+         <apex:pageMessages id="pgMsg"/>
+        <apex:pageBlock id="pbSearch"  title="On Air Status Report"><!--tabstyle delted here..tabStyle="Custom_Reports__tab"-
+            
+            <table width="100%" cellspacing="5%" cellpadding="1%">
+                <tr>
+                    <td>
+                        <table >
+                              
+                                <tr>
+                           
+                                     <td style="font-weight:bold;align:left;valign:bottom;" >{!$ObjectType.Job__c.Fields.Campaign__c.Label} </td>
+                                  <td>
+                                    <select id="CampaignList" tabindex="1" style="width:180px;">
+                                        <apex:repeat value="{!CampaignList}" var="lst">
+                                            <option value="{!lst}">{!lst}</option>
+                                        </apex:repeat>
+                                    </select>
+                                  </td> 
+                                  
+                               </tr>   
+                             <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Staff__c.Fields.Name.Label} </td>
+                                <td>
+                                  <select id="JobTeamList" tabindex="1" style="width:180px;">
+                                        <apex:repeat value="{!JobTeamList}" var="jlst">
+                                            <option value="{!jlst}">{!jlst}</option>
+                                        </apex:repeat>
+                                    </select>
+                                </td>
+                            </tr>
+                           <tr>
+                                    <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Media_Types__c.Label} </td>
+                                    <td>
+                                          <select id="MediaList" tabindex="1" style="width:180px;">
+                                        <apex:repeat value="{!MediaList}" var="mlst">
+                                            <option value="{!mlst}">{!mlst}</option>
+                                        </apex:repeat>
+                                    </select>
+                                    </td>
+                            </tr>
+                               
+                               
+                        </table> 
+                    </td>
+                    
+                    <td>
+                        <table>
+                            <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Status__c.Label} </td>
+                                 <td>     
+                                      <select id="statusList" tabindex="2">
+                                            <apex:repeat value="{!jobStatus}" var="status">
+                                                <option value="{!status}">{!status}</option>
+                                            </apex:repeat>
+                                       </select>  
+                                </td>
+                            </tr>
+                            
+                            
+                            
+                             <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Due_Date__c.Label} </td>
+                                <td colspan="2">
+                                  <input type="text" id="promoDueDt1" name="promoduedt1" onfocus="DatePicker.pickDate(false,'promoDueDt1', false);" size="10" tabindex="9"/>
+                                </td>
+                            </tr>
+                            
+                            
+                        </table>
+                    </td>
+                    
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                           <apex:commandButton value="Search" onClick="if(!doSearch()) return false;"  tabindex="10"/> &nbsp;
+                           <apex:commandButton value="Clear" onClick="clearFields();" reRender="results" action="{!clearForm}" tabindex="11"/>
+                           
+                        </td>
+                    </tr>
+                </table>
+                   
+                 </apex:pageBlock> 
+
+        
+      
+           
+                 
+           
+                 
+   <apex:pageBlock id="results" >
+                    
+       <table width="100%" border="0" cellpadding="0" cellspacing="0" >
+              
+         <tr>
+            <td width="28%" class="b" style="font-weight: bold; ;">
+               {!$ObjectType.Job__c.Fields.Name.Label}
+            </td>
+           <td width="10%" class="b" style="font-weight: bold; ">
+                {!$ObjectType.Job__c.Fields.Dummy_Text_3__c.Label}
+            </td>
+            <td width="15%" class="b" style="font-weight: bold;">
+           Task Due
+            </td>
+            <td width="10%" class="b" style="font-weight: bold;">
+            Due Date
+            </td>
+            <td  width="10%">                
+                   <b> Writer/Producer</b><br/>
+                  <b> Motion Designer</b><br/>
+                   <b>Project Manager</b><br/>
+            </td>   
+            <td width="30%" class="b" style="font-weight:bold;  ">
+                {!$ObjectType.Tag__c.Fields.Name.Label}
+            </td>
+       
+        </tr>
+                   
+                   <tr>
+                         <td colspan="6"><hr color="black"/></td>
+                   </tr>
+                  </table>   
+                    
+                    
+        <apex:dataTable value="{!campWrapper}" var="cWrap" id="repeat1" width="100%" columnsWidth="100%">
+                      <apex:column style="padding-top:3px;">
+                       <div style="background-color:#C0C0C0;width:100%;font-weight: bolder"> <b> <apex:outputText value="{!cWrap.strCamp}" style="font-size:14px;font-weight:bold;"/> </b> <br/></div>
+                         
+                           <apex:dataTable value="{!cWrap.clWrapper}" var="clWrapper" width="100%" columnsWidth="100%" style="padding-top:5px; " border="0" >
+                                <apex:column style="vertical-align:top;">
+                                   <b><apex:outputText value="{!clWrapper.strClient}" style="font-weight: bolder;font-size:12px;"/></b> <br/>
+                                   
+                                   <apex:dataTable value="{!clWrapper.jWrapper}" var="jobr" width="100%" columnsWidth="30%,10%,40%,30%" style="padding-top:6px;font-size:12px; " border="0" >
+                                        <apex:column style="vertical-align:top;padding-right:8px;">
+                                        <apex:outputField value="{!jobr.job.Name}" /> 
+                                        </apex:column>
+                                        
+                                        <apex:column style="vertical-align:top; ">
+                                          <apex:outputField value="{!jobr.job.Dummy_Text_3__c}" />
+                                        </apex:column> 
+                                        
+                                         <apex:column style="vertical-align:top;">
+                                         <table>
+                                          <apex:repeat value="{!jobr.jobTasksWrapper}" var="jtaskWrapper">
+                                          <tr><td  style="width:45%">
+                                             <apex:outputText value="{!jtaskWrapper.jobTasks.Name}">
+                                              
+                                             </apex:outputText></td>
+                                           <td style="width:20%">  <apex:outputText value="{0,date,MM'/'dd}" >
+                                                <apex:param value="{!jtaskWrapper.jobTasks.Revised_Due_Date__c}"/> 
+                                             </apex:outputText></td>
+                                          <td><apex:outputText value="{!jtaskWrapper.jobTasksRole.User__c}" >
+                                               
+                                             </apex:outputText>
+                                             </td></tr>
+                                          </apex:repeat></table>
+                                         </apex:column> 
+                                         
+                                         <apex:column style="vertical-align:top;">
+                                           <apex:repeat value="{!jobr.jobTags}" var="jtag">
+                                              <apex:outputText value="{!jtag.Name}">
+                                               </apex:outputText><br/>
+                                           </apex:repeat>
+                                         </apex:column>    
+                                   </apex:dataTable>
+                                   
+                                </apex:column>
+                            
+                                
+                           </apex:dataTable>
+                          <hr color="black" style="height:.1px;"/>
+                      </apex:column>       
+                    </apex:dataTable>
+                     
+                    
+                    <apex:outputPanel rendered="{!(campWrapper.Size == 0) && (isTrue == True)}">
+                        <b>No records to display </b>
+                    </apex:outputPanel>
+                    
+               
+                           
+           </apex:pageBlock>
+           
+    
+     
+     <script>
+         function setFocusOnLoad(){}
+     </script>
+    </apex:form-->
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,11 @@
+<apex:page standardController="Billboard_Invoice__c" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+     
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="CreateBillboardInvoiceLightning"/>
+    </apex:outputPanel>
+    
+     <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+         <apex:include pageName="CreateBillboardInvoice"/>
+    </apex:outputPanel>
+     
+</apex:page>

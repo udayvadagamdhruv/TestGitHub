@@ -1,0 +1,156 @@
+<apex:page controller="JobCostReport" standardStylesheets="false" showHeader="false" sidebar="false" readOnly="true" renderAs="PDF">
+ <head> 
+<style type="text/css">
+    div.tab
+    {
+        width:100%;
+        border:solid black;
+    }
+
+    @page
+  {
+
+    /* Landscape orientation */
+    size:landscape;
+
+    /* Put page numbers in the bottom right corner of each
+    page in the pdf document. */
+   @bottom-right 
+   {
+      content: "Page " counter(page);
+      font-family: sans-serif;
+      font-size:8pt;
+      
+    }
+     @bottom-left 
+     {
+      
+    content: " <apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+    background-repeat: no-repeat;
+    font-size:8pt;
+    font-family: sans-serif;
+    }
+ }
+  body 
+  {
+   font-family: sans-serif;
+   font-size:8pt;
+  }
+ th
+  {
+      font-size:10pt
+      font-style:bold;
+      font-family: sans-serif;
+  }
+ td
+  {
+    font-size:8pt;
+    font-family: sans-serif;
+  }
+  
+   div.footer {
+    position : running(footer) ;
+}
+  
+ 
+
+
+  /* you can even define custom classes that utilize your static resources */
+ <!-- .checkbox
+  {
+     width: 19px;
+     height: 16px;
+     background-image:url({!URLFOR($Resource.Checkbox)});
+     background-repeat: no-repeat;
+  } -->
+</style>
+</head>
+    <body>
+         <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+         <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+         <div style="float:right;padding-right:15px;font-size:15px;font-family: sans-serif;font-weight:bold">
+                JOB COST REPORT
+          </div>
+            <br/><br/>
+            <apex:form >
+            <apex:pageBlock > 
+<div> 
+ <table width="100%">
+  <tr style="font-size:10pt;">
+    <th width="8%"><b>{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.label}</b></th>
+    <th width="21%"><b>{!$ObjectType.Job__c.Fields.Name.label}</b></th>
+    <th width="32%"><b>{!$ObjectType.Job__c.Fields.JS_Client__c.label}</b></th>
+    <th width="11%"><b>{!$ObjectType.Job__c.Fields.Estimate_Total__c.label}</b></th>
+    <th width="10%"><b>{!$ObjectType.Job__c.Fields.PO_Amount__c.label}</b></th>
+    <th width="12%"><b>{!$ObjectType.Job__c.Fields.Invoice_Actual_Amounts__c.label}</b></th>
+    <th width="10%"><b>{!$ObjectType.Job__c.Fields.Difference_PO_Invoice__c.label}</b></th>
+  </tr>
+   <tr>
+       <td colspan="7"><hr color="black"/></td>
+   </tr>
+      
+ <apex:repeat value="{!allAccs}" var="parent">
+    <table width="100%">
+    
+                          <tr width="100%">
+                              <td width="100%">
+                                <table width="100%" style = "background-color:#EEEEEE;;margin-bottom:-10px;">
+                                    <tr>
+                                          <td width="100%">
+                                               <b> <apex:outputText value="{!parent.Name}" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                          </td>
+                                    </tr>
+                                </table>
+                               </td>
+                            </tr>
+    
+      <!--<tr><td><b><apex:outputField value="{!parent.Name}"/></b></td></tr>-->
+           <tr>
+                     <td> <br/>
+                         <table width="100%">
+             
+                             <apex:repeat value="{!parent.Jobs__r}" var="child">
+                                  <tr>
+                                      <td width="7%" valign="top">
+                                       <apex:outputField value="{!child.Job_Auto_Number__c}"/><br/>
+                                      </td>
+                                      <td width="20%" valign="top">
+                                        <apex:outputField value="{!child.Name}"/><br/>
+                                      </td>
+                                       <td width="30%" valign="top">
+                                         <apex:outputField value="{!child.JS_Client__r.Name}"/><br/> 
+                                       </td>
+                                        <td width="10%" valign="top" style="text-align:right;">
+                                        <apex:outputField value="{!child.Estimate_Total__c}"/><br/>
+                                      </td>
+                                       <td width="10%" valign="top" style="text-align:right;">
+                                        <apex:outputField value="{!child.PO_Amount__c}"/><br/>
+                                       </td>
+                                        <td width="10%" valign="top" style="text-align:right;">
+                                         <apex:outputField value="{!child.Invoice_Actual_Amounts__c}"/><br/>
+                                       </td>
+                                       <td width="13%" valign="top" style="text-align:right;">
+                                           <apex:outputField value="{!child.Difference_PO_Invoice__c}"/><br/>
+                                       </td>     
+                                </tr> 
+                            </apex:repeat>
+                        
+                        </table>
+                    </td>
+                </tr>
+         <tr>
+             <td width="100%" colspan="7">
+             <!-- <hr/> -->
+             </td>
+        </tr>
+      
+      </table>  
+    </apex:repeat> 
+    </table>
+   </div> 
+ 
+ </apex:pageBlock>  
+<!-- <apex:outputLabel value="{!today}"></apex:outputLabel> -->
+ </apex:form>
+</body>        
+</apex:page>

@@ -1,0 +1,36 @@
+<apex:page controller="addPOLineItem" tabStyle="Job__c">
+ <apex:form >
+    <apex:pageBlock rendered="{!roleWraps.size > 0}">
+    <apex:pagemessages id="pdMSG"/>
+        <apex:pageBlockTable value="{!roleWraps}" var="p" id="ProductsTable">
+            <apex:column headerValue="Action">
+                <apex:inputCheckbox value="{!p.checked}"/>
+            </apex:column>
+            <apex:column value="{!p.e.Estimate_Line_Item__c}" headerValue="{!$ObjectType.Invoice_Line_Item__c.Fields.Estimate_Line_Item__c.Label}" rendered="{!(Not(ShowProductionEstimate))}"/>
+             <apex:column value="{!p.e.Production_Estimate__c }" headerValue="{!$ObjectType.Invoice_Line_Item__c.Fields.Production_Estimate__c.Label}" rendered="{!(ShowProductionEstimate)}"/>
+            
+<!--            <apex:column value="{!p.e.Amount__c}" headerValue="{!$ObjectType.Invoice_Line_Item__c.Fields.Amount__c.Label}" />  -->
+            <apex:column headerValue="Amount">
+               <apex:outputText id="txt1" value="{!p.Calc_amnt}" /> <!-- onchange="doSearch(this.value,{!p.Calc_amnt})"/ -->
+           </apex:column>
+           
+           <apex:column value="{!p.e.Quantity__c}" headerValue="Quantity"  rendered="{!(Not(ShowProductionEstimate))}"/>
+           
+            <apex:column value="{!p.e.Quantity_production__c}" headerValue="Quantity" rendered="{!(ShowProductionEstimate)}"/>
+           
+        </apex:pageBlockTable>
+        <br/>
+        <apex:commandButton action="{!Save}" value="Add" title="Click on the button to Add PO Line Items."/>&nbsp;&nbsp;
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+    </apex:pageBlock>
+    <br/>
+    
+    <apex:pageBlock rendered="{!roleWraps.size <= 0}"> 
+        <p>
+       <b>   No PO Line Items are available for this Invoice. </b>
+        </p>       
+        <br/>
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+   </apex:pageBlock>
+</apex:form> 
+</apex:page>

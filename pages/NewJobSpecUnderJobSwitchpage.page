@@ -1,0 +1,8 @@
+<apex:page standardController="Job_Spec__c" extensions="NewJobSpecUnderJobSwitchpageExt" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+    <apex:outputPanel id="cls" rendered="{! !isMobile}">
+        <apex:include pageName="CreateNewJobSpec"/>
+    </apex:outputPanel> 
+    <apex:outputPanel id="ltng" rendered="{!isMobile}">
+         <apex:include pageName="createnewjobspecMobile"/>
+    </apex:outputPanel>
+</apex:page>

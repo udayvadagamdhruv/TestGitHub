@@ -1,0 +1,210 @@
+<!-- This page is used to display Jobs related to selected Campaign -->
+<apex:page controller="DisplayJobsUnderCampaignController" >
+
+    <head>
+        <style>
+            .hd {
+                text-align: right;
+                padding-right: 20px!important;
+            }
+        </style>
+    </head>
+
+    <apex:form id="CjobsId" >
+    <apex:pageMessages > </apex:pageMessages>
+        <table>
+            <tr>
+                <td>
+                    <apex:image url="{!$Resource.JobLogo}" width="40" height="40" /> </td>
+                <td style="vertical-align: middle;">
+                    <h1>Jobs</h1></td>
+            </tr>
+        </table>
+
+        <apex:pageBlock >
+            <table>
+                <tr>
+                    <td width="10%;">
+                        <b> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}" /> </b>
+                    </td>
+                    <td style="margin-right:15px;">&nbsp;&nbsp;
+                        <apex:selectList id="StatusList" value="{!strStatus}" size="1">
+                            <apex:selectOptions value="{!StatusList}" />
+                            <apex:actionSupport event="onchange" rerender="pgt1,pgt2" action="{!populateJobList}" />
+                        </apex:selectList>
+                    </td>
+                
+                     <td>
+                       &nbsp;&nbsp;&nbsp;&nbsp; <b> <apex:outputLabel value="{!$ObjectType.Campaign_Template__c.Label}" /> </b>
+                    </td>
+                    <td>
+                        <apex:selectList id="campTemplist" value="{!selectedCTemp }" size="1">
+                            <apex:selectOptions value="{!CampTemp}" />
+                          </apex:selectList> 
+                     </td> 
+                     <td style="margin-right:15px;"> 
+                        &nbsp;&nbsp;&nbsp;&nbsp; <apex:commandbutton value="Import Jobs" action="{!ImpCampTempJobs}"   rerender="pgt1,pgt2,CjobsId" />
+                     </td>
+                     
+                    
+                      <td style="margin-right:15px;"> 
+                         &nbsp;&nbsp;&nbsp;&nbsp;<apex:commandbutton value="New Job" action="{!createNewJob}" />
+                     </td>
+                </tr>
+            </table>
+            <br/>
+            <b> <apex:outputLabel value="You are Viewing recent thousand Jobs" rendered="{!lstJob.size == 1000}" /></b>
+            <apex:pageBlock id="pgt1">
+                <apex:pageBlockTable value="{!lstJob}" var="jt" rendered="{!lstJob.Size > 0}">
+
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" value="{!jt.Job_Auto_Number__c}"> </apex:column>
+
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.Name.Label}">
+                        <apex:outputLink value="/apex/JobListView?id={!jt.id}" target="_top">
+                            {!jt.Name}
+                        </apex:outputLink>
+                    </apex:column>
+                    <!--Yogini 07May13 added new column to the list and changed the sequence of existing column-->
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.Status__c.Label}" value="{!jt.Status__c}"> </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.Budgeted_Cost__c.Label}" value="{!jt.Budgeted_Cost__c}" style="text-align:right;padding-right:20px;" headerClass="hd" width="10%"> </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.Estimate_Total__c.Label}" value="{!jt.Estimate_Total__c}" style="text-align:right;padding-right:20px;" headerClass="hd" width="10%"> </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.Invoice_Actual_Amounts__c.Label}" value="{!jt.Invoice_Actual_Amounts__c}" style="text-align:right;padding-right:20px;" headerClass="hd"> </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}" value="{!jt.JS_Client__c}"> </apex:column>
+
+                </apex:pageBlockTable>
+
+                <apex:pageBlockSection rendered="{!lstJob.size == 0}">
+                    <apex:pageBlockSectionItem >
+                        <b>No records to display</b>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+
+            <apex:pageBlock id="pgt2">
+
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <h1>Attached Files</h1></td>
+                    </tr>
+
+                </table>
+                <apex:pageBlockSection title="Notes Section" columns="1">
+
+                    <apex:outputPanel rendered="{!lstJobNotes.size > 0}">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Job
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+                                    <th>
+                                        Body
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!lstJobNotes}" var="jt">
+                                    <apex:repeat value="{!jt.Notes}" var="Notes">
+                                        <tr>
+                                            <td width="25%">
+                                                <a href="/apex/JobListView?id={!jt.id}"> {!jt.Name} - {!jt.Job_Auto_Number__c} </a>
+                                            </td>
+                                            <td width="25%">
+                                                <a href="/apex/JobNoteDetailPage?id={!Notes.Id}"> {!Notes.Title}</a>
+                                            </td>
+
+                                            <td width="50%">
+                                                <apex:outputField value="{!Notes.Body}" />
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+
+                    </apex:outputPanel>
+
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="Attachments Section" columns="1">
+
+                    <apex:outputPanel >
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Job
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!lstJobAttach}" var="jt" rendered="{!lstJobAttach.size > 0}">
+                                    <apex:repeat value="{!jt.Attachments}" var="Att">
+                                        <tr>
+                                            <td width="25%">
+                                                <a href="/apex/JobListView?id={!jt.id}"> {!jt.Name} - {!jt.Job_Auto_Number__c} </a>
+                                            </td>
+                                            <td width="25%">
+                                                <a href="/servlet/servlet.FileDownload?file={!Att.Id}"> {!Att.Name}</a>
+                                            </td>
+
+                                        </tr>
+                                    </apex:repeat>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+
+                    </apex:outputPanel>
+
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection title="Chatter Files Section" columns="1">
+
+                    <apex:outputPanel >
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Job
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!lstJobChatter}" var="jt" rendered="{!lstJobChatter.size > 0}">
+                                    <apex:repeat value="{!jt.ContentDocumentLinks}" var="Chat">
+                                        <tr>
+                                            <td width="25%">
+                                                <a href="/apex/JobListView?id={!jt.id}"> {!jt.Name} - {!jt.Job_Auto_Number__c} </a>
+                                            </td>
+                                            <td width="25%">
+                                                <a href="/{!Chat.ContentDocumentId}"> {!Chat.ContentDocument.Title}</a>
+                                            </td>
+
+                                        </tr>
+                                    </apex:repeat>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+
+                    </apex:outputPanel>
+
+                </apex:pageBlockSection>
+
+            </apex:pageBlock>
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

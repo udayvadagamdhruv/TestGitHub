@@ -1,0 +1,3 @@
+<apex:page standardController="Job_Spec__c" tabStyle="Job__c" action="{!pagedir}" extensions="SpecViewSwitchExt" sidebar="false" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="False">
+ 
+</apex:page>

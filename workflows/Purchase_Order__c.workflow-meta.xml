@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Record_Type_will_be_Assign</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>When_PO_Status_is_Sent</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Record Type will be Assign</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>When Status is Sent</fullName>
+        <actions>
+            <name>Record_Type_will_be_Assign</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>Purchase_Order__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Sent</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Purchase_Order__c.Invoice_Created__c</field>
+            <operation>equals</operation>
+            <value>Partially,Created</value>
+        </criteriaItems>
+        <description>When Status Is Sent,PO Record will be Read Only</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

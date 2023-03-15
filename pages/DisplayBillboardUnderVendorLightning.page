@@ -1,0 +1,82 @@
+<apex:page controller="DisplayBillboardUnderVendorController" readOnly="true" tabStyle="Billboard__c" sidebar="false"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+
+     <head>
+         <style>
+           .hd
+              {
+              text-align:right;
+              padding-right:20px!important;
+              }
+            </style>
+      </head>
+      <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+      <div class="slds" style="padding:10px;">
+   <apex:form > 
+      
+   <apex:outputPanel >
+      
+   
+             <table style="slds-table">
+                <tr >
+                  
+                   <td style="margin-right:15px;" >&nbsp;&nbsp;  
+                        <apex:selectList id="StatusList" value="{!strStatus}" size="1" styleClass="slds-input">                              
+                           <apex:selectOptions value="{!StatusList}"/>
+                            <apex:actionSupport event="onchange" rerender="pgt1" action="{!populatebbList}"/>
+                        </apex:selectList></td>
+                                 
+               </tr>
+             </table> <br/>
+              <b> <apex:outputLabel value="You are Viewing recent thousand Jobs" rendered="{!BB.size == 1000}" /></b>  
+               <apex:outputPanel id="pgt1">  
+             <div>
+                   <apex:outputPanel layout="block" style="overflow:auto;height:150px;"  rendered="{!BB.size > 0}" >
+                          <apex:dataTable value="{!BB}" var="b" styleClass="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover"> <br/><br/><br/> 
+                               
+                             <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Name.Label}">
+                     
+                                   <apex:outputLink tabindex="tab1" value="/apex/Billboarddetailpage?id={!b.Id}">{!b.Name}</apex:outputLink> 
+                              </apex:column>   
+                              
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Title__c.Label}">
+                                   <apex:outputField value="{!B.Title__c}"/>
+                              </apex:column>       
+                             
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Location__c.Label}">
+                                  <apex:outputfield value="{!B.Location__c}"/>
+                              </apex:column>
+                              
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.BB_Vendor__c.Label}" >
+                                 <apex:outputField value="{!b.BB_Vendor__c}"/>
+                              </apex:column> 
+                               <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Client_Name__c.Label}" >
+                                 <apex:outputField value="{!b.Client_Name__c}"/>
+                              </apex:column>
+                                    
+                              <apex:column headerValue="{!$ObjectType.Billboard__c.Fields.Expiration_Date__c.Label}" >
+                                 <apex:outputField value="{!b.Expiration_Date__c}"/>
+                              </apex:column>
+                              
+                          </apex:dataTable>
+                  </apex:outputpanel><br/>
+                  
+           </div>
+             
+             
+             
+             
+             
+         
+         
+      
+               <apex:outputPanel rendered="{!BB.size == 0}">
+                   
+                       <b>No records to display</b>
+                               
+                 </apex:outputPanel>
+          </apex:outputPanel>
+    </apex:outputPanel>
+ </apex:form> 
+</div >
+
+</apex:page>

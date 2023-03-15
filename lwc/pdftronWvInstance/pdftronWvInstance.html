@@ -1,0 +1,14 @@
+<template>
+   
+    
+       <div class="pdf_viewer slds-grid slds-grid--vertical-stretch" id='pdf_viewer' data-id="pdfview" onmouseout={mouseOut}>
+        <div if:true={loadSaveFinished}>
+            <lightning-spinner variant="brand" 
+                               alternative-text="Loading.."     
+                               size="medium" >
+            </lightning-spinner>
+            
+           </div>
+    </div>
+    
+</template>

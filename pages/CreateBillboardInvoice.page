@@ -1,0 +1,52 @@
+<apex:page standardController="Billboard_Invoice__c" extensions="CreateBillboardInvoiceExtension" tabStyle="Billboard__c">
+  <apex:form >
+      <apex:sectionHeader title="Billboard Invoice Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+ 
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.Billboard__c.Label}"/>
+                   <apex:outputfield value="{!Billboard_Invoice__c.Billboard__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            
+            
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Invoice__c.Fields.Billboard_Vendor__c.Label}"/>
+               <apex:selectList id="VendorName" value="{!VendorName}" size="1" >
+                     <apex:selectOptions value="{!Vendors}"></apex:selectOptions>
+                  </apex:selectList> 
+            </apex:pageBlockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.Name.Label}"/>
+                   <apex:inputfield value="{!Billboard_Invoice__c.Name}"/>
+               </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Invoice__c.Fields.BB_Invoice_Due_Date__c.Label}"/>
+                   <apex:inputfield value="{!Billboard_Invoice__c.BB_Invoice_Due_Date__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            
+             
+            
+            
+            
+  
+  
+  
+      </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>

@@ -1,0 +1,21 @@
+<!-- This page is used to override the delete button of Media Type Object -->
+<apex:page standardController="Media_Type__c" extensions="DeleteMediaType" showHeader="false" sidebar="false">
+
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+        
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}" reRender="msg,po"/> 
+           <apex:outputPanel id="po">
+              <center> <apex:commandLink action="{!mtlistback}" value="Click here to Go to List" rendered="{!(isError!=False)}"></apex:commandLink> </center>
+           </apex:outputPanel>
+        </apex:form>
+
+</apex:page>
+<!-- End of Page -->

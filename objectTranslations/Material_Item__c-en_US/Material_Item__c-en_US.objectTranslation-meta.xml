@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Material Item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Material Items</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Each</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Sheet</name>
+    </fieldSets>
+    <fieldSets>
+        <label></label>
+        <name>Size</name>
+    </fieldSets>
+    <layouts>
+        <layout>Each Page Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Material Item Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Sheet Page Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Size Pagelayout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label></label>
+        <name>Each</name>
+    </recordTypes>
+    <recordTypes>
+        <label></label>
+        <name>Sheet</name>
+    </recordTypes>
+    <recordTypes>
+        <label></label>
+        <name>Size</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

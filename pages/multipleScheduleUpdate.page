@@ -1,0 +1,40 @@
+<apex:page controller="multipleScheduleUpdateController" tabStyle="Job__c">
+    <apex:form id="fm1">
+        <apex:actionFunction action="{!saveRsc}" name="saveRsc" reRender="pgb">
+        </apex:actionFunction>
+        
+        <script type="text/javascript">
+            function checkWithUser(){
+                if(confirm('This will Reschedule all the selected jobs with current job\'s Start/Due Date. Do you want to proceed ?')){
+                  //alert("Proceed.");
+                  saveRsc();
+                }
+            } 
+        </script>
+        <apex:pageBlock >
+            <apex:pagemessages />
+            <apex:pageBlockButtons >
+               <apex:commandButton onclick="checkWithUser();" reRender="fm1" value="Save" rendered="{!jbWrap.size  > 0}"></apex:commandButton>
+               <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+            </apex:pageBlockButtons>
+          
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem rendered="{!jbWrap.size  > 0}">
+                    <apex:outputLabel value="Jobs : "/>
+                    <apex:dataTable value="{!jbWrap}" var="jbw" >
+                        <apex:column >
+                           <apex:inputCheckbox value="{!jbw.varJbSelect}" onclick="deSelectOthers(this)"/>  
+                        </apex:column>
+                 
+                        <apex:column >
+                            <apex:outputField value="{!jbw.varJb.Name}" />
+                        </apex:column>
+                    </apex:dataTable>
+                </apex:pageBlockSectionItem>
+                <apex:outputPanel rendered="{!jbWrap.size  <= 0}">
+                    <apex:outputText value="No Active jobs for this Campaign"></apex:outputText>
+                </apex:outputPanel>
+            </apex:pageblocksection>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

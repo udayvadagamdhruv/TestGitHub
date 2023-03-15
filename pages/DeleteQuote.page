@@ -1,0 +1,16 @@
+<!-- This page is used to Override Delete button of Quote object -->
+<apex:page standardController="Quote__c" extensions="DeleteQuoteExtension" sidebar="false" showHeader="false">
+        
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="VenBBInvSec" label="Vendor Billboard Invoice"  description="This will reflect the Vendor Billboard Invoice Label"/>
+</design:component>

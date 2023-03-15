@@ -1,0 +1,73 @@
+<apex:page Controller="DisplayBillboardInvoicePaymentsCtrl" >
+  
+  
+<head>
+<style>
+ #table_id td
+        {
+            border:0px;
+        }
+</style>
+
+</head>
+ 
+ <apex:form >
+  <apex:pageBlock >
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+    <apex:commandButton action="{!createIALI}" value="Billboard Invoice Payments" id="btn2" rendered="{!$ObjectType.BB_Invoice_Payment__c.Createable}"/> 
+       <apex:commandButton value="Save" action="{!save}" id="saveButton1" style="display: none;"/>  
+       <apex:commandButton value="Cancel" id="cancelButton1" action="{!cancelme}" style="display: none;"/> 
+       </span>
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!BBILI}" var="Item" rendered="{!BBILI.Size>0}">
+         <apex:column headerValue="Action" width="10%">
+         
+           <apex:commandButton value="Edit" action="{!EditBBIL}" reRender="hiddenBlock2" rendered="{!$ObjectType.BB_Invoice_Payment__c.Updateable}">
+                  <apex:param name="param1" value="{!Item.id}" assignTo="{!strBBILI}" ></apex:param>
+              </apex:commandButton>
+         
+              <apex:commandButton value="Delete" action="{!deleteIALI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" rendered="{!$ObjectType.Billboard_Invoice_Line_Item__c.Deletable}">
+                  <apex:param name="param2" value="{!Item.id}" assignTo="{!strBBILI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+         
+        
+          <apex:column headerValue="{!$ObjectType.BB_Invoice_Payment__c.Fields.name.Label}">
+              <apex:outputLink value="/{!Item.Id}">{!Item.Name}</apex:outputlink>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.BB_Invoice_Payment__c.Fields.Check_New__c.Label}">
+              <apex:outputfield value="{!Item.Check_New__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.BB_Invoice_Payment__c.Fields.Check_Date__c.Label}">
+              <apex:outputfield value="{!Item.Check_Date__c}"/>
+          </apex:column>
+          
+          
+          <apex:column headerValue="{!$ObjectType.BB_Invoice_Payment__c.Fields.Vendor__c.Label}">
+              <apex:outputfield value="{!Item.Vendor__c}"/>
+          </apex:column>
+          <apex:column headerValue="{!$ObjectType.BB_Invoice_Payment__c.Fields.Check_Amount__c.Label}">
+              <apex:outputfield value="{!Item.Check_Amount__c}"/>
+          </apex:column>
+          
+          
+     
+     </apex:pageBlockTable>
+     
+     
+        <apex:pageBlockSection rendered="{!BBILI.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+  
+</apex:page>

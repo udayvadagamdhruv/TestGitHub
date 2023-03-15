@@ -1,0 +1,45 @@
+<apex:page standardController="Job__c" extensions="JobTeamExtension" id="thePage">
+    <apex:form id="theForm">
+      <apex:pageBlock id="thePageBlock" title="Team">
+         
+         <div>
+          <apex:pageBlockTable value="{!lstJobTeam}" var="lst" id="thePageBlockable" rendered="{!lstJobTeam.size > 0}">
+              <apex:column headerValue="{!$ObjectType.Job_Team__c.Fields.Role__c.Label}">
+                  {!lst.Role__c}
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Job_Team__c.Fields.Staff__c.Label}">
+                    <apex:outputField value="{!lst.Staff__c}" id="stfOut"/> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+           
+              <apex:column headerValue="Action">
+               <apex:commandButton value="Add Staff" action="{!AssignTheUser}" reRender="hiddenBlock">
+                     <apex:param name="param1" value="{!lst.Id}" assignTo="{!strJTRID}"> </apex:param>
+              </apex:commandButton>
+             </apex:column>
+         
+             <apex:pageBlock id="hiddenBlock" rendered="true"></apex:pageblock>
+                 <apex:column headerValue="Action">
+                   <apex:commandButton value="Delete Role" action="{!deleteRole}" reRender="hiddenBlock1">
+                     <apex:param name="param1" value="{!lst.Id}" assignTo="{!strJTRID}"> </apex:param>
+                   </apex:commandButton>
+                 </apex:column> 
+             
+             <apex:pageBlock id="hiddenBlock1" rendered="true"></apex:pageBlock>
+                  </apex:pageBlockTable>
+             </div> 
+          
+           <apex:pageBlockSection rendered="{!lstJobTeam.size <= 0}">
+               <apex:pageBlockSectionItem >
+                   <b>No records to display</b>
+               </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection>  
+         
+           <apex:pageBlockButtons location="top">
+              <apex:commandButton value="Add Role" action="{!addNewRole}"/> 
+         </apex:pageBlockButtons>
+      </apex:pageBlock>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

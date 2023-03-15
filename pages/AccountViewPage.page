@@ -1,0 +1,10 @@
+<!-- This page is used to display Client record. -->
+<apex:page standardController="Account">
+    
+    <apex:detail relatedList="true" showChatter="true" title="true"/>
+    
+    <!-- included page will display list of Job for which client is assigned under Detail --> 
+    <apex:include pageName="DisplayJobUnderClientDetail"/>
+    
+</apex:page>
+<!-- End OF Page-->

@@ -1,0 +1,16 @@
+<apex:page standardController="GL_Department__c" extensions="EditGLDepartmentSwitchExt" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/EditGLDepartment?id="+'{!GLDepId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="EditGLDepartmentLightning"/>
+    </apex:outputPanel>
+</apex:page>

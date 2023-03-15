@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Search_Jobs</fullName>
+    <availability>online</availability>
+    <description>This button is used to display Custom Search Screen</description>
+    <displayType>massActionButton</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>Search Jobs</masterLabel>
+    <openType>noSidebar</openType>
+    <page>Jobs_Serach_Lightning_Component</page>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+</WebLink>

@@ -1,0 +1,75 @@
+<apex:page standardController="Estimate_Line_Items__c" extensions="DisplayProductionEstSpecInEstimateTabExt">
+  <apex:form id="pb1">
+  <apex:pageMessages > </apex:pageMessages>
+  <br/>
+   <apex:inputHidden value="{!errorMsg}" id="hiddenElement"/>
+                           
+                         <script>
+     
+                         function dosomething(){
+                          var hiddenElement=document.getElementById("{!$Component.hiddenElement}").value;
+                          
+                          var isfalse=(hiddenElement=='false');
+                          if(isfalse){
+                            //alert(typeof(hiddenElement));
+                            //alert(typeof(isfalse));
+                            //alert(hiddenElement);
+                           window.location.reload(true);
+                         }
+                         }
+                         </script>   
+                           
+     <apex:pageBlock title="Production Estimate Spec Items" >      
+        <table width="100%" >
+         
+          <tr>
+             <td align="left" width="40%" style="padding-top:10px;" >
+                 <apex:outputLabel value="Production Spec Template"></apex:outputLabel>&nbsp;&nbsp;
+                        <apex:selectList id="theSelectList" value="{!ProductionSpecTempName}" size="1" >
+                             <apex:selectOptions value="{!ProductionSpecTemplate}" id="sp"></apex:selectOptions>
+                        </apex:selectList> &nbsp; 
+                        
+                          <apex:commandButton value="Import Spec Items" action="{!importSpecs}"  reRender="pb1" oncomplete="dosomething();"  id="btn1"></apex:commandButton>&nbsp;
+             </td>   
+             
+             <td align="left" style="padding-top:10px;">  
+                 <apex:commandButton value="Add Spec Item" action="{!addNewSpecs}" id="addspec"/>&nbsp;
+                 <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display:none;"/>&nbsp;
+                 <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display:none;" reRender="pb1"/>&nbsp;                                     
+            </td>
+                
+          </tr>
+        </table>
+       <br/>
+        
+         <apex:pageBlockTable value="{!lstEstli}" var="lst" rendered="{!lstEstli.size>0}" id="results">
+             
+             <apex:column headerValue="Action" width="13%">
+                 <apex:commandButton value="Edit" action="{!editSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Estimate_Spec_Item__c.updateable}">
+                    <apex:param name="param1" value="{!lst.id}" assignTo="{!SpecId}"></apex:param>
+                 </apex:commandButton> &nbsp;
+                 
+                 <apex:commandButton value="Delete" action="{!DelSpec}" reRender="hiddenBlock1"  rendered="{!$ObjectType.Estimate_Spec_Item__c.updateable}">
+                    <apex:param name="param1" value="{!lst.id}" assignTo="{!SpecId}"></apex:param>
+                 </apex:commandButton> &nbsp;
+             </apex:column>
+             
+             <apex:column headerValue="Name" width="25%">
+                <apex:outputField value="{!lst.name}">
+                    <apex:inlineEditSupport event="ondblclick" hideOnEdit="addspec" showOnEdit="saveButton,cancelButton"/>
+                   &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9"/> 
+                </apex:outputField>
+             </apex:column>
+                  
+             <apex:column headerValue="Description" >
+                 <apex:outputField value="{!lst.Description__c}">
+                     <apex:inlineEditSupport event="ondblclick" hideOnEdit="addspec" showOnEdit="saveButton,cancelButton"/>
+                   &nbsp;&nbsp; <apex:image url="{!$Resource.Plus}" width="9" height="9"/> 
+                </apex:outputField>
+            </apex:column>
+            
+        </apex:pageBlockTable> 
+        
+     </apex:pageBlock> 
+   </apex:form>
+</apex:page>

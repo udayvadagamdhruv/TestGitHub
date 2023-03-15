@@ -1,0 +1,45 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" controller="invoiceunderjobs">
+    <aura:attribute name="recordId" type="id" />  
+    <aura:attribute name="Jobs" type="List" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="selectedjobrecords" type="List"/>
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/>
+    <aura:attribute name="initialRows" type="Integer" default="10"/>
+    <aura:attribute name="rowsToLoad" type="Integer" default="10"/>
+    <aura:attribute name="totalNumberOfRows" type="Integer" default="10"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Please scroll down to load more data"/>
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false"/>
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0"/>
+    <aura:attribute name="rowsToAdd" type="Integer" default="10"/>
+    <aura:attribute name="currentCount" type="Integer" default="10"/>
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}"/>
+    
+    
+    
+    <div class="slds-m-around_xx-large" style="height: 400px">
+        <div class="slds-clearfix">
+            <div class="slds-float_right">
+                <lightning:button label="create Invoice"  onclick="{!c.select}"  />
+            </div>
+        </div>
+        <br/>
+        <lightning:datatable
+                             keyField="id"
+                             data="{! v.Jobs }"
+                             columns="{! v.columns }"
+                             showRowNumberColumn="true"
+                             hideCheckboxColumn="false"
+                             onloadmore="{!c.handleLoadMoreRecords}"
+                             loadMoreOffset="{!v.loadMoreOffset}"
+                             rowNumberOffset="0"
+                             onrowselection="{!c.viewRecord}"
+                             enableInfiniteLoading="true"
+                             />
+        <br/>
+      <!--  <div class="slds-float_right">
+            <strong>{!v.loadMoreStatus}</strong>
+        </div>-->
+        <br/>
+        
+    </div>
+</aura:component>

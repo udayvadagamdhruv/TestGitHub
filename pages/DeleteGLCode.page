@@ -1,0 +1,22 @@
+<!-- This page is used to override the delete button of GLCode object -->
+<apex:page standardcontroller="GL_Code__c" extensions="DeleteGLCodeExtension" showHeader="false" sidebar="false">
+  
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+     
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!checkDelete}" rerender="msg,po"/> 
+            <apex:outputPanel id="po">
+               <center> <apex:commandLink action="{!glcodepageback}" rendered="{!(isError!=False)}" value="Click here to Go to List"/></center>
+            </apex:outputPanel>
+            
+        </apex:form>
+  
+</apex:page>
+<!-- End of apex page -->

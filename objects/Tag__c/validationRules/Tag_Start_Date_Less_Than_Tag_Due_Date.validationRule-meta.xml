@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tag_Start_Date_Less_Than_Tag_Due_Date</fullName>
+    <active>false</active>
+    <description>Tag Due Date must be greater than Tag Start Date</description>
+    <errorConditionFormula>Tag_Start_Date__c  &gt;  Tag_Due_Date__c</errorConditionFormula>
+    <errorDisplayField>Tag_Due_Date__c</errorDisplayField>
+    <errorMessage>Due Date must be greater than Start Date</errorMessage>
+</ValidationRule>

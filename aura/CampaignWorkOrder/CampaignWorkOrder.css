@@ -1,0 +1,19 @@
+@media (min-width: 70em){
+    .THIS .slds-modal__container {
+        margin: 0 auto;
+        width: 100% !important;
+        max-width: 50rem !important;
+        min-width: 25rem !important;
+        max-height: 50rem !important;
+        min-height: 25rem !important;
+    }
+}
+
+
+.THIS .modalbody{ 
+     height : auto; 
+  } 
+.THIS .modal-body{ 
+     height : 50rem !important; 
+     max-height: 50rem !important; 
+  }

@@ -1,0 +1,7 @@
+<!-- This Page is Used to display Detail of GLCode -->
+
+<apex:page standardController="GL_Code__c" tabStyle="MyAdmin__tab">
+  <apex:form >
+    <apex:detail relatedList="true" showChatter="true"/>
+  </apex:form>
+</apex:page>

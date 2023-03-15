@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Complete_Jobs</fullName>
+    <availability>online</availability>
+    <description>Update the records to &apos;Completed&apos;</description>
+    <displayType>massActionButton</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>Complete Jobs</masterLabel>
+    <openType>noSidebar</openType>
+    <page>Jobs_Mass_Update_Lightning_Component</page>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+</WebLink>

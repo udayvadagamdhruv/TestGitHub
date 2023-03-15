@@ -1,0 +1,178 @@
+<aura:component controller="job_Cost_Tab_cmp" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="isAccess" type="list" /><!-- to check Quote permissions(creatable,editable)-->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="ItemLink" />
+    <aura:attribute name="sortedDirection" type="String" default="ASC" />
+    <aura:attribute name="ShowProductionEstimate" type="boolean" default="false" />
+    <aura:attribute name="isaddClick" type="boolean" default="false" />
+    <aura:attribute name="Selected_ESTLI" type="Sobject[]" default=""/>
+    
+    <aura:attribute name="PoLineItemsSection" type="String" default="PO Line Items" required="true" access="global"/>
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="ChangdVendorApproveList" event="c:Approved_Estimate_LI" action="{!c.handleselectedRecord}" />
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>  
+    
+    
+    <aura:if isTrue="{!v.isAccess[3]}">
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="POLineItems">
+        <lightning:accordionSection name="POLineItems" label="{!v.PoLineItemsSection}"  class="slds-card" >
+            <aura:if isTrue="{!!v.isMobile}">
+                <aura:if isTrue="{!v.simpleRecord.Status__c!='Sent'}">
+                    <center>  
+                        <lightning:button  label="{!v.ShowProductionEstimate?'Add Production Estimate Line Items':'Add Estimate Line Items'}"
+                                          title="{!v.ShowProductionEstimate?'Add Production Estimate Line Items':'Add Estimate Line Items'}" onclick="{! c.addLineItems}"/>
+                    </center> 
+                </aura:if>
+                <br/>
+                <aura:if isTrue="{!empty(v.data)}">
+                    <b>No records to display</b>
+                    <aura:set attribute="else" >    
+                        <lightning:datatable class="POLItablecss"
+                                             aura:id="POLineItemTable"
+                                             columns="{! v.columns }"
+                                             data="{! v.data }"
+                                             keyField="Id"
+                                             onsave ="{!c.onSave}"
+                                             hideCheckboxColumn="true"
+                                             errors="{!v.errors}"
+                                             onsort="{!c.updateColumnSorting}"
+                                             sortedBy="{!v.sortedBy}"
+                                             sortedDirection="{!v.sortedDirection}" 
+                                             onrowaction="{!c.handleRowAction}" />
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+            <aura:if isTrue="{!v.isMobile}">
+                <aura:if isTrue="{!empty(v.data)}">
+                    <b>No records to display</b>
+                    <aura:set attribute="else" >  
+                        <aura:iteration items="{!v.data}" var="PoLi">
+                            <table>
+                               <tr>
+                                    <td colspan="2">
+                                        <aura:if isTrue="{!PoLi.Production_Estimate__c}">
+                                         <a><ui:outputText value="{!PoLi.Name}"/></a>
+                                          <aura:set attribute="else" >
+                                           <a><ui:outputText value="{!PoLi.Name}"/></a>
+                                            </aura:set>
+                                        </aura:if>
+                                    </td>
+                                    <!--td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                <lightning:buttonMenu name="{!VdInv.Id}" aura:id="SpecItem" onselect="{! c.handleVdInvcQuickAction }">
+                                    <lightning:menuItem value="Edit" label="Edit"  iconName="action:edit"/>
+                                    <lightning:menuItem value="Delete" label="Delete" disabled="{!VdInv.isInvLI}" iconName="utility:delete"/>
+                                </lightning:buttonMenu>
+                            </td-->
+                                </tr>                          
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="GL Description"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <a><ui:outputDate value="{!PoLi.GLDName}"/></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="Unit Type"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!PoLi.Unit_Type__c}"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="Quantity"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!PoLi.Quantity__c}"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="Amount"/>:
+                                    </td>
+                                    <td width="60%">
+                                         <p><lightning:formattedNumber  value="{!PoLi.Amount__c}" style="currency" currencyCode="USD"/></p>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="Invoice Created"/>:
+                                    </td>
+                                    <td width="60%">
+                                       <div class="slds-checkbox">
+                                        <label class="slds-checkbox">
+                                            <ui:inputCheckbox disabled="true" name="{!PoLi.Id}" value="{!PoLi.Invoice_Created__c}" />
+                                            <span class="slds-checkbox--faux" />                                
+                                        </label>
+                                    </div>                                       
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr style="margin: 0.4rem 0;"/>
+                        </aura:iteration>
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.isaddClick}">
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.ShowProductionEstimate?'Add Production Estimate Line Items':'Add Estimate Line Items'}</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    
+                    <c:Approved_Vendor_Estimate_LI_PO_INV aura:id="AVELIDPOVIEW" JobId="{!v.simpleRecord.Job__c}" VendorId="{!v.simpleRecord.Vendor__c}" />  
+                </div>
+                
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand" 
+                                      label="Add Items to Purchser Order"
+                                      title="Add Items"
+                                      onclick="{!c.saveSelectedItems }" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+    </aura:if>
+    
+</aura:component>

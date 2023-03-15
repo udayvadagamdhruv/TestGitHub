@@ -1,0 +1,165 @@
+<apex:page standardController="Job__c" recordSetVar="Jobs" extensions="jobsTabExt" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="False">
+
+     <style>
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+    </style>  
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        
+        
+        <body>
+     
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+                  <ul class="slds-list--vertical slds-has-dividers">
+                       <li class="slds-list__item slds-large-size">  
+                            <div class="slds-text-heading--large"><center>Jobs List</center></div> 
+                       </li>
+                  </ul><br/>
+    
+                  <apex:form html-novalidate="novalidate">
+                       
+                      <apex:pageBlock mode="edit"  >
+         
+                           <apex:pageBlockButtons style="position:absolute;left:43%" location="Top" >
+                               <apex:commandButton value="New" action="{!NewMethod}" styleClass="slds-button slds-button--brand"></apex:commandButton>
+                           </apex:pageBlockButtons>
+                           
+                           
+                             <div class="slds-grid slds-wrap">
+                                 
+                             <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                            
+                                             <div class="slds-grid slds-wrap">  
+                                  
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                             <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                 <label class="slds-form-element__label required" ><b>Filter</b></label>
+                                                                 <div class="slds-form-element__control" >
+                                                                  <apex:selectList value="{!filterId}" size="1" styleClass="slds-input">
+                                                                    <apex:selectOptions value="{!listViewOptions}"/>
+                                                                    <apex:actionSupport event="onchange" reRender="job_list"/>
+                                                                </apex:selectList>
+                                                                 </div>
+                                                             </div>
+                                                        </aside>
+                                         </div> 
+                                 </main>
+                              </div><br/><br/>
+                              
+                              
+                               <div class="slds-grid slds-wrap">
+                                 
+                             <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                            
+                                             <div class="slds-grid slds-wrap">  
+                                  
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                             <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                   <apex:pageBlockTable value="{!Jobs}" var="j" styleClass="slds-table slds-table--bordered slds-m-top--medium slds-max-medium-table--stacked">>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                        <apex:column headerValue="Name" value="{!j.name}" styleClass="slds-cell-wrap slds-cell-shrink" style="word-wrap: break-word;"/>
+                                                                      </apex:pageBlockTable>
+                                                             </div>
+                                                        </aside>
+                                         </div> 
+                                 </main>
+                              </div><br/><br/>
+                              
+                                <div class="slds-grid slds-wrap">
+                                 
+                             <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                            
+                                             <div class="slds-grid slds-wrap">  
+                                  
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                             <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                 <table style="width: 100%"><tr>
+                                                                
+                                                                    <td>
+                                                                    
+                                                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                                <div class="slds-form-element__control" >
+                                                                                   Page: <apex:outputText value=" {!PageNumber} of {! CEILING(ResultSize / PageSize) }"/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </aside>
+                                                                    </td>            
+                                                                
+                                                                    <td align="center">
+                                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                                     <div class="slds-form-element__control" >
+                                                                                            <apex:commandLink action="{! Previous }" value="« Previous" rendered="{! HasPrevious }"/>
+                                                                                            <!-- inactive (no earlier pages) -->
+                                                                                            <apex:outputText style="color: #ccc;" value="« Previous" rendered="{! NOT(HasPrevious) }"/>
+                                                                                            
+                                                                                            &nbsp;&nbsp;  
+                                                                                            
+                                                                                            <!-- Next page -->
+                                                                                            <!-- active -->
+                                                                                            <apex:commandLink action="{! Next }" value="Next »" rendered="{! HasNext }"/>
+                                                                                            <!-- inactive (no more pages) -->
+                                                                                            <apex:outputText style="color: #ccc;" value="Next »" rendered="{! NOT(HasNext) }"/>
+                                                                                 </div>
+                                                                            </div>
+                                                                        </aside>
+                                                                    </td>
+                                                                    
+                                                                    <td align="right">
+                                                                     <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                                        <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                                 <div class="slds-form-element__control" >
+                                                                                    Records per page:
+                                                                                    <apex:selectList value="{! PageSize }" size="1">
+                                                                                        <apex:selectOption itemValue="10" itemLabel="10"/>
+                                                                                        <apex:selectOption itemValue="20" itemLabel="20"/>
+                                                                                        <apex:selectOption itemValue="50" itemLabel="50"/>
+                                                                                        <apex:selectOption itemValue="100" itemLabel="100"/>
+                                                                                        <apex:actionSupport event="onchange" reRender="contacts_list"/>
+                                                                                    </apex:selectList>
+                                                                                    
+                                                                                  </div>
+                                                                            </div>
+                                                                        </aside>
+                                                                    </td>
+                                                                
+                                                                </tr></table>
+                                                             </div>
+                                                        </aside>
+                                         </div> 
+                                 </main>
+                              </div><br/><br/>
+                              
+                              
+                           
+       
+                   </apex:pageBlock>
+              </apex:form>     
+           </div> 
+        </body>
+    </html>
+
+</apex:page>

@@ -1,0 +1,94 @@
+<apex:page controller="DisplayShipmentLineitemsController">
+ <apex:form >
+  <apex:pageBlock title="Shipment Line Item Section">
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+       <apex:commandButton action="{!createSLI}" value="Add New" id="btn2"/> 
+       <apex:commandButton value="Save" action="{!save}" id="saveButton1" style="display: none;"/>  
+       <apex:commandButton value="Cancel" id="cancelButton1" action="{!cancelme}" style="display: none;"/> 
+       </span> 
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!SLI}" var="SLIItem" rendered="{!SLI.Size>0}">
+         <apex:column headerValue="Action" width="10%">
+              <apex:commandButton value="Delete" action="{!deleteSLI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" disabled="{!Restrict}">
+                  <apex:param name="param2" value="{!SLIItem.id}" assignTo="{!strSLI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+        <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Estimate_Line_Item__c.Label}" rendered="{!!ShowProductionEstimate}">
+              <apex:outputfield value="{!SLIItem.Estimate_Line_Item__c}"/>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Production_Estimate__c.Label}" rendered="{!ShowProductionEstimate}">
+              <apex:outputfield value="{!SLIItem.Production_Estimate__c}"/>
+          </apex:column>
+          
+       <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Job_Name__c.Label}">
+              <apex:outputfield value="{!SLIItem.Job_Name__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Job__c.Label}">
+              <apex:outputfield value="{!SLIItem.Job__c}"/>
+          </apex:column>
+          
+         
+           
+          <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Client_Name__c.Label}">
+              <apex:outputfield value="{!SLIItem.Client_Name__c}"/>
+          </apex:column>
+           
+          <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Item_Status__c.Label}">
+              <table border="0" id="table_id">
+            <tr>
+               <td border="0">
+                  <apex:outputfield value="{!SLIItem.Item_Status__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" changedStyleClass="myBoldClass" hideOnEdit="btn2" rendered="{!Not(Restrict)}"/>
+                  </apex:outputfield> </td>
+               <td> 
+
+                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Status" rendered="{!Not(Restrict)}"/>  
+               </td>
+           </tr>
+           </table>
+          </apex:column>
+          
+          
+           <apex:column headerValue="{!$ObjectType.Shipment_Line_Item__c.Fields.Qty_Shipped__c.Label}">
+              <table border="0" id="table_id">
+            <tr>
+               <td border="0">
+                  <apex:outputfield value="{!SLIItem.Qty_Shipped__c}">
+
+                  <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton1,cancelButton1" changedStyleClass="myBoldClass" hideOnEdit="btn2" rendered="{!Not(Restrict)}"/>
+                  </apex:outputfield> </td>
+               <td> 
+
+                  <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Quantity" rendered="{!Not(Restrict)}"/>  
+               </td>
+           </tr>
+           </table>
+          </apex:column> 
+          
+         
+     </apex:pageBlockTable>
+     
+   
+   
+   
+     
+        <apex:pageBlockSection rendered="{!SLI.size <= 0}" >
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+ 
+ 
+ 
+ 
+ 
+</apex:page>

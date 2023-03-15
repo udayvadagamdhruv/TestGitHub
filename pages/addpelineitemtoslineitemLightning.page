@@ -1,0 +1,413 @@
+<apex:page controller="addPELineitemToSLineitem" tabStyle="Job__c" sidebar="true"  docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false" > 
+<apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+<style>
+     
+    .pageHeader
+        {
+            color:white;
+            background-color:#851225;
+            height:70px;
+            padding-top:15px; 
+            position:fixed;
+            z-index:999;
+            width:100% !important;
+            padding-left:22px;
+        }
+    
+        .SectionHeader
+        {
+            background-color:Grey !important;
+            color:white;
+        }
+        
+        .bPageBlock 
+        {
+             margin: 20px 20px 20px 20px !important;
+        }
+        
+        
+        body
+        {
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed; 
+                margin:0px !important;
+        }
+        
+        
+        .errorM3 .msgIcon, .errorMedium 
+        {
+            background-image: url(); 
+            background-position: 0 0;
+            width:0px;
+            height: 0px;padding-left: 4px;
+        }
+        
+
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+       
+         .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   
+          .dateFormat
+            {
+                display: block !important;
+            }
+          <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:white;
+             }
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white;
+                }
+                
+                .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                
+                 .slds td {
+                    padding: 0;
+                    padding-left: 0px;
+                }
+                
+            <!--- error Mesgg-------------------------------------->
+                
+                
+       
+       
+    </style>  
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+     <body>
+    <div class="slds">
+   
+              
+       <apex:form html-novalidate="novalidate">
+       
+         <div class="slds-media__body pageHeader">
+               <span  class="slds-text-title--caps slds-line-height--reset" style="color:white;font-size:18px;"><b>Shipment Line Items</b></span>
+               <!--
+                   <span style="float:right;padding-right:20px;">     
+                      <b>  
+                           <apex:commandButton action="{!Save}" value="Add To Shipment" styleClass="slds-button slds-button--neutral"/>&nbsp;&nbsp;
+                           <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back." styleClass="slds-button slds-button--neutral"/> 
+                      </b>
+                   </span>
+               -->
+         </div> 
+         <br/><br/><br/><br/>
+        
+         <apex:pageBlock mode="edit">
+         
+         <apex:outputPanel rendered="{!roleWraps.size > 0}">
+               
+                 
+                 <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                     <apex:pageMessages />
+                 </div> <br/>
+                 
+                  <div class="SectionHeader"  style="background-color:SteelBlue;color:white;">
+                       <h3 class="slds-section-title"><b>&nbsp;Line Items</b></h3>
+                  </div>
+                 <br/>
+                  <div align="center">
+                   <b> 
+                      <apex:commandButton action="{!Save}" value="Add To Shipment" styleClass="slds-button slds-button--neutral"/>&nbsp;&nbsp;
+                      <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back." styleClass="slds-button slds-button--neutral"/> 
+                   </b>
+                  </div>
+                  <br/> 
+                          
+                     <apex:outputPanel id="ProductsTable">
+                           <apex:outputPanel rendered="{!ShowProductionEstimate}">
+                        
+                               <div class="slds-card" >
+                                   <div class="slds-card__body">
+                                           <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                             <thead class="slds-truncate">
+                                                    <tr class="slds-text-title">
+                                                        <th class="slds-size--1-of-6" scope="col"> Action</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Name.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Job__c.Label}</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Job__c.Fields.JS_Client__c.Label}</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}</th>
+                                                    </tr>
+                                               </thead>
+                                               <tbody>
+                            
+                                                    <apex:repeat value="{!roleWraps}" var="p">
+                                                      <tr> 
+                                                          <td class="slds-size--1-of-6" data-label="Action">
+                                                               <div class="slds-form-element">
+                                                                  <label class="slds-checkbox" >
+                                                                     <apex:inputCheckbox value="{!p.checked}" />
+                                                                     <span class="slds-checkbox--faux"></span>
+                                                                     <span class="slds-form-element__label"></span>
+                                                                  </label>
+                                                               </div>
+                                                           </td>
+                                                           
+                                                           <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Name}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Job__c.Label}">
+                                                                <div>
+                                                                    <apex:outputField value="{!p.e.Job__c}" />
+                                                                </div> 
+                                                               
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Job__r.JS_Client__c}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Quantity__c}" />
+                                                                </div>                                              
+                                                            </td>
+                                                            
+                                                          
+                                                        </tr>   
+                                                    </apex:repeat>
+                                                    
+                                                    
+                                               </tbody>
+                                        </table>
+                                   </div>
+                              </div>  
+                         </apex:outputPanel>
+                         </apex:outputPanel>
+                         
+                         </apex:outputPanel> 
+                         
+                          <apex:outputPanel rendered="{!ShowProductionEstimate}"> 
+                                <apex:outputPanel rendered="{!roleWraps.size <= 0}">
+                                  <div class="SectionHeader"  style="background-color:SteelBlue;color:white;">
+                                       <h3 class="slds-section-title"><b>&nbsp;Line Items</b></h3>
+                                  </div><br/>
+                                <p>
+                                  <b> No Records to display.</b>
+                                </p>       
+                                <br/>
+                                <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back." styleClass="slds-button slds-button--neutral"/>
+                                </apex:outputPanel>
+                           </apex:outputPanel> 
+                         
+                         
+                         
+                         
+             <apex:outputPanel rendered="{!EstLTwrapper.size > 0}">
+               
+                 
+                 <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                     <apex:pageMessages />
+                 </div> <br/>
+                 
+                  <div class="SectionHeader"  style="background-color:SteelBlue;color:white;">
+                       <h3 class="slds-section-title"><b>&nbsp;Line Items</b></h3>
+                  </div>
+                   <br/>
+                  <div align="center">
+                   <b> 
+                      <apex:commandButton action="{!Save}" value="Add To Shipment" styleClass="slds-button slds-button--neutral"/>&nbsp;&nbsp;
+                      <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back." styleClass="slds-button slds-button--neutral"/> 
+                   </b>
+                  </div>  
+                  
+                   <br/>        
+                     <apex:outputPanel id="EstTable">
+                           <apex:outputPanel rendered="{!!ShowProductionEstimate}">
+                        
+                               <div class="slds-card" >
+                                   <div class="slds-card__body">
+                                           <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                             <thead class="slds-truncate">
+                                                    <tr class="slds-text-title">
+                                                        <th class="slds-size--1-of-6" scope="col"> Action</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Name.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Job__c.Label}</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Job__c.Fields.JS_Client__c.Label}</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Quantity__c.Label}</th>
+                                                    </tr>
+                                               </thead>
+                                               <tbody>
+                            
+                                                    <apex:repeat value="{!EstLTwrapper}" var="p">
+                                                      <tr> 
+                                                          <td class="slds-size--1-of-6" data-label="Action">
+                                                               <div class="slds-form-element">
+                                                                  <label class="slds-checkbox" >
+                                                                     <apex:inputCheckbox value="{!p.checked}" />
+                                                                     <span class="slds-checkbox--faux"></span>
+                                                                     <span class="slds-form-element__label"></span>
+                                                                  </label>
+                                                               </div>
+                                                           </td>
+                                                           
+                                                           <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.est.Name}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Job__c.Label}">
+                                                                <div>
+                                                                    <apex:outputField value="{!p.est.Job__c}" />
+                                                                </div> 
+                                                               
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.est.Job__r.JS_Client__c}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.est.Quantity__c}" />
+                                                                </div>                                              
+                                                            </td>
+                                                            
+                                                          
+                                                        </tr>   
+                                                    </apex:repeat>
+                                                    
+                                                    
+                                               </tbody>
+                                        </table>
+                                   </div>
+                              </div>  
+                         </apex:outputPanel>
+                         </apex:outputPanel>
+                         
+                         </apex:outputPanel> 
+                         
+                          <apex:outputPanel rendered="{!!ShowProductionEstimate}"> 
+                            <apex:outputPanel rendered="{!EstLTwrapper.size <= 0}">
+                                  <div class="SectionHeader"  style="background-color:SteelBlue;color:white;">
+                                       <h3 class="slds-section-title"><b>&nbsp;Line Items</b></h3>
+                                  </div><br/>
+                                <p>
+                                  <b> No Records to display.</b>
+                                </p>       
+                                <br/>
+                                <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back." styleClass="slds-button slds-button--neutral"/>
+                                </apex:outputPanel>
+                           </apex:outputPanel> 
+                         
+                         
+                         
+                       
+          </apex:pageBlock>
+       </apex:form>
+   </div>
+   
+   </body>
+</html>
+</apex:page>

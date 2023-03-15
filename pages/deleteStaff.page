@@ -1,0 +1,14 @@
+<!-- This Page is used to override the delete button of Staff Object -->
+<apex:page standardcontroller="Staff__c" extensions="DeleteStaffExtension" sidebar="false" showHeader="false">
+      
+        <apex:pageMessages id="msg"/>
+       
+        <apex:form >
+            <apex:actionFunction name="doInit" action="{!checkDelete}" rerender="msg,po"/>
+            <apex:outputPanel id="po">
+                <center>     <apex:commandLink value="Click here to Go Back" action="{!staffview}" rendered="{!(isError!=False)}"></apex:commandLink> </center>
+            </apex:outputPanel>
+        </apex:form>
+ 
+</apex:page>
+<!-- End of Page -->

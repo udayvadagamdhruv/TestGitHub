@@ -1,0 +1,3 @@
+<design:component>
+    <design:attribute name="ProEstimateSpecSection" label="Production Estimate Spec Section" description="This will reflect the Production Estimate Spec Item Section Label"/>
+</design:component>

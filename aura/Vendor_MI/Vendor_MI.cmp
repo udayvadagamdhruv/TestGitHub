@@ -1,0 +1,21 @@
+<aura:component controller="VendorController" implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	<aura:attribute name="recordId" type="Id" />
+     <aura:attribute name="MIList" type="Material_Item__c[]" />
+    <aura:attribute name="columns" type="List"/>
+        
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    
+     <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MaterialItems">
+        <lightning:accordionSection name="MaterialItems" label="Material Items" class="slds-card" >  
+            <aura:if isTrue="{!not(empty(v.MIList))}">
+            <lightning:datatable data="{!v.MIList }" 
+                         columns="{!v.columns }" 
+                         keyField="Id"
+                         hideCheckboxColumn="true"/>
+            <aura:set attribute="else">
+                <b>No records to display</b>
+            </aura:set>
+        </aura:if>
+    </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>

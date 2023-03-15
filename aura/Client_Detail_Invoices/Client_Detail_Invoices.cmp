@@ -1,0 +1,74 @@
+<aura:component controller="ClientController"  implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="record" type="Object"/>
+    
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    
+    <aura:attribute name="enableInfiniteLoading" type="boolean" default="true"/>
+    <aura:attribute name="initialRows" type="Integer" default="10"/>
+    <aura:attribute name="rowsToLoad" type="Integer" default="10"/>
+    <aura:attribute name="totalNumberOfRows" type="Integer" default="10"/>
+    <aura:attribute name="loadMoreStatus" type="String" default="Please scroll down to load more data"/>
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false"/>
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0"/>
+    <aura:attribute name="rowsToAdd" type="Integer" default="10"/>
+    <aura:attribute name="currentCount" type="Integer" default="10"/>
+    <aura:attribute name="ClientInvLabelname" type="string"  />
+   
+    <aura:attribute name="ClientInvSec" type="String" default="Client Invoice" required="true" access="global"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="ClientInv">
+        <lightning:accordionSection name="ClientInv" label="{!v.ClientInvSec}"  class="slds-card" >  
+            <lightning:card>
+                <aura:if isTrue="{!empty(v.data)}">
+                    <b>No records to display</b>
+                    <aura:set attribute="else" >
+                        <div  style="height: 250px">
+                            <lightning:datatable class="CInvtablecss"
+                                                 aura:id="CInvDataTable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 hideCheckboxColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 enableInfiniteLoading="true"
+                                                 loadMoreOffset="{!v.loadMoreOffset}"
+                                                 onloadmore="{!c.handleLoadMoreRec}"
+                                                 rowNumberOffset="0"
+                                                 showRowNumberColumn="true"
+                                                 />
+                        </div>
+                        <br/>
+                        <div class="slds-float_left">
+                            <strong>Total Rows : {!v.totalNumberOfRows}</strong>
+                            
+                        </div>
+                        <div class="slds-float_right">
+                            <strong>{!v.loadMoreStatus}</strong>
+                        </div>
+                        <br/>
+                    </aura:set>
+                </aura:if>
+            </lightning:card>
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>

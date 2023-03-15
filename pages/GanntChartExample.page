@@ -1,0 +1,239 @@
+<apex:page controller="GanttExpVfPageCtrl" showHeader="false"  sidebar="false" standardStylesheets="true"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false">
+  
+    
+    <apex:includeScript value="{!URLFOR($Resource.JQueryFiles, '/JQueryFiles/JQueryMin3.2.1.js')}"/>
+    
+    <style>
+        /* The Modal (background) */
+        .modal {
+        display:block; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 60px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.1); /* Black w/ opacity */
+        }
+        
+        /* Modal Content */
+        .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 90%;
+        //height:100%;
+        }
+        
+        
+    </style>
+    
+    <style>
+        
+        .slds .slds-icon-standard-user {
+        background-color:inherit;
+        }
+        .slds .slds-text-link {
+        color: #0070d2;
+        text-decoration: none;
+        transition: color .2s linear;
+        font-size: larger;
+        }
+        
+        
+        p{
+        color:black !important;
+        }
+        
+        
+        
+    </style>
+    
+    <style>
+        
+        body
+        {
+        background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+        // background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+        //background-image:none !important;
+        //background-color:#D7D7D7 !important;
+        background-repeat: repeat-x;
+        background-position: left top;
+        background-attachment: fixed; 
+        margin:0px !important;
+        }
+        body11 {
+        background-repeat: repeat-x;
+        background-position: left top;
+        font-size: 75%;
+        font-family: 'Arial','Helvetica',sans-serif;
+        background-color: rgba(175, 197, 222, 1);
+        }
+        
+        
+        
+        .slds .slds-tabs--scoped {
+        display: block;
+        width: 100%;
+        background-color: white;
+        margin-top: 2px;
+        border-radius: 10px;
+        }    
+        
+        
+        .slds .slds-p-vertical--medium {
+        padding-top: 25px;
+        padding-bottom: 0px;
+        }
+        .slds .slds-page-header{
+        
+        border-radius:5px;
+        }
+        .slds .slds-text-heading--medium {
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 1;
+        
+        }
+        
+        .slds-col desktop
+        {
+        border-radius:5px !important;
+        }
+        
+    </style>
+        
+    <script>
+    
+    function TabSelect(prefix){
+        //alert(prefix)
+        TabMethod(prefix);
+        
+    }
+    
+    
+    </script>
+    
+    <apex:includeScript value="{!URLFOR($Resource.JQueryFiles, '/JQueryFiles/JQueryMin3.2.1.js')}"/>
+    <script>
+    
+    $(document).ready(function(){
+        $("li").mouseover(function(){
+            $(this).addClass("blue");
+        });
+        $("li").mouseout(function(){
+            $(this).removeClass("blue");
+        });
+        
+    });
+    </script>
+    
+    
+    <style>
+        
+        /*   .blue{
+        background-color:#E8CCD4 !important;
+        box-shadow: 5px 5px 5px  grey;
+        border: 2px solid blue; 
+        }
+        
+        */   
+        
+        .slds .slds-app-launcher__tile:hover{
+        
+        border:2px solid #851225;
+        }
+        
+    </style>
+    
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        
+        <apex:form id="c" >  
+            
+            
+            <!-- Salesforce Lightning Design System Static Resource-->
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+            
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <link href="{!URLFOR($Resource.FontStyles,'FontStyles/MaterialIcons.css')}" rel="stylesheet"/>
+            </head>
+            
+        
+            
+            <apex:pageMessages > </apex:pageMessages>
+            
+            <div class="slds" >
+                
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                         
+                        <br/><br/>
+                        
+                        <ul class="slds-grid slds-grid--pull-padded slds-wrap" style="margin-left:25px;margin-right:25px;">
+                            
+                            <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                                <a href="/apex/GanntExpVfpage" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-figure">
+                                        <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-93">
+                                            
+                                            <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom93"></use>
+                                            </svg>
+                                            
+                                        </span>
+                                        
+                                    </div> 
+                                    <div class="slds-app-launcher__tile-body" title="{!$ObjectType.Job__c.Label}">
+                                        <span class="slds-text-link" >
+                                            <b>{!$ObjectType.Job__c.Label}</b></span>
+                                        <p>
+                                            Gantt chart of {!$ObjectType.Job__c.Label}
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                             
+                            <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                                <a href="/apex/GanntChartofCampaign" class="slds-app-launcher__tile slds-text-link--reset ">
+                                    <div class="slds-app-launcher__tile-figure">
+                                        <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-112">
+                                            
+                                            <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                             <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom99"></use>
+                                            </svg>
+                                            
+                                        </span>
+                                        
+                                    </div>
+                                    <div class="slds-app-launcher__tile-body"  title="{!$ObjectType.Campaign__c.Label}">
+                                        <span class="slds-text-link">
+                                            <b> {!$ObjectType.Campaign__c.Label}</b></span>
+                                        <p>Gantt chart of {!$ObjectType.Campaign__c.Label}                   
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            
+                            
+                            
+                    
+                        </ul>
+                        
+                        <br/> <br/>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </apex:form>
+        
+    </html>
+    
+</apex:page>

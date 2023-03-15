@@ -1,0 +1,34 @@
+<apex:page showHeader="false"  sidebar="false" standardStylesheets="true"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" >
+<html>
+<head>
+ 
+
+   
+  </head>
+  
+  <body>
+        
+  
+        
+
+
+ 
+ <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/JSReports", "_self");
+         }
+        
+    </script>
+  
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+    
+         <apex:include pageName="JSReportsLightning"/>
+    
+    </apex:outputPanel>
+    
+    </body>
+    </html>
+</apex:page>

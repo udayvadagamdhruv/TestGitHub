@@ -1,0 +1,270 @@
+<aura:component controller="job_Cost_Tab_cmp" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isINVLIOpen" type="boolean" default="false"/>
+    <aura:attribute name="INVLIRecordid" type="String"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="isAccess" type="list" /><!-- to check Quote permissions(creatable,editable)-->
+    <aura:attribute name="sortedBy" type="String" default="ItemLink" />
+    <aura:attribute name="sortedDirection" type="String" default="ASC" />
+    <aura:attribute name="ShowProductionEstimate" type="boolean" default="false" />
+    <aura:attribute name="GLCRecord" type="Object"/>
+    <aura:attribute name="isaddClick" type="boolean" default="false" />
+    <aura:attribute name="PoLidata" type="Object"/>
+    <aura:attribute name="PoLicolumns" type="List"/>
+    <aura:attribute name="PoLiselectedRowsCount" type="Integer" />
+    <aura:attribute name="Selected_POLI" type="Object[]" default=""/>
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <aura:attribute name="Selected_ESTLI" type="Sobject[]" default=""/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>  
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="InvoiceLineItems">
+        <lightning:accordionSection name="InvoiceLineItems" label="Invoice Line Items"  class="slds-card" >
+            <aura:if isTrue="{!!v.isMobile}">
+                <div align="center">
+                    <aura:if isTrue="{!v.simpleRecord.Purchase_Order__c!=null}">
+                        <lightning:button variant="neutral" label="Add Line Items" title="Add Line Items" onclick="{!c.addLineItemFromPo}"/> 
+                        <aura:set attribute="else">
+                            <lightning:button variant="neutral" label="Add Line Items" title="New" onclick="{!c.INVLICreate}"/> 
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <br/>
+                <aura:if isTrue="{!empty(v.data)}">
+                    <b>No records to display</b>
+                    <aura:set attribute="else" >
+                        
+                        <lightning:card>
+                            <div>
+                                <lightning:datatable class="InvLItablecss"
+                                                     aura:id="INVLIDataTable"
+                                                     columns="{!v.columns}"
+                                                     data="{!v.data}"
+                                                     keyField="Id"
+                                                     onsave ="{!c.onSave}"
+                                                     hideCheckboxColumn="true"
+                                                     showRowNumberColumn="true"
+                                                     errors="{!v.errors}"
+                                                     onsort="{!c.updateColumnSorting}"
+                                                     sortedBy="{!v.sortedBy}"
+                                                     sortedDirection="{!v.sortedDirection}" 
+                                                     onrowaction="{! c.handleRowAction }" />
+                            </div>
+                        </lightning:card>
+                        <aura:if isTrue="{!v.isLoading}">
+                            <lightning:spinner alternativeText="Loading"/>
+                        </aura:if>
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+            <aura:if isTrue="{!v.isMobile}">                
+                <aura:if isTrue="{!empty(v.data)}">
+                    <b>No records to display</b>
+                    <aura:set attribute="else" >
+                        <aura:iteration items="{!v.data}" var="VdInvLi">
+                            <table>
+                               <tr>
+                                    <td colspan="2">
+                                        <aura:if isTrue="{!VdInvLi.Production_Estimate__c}">
+                                         <a ><ui:outputText value="{!VdInvLi.EstName}"/></a>
+                                          <aura:set attribute="else" >
+                                           <a><ui:outputText value="{!VdInvLi.EstName}"/></a>
+                                            </aura:set>
+                                        </aura:if>
+                                       
+                                    </td>
+                                    <!--td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                <lightning:buttonMenu name="{!VdInv.Id}" aura:id="SpecItem" onselect="{! c.handleVdInvcQuickAction }">
+                                    <lightning:menuItem value="Edit" label="Edit"  iconName="action:edit"/>
+                                    <lightning:menuItem value="Delete" label="Delete" disabled="{!VdInv.isInvLI}" iconName="utility:delete"/>
+                                </lightning:buttonMenu>
+                            </td-->
+                                </tr>                          
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="GL Department"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!VdInvLi.GL_Department__c}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="GL Code"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!VdInvLi.GL_Code_No__c}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="GL Description"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <a><ui:outputDate value="{!VdInvLi.GLCName}"/></a>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="Quantity"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <ui:outputText value="{!VdInvLi.Quantity__c}"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td width="40%" style="vertical-align:top;">
+                                        <ui:outputText value="Amount"/>:
+                                    </td>
+                                    <td width="60%">
+                                         <p><lightning:formattedNumber  value="{!VdInvLi.Amount__c}" style="currency" currencyCode="USD"/></p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr style="margin: 0.4rem 0;"/>
+                        </aura:iteration>
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    <aura:if isTrue="{!v.isaddClick}">
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModelForAddLineItems }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Purchase Order Line Items</h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    <aura:if isTrue="{!empty(v.PoLidata)}">
+                        No PO Line Items are available for this Invoice. 
+                        <aura:set attribute="else" >
+                            
+                            
+                            <h1>Selected Rows: {! v.PoLiselectedRowsCount }</h1>
+                            <lightning:datatable class="InvLItablecssUnderPO"
+                                                 columns="{!v.PoLicolumns}"
+                                                 data="{!v.PoLidata }"
+                                                 keyField="id"
+                                                 onrowselection="{! c.updateSelectedTextPOLI }"/>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                
+                <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModelForAddLineItems }"/>
+                    <lightning:button variant="brand" 
+                                      label="Add PO Line Items to Invoice"
+                                      title="Add Items"
+                                      onclick="{!c.saveSelectedPOLineItemsFromInvoice }" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+    </aura:if>
+    
+    
+    
+    
+    
+    <aura:if isTrue="{!v.isINVLIOpen}">
+        <lightning:recordEditForm aura:id="INVLIEditform" density="comfy" objectApiName="Invoice_Line_Item__c" recordId="{!v.INVLIRecordid}" onload="{!c.jobINVLIload}"  onsubmit="{!c.jobINVLIOnsubmit}" onsuccess="{!c.onINVLIRecordSuccess}"  >
+            <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.INVLIRecordid==null?'New':'Edit'} Invoice Line Item</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        
+                        <aura:iteration items="{!v.fieldset}" var="field">
+                            <aura:if isTrue="{!(field=='Invoice__c') || (field=='GL_Code__c')}">    
+                                <aura:set attribute="else">   
+                                    <lightning:inputField fieldName="{!field}" aura:id="JobINVLIField"  class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='Amount__c') ? 'frequired' :' ')}" /> 
+                                </aura:set>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Invoice__c'}"> 
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> Invoice</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                    </div>
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!field=='GL_Code__c'}">
+                                <div class="slds-size--1-of-2 slds-p-horizontal_x-small"> 
+                                    <lightning:select  name="GL Description" aura:id="GLCId" label="GL Description" class="frequired" >
+                                        <aura:iteration items="{!v.GLCRecord}" var="GLC">
+                                            <option text="{!GLC.value}" value="{!GLC.key}" />
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                            </aura:if> 
+                            
+                        </aura:iteration>
+                        
+                        
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

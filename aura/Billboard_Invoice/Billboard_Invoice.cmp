@@ -1,0 +1,130 @@
+<aura:component controller="BillBoardController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalength" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="DESC" />
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isBBInvOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="BBInvRecordid" type="String"/>
+    
+    <aura:attribute name="selectedLookUpRecord_Ven" type="sObject"/>
+    <aura:attribute name="VenRecord" type="String" default="" /> 
+    <aura:attribute name="VenPopulate" type="sObject" />
+    
+    <aura:attribute name="ObjectType" type="Object"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="BBInvSection" type="String" default="Billboard Invoice" required="true" access="global"/>
+    <force:recordData aura:id="BBInvID"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.record}"
+                      targetError="{!v.recordError}"
+                      targetFields="{!v.simpleRecord}"
+                      />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="BillboardInvoice">
+        <lightning:accordionSection name="BillboardInvoice" label="Billboard Invoice"  class="slds-card" >  
+            <div align="center">
+                <lightning:button variant="neutral" label="New" title="New" onclick="{!c.BBInvCreate}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else">
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="tablecss"
+                                                 aura:id="BBInvDatatable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 onrowaction="{! c.handleRowAction }" />
+                            
+                            
+                        </div>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    <aura:if isTrue="{!v.isBBInvOpen}">
+        <lightning:recordEditForm aura:id="BBInvEditform" density="comfy" objectApiName="Billboard_Invoice__c" recordId="{!v.BBInvRecordid}" onload="{!c.BBInvload}"  onsubmit="{!c.BBInvOnsubmit}" onsuccess="{!c.BBInvonSuccess}"  >
+            <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.BBInvRecordid==null?'New ':'Edit '} {!v.Labelname}</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <aura:iteration items="{!v.fieldset}" var="field">
+                            <aura:if isTrue="{!(field=='Billboard__c')||(field=='Billboard_Vendor__c')}">    
+                                <aura:set attribute="else">   
+                                    <lightning:inputField fieldName="{!field}" aura:id="BBInvField" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                                </aura:set>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!field=='Billboard__c'}"> 
+                                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+                                    <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Billboard_Invoice__c.Billboard__c.label}</label>
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Billboard_Vendor__c'}">
+                            <div class="slds-size--1-of-2 slds-p-horizontal_x-small">
+                                <c:customLookup aura:id="VenauraId" objectAPIName="Vendor__c" DepobjectAPIName="" IconName="custom:custom14" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_Ven}" 
+                                                DepenselectedRecord="" label="{!v.ObjectType.Billboard_Invoice__c.Billboard_Vendor__c.label}" Depelabel="" RelationShipName="" ParentFilter="Vendor_Type__c ='Outdoor'"  ChildFilter=""
+                                                ParentRecId="{!v.VenRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                            </div>   
+                        </aura:if> 
+                        </aura:iteration>
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

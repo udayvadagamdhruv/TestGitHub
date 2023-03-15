@@ -1,0 +1,79 @@
+<apex:page standardController="Billboard_Invoice_Line_Item__c" extensions="EditBillboardInvoiceLIextensions">
+ 
+ <apex:form >
+      <apex:sectionHeader title="Billboard Invoice Line Item Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+ 
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Invoice_Line_Item__c .Fields.Quantity__c.Label}"/>
+                   <apex:inputfield value="{!Billboard_Invoice_Line_Item__c.Quantity__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Invoice_Line_Item__c .Fields.Amount__c.Label}"/>
+                   <apex:inputfield value="{!Billboard_Invoice_Line_Item__c.Amount__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.GL_Department__c.Label}"/>
+               <apex:actionRegion >
+                <apex:outputPanel >
+                   <span>
+                     
+                      <apex:selectList id="GLDName" value="{!GLDName}" size="1" >
+                         <apex:actionSupport event="onchange" rerender="selectedDepartment"/>
+                         <apex:selectOptions value="{!GLDepartments}"></apex:selectOptions>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Invoice_Line_Item__c.Fields.GL_Code__c.Label}"/>
+                  <apex:actionRegion >
+                <apex:outputPanel >
+                   <span  >
+                      
+                      <apex:selectList value="{!GLCName}" multiselect="false" size="1" id="selectedDepartment">
+                         <apex:actionSupport event="onchange" reRender="ST" immediate="false"  rendered="true"/>  
+                         <apex:selectOptions value="{!GLCodes}"/>
+                      </apex:selectList>
+                   </span>
+                </apex:outputPanel> 
+             </apex:actionRegion>
+               </apex:pageBlockSectionItem>
+            
+            
+             
+            
+            
+            
+  
+  
+  
+      </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</apex:page>

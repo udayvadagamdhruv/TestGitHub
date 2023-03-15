@@ -1,0 +1,31 @@
+<apex:page standardController="Invoice_Allocation_Template__c" showHeader="true" sidebar="true" extensions="EditInvAllocationTempExt" tabStyle="MyAdmin__tab">
+
+<apex:sectionHeader title="{!Invoice_Allocation_Template__c.Name}"/>
+  <apex:form >
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="Invoice Allocation Template Information" columns="2" collapsible="false"> 
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel Value="{!$ObjectType.Invoice_Allocation_Template__c.Fields.Name.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!Invoice_Allocation_Template__c.Name}" required="true" />
+              </apex:pageBlockSectionItem>
+              
+              <apex:pageBlockSectionItem >
+                      <apex:outputLabel Value="{!$ObjectType.Invoice_Allocation_Template__c.Fields.Description__c.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!Invoice_Allocation_Template__c.Description__c}" style="width:95%;resize:none;" />
+              </apex:pageBlockSectionItem>
+              
+           </apex:pageBlockSection>
+             </apex:pageBlock>
+    </apex:form>
+
+
+
+
+  
+</apex:page>

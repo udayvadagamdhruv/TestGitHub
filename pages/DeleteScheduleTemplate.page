@@ -1,0 +1,23 @@
+<!-- This Page is used to override Delete Button of Schedule template  -->
+<apex:page standardcontroller="Schedule_Template__c" extensions="DeleteScheduleTemplateExtension" sidebar="false" showHeader="false">
+ 
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+        
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+        
+           <apex:actionFunction name="doInit" action="{!checkDelete}" reRender="msg,po"/> 
+           <apex:outputPanel id="po">
+              <center> <apex:commandLink action="{!schtageback}" value="Click here to Go to List" rendered="{!(isError!=False)}" /></center>
+           </apex:outputPanel>
+        
+        </apex:form>
+       
+</apex:page>
+<!-- End Of Page -->

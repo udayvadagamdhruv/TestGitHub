@@ -1,0 +1,139 @@
+<apex:page standardController="Vendor_Quote__c" extensions="DisplayVQLIwhenApprovedExtension" showHeader="false" sidebar="false" docType="html-5.0" applyHtmlTag="false" applyHTmlTag="false" standardStylesheets="true">
+   
+   <style>
+         
+         
+.individualPalette, .lookupHoverDetail, .lookupHoverDetailOverridable{
+          z-index:-10 !important;
+          display:none !important;
+      }
+             .slds .slds-max-medium-table--stacked-horizontal td:before
+            {
+              text-transform:none;
+            }
+          
+             .customImage{ height: 10px; width: 10px; }
+             #rcorners1 {
+                            border-radius:0%;
+                            border: 1px solid #cccccc;
+                            padding: 0px; 
+                            width: 100%;
+                            height: 0%;
+                        }
+            #pagemessage
+                        {
+                            color:blue;
+                        }
+           .required:after { content:" *";  color: Red;font:bold;}
+           
+                       .slds table
+                       {
+                            height: 50px;
+                       }
+                       body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                       {
+                            margin-top: -19px; 
+                       }
+                       .detailPage .bPageBlock, .editPage .bPageBlock
+                       {
+                          border-top-width: 0px;
+                       }
+                      
+                       .slds .slds-text-heading--large
+                       {
+                               font-size: 27px;
+                       }
+                       
+                        .pbHeader
+                       {
+                           background: white !important;
+                       }
+                       
+                       
+                       body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                       {
+                           background: white;
+                       }
+                      
+                       .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                       {
+                           border:none;
+                       }
+                       
+                       body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                       {
+                           border:none;
+                       }
+                       .slds b, .slds strong, .slds dfn 
+                       {
+                            font-weight: unset;
+                       }
+                        
+                       .slds .slds-table tr > td:first-child 
+                       {
+                            padding-left: 6px;
+                            padding: 15px;
+                       }
+                      
+            
+        </style>
+   
+   <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+    
+     <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+      
+       <body> 
+      
+          <div class="slds">
+             
+          <apex:form html-novalidate="novalidate"> 
+          
+           <br/>
+                           
+                      <apex:outputPanel rendered="{! vq.size > 0}" >      
+                      <div class="slds-grid slds-wrap">
+                        <apex:repeat value="{!vq}" var="vqli" rendered="{! vq.size > 0}">
+                            
+                                <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                    <div class="slds-media slds-tile slds-hint-parent">
+                    
+                                        <div class="slds-media__figure">
+                                            <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#record')}"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            
+                                                <div class="slds-tile__title slds-truncate">
+                                                    <font color="#0070d2"> <p>{!vqli.Name}</p></font>
+                                                </div>
+                    
+                                               
+                                            <div class="slds-tile__detail slds-text-body--small">
+                                                <p>{!vqli.Description__c}</p>
+                                            </div>
+                    
+                                        </div>
+                                    </div> <br/>
+                               
+                            </div><br/>
+                           
+                        </apex:repeat>
+                    </div>
+               </apex:outputPanel> 
+                           
+                           
+                           
+                  <apex:outputPanel rendered="{!vq.size <= 0}">
+                             
+                                <b>No records to display.</b>
+                                       
+                  </apex:outputPanel>          
+              
+        
+  </apex:form> 
+  </div>
+  </body>
+  </html>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,184 @@
+<apex:page renderAs="pdf" contentType="Application/pdf" showHeader="false" controller="statusReport">
+    <html>
+        <head>
+            <style type="text/css">
+                @page{
+                size:landscape;
+                margin : .7in .3in 1.5in .5in;
+                counter-increment: pages;
+                
+                @bottom-center{
+                   content : element(footer); 
+                    height:50px;         
+                    }
+                @top-right
+                    {
+                        content:  "Page " counter(page);
+                        font-family: sans-serif;
+                        font-size:10pt;
+                         
+                        
+                    }
+                    
+                 @top-left
+                   {
+                       content: "<apex:outputText value="{0,date,MM'/'dd'/'yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+                        background-repeat: no-repeat;
+                       font-size:10pt;
+                       font-family: sans-serif;
+                  }   
+            
+                }
+                div.footer {
+                    position : running(footer);
+                }
+                
+                div.header{
+                    position : running(header);
+                }
+                
+                
+                #pageNum:before{
+                    content: counter(pages);
+                }
+            </style>
+        </head>
+     
+    <div class = "footer" style = "page-break-after:always;font-family: sans-serif;font-size:7pt;color:#88080;text-align:center;width:70%; align:center;height:100px;  ">
+        <table class="container"  align="center"> 
+
+            <tr> 
+                
+                <td><c:SFC_MonthComponent months="{!if(MONTH(TODAY())== 1,12,MONTH(TODAY())-1)}" years="{!if(MONTH(TODAY())== 1,YEAR(TODAY())-1,YEAR(TODAY()))}" /></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td><c:SFC_MonthComponent months="{!MONTH(TODAY())}" years="{!YEAR(TODAY())}" /></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td><c:SFC_MonthComponent months="{!if(MONTH(TODAY())== 12,1,MONTH(TODAY())+1)}" years="{!if(MONTH(TODAY())== 12,YEAR(TODAY())+1,YEAR(TODAY()))}" /> </td> 
+                
+            </tr>
+            
+        </table>
+        
+     
+    </div>
+    <apex:variable var="count" value="{!1}"/>
+
+    <body> 
+     
+        <table width="100%" style="font-family: sans-serif !important;">
+            <tr>
+                <td style="width:46%;"><apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+                    <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/> </td>
+                <td style="width:54%;font-size:15px; font-family: sans-serif;padding-right:15px;font-weight:bold;text-align:Right"> 
+                    Status Report  <br/>
+                </td>
+            </tr>
+        </table>
+        <br/><br/> 
+        <apex:repeat value="{!cWrapper}" var="cw">
+            
+            <apex:Repeat value="{!cw.sWrapper}" var="sw" >
+               <div  style="{!if(count == cWrapper.size,'','page-break-after: always;')}" id="div1"> 
+                    <table width = "100%" style="font-family: sans-serif !important;">
+                        <tr>
+                                    <td width = "25%"></td>
+                                    <td align="left" width = "75%" style ="vertical-align:bottom;">
+                                        <apex:repeat value="{!sw.tskST}" var="StTsk" > 
+                                            <div style="width:74px;float:left; align:center" align = "center">
+                                                   <apex:outputText value="{!LEFT(StTsk.Name, 15)}" style="width:100%;font-size:9px;"/>
+                                             </div> 
+                                             
+                                                  
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                    </table>
+                 <div style="background-color:#DFDFDF;width:100%;font-weight: bolder;width:100%">
+                            <b> <apex:outputText value="{!cw.strClient}" style="font-size:14px;font-weight:bold;"/> </b> <br/>
+                        </div>
+              <!-- div style="page-break-after: always;" id="div1" -->
+                           
+                    <table width="100%" >
+                        
+                        <tr>
+                            <td width = "25%">
+                                
+                                   <b> <apex:outputText value="{!sw.strschedule}" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                            </td>
+                            
+                            <!-- td width = "75%">
+                               <table width="100%" >
+                               
+                                
+                                </table>                
+                            </td -->
+                        </tr>
+                    </table>
+               
+                 
+                        <apex:dataTable value="{!sw.jWrapper}" var="jw" width="100%" style="font-family: sans-serif !important;">
+                        <apex:column >
+<!--                        <apex:repeat value="{!cw.jWrapper}" var="jw" >
+-->                            <table width="100%">
+                                <tr width = "100%">
+                                    <td width="25%">
+                                        <table width="100%" style="float:left; table-layout: fixed;" >
+                                            <tr>
+                                                <td style="width:100%;vertical-align:top;" >
+                                                    <b><apex:outputText value="{!jw.job.Name} ({!jw.job.Job_Auto_Number__c})" style="font-size:12px;"/><br/> 
+                                                    
+                                                    <apex:outputLabel value="Created :" style="float:left;font-size:9px;"></apex:outputLabel>
+                                                     <apex:outputText style="width:50px;float:left;font-size:9px;" value="{0,date,MM'/'dd'/'yy}">
+                                                    <apex:param value="{!JW.job.createdDate}"/> </apex:outputText> <br/>
+                                                    
+                                                     <apex:variable var="count1" value="{!1}"/>
+                                                     
+                                                     
+                                                    <apex:repeat value="{!jw.lstStaff}" var="JTL">
+                                                    
+                                                        <apex:outputText value="{!JTL}" style="font-size:9px;"/><apex:outputLabel style="font-size:9px;" value=", " rendered="{!if(jw.lstStaff.size != count1,true, false)}"></apex:outputLabel>
+                                                       <apex:variable var="count1" value="{!count1 + 1}"/>
+                                                    </apex:repeat><br/></b>
+                                                    <apex:outputText value="{!jw.job.Status_Notes__c}" style="font-size:9px;"/>
+                                                </td>
+                                                <!-- td style="width:17%;vertical-align:top;"> -->
+                                                       <!--  <apex:outputText value="{!jw.job.Job_Auto_Number__c}" style="font-size:14px;"/>&nbsp;&nbsp;&nbsp; -->                                               
+                                                <!-- </td -->
+                                                 
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <td width="75%" style="vertical-align:top;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width = "100%"   >
+                                                    <apex:repeat value="{!jw.jobTasks}" var="TSL">
+                                                        <div style="width:74px;float:left;" align = "center" >    
+                                                            <apex:outputText style="width:100%;float:left;font-size:9px;" value="{0,date,MM'/'dd}"  rendered="{!if(TSL.Revised_Due_Date__c !=null,true,false)}">
+                                                            <apex:param value="{!if(TSL.Revised_Due_Date__c !=null,TSL.Revised_Due_Date__c,'-')}"/> </apex:outputText>
+                                                            <apex:outputText style="width:100%;float:right; align:center;" value=" - - " rendered="{!if(TSL.Revised_Due_Date__c == null,true,false)}" ></apex:outputText> 
+                                                        </div>
+                                                    </apex:repeat>
+                                                    <br/><br/> 
+                                                </td>
+                                            </tr>
+                                             
+                                        </table>
+                                    </td>
+                                </tr><hr />
+                                 
+                            </table> 
+<!--                        </apex:repeat>
+-->                        </apex:column><br/> 
+                        </apex:dataTable> 
+                        
+                    
+                <br/><br/>
+            </div>
+           
+        </apex:repeat>
+        <apex:variable var="count" value="{!count + 1}"/>   
+        </apex:repeat>
+     
+ </body>
+    </html>
+</apex:page>

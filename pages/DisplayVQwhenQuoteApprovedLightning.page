@@ -1,0 +1,346 @@
+<apex:page standardController="Quote__c" extensions="DisplayVQwhenQuoteApproved" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+
+     <head>
+        
+        
+         
+         <style>
+         
+         
+
+     
+            #table_date td
+            {
+                border:0px;
+            }
+            #table_amount td
+            {
+                border:0px;
+            }
+            #table_restrict td
+            {
+                border:0px;
+            }
+
+            .labelCol2{font-size:1.0em};
+        </style>
+        
+         <style>
+         
+         
+        .slds .slds-max-medium-table--stacked-horizontal td:before
+        {
+            text-transform:none;
+        }
+          
+         .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                   }
+                    
+                   .slds .slds-table tr > td:first-child 
+                   {
+                        padding-left: 6px;
+                        padding: 15px;
+                   }
+                   
+                  .slds .slds-card__footer 
+                  {
+                       padding: 0px 16px 0px 0px;
+                  }
+                  .slds .slds-card__header 
+                  {
+                      padding: 0px 10px 0px 0px;
+                  }
+                  .slds .slds-card__body 
+                  {
+                      padding: 0px ;
+                  }
+                    
+                  .slds .slds-card 
+                  {
+                        padding: 0;
+                        border-radius: 0px;
+                        background-clip: padding-box;
+                        background-color:white;
+                    }
+                    
+                    .slds .slds-table--bordered 
+                    {
+                        border-top: 0px solid #d8dde6;
+                        border-bottom: 1px solid #d8dde6;
+                    }
+                    
+                    .slds .slds-card__body 
+                    {
+                         margin-bottom: -0.25rem;
+                         margin-top: -0.15rem;
+                    }
+                
+                                       
+            
+            
+            
+        </style>
+        
+        
+        
+        
+        <style>
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before
+            {
+              text-transform:none;
+            }
+        
+            #table_Description td
+            {
+                border:0px;
+            }
+          
+           .labelCol2{font-size:1.0em};
+           
+          
+         
+           
+        </style>
+        
+         <style>
+          
+         .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+                   .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   .slds b, .slds strong, .slds dfn 
+                   {
+                        font-weight: unset;
+                   }
+                    
+                   .slds .slds-table tr > td:first-child 
+                   {
+                        padding-left: 6px;
+                        padding: 15px;
+                   }
+                                       
+            
+            
+            
+        </style>
+        
+        
+        
+         
+        
+        
+        
+        
+    </head>
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+       <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+     <body>
+    
+     <div class="slds">
+           
+           
+                <apex:form html-novalidate="novalidate" >
+            
+                    <apex:pageBlock tabStyle="Vendor_Quote__c"> 
+                    
+                    
+                    
+                    <br/>
+                            
+                                  <div class="slds-card">
+                                   
+                                 <div class="slds-card__body" style="display:{!IF(vq.size > 0, 'block','none')};">    
+                                
+                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                        <thead>
+                                           <tr class="slds-text-title">
+                                              <th scope="col">
+                                                <div class="slds-truncate" title="{!$ObjectType.Vendor_Quote__c.Fields.Name.Label}" ><b>{!$ObjectType.Vendor_Quote__c.Fields.Name.Label}</b></div>
+                                              </th>
+                                              <th scope="col">
+                                                <div class="slds-truncate" title="{!$ObjectType.Vendor_Quote__c.Fields.Vendor__c.Label}"><b>{!$ObjectType.Vendor_Quote__c.Fields.Vendor__c.Label}</b></div>
+                                              </th>
+                                              <th scope="col">
+                                                <div class="slds-truncate" title="{!$ObjectType.Vendor_Quote__c.Fields.Date__c.Label}"><b>{!$ObjectType.Vendor_Quote__c.Fields.Date__c.Label}</b></div>
+                                              </th>
+                                               <th scope="col">
+                                                <div class="slds-truncate" title="{!$ObjectType.Vendor_Quote__c.Fields.Amount__c.Label}" ><b>{!$ObjectType.Vendor_Quote__c.Fields.Amount__c.Label}</b></div>
+                                              </th>
+                                              <th scope="col">
+                                                <div class="slds-truncate" title="{!$ObjectType.Vendor_Quote__c.Fields.Restrict__c.Label}"><b>{!$ObjectType.Vendor_Quote__c.Fields.Restrict__c.Label}</b></div>
+                                              </th>
+                                             
+                                          </tr>
+                                       </thead>
+                                       
+                                       
+                                       <tbody>
+                                          <apex:repeat value="{!vq}" var="vqli" rendered="{!vq.size > 0}">
+                                                <tr>
+                                                     
+                                                      <td data-label="{!$ObjectType.Vendor_Quote__c.Fields.Name.Label}">
+                                                        <div >
+                                                            <apex:outputText >{!vqli.name}</apex:outputText>
+                                                        </div>
+                                                      </td>
+                                                      
+                                                      <td data-label="{!$ObjectType.Vendor_Quote__c.Fields.Vendor__c.Label}">
+                                                        <div>
+                                                            <apex:outputLink tabindex="tab1" value="/apex/VendorListViewSwitchPage?id={!vqli.Vendor__r.Id}">{!vqli.Vendor__r.Name}</apex:outputLink> 
+                                                        </div>
+                                                      </td>
+                                                     
+                                                      <td data-label="{!$ObjectType.Vendor_Quote__c.Fields.Date__c.Label}">
+                                                         <div>
+                                                              
+                                                            <apex:outputField value="{!vqli.Date__c}"/>
+                                                                     
+                                                          </div>
+                                                       </td>
+                                                       
+                                                     
+                                                      
+                                                      <td data-label="{!$ObjectType.Vendor_Quote__c.Fields.Amount__c.Label}">
+                                                        <div>
+                                                               
+                                                           <apex:outputField value="{!vqli.Amount__c}"/>
+                                                                       
+                                                        </div>
+                                                      </td>
+                                                     
+                                                      <td data-label="{!$ObjectType.Vendor_Quote__c.Fields.Restrict__c.Label}">
+                                                         <div>
+                                                               <apex:outputField value="{!vqli.Restrict__c}"/>
+                                                          </div>
+                                                       </td>
+                                                       
+                                                     
+                                                       
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                    
+                    
+                          
+                           <apex:pageBlockSection rendered="{!vq.size <= 0}">
+                               <apex:pageBlockSectionItem >
+                                   <b>No records to display</b>
+                               </apex:pageBlockSectionItem>              
+                             </apex:pageBlockSection> 
+                       </apex:pageBlock> 
+                   </apex:form> 
+               </div>  
+         </body>
+    </html>
+    
+</apex:page>
+<!-- End of Page -->

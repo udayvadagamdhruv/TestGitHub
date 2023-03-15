@@ -1,0 +1,16 @@
+<apex:page standardController="Tag_Template_Item__c" extensions="EditTagtempLineItemsSwitchExt" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/TagTemplateLIdetailpage?id="+'{!TagLIId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="TagTemplateLIdetailpageLightning"/>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,20 @@
+<apex:page standardController="Specification_Template__c" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false" extensions="EditSpecificationTemplateSwitchExt"> 
+
+<script>
+
+
+var sw='{!$User.UITheme=='Theme3'}'
+
+    if(sw=='true')
+    {
+       window.open("apex/SpecificationTemplateTabOverride?id="+'{!creativeBriefid}',"_self");
+    }
+
+
+</script>
+  
+  
+  <apex:outputPanel rendered="{!$User.UITheme=='Theme4d'}">
+   <apex:include pageName="SpecificationTemplateTabOverrideLti" />
+  </apex:outputPanel>
+</apex:page>

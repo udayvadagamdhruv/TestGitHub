@@ -1,0 +1,15 @@
+<!-- This Page is used to override the delete button of Production Spec Item Object -->
+<apex:page standardController="Production_Spec_Item__c" extensions="DeleteProductionSpecItem" showHeader="false" sidebar="false">
+  <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- End Of Page -->

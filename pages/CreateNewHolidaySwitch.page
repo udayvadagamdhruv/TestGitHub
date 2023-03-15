@@ -1,0 +1,18 @@
+<apex:page standardController="Holiday__c" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true" >
+
+<script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/CreateNewHoliday", "_self");
+         }
+        
+    </script>
+  
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="CreateNewHolidayLightning"/>
+    </apex:outputPanel>
+
+
+</apex:page>

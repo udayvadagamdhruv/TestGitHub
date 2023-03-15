@@ -1,0 +1,20 @@
+<!-- This page is used for job attachment. -->
+<apex:page standardController="Job__c" extensions="JobAttachmentExtensions" id="pg" lightningStylesheets="true">
+
+    <apex:form id="frm">
+      <apex:sectionHeader title="{!$ObjectType.Job__c.Label} Attachment"/>
+      <apex:pageblock id="pb">
+          <apex:pageMessages id="msg1" /> 
+          <apex:pageblocksection columns="1">
+                  <apex:outputLabel >1.  <b>Select the File</b><br/><br/>
+                 Click the Browse button to find the file.</apex:outputLabel>
+          <apex:inputfile value="{!myfile.body}" filename="{!myfile.Name}" />
+          <apex:pageBlocksectionItem >
+               <apex:commandbutton value="Attach File" action="{!Savedoc}"/>
+               <apex:commandbutton value="Cancel" action="{!cancelme}" immediate="true" />
+         </apex:pageBlockSectionItem>
+      </apex:pageblocksection>
+  </apex:pageblock>   
+</apex:form> 
+</apex:page>
+<!-- End Of Page -->

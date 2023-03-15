@@ -1,0 +1,16 @@
+<apex:page standardController="Billboard_Invoice__c" extensions="EditBillboardInvoiceSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/EditBillboardInvoice?id="+'{!BBInvId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="EditBillboardInvoiceLightning"/>
+    </apex:outputPanel>
+</apex:page>

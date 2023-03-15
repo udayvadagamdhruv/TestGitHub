@@ -1,0 +1,7 @@
+<aura:documentation>
+    <aura:description>This component <code>c:Admin_Role</code> used for the displaying UserRoles and Add/Edit the User Roles
+    </aura:description>
+	<aura:example name="UserRoles" ref="c:Admin_Role" label="User Roles">
+		User Roles Desription
+	</aura:example>
+</aura:documentation>

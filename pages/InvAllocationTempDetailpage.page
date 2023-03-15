@@ -1,0 +1,6 @@
+<!-- This page is used to display media type detail page. -->
+<apex:page standardController="Invoice_Allocation_Template__c" tabStyle="MyAdmin__tab">
+  <apex:detail relatedList="true" showChatter="true"/>
+  <apex:include pageName="DisplayInvAllocTempLitem"/>
+</apex:page>
+<!-- End of Page -->

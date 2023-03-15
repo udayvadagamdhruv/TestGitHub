@@ -1,0 +1,14 @@
+<apex:page standardController="Media_Type__c" tabStyle="MyAdmin__tab" extensions="EditMediaTypeSwitchExt" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+
+    <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/mediatypedetailpage?id="+'{!MediatypeId}', "_self");
+     }
+    
+    </script>
+   
+    <apex:include pageName="mediatypedetailpageLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+    
+</apex:page>

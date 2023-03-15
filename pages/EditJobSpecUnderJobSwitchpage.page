@@ -1,0 +1,11 @@
+<apex:page standardController="Job_Spec__c" extensions="EditJobSpecUnderJobSwitchpageExt" docType="html-5.0" applyBodyTag="False" standardStylesheets="false">
+    <apex:outputPanel id="cls" rendered="{!$User.UITheme == 'Theme3'}">
+        <apex:include pageName="EditJobSpec"/>
+    </apex:outputPanel> 
+    <apex:outputPanel id="mobile" rendered="{!isMobile}">
+         <apex:include pageName="editJobspecMobile"/>
+    </apex:outputPanel>
+    <apex:outputPanel id="ltng" rendered="{!isLight}">
+         <apex:include pageName="editJobspecLightning"/>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,5 @@
+<apex:page StandardController="Campaign__c" tabStyle="Campaign__c" >
+<apex:detail relatedList="true"/>
+<apex:include pageName="DisplayJobsUnderCampaign"/>
+
+</apex:page>

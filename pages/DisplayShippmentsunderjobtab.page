@@ -1,0 +1,83 @@
+<apex:page controller="DisplayShippmentsunderjobtabext" id="frm">
+
+    <head>
+        <style>
+            #table_id td
+            {
+                border:0px;
+            }
+            #table_dd td
+            {
+            border:0px;
+            }
+            #table_s td
+            {
+            border:0px;
+            }
+             .hd
+              {
+              text-align:right;
+              padding-right:20px!important;
+              }
+        </style>
+    </head>
+    
+    <apex:form id="pb11"> 
+    
+       <apex:pageMessages id="pagemsgId4"></apex:pageMessages>
+            
+          <apex:pageBlock id="pb" title="Shippment">
+              
+                <apex:pageBlockButtons location="top">
+                     <apex:commandlink target="_blank" action="{!CreateShippment}" style="text-decoration: none;" >
+                          <apex:commandButton value="New Shipment" action="{!CreateShippment}" id="btn1"/>
+                     </apex:commandlink>
+                     <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  
+                     <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb1"/> 
+                </apex:pageBlockButtons>
+            
+            <div>
+                    <apex:pageBlockTable value="{!ShipmentEnt}" var="ci" rendered="{!ShipmentEnt.Size > 0}" id="abc">
+                    
+                        <apex:column headerValue="Action">
+                        
+                              <apex:commandButton value="Edit" action="{!editShipment}" reRender="PB"  rendered="{!$ObjectType.Shipment__c.updateable}">
+                                    <apex:param name="param1" value="{!ci.Id}" assignTo="{!ciid}"></apex:param>
+                              </apex:commandButton> &nbsp;
+                
+                        
+                             <apex:commandButton value="Delete" action="{!del}" reRender="PB" onclick="if(!confirm('Are you sure?')){return false;}" >
+                                 <apex:param name="param2" value="{!ci.Id}" assignTo="{!ciid}"> </apex:param>
+                             </apex:commandButton> 
+                        </apex:column> 
+                    
+                        <apex:column headerValue="{!$ObjectType.Shipment__c.Fields.Shipment_Name__c.Label}">
+                            <apex:outputLink tabindex="tab1" value="/{!ci.Id}">{!ci.Shipment_Name__c}</apex:outputlink>
+                        </apex:column> 
+                        
+                         <apex:column headerValue="{!$ObjectType.Shipment__c.Fields.Shipping_Method__c.Label}">
+                             <apex:outputtext >{!ci.Shipping_Method__c}</apex:outputtext>
+                        </apex:column> 
+                        
+                         <apex:column headerValue="{!$ObjectType.Shipment__c.Fields.Shipment_Status__c.Label}">
+                            <apex:outputtext >{!ci.Shipment_Status__c}</apex:outputtext>
+                        </apex:column> 
+                        
+                        
+                    </apex:pageBlockTable>
+                    <br/>
+              </div>
+              <br/>
+         
+            <apex:pageBlockSection rendered="{!ShipmentEnt.Size == 0}">
+             <apex:pageBlockSectionItem >
+                  <b>No records to display</b>
+             </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+           </apex:pageBlock>
+          </apex:form>
+
+
+
+
+</apex:page>

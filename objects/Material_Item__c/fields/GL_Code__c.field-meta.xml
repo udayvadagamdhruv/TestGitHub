@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GL_Code__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>GL Code</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>The GL Department has been changed for this GL Code in Admin. Please re-select the GL Department and GL Code.</errorMessage>
+        <filterItems>
+            <field>GL_Code__c.GL_Department__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.GL_Department__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>GL_Code__c</referenceTo>
+    <relationshipLabel>Material Items</relationshipLabel>
+    <relationshipName>Material_Items</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

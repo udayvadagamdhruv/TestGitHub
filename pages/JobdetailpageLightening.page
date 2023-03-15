@@ -1,0 +1,309 @@
+<apex:page standardController="Job__c" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+        
+        <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+     <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+        <script>
+            function selectTab(elmnt) {
+                // slds-active
+                $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+                $(elmnt).parent("li").addClass("slds-active");
+                
+                // tabindex
+                $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+                $(elmnt).attr("tabindex", 0);
+                
+                // aria-selected
+                $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+                $(elmnt).attr("aria-selected", true);
+                
+                // hiding previously selected tab (slds-show/slds-hide)
+                
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+                // displaying newly selected tab (slds-show/slds-hide)
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").addClass("slds-show");
+                $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='"+elmnt.id+"']").removeClass("slds-hide");
+            }
+      </script>
+
+    <apex:slds />
+    <div class="slds-scope">
+    
+  <!-- Header -->  
+  <div class="slds-page-header" style="position:fixed;width:100%;z-index:999;">
+  <div class="slds-grid">
+    <div class="slds-col slds-has-flexi-truncate">
+      <div class="slds-media slds-no-space slds-grow">
+        <div class="slds-media__figure">
+          <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+          
+          </svg>
+        </div>
+        <div class="slds-media__body">
+          <p class="slds-text-title--caps slds-line-height--reset">Job</p>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="this should match the Record Title">Job Name</h1>
+        </div>
+      </div>
+    </div>
+    <div class="slds-col slds-no-flex slds-grid slds-align-top">
+      
+      <div class="slds-button-group" role="group">
+        <button class="slds-button slds-button--neutral">Edit</button>
+        <button class="slds-button slds-button--neutral">Delete</button>
+        <button class="slds-button slds-button--neutral">Clone</button>
+        
+      </div>
+    </div>
+  </div>
+  </div>
+  <br/><br/><br/>
+  <!-- Tabs -->
+  
+  <div class="slds-tabs--scoped" >
+  <ul class="slds-tabs--scoped__nav" role="tablist" style="position:fixed;width:100%;z-index:999;">
+    <li class="slds-tabs--scoped__item slds-active" title="Item One" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item" onclick="selectTab(this);" style="text-decoration: none !important;">Details</a></li>
+    <li class="slds-tabs--scoped__item" title="Item Two" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2" id="tab-scoped-2__item" onclick="selectTab(this);" style="text-decoration: none !important;">Chatter</a></li>
+    <li class="slds-tabs--scoped__item" title="Item Three" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3" id="tab-scoped-3__item" onclick="selectTab(this);" style="text-decoration: none !important;">Charts</a></li>
+    <li class="slds-tabs--scoped__item" title="Item Four" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-4" id="tab-scoped-4__item" onclick="selectTab(this);" style="text-decoration: none !important;">Related</a></li>
+  </ul>
+  <br/><br/>
+
+
+  <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item" >
+  <br/>
+  <b><p style="background:#F4F6F9;">  &nbsp; Details Section 1</p></b>
+    <div class="slds-grid">
+  
+  <div class="slds-col">
+    <div class="slds-box--small slds-text-align--left">
+           <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/> 
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>             
+    </div>
+  </div>
+  <div class="slds-col">
+    <div class="slds-box--small slds-text-align--left">
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        
+        
+    </div>   
+  </div>
+  
+    </div>
+    
+    
+    <b><p style="background:#F4F6F9;"> &nbsp; Details Section 2</p></b>
+    <div class="slds-grid">
+  
+  <div class="slds-col">
+    <div class="slds-box--small slds-text-align--left">
+           <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/> 
+                     
+    </div>
+  </div>
+  <div class="slds-col">
+    <div class="slds-box--small slds-text-align--left">
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        
+    </div>   
+  </div>
+  
+    </div>
+    
+    
+    <b><p style="background:#F4F6F9;"> &nbsp; Details Section 3</p></b>
+    <div class="slds-grid">
+  
+  <div class="slds-col">
+    <div class="slds-box--small slds-text-align--left">
+           <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/> 
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+                     
+    </div>
+  </div>
+  <div class="slds-col">
+    <div class="slds-box--small slds-text-align--left">
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        <div class="slds-form-element" style="border-bottom:1px solid lightgray; padding-bottom:7px;">
+  <label class="slds-form-element__label" for="text-input-01">Field Label</label>
+  <div class="slds-form-element__control">
+    <div style="color:black;">Field Value</div>
+  </div>
+        </div>
+        <br/>
+        
+    </div>   
+  </div>
+  
+    </div>
+  </div>
+  
+  <div id="tab-scoped-2" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-2__item" >
+        <chatter:feed entityId="{!Job__c.Id}" />
+       
+  </div>
+  <div id="tab-scoped-3" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-3__item" >Charts Section</div>
+  <div id="tab-scoped-4" class="slds-tabs--scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-4__item" >Here all the related tabs which are there in salesforce classic will display as collapsible sections.</div>
+  </div>
+  
+  </div>
+</apex:page>

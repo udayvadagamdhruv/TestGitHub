@@ -1,0 +1,118 @@
+<apex:page standardController="Billboard__c" tabStyle="Billboard__c" extensions="EditBillboardExtension">
+
+<apex:sectionHeader title="Billboard Details"/>
+  <apex:pagemessages id="pgMsg"/>
+   <apex:form >
+      <apex:pageBlock id="pb">
+          
+         <apex:pageBlockButtons >
+            <apex:commandButton value="Save" action="{!saveme}"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" ></apex:commandButton>
+         </apex:pageBlockButtons>
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Name.Label}" /> 
+                  <apex:inputField value="{!Billboard__c.Name}" required="true"/>
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Title__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Title__c}"  />
+               </apex:pageBlockSectionItem>
+               
+               
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Size__c.Label}" /> 
+                  <apex:inputField value="{!Billboard__c.Size__c}" />
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Location__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Location__c}"  />
+               </apex:pageBlockSectionItem>  
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.PMT__c.Label}" /> 
+                  <apex:inputField value="{!Billboard__c.PMT__c}" />
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Billboard_Status__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Billboard_Status__c}"  />
+               </apex:pageBlockSectionItem> 
+               
+                <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Billboard_Type__c.Label}" /> 
+                  <apex:inputField value="{!Billboard__c.Billboard_Type__c}" />
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Illumination__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Illumination__c}"  />
+               </apex:pageBlockSectionItem> 
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Commencement_Date__c.Label}" /> 
+                  <apex:inputField value="{!Billboard__c.Commencement_Date__c}" />
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Expiration_Date__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Expiration_Date__c}"  />
+               </apex:pageBlockSectionItem> 
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Latitude__c.Label}" /> 
+                  <apex:inputField value="{!Billboard__c.Latitude__c}" />
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Longitude__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Longitude__c}"  />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.BB_Vendor__c.Label}" /> 
+                  <apex:selectList id="VendorName" value="{!VendorName}" size="1" >
+                     <apex:selectOptions value="{!Vendors}"></apex:selectOptions>
+                  </apex:selectList> 
+                  
+               </apex:pageBlockSectionItem>
+         
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Client_Name__c.Label}"  />
+                  <apex:selectList id="ClientName" value="{!ClientName}" size="1" >
+                     <apex:selectOptions value="{!Clients}"></apex:selectOptions>
+                  </apex:selectList> 
+               </apex:pageBlockSectionItem>
+               
+                 <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Vinyl_Replacement__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Vinyl_Replacement__c}"  />
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Billboard__c.Fields.Notes__c.Label}"  />
+                  <apex:inputField value="{!Billboard__c.Notes__c}"  />
+               </apex:pageBlockSectionItem>
+               
+               
+               
+               
+               
+        </apex:pageBlockSection> 
+      </apex:pageBlock>
+   </apex:form>
+
+
+
+
+</apex:page>

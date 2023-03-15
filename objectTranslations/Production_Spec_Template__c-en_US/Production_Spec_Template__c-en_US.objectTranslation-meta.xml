@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Production Spec Template</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Production Spec Templates</value>
+    </caseValues>
+    <layouts>
+        <layout>Production Spec Template Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>List_View</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Production_Templates_View</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,18 @@
+<apex:page standardController="Campaign_Jobs__c" extensions="EditCampaignJobSwitchExt" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="true" applyHtmlTag="False"  showHeader="false" >
+<script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/DetailCampaignJob?id="+'{!CJobId}',  "_self");
+         }
+        
+    </script>
+    
+    
+  
+   <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="DetailCampaignJobLightning"/>
+    </apex:outputPanel>
+  
+</apex:page>

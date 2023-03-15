@@ -1,0 +1,151 @@
+<!-- This page is used to display Schedule Tasks Under Schedule Temp. -->
+<apex:page controller="displayScheduleTaskUnderScheduleTemp">
+    <head>
+        <style>
+            #table_id td
+            {
+                border:0px;
+            }
+            #table_dd td
+            {
+                border:0px;
+            }
+            #table_days td
+            {
+                border:0px;
+            }
+            #table_locked td
+            {
+                border:0px;
+            }
+            #table_Report td
+            {
+                border:0px;
+            }
+            #table_Hours td
+            {
+                border:0px;
+            }
+            
+            
+            #table_to td
+            {
+                border:0px;
+            }
+            
+        </style>
+    </head>
+
+    <apex:form id="form">
+    <table>
+          <tr>
+              <td> <apex:image url="{!$Resource.JobLogo}" width="40" height="40" /> </td>
+              <td>  <h1 class="mainTitle">Tasks</h1> </td>
+          </tr>
+      </table>  
+       <apex:pageBlock >
+       <center>
+              <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  &nbsp;
+              <apex:commandButton value="Cancel" id="cancelButton" action="{!cancel}" style="display: none;" reRender="pb1"/>
+       </center>
+    
+      <apex:pageBlockTable value="{!lstST}" var="st" rendered="{!lstST.Size > 0}"> 
+          <apex:column headerValue="Action" width="24%"> 
+                 <apex:commandButton value="Edit" action="{!EditTask}" reRender="hiddenBlock3">
+                       <apex:param name="param3" value="{!st.id}" assignTo="{!strSTID}"></apex:param>
+                 </apex:commandButton>&nbsp;
+    
+                 <apex:commandButton value="Delete" action="{!DeleteTask}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2">
+                       <apex:param name="param2" value="{!st.id}" assignTo="{!strSTID}"></apex:param>
+                 </apex:commandButton>&nbsp;
+    
+                 <apex:commandButton value="Insert Task" action="{!insertTask}" reRender="hiddenBlock1">
+                       <apex:param name="param1" value="{!st.Id}" assignTo="{!strSTID}"> </apex:param>  
+                 </apex:commandButton>&nbsp;
+                 
+                 <apex:commandButton value="Add/Edit Roles"  onClick="window.open('/apex/assignroletoschduletaskunderschedtemp?scheduleTaskId={!st.Id}','_parent');" reRender="hiddenBlock1"/>
+                      
+                 
+          </apex:column>&nbsp;
+           
+           <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Name.Label}" width="20%">
+                 <apex:outputLink tabindex="tab1" value="/apex/ScheduleTaskDetailPage?id={!st.Id}">{!st.Name}</apex:outputLink>
+           </apex:column>
+           
+           <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Roles__c.Label}" width="18%">
+                  <apex:outputfield value="{!st.Roles__c}"/>
+           </apex:column>
+    
+           <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.GL_Code__c.Label}" width="13%">
+                    <apex:outputfield value="{!st.GL_Code__c}"/>
+            </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Days__c.Label}" width="15%">
+                 <table border="0" id="table_days">
+                     <tr>
+                     <td border="0">
+                         <apex:outputfield value="{!st.Days__c}" style="width:10px">
+                                 <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/></apex:outputfield> </td>
+                                 <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Days"/>  </td>
+                     </tr>
+                 </table> 
+             </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Locked__c.Label}" width="10%"> 
+                 <table border="0" id="table_locked">
+                     <tr>
+                         <td border="0">
+                             <apex:outputfield value="{!st.Locked__c}">
+                             <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/></apex:outputfield> </td>
+                                 <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Lock or Unlock?"/>  </td>
+                    </tr>
+                 </table> 
+             </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Report__c.Label}" width="10%">
+                 <table border="0" id="table_Report">
+                     <tr>
+                         <td border="0">
+                             <apex:outputfield value="{!st.Report__c}">
+                                 <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/></apex:outputfield> </td>
+                                      <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Report"/>  </td>
+                     </tr>
+                 </table> 
+             </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Hours__c.Label}" width="10%">
+                 <table border="0" id="table_Hours">
+                     <tr>
+                         <td border="0">
+                             <apex:outputfield value="{!st.Hours__c}">
+                                 <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/></apex:outputfield> </td>
+                                      <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Hours"/>  </td>
+                     </tr>
+                 </table> 
+             </apex:column>
+             
+             <apex:column headerValue="{!$ObjectType.Schedule_Task__c.Fields.Task_Order__c.Label}" width="10%">
+                 <table border="0" id="table_to">
+                     <tr>
+                         <td border="0">
+                             <apex:outputfield value="{!st.Task_Order__c}">
+                                 <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/></apex:outputfield> </td>
+                                      <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Task Order"/>  </td>
+                     </tr>
+                 </table> 
+             </apex:column>
+      
+      </apex:pageBlockTable>
+      
+       <apex:pageBlockSection rendered="{!lstSt.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display.</b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+       </apex:pageBlock>
+   <div align="center">
+       <apex:commandButton action="{!insertTaskBelow}" value="Insert Task Below"/>
+   </div>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

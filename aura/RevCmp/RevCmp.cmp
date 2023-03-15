@@ -1,0 +1,62 @@
+<aura:component controller = "RevCmpClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="mydata" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="isTaskEdit" type="boolean" default="false"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <aura:attribute name="EditTaskId" type="string" default=""/>
+    
+    <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="JobTasks" >  
+        <lightning:accordionSection name="JobTasks" label="Job Tasks"  class="slds-card" >
+            <center>
+                <lightning:button variant="neutral" label="Create Schedule" title="Create Schedule" onclick="{!c.handlecreateSchedule}" />    
+            </center>
+            <br/>
+            <lightning:datatable
+                                 columns="{! v.mycolumns }"
+                                 data="{! v.mydata }"
+                                 keyField="id"
+                                 onrowaction="{! c.handleRowAction }"
+                                 />
+            
+        </lightning:accordionSection>
+    </lightning:accordion>
+  
+  <aura:if isTrue="{!v.isTaskEdit}">	
+        	
+        <lightning:recordEditForm aura:id="TaskEditForm" density="comfy" objectApiName="Job_Task__c" recordId="{!v.EditTaskId}" >	
+            	
+            <!--************************************************  MODAL BOX Start *************************************************--> 	
+            	
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">	
+                <div class="slds-modal__container">	
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->	
+                    <header class="slds-modal__header">	
+                        <lightning:buttonIcon iconName="utility:close"	
+                                              onclick="{! c.closeModel }"	
+                                              alternativeText="close"	
+                                              variant="bare-inverse"	
+                                              class="slds-modal__close"/>	
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"> Task</h2>	
+                    </header>	
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->	
+                    	
+                  	
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->	
+                    <footer class="slds-modal__footer">	
+                        <lightning:button variant="neutral" 	
+                                          label="Cancel"	
+                                          title="Cancel"	
+                                          onclick="{! c.closeTaskModel }"/>	
+                        <lightning:button variant="brand" 	
+                                          label="Save"	
+                                          title="Save"	
+                                          type="submit" />	
+                    </footer>	
+                </div>	
+            </section>	
+            <div class="slds-backdrop slds-backdrop_open"></div>	
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->	
+        </lightning:recordEditForm> 
+    </aura:if>
+</aura:component>

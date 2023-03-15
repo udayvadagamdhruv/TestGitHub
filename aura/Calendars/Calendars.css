@@ -1,0 +1,30 @@
+.THIS .slds-no-flex{
+    margin-right: 50px !important;
+}
+.THIS .clearbtn{
+    margin-left: 25%!important;
+}
+
+.THIS .slds-p-around_medium{
+    width: 100% !important;
+}
+
+.THIS .layoutsize{
+     width: 20% !important;
+}
+
+.THIS .slds-accordion__summary-action {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    min-width: 0;
+    background: SteelBlue  !important;
+    line-height: 1.675rem  !important;
+    padding: 5px  !important;
+    font-size: 1.1em !important;
+    color: white !important;
+}
+
+.THIS .slds-accordion__section {
+    padding: 0.65rem !important;
+}

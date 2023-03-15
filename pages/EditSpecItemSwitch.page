@@ -1,0 +1,27 @@
+<apex:page standardController="Spec_Item__c" extensions="EditSpecItemSwitchExt" tabStyle="MyAdmin__tab" showHeader="false" sidebar="false" standardStylesheets="true" applyBodyTag="false" applyHtmlTag="false" docType="html-5.0" >
+  
+  <script>
+  
+  
+  
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/EditSpecItem?id="+'{!speitemid}',  "_self");
+         }
+        
+    </script>
+    
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="EditSpecItemLightning"/>
+    </apex:outputPanel>
+  
+  
+  
+  
+  
+  
+  
+</apex:page>

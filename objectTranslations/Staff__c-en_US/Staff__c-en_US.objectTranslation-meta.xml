@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Staff</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Staff</value>
+    </caseValues>
+    <layouts>
+        <layout>Staff Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Email_Validation</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Calendar_View</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>List_View</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Staff_List</name>
+    </webLinks>
+</CustomObjectTranslation>

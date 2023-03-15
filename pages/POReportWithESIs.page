@@ -1,0 +1,534 @@
+<!-- This page is used to display Purcase Order Report with ESI's. -->
+<apex:page standardController="Purchase_Order__c" showHeader="false" sidebar="false" standardStylesheets="false" extensions="POReportWithESIs" renderAs="PDF">
+    <head>
+    <style type="text/css">
+
+        .rightalign
+        {
+            text-align:right;
+        }
+
+        .leftalign
+        {
+            text-align:left;
+        }
+
+        .centeralign
+        {
+            text-align:center;
+        }
+
+        div.tab
+        {
+            width:100%;
+            border:solid black;
+        }
+        @page
+        {
+            /* Landscape orientation */
+            size:potrait;
+
+            /* Put page numbers in the bottom right corner of each
+            page in the pdf document. */
+        
+            @bottom-right
+            {
+            content: "Page " counter(page);
+            font-family: sans-serif;
+            font-size:8pt;
+            }
+   
+            @bottom-left 
+            {
+            content: "<apex:outputText value="{0,date,MMMM dd, yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>"; 
+            background-repeat: no-repeat;
+            font-size:8pt;
+            font-family: sans-serif;
+            } 
+        }
+
+        body 
+        {
+        font-family: sans-serif;
+        font-size:8pt;
+        }
+  
+        th
+        {
+        font-size:10pt
+        font-style:bold;
+        font-family: sans-serif;
+        }
+
+        td
+        {
+        font-size:8pt;
+        font-family: sans-serif;
+        }
+  
+        div.footer
+        {
+        position : running(footer) ;
+        }
+    </style>
+    </head>
+
+    <body>
+        <table width="100%" border="0">
+         <tr>
+         <td width="70%" valign="top" style="padding-top:4px;">
+            <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}" />
+            <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}" />
+        </td>
+        <!--Changed the td perc. and align for td-->
+       <td width="50%" align="right"> 
+                        <table width="100%" border="0">
+                            <tr >
+                                <!--<td style="font-size:1.5em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                <apex:outputLabel value="{!$ObjectType.Purchase_Order__c.Fields.Name.Label}">&nbsp;</apex:outputLabel><apex:outputField value="{!Purchase_Order__c.Name}"/>-->
+                                <!--Added by yogini on 22-aug-12 -->
+                                <td>
+                                     <b><apex:outputLabel value="PURCHASE ORDER"  style="font-size:15px; font-family: sans-serif;"></apex:outputLabel><br/></b>
+                                    
+                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <b> 
+                                     #<apex:outputField value="{!Purchase_Order__c.Name}" style="font-size:10px;font-family: sans-serif;"/></b>
+                                </td>
+                            </tr>
+                    
+                            <tr style="font-size:10px;">
+                                <td>
+                                    <apex:outputLabel value="{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}" style="font-size:12px;font-family: sans-serif;font-weight: bold;"/> &nbsp;&nbsp;
+                                    <apex:outputfield value="{!Purchase_Order__c.Issue_Date__c}" style="font-size:10px;font-family: sans-serif;"/> 
+                                </td>
+                            </tr>
+                   
+                            <tr style="font-size:10px;">
+                                <td>
+                                    <apex:outputLabel value="{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}" style="font-size:12px;font-family: sans-serif;font-weight: bold;"/> &nbsp;&nbsp;
+                                    <apex:outputfield value="{!Purchase_Order__c.Due_Date__c}"/>
+                                </td>
+                            </tr>
+                           
+                         <!--     <tr>
+                                <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" style="font-weight: bold;"/>
+                                &nbsp;&nbsp;<apex:outputfield value="{!Purchase_Order__c.Job__r.Job_Auto_Number__c}"/> </td>
+                            </tr>
+                          
+                           <tr>
+                                <td> <apex:outputLabel value="{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}" style="font-weight: bold;"/>
+                                &nbsp;&nbsp; <apex:outputField value="{!Purchase_Order__c.Total_Amount__c}"/> </td>
+                            </tr> -->    
+</table>
+        </td>
+        </tr>
+        
+        
+         <!-------------------------------- END Purchase Details -------------------------------------->     
+              
+               <!-------------------------------- Address Details -------------------------------------->     
+        
+         
+        <tr style="height:15px"><td></td></tr>
+ 
+        
+        
+       <tr style="font-size:9px;">
+       
+                   
+                            <td align="left" width="50%"   >
+                            
+                             <table width="40%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                                <tr style="page-break-inside: avoid;">
+                                      <td width="100%">
+                                           <b> <apex:outputText value="VENDOR" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                      </td>
+                                </tr>
+                            </table>
+                             <br />
+                                 <hr color="black" style="width:40%;margin-left:0px;"/>
+                            </td> 
+                       
+                     
+                    <td  width="50%" >
+                    
+                           <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                                <tr style="page-break-inside: avoid;">
+                                      <td width="100%">
+                                           <b> <apex:outputText value="BILLING ADDRESS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                      </td>
+                                </tr>
+                            </table>
+                             <br />
+                                 <hr color="black" style="width:100%;margin-left:0px;"/>
+                    
+                    </td>
+      </tr>
+        
+        <tr>
+          
+          <td width="50%" align="left" valign="top">
+            
+             <apex:outputField value="{!Purchase_Order__c.Vendor__r.Name}" /><br/>
+              <apex:outputField rendered="{!Purchase_Order__c.Vendor__r.Address_1__c != null}" value="{!Purchase_Order__c.Vendor__r.Address_1__c}"> <br/> </apex:outputField>
+              <apex:outputField rendered="{!Purchase_Order__c.Vendor__r.Address_2__c != null}" value="{!Purchase_Order__c.Vendor__r.Address_2__c}"> <br/> </apex:outputField>
+              <apex:outputField value="{!Purchase_Order__c.Vendor__r.City__c}"/><apex:outputText value=", " rendered="{!Purchase_Order__c.Vendor__r.City__c!=''}"/><apex:outputField value="{!Purchase_Order__c.Vendor__r.State__c}"/> &nbsp; <apex:outputField value="{!Purchase_Order__c.Vendor__r.Zip__c}"/> <br/>
+             <apex:outputField value="{!Purchase_Order__c.Vendor__r.Phone_1__c}"/>
+
+               
+                 <!--added by yogini on 22-aug-12-->
+            <!--     <br/>
+                 <br/>
+                <b> <apex:outputLabel rendered="{!vContacts.Size != 0}" >Vendor Contact Name</apex:outputLabel></b>
+                 <br/>
+                 <apex:repeat value="{!vContacts}" var="vc" >                      
+                           <apex:outputField value="{!vc.Name}" /><br />
+                 </apex:repeat>
+                 <br/>
+                 <apex:outputtext rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><b>Client </b></apex:outputtext>
+                 
+                 <apex:outputField value="{!Purchase_Order__c.Job__r.JS_Client__r.Name}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><br/></apex:outputField>-->
+                 <!-- <table align="left">
+                      <tr><td><b><apex:outputLabel rendered="{!vContacts.Size != 0}" >Vendor Contact Name</apex:outputLabel></b></td></tr>
+                      <tr><td>
+                      
+                      <apex:repeat value="{!vContacts}" var="vc" >                      
+                           <apex:outputField value="{!vc.Name}" /><br />
+                      </apex:repeat>                      
+
+                      </td></tr>
+                  </table>  -->
+          </td>
+          <td width="50%" align="left" valign="top" style="font-size:10px;">
+          
+          
+    
+    <apex:outputField value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Street__c} " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Street__c!=''}" /> <br/>   
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_City__c}, " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_City__c!=''}" ></apex:outputText>                                            
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_State__c} " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_State__c!=''}" />                  
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Postal_Code__c}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Postal_Code__c!=''}" ></apex:outputText> <br />
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Phone__c}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Phone__c!=''}" ></apex:outputText>
+    
+    
+    <br/> <br />
+   
+  <!--  <apex:outputtext rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><b  style="background-color:#EEEEEE;margin-bottom:-10px;">SHIPPING ADDRESS </b></apex:outputtext><br/><HR/>
+    <apex:outputField value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Street__c} " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Street__c!=''}" /><br/>  
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_City__c}, " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_City__c!=''}" ></apex:outputText>                                             
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_State__c} " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_State__c!=''}" />
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Postal_Code__c}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Postal_Code__c!=''}" ></apex:outputText> <br />
+    <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Phone__c}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Phone__c!=''}" ></apex:outputText>-->
+   
+          
+                          <!-- commented by yogini on 23-aug-12
+                         <b>FROM</b><br/>
+                          {!$Organization.Name}<br/> 
+                          {!$Organization.Street}<br/>
+                          {!$Organization.City}<apex:outputLabel value="," rendered="{!$Organization.City != null}"></apex:outputLabel> {!$Organization.State}&nbsp;{!$Organization.PostalCode}<br/>
+                          {!$Organization.Phone}-->
+                         <!-- <table border="1">
+                              <tr>
+                                  <td>
+                                      <table>
+                                         
+                                         <tr>
+                                              <td>
+                                                  <apex:outputtext rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><b>Billing Address </b></apex:outputtext><br/>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Street__c}, " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Street__c!=''}" />                                  
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_City__c}, " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_City__c!=''}" ></apex:outputText>                                              
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_State__c} - " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_State__c!=''}" />                    
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Postal_Code__c}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Billing_Postal_Code__c!=''}" ></apex:outputText> 
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </td>                                  
+                              </tr>
+                            <tr>
+                                  <td>
+                                      <table>
+                                          <tr>
+                                              <td>
+                                                  <apex:outputtext rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><b>Shipping Address </b></apex:outputtext><br/>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Street__c}, " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Street__c!=''}" />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_City__c}, " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_City__c!=''}" ></apex:outputText>                                              
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_State__c} - " rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_State__c!=''}" />
+                                                  <apex:outputText value="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Postal_Code__c}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Shipping_Postal_Code__c!=''}" ></apex:outputText>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </td>                                  
+                              </tr>                             
+                          </table>-->
+                                      
+          </td>
+          
+         
+        </tr>
+        
+         
+        </table>
+        
+             
+                 
+      <!-------------------------------- Job Details -------------------------------------->     
+   
+   
+         <table width="100%" style="font-size:10px;" >
+         
+               <tr width="100%">
+                          <td align="left">
+                               <hr color="black" width="100%"/>
+                          </td>
+                        </tr>
+                        
+                        <tr width="100%">
+                          <td width="100%">
+                            <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                                <tr style="page-break-inside: avoid;">
+                                      <td width="100%">
+                                           <b> <apex:outputText value="DETAILS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                      </td>
+                                </tr>
+                            </table>
+                           </td>
+            </tr><BR/>
+            <tr width="100%">
+                <td width="20%">
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" style="font-weight: bold;"/>
+                </td>
+                <td width="30%">
+                  <apex:outputfield value="{!Purchase_Order__c.Job__r.Job_Auto_Number__c}"/> 
+                </td>
+          
+                <td width="20%">
+                   <apex:outputtext rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><b>{!$ObjectType.Job__c.Fields.JS_Client__c.Label} </b></apex:outputtext>
+                </td>
+                <td width="30%" >
+                   <apex:outputField value="{!Purchase_Order__c.Job__r.JS_Client__r.Name}" rendered="{!Purchase_Order__c.Job__r.JS_Client__r.Name!=''}"><br/></apex:outputField>
+                </td>
+            </tr>
+            
+            <tr style="font-size:10px;" width="100%">
+                <td width="20%">
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.name.Label}" style="font-weight: bold;"/>
+                </td>
+                <td width="30%">
+                  <apex:outputfield value="{!Purchase_Order__c.Job__r.name}"/> 
+                </td>
+                 <td width="20%">
+                  <apex:outputLabel rendered="{!vContacts.Size != 0}" ><b>{!$ObjectType.Purchase_Order__c.Fields.Vendor_Contact__c.Label}</b></apex:outputLabel>
+                </td>
+                <td width="30%">
+                   <apex:repeat value="{!vContacts}" var="vc" >                      
+                           <apex:outputField value="{!vc.Name}" /><br />
+                 </apex:repeat>
+                </td>
+            </tr>
+           
+         </table> <br/><br/>
+         
+  <!-------------------------------- END Job Details --------------------------------------> 
+        
+<!-------------------------------- Notes --------------------------------------> 
+       
+                   <table align="left" border="0" width="100%">
+                        
+                        <tr width="100%">
+                          <td align="left">
+                               <hr color="black" width="100%"/>
+                          </td>
+                        </tr>
+                        
+                        <tr width="100%">
+                          <td width="100%">
+                            <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                                <tr style="page-break-inside: avoid;">
+                                      <td width="100%">
+                                           <b> <apex:outputText value="{!upper($ObjectType.Purchase_Order__c.Fields.Notes__c.Label)}" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                      </td>
+                                </tr>
+                            </table>
+                           </td>
+                        </tr> <br/><br/>
+                          <tr>
+                              <td align="left" style="text-align:left"><apex:outputfield value="{!Purchase_Order__c.Notes__c}"/> </td>
+                          </tr>
+                     </table><br/>
+       <!--------------------------------End Notes -------------------------------------->            
+          
+        <!--------------------------------GL Details -------------------------------------->   
+          
+           <table width="100%" border="0">
+           
+           
+                <tr width="100%">
+                  <td align="left">
+                       <hr color="black" width="100%"/>
+                  </td>
+                </tr>
+                
+                <tr width="100%">
+                  <td width="100%">
+                    <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                        <tr style="page-break-inside: avoid;">
+                              <td width="100%">
+                                   <b> <apex:outputText value="PURCHASE ORDER LINE ITEMS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                              </td>
+                        </tr>
+                    </table>
+                   </td>
+                </tr> <br/>
+           
+           
+                    <tr width="100%" style="font-size:10px;">
+                         <!-- <th width="25%" style="text-align:left;"><b></b></th>
+                          <apex:outputPanel layout="none" rendered="{!(Not(ShowProductionEstimate))}"><th width="25%" style="text-align:left;"><b><apex:outputlabel value="{!$ObjectType.PO_Line_Item__c.Fields.Estimate_Line_Item__c.Label}" rendered="{!(Not(ShowProductionEstimate))}"/></b></th></apex:outputPanel> 
+                          <apex:outputPanel layout="none" rendered="{!(ShowProductionEstimate)}" ><th width="25%" style="text-align:left;"><b><apex:outputlabel value="{!$ObjectType.PO_Line_Item__c.Fields.Production_Estimate__c.Label}" rendered="{!(ShowProductionEstimate)}"/></b></th></apex:outputPanel>-->
+
+                          <th width="50%" style="text-align:left;"><b>{!$ObjectType.PO_Line_Item__c.Fields.GL_Code__c.Label}</b></th>
+                        
+                          <th width="15%" style="text-align:center;"><b>{!$ObjectType.PO_Line_Item__c.Fields.Quantity__c.Label}</b></th>
+                          
+                          <!--Added by yogini on 22-Aug-12-->
+                          <!--<th width="20%" style="text-align:left;"><b>{!$ObjectType.GL_Code__c.Label}</b></th>-->  
+                                                  
+                          <th width="15%" style="text-align:center;"><b>{!$ObjectType.PO_Line_Item__c.Fields.Unit_Type__c.Label}</b></th>
+                          
+                          <!--Commented by yogini on 24-8-12
+                          <th width="10%" style="text-align:right;"><b>{!$ObjectType.PO_Line_Item__c.Fields.Quantity__c.Label}</b></th>
+                          <th width="10%" style="text-align:center;"><b>Qty</b></th>-->
+                          
+                          <th width="20%" style="text-align:center;"><b>{!$ObjectType.PO_Line_Item__c.Fields.Amount__c.Label}</b></th>
+                        
+                         
+                   </tr>
+                   
+                   <tr width="100%">
+                         <td colspan="4" ><hr color="black" style="height: 2px;background-color: black;width:100%;"/></td>
+                   </tr>
+                   
+                  <apex:repeat value="{!wrapout}" var="parent" rendered="{!tempPOLI.Size > 0}"> 
+                       
+                            <tr>
+                                 <!--   <apex:outputPanel layout="none" rendered="{!(Not(ShowProductionEstimate))}"> <td width="25%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.poli.Estimate_Line_Item__r.Name}"/></td> </apex:outputPanel>
+                                 <apex:outputPanel layout="none" rendered="{!(ShowProductionEstimate)}" > <td width="25%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.poli.Production_Estimate__r.Name}"/></td> </apex:outputPanel> -->
+                               
+                                <td width="50%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.poli.GL_Code__r.Name}"/></td>
+                                <!--Added by yogini on 22-aug-12--> 
+                                <!-- <td width="20%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.poli.GL_Code__r.GL_ID__c}"/></td>-->
+                                
+                                
+                                <td width="15%" style="text-align:center;" valign="top"><apex:outputField value="{!parent.poli.Quantity__c}"/></td>
+                                <td width="15%" style="text-align:center;"  valign="top"><apex:outputField value="{!parent.poli.Unit_Type__c}"/></td> 
+                                <td width="20%" style="text-align:right;" valign="top"><apex:outputField value="{!parent.poli.Amount__c}"/></td> 
+                                
+                             
+                            </tr>
+                   
+                            <tr width="100%">
+                                   <td width="100%" colspan="4" style="padding-left:30px;">
+                                 
+                             <table width="100%"  >
+                                     <tr width="100%" style="font-size:10px;">
+                                         <td > <apex:outputtext rendered="{!OR(parent.esis.Size > 0,parent.Pesis.Size > 0)}"><b>Specifications</b></apex:outputtext></td>
+                                     </tr>
+                                     
+                                     <tr width="100%">
+                                         <td colspan="4"><hr color="black" style="width:100%;"/></td>
+                                     </tr>
+                                    
+                                       <apex:repeat value="{!parent.esis}" var="child" rendered="{!AND(parent.esis.Size > 0,(Not(ShowProductionEstimate)))}">  
+                                          <tr>
+                                              <td style="padding-left:30px;">
+                                               <b>  <apex:outputField value="{!child.esi.Name}" style="margin-left:5px;"/></b><br/>
+                                              </td>
+                                           </tr>
+                                           <tr>
+                                              <td style="padding-left:30px;">
+                                                <apex:outputField value="{!child.esi.Description__c}" style="margin-left:5px;"/><br/>
+                                              </td>                                  
+                                           </tr> 
+                                       </apex:repeat>
+                                       
+                                       
+                                       <apex:repeat value="{!parent.pesis}" var="child" rendered="{!AND(parent.pesis.Size > 0,(ShowProductionEstimate))}">  
+                                           <tr>
+                                          
+                                              <td style="padding-left:30px;">
+                                                <b> <apex:outputField value="{!child.pesi.Name}"/></b><br/>
+                                              </td>
+                                            </tr>
+                                           <tr>
+                                              <td style="padding-left:30px;">
+                                                <apex:outputField value="{!child.pesi.Description__c}"/><br/>
+                                              </td>                                  
+                                           </tr> 
+                                       </apex:repeat>
+                                       
+                                    
+                                      <!-- <apex:outputPanel rendered="{!parent.esis.Size == 0}">
+                                          <b>No Spec Items for Estimate Line Item {!parent.poli.Estimate_Line_Item__r.Name}. </b>
+                                       </apex:outputPanel>-->
+                                   </table>
+                                 </td>
+                              </tr>
+                          <!--  <tr><td>&nbsp;</td></tr>--><!--Addede by yogini on 9/11/12-->
+                   <!-- </table>  -->
+                  </apex:repeat>
+                  
+                  <tr><td>&nbsp;</td></tr>
+                  
+                  <tr >
+                      <td colspan="3" align="right"> 
+                          <apex:outputLabel value="TOTAL NOT TO EXCEED AMOUNT" style="font-weight: bold;"/>
+                       </td>
+                      <td align="right">
+                          <b><apex:outputField value="{!Purchase_Order__c.Total_Amount__c}"/></b>
+                      </td>
+                  </tr>
+                  
+                  <tr><td>&nbsp;</td></tr>
+                   <tr><td>&nbsp;</td></tr>
+                  
+                  <tr >
+                      <td colspan="2" align="Left"> 
+                          <apex:outputLabel value="Approval :  _______________________________________________" style="font-weight: bold;"/>
+                       </td>
+                      <td colspan="2" align="left">
+                          <apex:outputLabel value="Date : _________________________________" style="font-weight: bold;"/>
+                      </td>
+                  </tr>
+                  
+                  <tr >
+                      <td colspan="1" align="CENTER"> 
+                          <apex:outputtext value="{!Purchase_Order__c.Approved_By_Staff__r.name}" style="font-size:12px;font-family: sans-serif;"/>
+                       </td>
+                     
+                  </tr>
+                  
+                  
+                                    
+                  <!--<apex:outputPanel rendered="{!tempPOLI.Size == 0}">
+                      <b>No Line Items for PO : <apex:outputLabel value="{!$ObjectType.Purchase_Order__c.Fields.Name.Label}"/>&nbsp;{!Purchase_Order__c.Name} </b>
+                  </apex:outputPanel>-->
+    
+        </table>
+    </body> 
+</apex:page>
+<!-- End of Page -->

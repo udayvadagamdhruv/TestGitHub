@@ -1,0 +1,25 @@
+<!-- This page is used to Display Spec Item When Quote is Approved. -->
+<apex:page standardController="Quote__c" extensions="DisplaySIwhenQuoteApproved">
+    <apex:form > 
+    <apex:pageBlock tabStyle="Quote__c"> 
+          <h1 class="labelCol2">Spec Items</h1> <br/><br/>
+       
+          <apex:pageBlockTable value="{!qsi}" var="qsitem" rendered="{!qsi.size > 0}"> <br/><br/><br/> 
+              <apex:column headerValue="{!$ObjectType.Quote_Spec_Item__c.Fields.Name.Label}" style="vertical-align:top;">
+                  <apex:outputText >{!qsitem.name}</apex:outputText>
+              </apex:column>
+          
+              <apex:column headerValue="{!$ObjectType.Quote_Spec_Item__c.Fields.Description__c.Label}" style="vertical-align:top;">
+                 <apex:outputField value="{!qsitem.Description__c}"/>
+              </apex:column> 
+          </apex:pageBlockTable>
+      
+         <apex:pageBlockSection rendered="{!qsi.size <= 0}">
+               <apex:pageBlockSectionItem >
+                   <b>No records to display.</b>
+               </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+   </apex:pageBlock> 
+  </apex:form> 
+</apex:page>
+<!-- End of Page -->

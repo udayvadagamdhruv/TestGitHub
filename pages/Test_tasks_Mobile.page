@@ -1,0 +1,98 @@
+<apex:page sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="false" >
+ <style>
+.btn-primary {
+    color:grey !important ;
+    background-color: rgb(255, 255, 255) !important;
+    border-color: rgb(221, 219, 218) !important;
+}
+</style>
+
+<apex:slds />
+ <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <br/><br/>
+ <div class="slds-scope">
+ <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open">
+  
+    <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-medium" aria-haspopup="true" title="Show More" >
+    <svg class="slds-button__icon" aria-hidden="true">
+      <use href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+    </svg>
+    <span class="slds-assistive-text">Show More</span>
+  </div>
+  <div class="slds-dropdown slds-dropdown--right">
+    <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+      <li class="slds-dropdown__item" role="presentation">
+        <a href="javascript:void(0);" role="menuitem" tabindex="0">
+          <span class="slds-truncate" title="Menu Item One">Menu Item One</span>
+        </a>
+      </li>
+      <li class="slds-dropdown__item" role="presentation">
+        <a href="javascript:void(0);" role="menuitem" tabindex="-1">
+          <span class="slds-truncate" title="Menu Item Two">Menu Item Two</span>
+        </a>
+      </li>
+      <li class="slds-dropdown__item" role="presentation">
+        <a href="javascript:void(0);" role="menuitem" tabindex="-1">
+          <span class="slds-truncate" title="Menu Item Three">Menu Item Three</span>
+        </a>
+      </li>
+      <li class="slds-has-divider_top-space" role="separator"></li>
+      <li class="slds-dropdown__item" role="presentation">
+        <a href="javascript:void(0);" role="menuitem" tabindex="-1">
+          <span class="slds-truncate" title="Menu Item Four">Menu Item Four</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+
+<div class="container">
+  
+  <div class="dropdown" style="float:right;">
+    <button class="btn btn-primary dropdown-toggle"  id="menu1" type="button" data-toggle="dropdown">
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu  " role="menu" aria-labelledby="menu1">
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+      <li role="presentation" class="divider"></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>    
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ </html>
+
+ 
+ 
+</apex:page>

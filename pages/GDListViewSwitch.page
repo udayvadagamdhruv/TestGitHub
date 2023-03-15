@@ -1,0 +1,4 @@
+<apex:page standardController="Graphics_Deliverables__c" extensions="GDListViewSwitchExt" sidebar="true" docType="html-5.0" applyBodyTag="False" action="{!pagedir}" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+   
+</apex:page>

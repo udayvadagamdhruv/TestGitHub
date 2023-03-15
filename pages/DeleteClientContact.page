@@ -1,0 +1,18 @@
+<!-- this Page is used to override the delete button of Client Contact object -->
+
+<apex:page standardController="Client_Contact__c" extensions="DeleteClientContactExtension" sidebar="false" showHeader="false">
+ 
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script>  
+
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!CheckDelete}"/>
+        </apex:form>
+
+</apex:page>
+
+<!-- End of Page -->

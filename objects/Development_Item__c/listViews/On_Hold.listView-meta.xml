@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>On_Hold</fullName>
+    <columns>Customer_Name__c</columns>
+    <columns>Development_Item_Number__c</columns>
+    <columns>NAME</columns>
+    <columns>Calculated_Estimated_Hrs__c</columns>
+    <columns>Estimated_Hrs__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>Status__c</columns>
+    <columns>Priority__c</columns>
+    <columns>LAST_UPDATE</columns>
+    <columns>UPDATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>On Hold</value>
+    </filters>
+    <label>On Hold</label>
+    <language>en_US</language>
+</ListView>

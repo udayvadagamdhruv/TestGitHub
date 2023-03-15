@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>standard-home</defaultLandingTab>
+    <description>This is jobsuite application.</description>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>Master JobSuite</label>
+    <logo>JobSuiteFolder/JobSuite_Logo_May_2013.gif</logo>
+    <tabs>standard-Chatter</tabs>
+    <tabs>Campaign__c</tabs>
+    <tabs>Job__c</tabs>
+    <tabs>MyAdmin</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>JS_Reports</tabs>
+    <tabs>My_WIP</tabs>
+    <tabs>GanttChart</tabs>
+    <tabs>Approval_Job_Task__c</tabs>
+    <tabs>Material_Order__c</tabs>
+    <tabs>Material_Order_Line_Item_Receipt__c</tabs>
+    <tabs>Approval_Schedule_Template__c</tabs>
+</CustomApplication>

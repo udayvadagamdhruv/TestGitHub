@@ -1,0 +1,51 @@
+<apex:page controller="DisplayBBInvoiceUnderVendor" readOnly="true" tabStyle="Billboard__c" sidebar="false"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+
+     <head>
+         <style>
+           .hd
+              {
+              text-align:right;
+              padding-right:20px!important;
+              }
+            </style>
+      </head>
+      <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+      <div class="slds" style="padding:10px;">
+      <apex:form > 
+             <div>
+                 <apex:outputPanel layout="block" style="overflow:auto;height:350px;"  rendered="{!displayinvoice}">
+                          <apex:dataTable value="{!invoice}" var="in" styleClass="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover"> <br/><br/><br/> 
+                               
+                              <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c.Fields.Name.Label}">
+                                  <!--    <apex:outputField value="{!in.Name}"/>  -->
+                                 <apex:outputLink tabindex="tab1" value="/apex/BillboardInvoicedetailpage?id={!in.Id}">{!in.Name}</apex:outputLink> 
+                              </apex:column>   
+                              
+                              <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c.Fields.Billboard__c.Label}">
+                               <apex:outputField value="{!in.Billboard__r.Name}"/>
+                              </apex:column>       
+                             
+                              <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c.Fields.BB_Invoice_Due_Date__c.Label}">
+                              <apex:outputfield value="{!in.BB_Invoice_Due_Date__c}"/>
+                              </apex:column>
+                              
+                               <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c.Fields.Location__c.Label}" >
+                              <apex:outputField value="{!in.Location__c}"/>
+                              </apex:column> 
+                                    
+                               <apex:column headerValue="{!$ObjectType.Billboard_Invoice__c.Fields.BB_Invoice_Amount__c.Label}" >
+                              <apex:outputField value="{!in.BB_Invoice_Amount__c}"/>
+                              </apex:column>
+                              
+                          </apex:dataTable>
+                
+                   </apex:outputpanel><br/>
+           </div>
+             
+           <apex:outputPanel rendered="{!noinvoice}">
+                <b>No records to display</b>
+           </apex:outputPanel>
+        
+    </apex:form> 
+  </div >
+</apex:page>

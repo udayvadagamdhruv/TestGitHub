@@ -1,0 +1,7 @@
+<!-- This page is used to display Detail Page of Estimate Spec item -->
+<apex:page standardController="Estimate_Spec_Item__c" tabStyle="Job__c">
+
+  <apex:detail relatedList="false" inlineEdit="false" showChatter="true"/>
+
+</apex:page>
+<!-- End of Page -->

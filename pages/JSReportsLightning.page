@@ -1,0 +1,387 @@
+<apex:page tabStyle="JS_Reports_Old__tab" showHeader="false"  sidebar="false" standardStylesheets="true"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" >
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+     <style>
+            /* The Modal (background) */
+            .modal {
+                display:block; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 60px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.1); /* Black w/ opacity */
+            }
+            
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 90%;
+                //height:100%;
+            }
+            
+          
+            .slds .slds-icon-standard-user {
+                 background-color:inherit;
+            }
+            .slds .slds-text-link {
+                color: #0070d2;
+                text-decoration: none;
+                transition: color .2s linear;
+                font-size: larger;
+            }
+            p{
+             color:black !important;
+            }
+  
+        
+       body
+       {
+               //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed; 
+               margin:0px !important;
+       }
+       body11 
+       {
+            background-repeat: repeat-x;
+            background-position: left top;
+            font-size: 75%;
+            font-family: 'Arial','Helvetica',sans-serif;
+            background-color: rgba(175, 197, 222, 1);
+       }
+    
+  
+        
+        .slds .slds-tabs--scoped {
+            display: block;
+            width: 100%;
+            background-color: white;
+           margin-top: 2px;
+            border-radius: 10px;
+        }    
+                
+         
+        .slds .slds-p-vertical--medium {
+            padding-top: 25px;
+            padding-bottom: 0px;
+        }
+        
+        .slds .slds-page-header{
+             border-radius:5px;
+         }
+         .slds .slds-text-heading--medium {
+            font-weight: 300;
+            font-size: 24px;
+            line-height: 1;
+         }
+         .slds-col desktop
+         {
+            border-radius:5px !important;
+         }
+        
+    </style>
+
+
+     <script>
+     
+       function TabSelect(prefix)
+       {
+            //alert(prefix)
+            TabMethod(prefix);
+       }
+   
+     </script>
+          
+           
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+         <script>
+    
+                $(document).ready(function(){
+                    $("li").mouseover(function(){
+                        $(this).addClass("blue");
+                    });
+                    $("li").mouseout(function(){
+                        $(this).removeClass("blue");
+                       });
+                    
+                    });
+         </script>
+                
+                
+      <style>
+     
+             /*   .blue{
+                    background-color:#E8CCD4 !important;
+                     box-shadow: 5px 5px 5px  grey;
+                    border: 2px solid blue; 
+                  }
+               
+               */   
+               
+             .slds .slds-app-launcher__tile:hover{
+                border:2px solid #851225;
+             }
+                
+      </style>
+        
+  
+
+            <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  
+                <apex:form id="c">  
+                  
+                    <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+                   
+                     <head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+                     </head>
+            
+               
+             <!------   <apex:commandButton value="ssss" action="{!redirecet}"/>---->
+                
+                
+            <div class="slds" >
+            
+              <div id="myModal" class="modal">
+                 <div class="modal-content">
+                       
+                     <br/><br/>
+                     
+                       <ul class="slds-grid slds-grid--pull-padded slds-wrap" style="margin-left:25px;margin-right:25px;">
+                       
+                         <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                            <a onclick="window.open('/one/one.app#/alohaRedirect/apex/JobLogSheetTest1');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center   slds-icon-custom-72">
+                                
+                                    <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                        <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#table"></use>
+                                    </svg>
+                                
+                                </span>
+                               
+                              </div> 
+                              <div class="slds-app-launcher__tile-body" title="Job Log Sheet">
+                                <span class="slds-text-link">
+                                     <b>Job Log Sheet</b>
+                                 </span>
+                                 <p>Jobs sorted by year then Campaign</p>
+                              </div>
+                            </a>
+                         </li>
+                     
+                  
+                          
+                        <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                             <a onclick="window.open('/one/one.app#/alohaRedirect/apex/CampaignStatusReport');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-97">
+                                
+                                    <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                        <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#summary"></use>
+                                    </svg>
+                                
+                                </span>
+                                
+                              </div>
+                              <div class="slds-app-launcher__tile-body"  title="Campaign Status Report">
+                                <span class="slds-text-link">
+                                 <b> Campaign Status Report </b></span>
+                                <p>Active jobs sorted by Campaign                   
+                                </p>
+                              </div>
+                            </a>
+                          </li>
+                          
+                          
+                          <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                             <a onclick="window.open('/one/one.app#/alohaRedirect/apex/StatusReport');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-99">
+                                
+                                <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                        <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#snippet"></use>
+                                    </svg>
+                                
+                                </span>
+                                 
+                              </div>
+                              <div class="slds-app-launcher__tile-body"  title="Status Report">
+                                <span class="slds-text-link">
+                                 <b>Status Report</b></span>
+                                <p>Active jobs sorted by Client                  
+                                </p>
+                              </div>
+                            </a>
+                          </li>
+                         
+                         
+                           <br/> <br/> <br/> <br/> <br/> <br/> 
+                           
+                            <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                            <a onclick="window.open('/one/one.app#/alohaRedirect/apex/JobCostReport');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-79">
+                                
+                                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                        <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#matrix"></use>
+                                    </svg>
+                                
+                                </span>
+                               
+                              </div> 
+                              <div class="slds-app-launcher__tile-body" title="Job Cost Report">
+                                <span class="slds-text-link">
+                                     <b>Job Cost Report</b>
+                                 </span>
+                                 <p>Jobs sorted by Campaign, showing cost summaries</p>
+                              </div>
+                            </a>
+                         </li>
+                     
+                  
+                          
+                        <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                             <a onclick="window.open('/one/one.app#/alohaRedirect/apex/DailyHotSheetReport');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-98">
+                                
+                                <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                             <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#kanban"></use>
+                                        </svg>
+                                
+                                </span>
+                                
+                              </div>
+                              <div class="slds-app-launcher__tile-body"  title="Daily Hot Sheet Report">
+                                <span class="slds-text-link">
+                                 <b> Daily Hot Sheet Report </b></span>
+                                <p>Tasks due today, sorted by staff                 
+                                </p>
+                              </div>
+                            </a>
+                          </li>
+                          
+                          
+                    <!---      <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                             <a onclick="window.open('/one/one.app#/alohaRedirect/apex/FinalReportUploadLightning');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center">
+                                
+                                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                            <use xlink:href="{!$Resource.SLDS}/assets/icons/doctype-sprite/svg/symbols.svg#gsheet"></use>
+                                        </svg>
+                                
+                                </span>
+                                 
+                              </div>
+                              <div class="slds-app-launcher__tile-body"  title="Upload CSV/XLS">
+                                <span class="slds-text-link">
+                                 <b>Upload CSV/XLS</b></span>
+                                <p>Description of                   
+                                </p>
+                              </div>
+                            </a>
+                          </li>
+                          --------->
+                          
+                           
+                           
+                            <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                            <a onclick="window.open('/one/one.app#/alohaRedirect/apex/statusReportsearchLightning');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-87">
+                                
+                                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                        <use xlink:href="{!$Resource.SLDS}/assets/icons/standard-sprite/svg/symbols.svg#report"></use>
+                                    </svg>
+                                
+                                </span>
+                               
+                              </div> 
+                              <div class="slds-app-launcher__tile-body" title="Status Report II">
+                                <span class="slds-text-link">
+                                     <b>Status Report II</b>
+                                 </span>
+                                 <p>Jobs, sorted by Client</p>
+                              </div>
+                            </a>
+                         </li>
+                         
+                         <br/> <br/> <br/> <br/> <br/> <br/> 
+                     
+                  <!--
+                          
+                        <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                             <a onclick="window.open('/one/one.app#/alohaRedirect/apex/DailyHotSheetReportByStaff');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-112">
+                                
+                                 <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                             <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#news"></use>
+                                        </svg>
+                                
+                                </span>
+                                
+                              </div>
+                              <div class="slds-app-launcher__tile-body"  title="Daily Hot Sheet Report by Staff">
+                                <span class="slds-text-link">
+                                 <b> Daily Hot Sheet Report by Staff</b></span>
+                                <p>Description of                    
+                                </p>
+                              </div>
+                            </a>
+                          </li>
+                -->          
+                          
+                          <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                             <a onclick="window.open('/one/one.app#/alohaRedirect/apex/WeeklyHotSheetReportByStaff');" class="slds-app-launcher__tile slds-text-link--reset ">
+                              <div class="slds-app-launcher__tile-figure">
+                                <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-10">
+                                
+                              
+                                 <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                             <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#chart"></use>
+                                        </svg>
+                                
+                                </span>
+                                 
+                              </div>
+                              <div class="slds-app-launcher__tile-body"  title="Weekly Hot Sheet Report by Staff">
+                                <span class="slds-text-link">
+                                 <b>Weekly Hot Sheet Report by Staff</b></span>
+                                <p>Tasks due this week, sorted by staff                 
+                                </p>
+                              </div>
+                            </a>
+                          </li>
+                         
+                        </ul>
+                      
+                        <br/> <br/>
+                    
+                    </div>
+                    </div>
+             </div>
+             
+        </apex:form>
+ 
+     </html>
+ 
+ </apex:page>

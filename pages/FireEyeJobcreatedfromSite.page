@@ -1,0 +1,10 @@
+<apex:page standardController="Job__c" showHeader="false">
+  <!--apex:form >
+      <apex:pageBlock >
+      <apex:pageMessage summary="Job Created Successfully." severity="confirm" strength="3" />
+      <apex:pageBlockButtons location="bottom">
+          <apex:commandButton value="Create New Job" action="{!newJob}"/>
+      </apex:pageBlockButtons>
+      </apex:pageBlock>   
+  </apex:form-->
+</apex:page>

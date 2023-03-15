@@ -1,0 +1,14 @@
+<apex:page standardController="Tag_Template__c" extensions="EditTagTemplateSwitchExt" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+
+    <script>
+     var s = '{!$User.UITheme == 'Theme3'}';
+     if(s == 'true')
+     {
+       window.open("/apex/TagTemplatedetailpage?id="+'{!TagId}', "_self");
+     }
+    
+    </script>
+   
+    <apex:include pageName="TagTemplatedetailpageLightning" rendered="{!$User.UITheme == 'Theme4d'}"/>
+    
+</apex:page>

@@ -1,0 +1,19 @@
+<!-- This Page is Used to Override the view button of Client Object -->  
+<apex:page standardController="Client__c" extensions="ClientViewPageExt"  >
+    
+    <apex:detail relatedList="true" showChatter="false" title="true"/>
+   <apex:outputPanel rendered="{!showMap}"> 
+                    <apex:pageBlock >
+                    <apex:pageBlockSection title="Map">              
+                                       
+                                        <apex:iframe src="/apex/ClientDetailPageMap?id={!Client__c.id}" height="200px" width="1000px"/>
+                              
+                     </apex:pageBlockSection> 
+                     </apex:pageBlock>
+           </apex:outputPanel>
+  <!-- included page will display list of Job for which client is assigned --> 
+    <apex:include pageName="DisplayJobUnderClientDetail"/>
+    <apex:include pageName="DisplayClientInvoiceUnderClientDetail"/>
+    <apex:include pageName="DisplayBillboardUnderClient" rendered="{!ShowBBS}"/> 
+</apex:page>
+<!-- End of Page -->

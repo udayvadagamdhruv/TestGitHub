@@ -1,0 +1,44 @@
+<aura:component controller="Job_Task_View_Controller" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="string" default="" />
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData"/>
+    <aura:attribute name="email" type="string" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinItEmailWorkOrder}" />
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+    
+    <ltng:require  styles="{!$Resource.LtngStyles + '/LCmpModalandChart/Styles/ModalHederFooterStyles.css'}"/>
+    <!--Custom Styles for Modal Header and Footer--> 
+    
+    
+    <!--Modal Header-->  
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Email Work Order</h4>
+    </div>
+    <!--End Modal Header-->  
+    
+    <!--Modal Body-->   
+    <div class="slds-modal__content  slds-align_absolute-center slds-size_1-of-1 slds-is-relative">
+        <form class="slds-form--stacked">
+            <lightning:textarea aura:id="email" label="To :" value="{!v.email}" placeholder="abc@email.com" fieldLevelHelp="Add a comma in between email addresses."/>
+            <lightning:input aura:id="subject" label="Subject :" value="{!'Work Order for: '+v.simpleRecord.Name+' - '+v.simpleRecord.Job_Auto_Number__c}"/>
+            <label class="slds-form-element__label" for="text-input-id-1"> Message : </label>
+            <lightning:inputRichText variant="bottom-toolbar" aura:id="body" label="Body" value="Attached is a Work Order for your review."/>
+            <!--ui:inputEmail class="slds-input" /-->
+        </form> 
+    </div>
+    <!--End of Modal Body--> 
+    
+    <!--Modal Footer-->
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+        <lightning:button variant="brand" label="Send" title="Proceed to Send an Email" onclick="{! c.SendEmailWorkOrder}"/>
+        <lightning:button variant="Neutral" class="slds-button" label="Cancel" onclick="{!c.handleClose}"/>
+    </div>
+    <!--End of Modal Footer-->
+</aura:component>

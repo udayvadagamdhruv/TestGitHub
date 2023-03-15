@@ -1,0 +1,46 @@
+<apex:page standardController="BB_Invoice_Payment__c" extensions="EditBillboardInvoicePaymentext">
+  
+  
+  <apex:form >
+      <apex:sectionHeader title="Billboard Invoice Payment Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+        <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+ 
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.BB_Invoice_Payment__c.Fields.Check_New__c.Label}"/>
+                   <apex:inputfield value="{!BB_Invoice_Payment__c.Check_New__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.BB_Invoice_Payment__c.Fields.Check_Date__c.Label}"/>
+                   <apex:inputfield value="{!BB_Invoice_Payment__c.Check_Date__c}"/>
+               </apex:pageBlockSectionItem>
+             
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.BB_Invoice_Payment__c.Fields.Check_Amount__c.Label}"/>
+                   <apex:inputfield value="{!BB_Invoice_Payment__c.Check_Amount__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            
+            
+             
+            
+            
+            
+  
+  
+  
+      </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+
+  
+</apex:page>

@@ -1,0 +1,36 @@
+<!-- This page is used to edit Job Spec under Job tab-->
+<apex:page standardController="Job_Spec__c" tabStyle="Job__c" extensions="EditJobSpecExtension">
+<apex:sectionHeader title="Edit Job Spec"/> 
+ <apex:form >
+     <apex:pageBlock >
+         <apex:pagemessages /> 
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+                 <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+             <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.Job_Spec__c.Fields.Name.Label}"/>
+                     <apex:inputField value="{!Job_Spec__c.Name}" required="true"/>
+                 </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.Job_Spec__c.Fields.Job__c.Label}"/>
+                     <apex:outputField value="{!Job_Spec__c.Job__c}"/>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+            
+                 <apex:outputLabel Value="{!$ObjectType.Job_Spec__c.Fields.Sort_Order__c.Label}"></apex:outputLabel>
+                 <apex:inputField value="{!Job_Spec__c.Sort_Order__c}"/>
+            </apex:pageBlockSectionItem>
+                 
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.Job_Spec__c.Fields.Description__c.Label}"/>
+                     <apex:inputTextarea value="{!Job_Spec__c.Description__c}" rows="3" cols="55"/>
+                 </apex:pageBlockSectionItem>
+            
+            </apex:pageblocksection>
+          </apex:pageBlock>  
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

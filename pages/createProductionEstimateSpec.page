@@ -1,0 +1,29 @@
+<apex:page standardController="Production_Estimate_Spec_Item__c" tabStyle="Job__c" extensions="createProductionEstimateSpecExtension">
+<apex:form >
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancel}" value="Cancel"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Production_Estimate_Spec_Item__c.Fields.Name.Label}"/>
+               <apex:inputField value="{!Production_Estimate_Spec_Item__c.Name}" required="true"/>
+            </apex:pageBlockSectionItem>
+                 
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Production_Estimate_Spec_Item__c.Fields.Production_Estimate__c.Label}"/>
+               <apex:outputField value="{!Production_Estimate_Spec_Item__c.Production_Estimate__c}"/>
+            </apex:pageBlockSectionItem>
+ 
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Production_Estimate_Spec_Item__c.Fields.Description__c.Label}"/>
+               <apex:inputtextarea value="{!Production_Estimate_Spec_Item__c.Description__c}" cols="55" rows="4" style="resize:none;"/>
+            </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>    
+
+</apex:page>

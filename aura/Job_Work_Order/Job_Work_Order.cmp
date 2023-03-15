@@ -1,0 +1,8 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global" >
+    <aura:attribute name="recordId" type="string" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.WorkOrderPageRedirect}" /> 
+    <ltng:require  styles="{!$Resource.LtngStyles + '/LCmpModalandChart/Styles/QuickActionModalHide.css'}"/>
+    
+    
+</aura:component>

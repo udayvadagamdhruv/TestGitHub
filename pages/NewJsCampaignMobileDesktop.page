@@ -1,0 +1,21 @@
+<apex:page standardController="Campaign__c" showHeader="false">
+ 
+   <html>
+    
+      <apex:includeScript value="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"/>
+      
+      <script>
+      $(document).ready(function () {
+        if ( (typeof sforce != 'undefined') && (sforce != null) ) {
+           sforce.one.createRecord("Campaign__c");    
+
+    }else{
+        //navigate to vf page
+        window.location.assign("/apex/CreateNewCampaignCustom");
+    }
+        
+      });
+       </script>
+  
+   </html>
+</apex:page>

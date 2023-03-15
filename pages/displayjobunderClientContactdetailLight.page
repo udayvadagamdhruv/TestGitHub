@@ -1,0 +1,53 @@
+<apex:page Controller="DisplayJobUnderClientContactDetail" showHeader="false" readOnly="true">
+<apex:slds />
+<head>
+    <style>
+        .hd{text-align:right;padding-right:20px!important;}
+        .labelCol2{font-size:1.0em};
+    </style>
+</head>
+ <apex:form >
+     <apex:outputPanel >
+     
+     
+     <apex:outputPanel layout="block"  rendered="{!job.size > 0}" style="overflow:auto;height:150px;">
+     <div class="slds-card">
+      <apex:dataTable value="{!job}" var="j" width="100%" styleClass="slds-table slds-table--bordered"> <br/><br/><br/> 
+      
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}"  >
+              <apex:outputfield value="{!j.Job_Auto_Number__c}"/>
+          </apex:column>
+           
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Name.Label}" >
+              <apex:outputLink value="/apex/JobdetailpageLightening07?id={!j.id}" tabindex="tab1">{!j.Name}</apex:outputLink>
+          </apex:column> 
+          
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" >
+              <apex:outputfield value="{!j.Start_Date__c}"/>
+          </apex:column>
+                    
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Completion_Date__c.Label}">
+              <apex:outputfield value="{!j.Completion_Date__c}"/>
+          </apex:column> 
+          
+          <apex:column headerValue="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" >
+              <apex:outputField value="{!j.Due_Date__c}"/>
+          </apex:column>  
+      
+           <apex:column headerValue="{!$ObjectType.Job__c.Fields.Status__c.Label}" >
+              <apex:outputField value="{!j.Status__c}"/>
+           </apex:column>  
+      </apex:dataTable>
+      </div>
+      </apex:outputPanel>
+            
+         <apex:outputPanel rendered="{!job.size <= 0}">
+           <apex:outputPanel >
+         <b>No records to display</b>
+           </apex:outputPanel>              
+         </apex:outputPanel> 
+      
+   </apex:outputPanel>
+ </apex:form>
+</apex:page>
+<!-- End of Page -->

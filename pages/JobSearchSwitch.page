@@ -1,0 +1,11 @@
+<apex:page standardController="Job__c"  tabStyle="Job__c" extensions="JobSearchController" recordSetVar="job" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+     
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="JobSearchLightning"/>
+    </apex:outputPanel>
+    
+     <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+         <apex:include pageName="JobSearch"/>
+    </apex:outputPanel>
+     
+</apex:page>

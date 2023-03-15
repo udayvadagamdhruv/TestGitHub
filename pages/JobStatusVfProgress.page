@@ -1,0 +1,7 @@
+<apex:page standardController="Job__c">
+
+    <c:JobStatusProgress labels="['Requested','On Hold','Cancelled','Active','Completed',]"
+        shortlabels="['R','OH','CA','A','CO']" 
+        selected="{!Job__c.Status__c}"
+    />
+</apex:page>

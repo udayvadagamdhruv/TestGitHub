@@ -1,0 +1,3 @@
+<apex:page standardController="Development_Item__c"   docType="html-5.0" applyBodyTag="False" standardStylesheets="false"  recordSetVar="DevItems">
+
+</apex:page>

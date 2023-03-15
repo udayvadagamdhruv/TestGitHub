@@ -1,0 +1,40 @@
+<aura:component controller="job_Cost_Tab_cmp" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	<!-- attributes -->
+    <aura:attribute name="JobId" type="String" default=""/>
+      <aura:attribute name="VendorId" type="String" default=""/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="Name"  />
+    <aura:attribute name="sortedDirection" type="String"  />
+    <aura:attribute name="ShowProductionEstimate" type="boolean" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="maxRowSelection" type="Integer" />
+
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this}" action="{!c.init }"/>
+    <aura:registerEvent name="ChangdVendorApproveList" type="c:Approved_Estimate_LI"/>
+   
+    <aura:method name="vendorchangefiremethod" action="{!c.VendorChangeAction}"  description="this method fires after vendor changes occur"> 
+        <aura:attribute name="venId" type="String" default=""/> 
+    </aura:method>
+   
+    <!-- the container element determine the height of the datatable -->
+    <aura:if isTrue="{!empty(v.data)}">
+      <!--  <ui:message title="Information" severity="confirm" closable="false"> </ui:message> -->
+
+         <center> No Approved Line Items for this Vendor or All Approved Line items for this vendor have already been added to Purchase Orders.</center> 
+            
+      <aura:set attribute="else">
+            <h1>Selected Rows: {! v.selectedRowsCount }</h1>
+            <lightning:datatable class="AppEstimatetablecss"
+                                 columns="{! v.columns }"
+                                 data="{! v.data }"
+                                 keyField="id"
+                                 sortedBy="{! v.sortedBy }"
+                                 sortedDirection="{! v.sortedDirection }"
+                                 maxRowSelection="{! v.maxRowSelection }"
+                                 onsort="{!c.updateColumnSorting}"
+                                 onrowselection="{! c.updateSelectedText }"/>
+     </aura:set>
+    </aura:if>
+</aura:component>

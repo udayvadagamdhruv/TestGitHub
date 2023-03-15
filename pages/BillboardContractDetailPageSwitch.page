@@ -1,0 +1,16 @@
+<apex:page standardController="Billboard_Contract__c" extensions="BillboardContractSwitchExt" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/BillboardContractDetailPage?id="+'{!BBCId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="BillboardContractDetailPageLightning"/>
+    </apex:outputPanel>
+</apex:page>

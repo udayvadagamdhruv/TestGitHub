@@ -1,0 +1,282 @@
+<apex:page StandardController="Shipment__c" extensions="ShipmentPrintExtension" renderAs="pdf" showHeader="false" sidebar="false" standardStylesheets="false" applyHtmlTag="false">
+
+<head>
+<style type="text/css">
+       div.tab
+       {
+          width:100%;
+          border:solid black;
+       }
+    
+       @page
+       {
+            /* Potrait orientation */
+            size:potrait;
+        
+            /* Put page numbers in the bottom right corner of each
+            page in the pdf document. */
+            @bottom-right 
+            {
+                content: "Page " counter(page);
+                font-family: Helvetica;
+                font-size:8pt;
+            }
+       
+            @bottom-left 
+            {
+                content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+                background-repeat: no-repeat;
+                font-size:8pt;
+                font-family: Helvetica;
+            }
+      }
+
+     
+ </style>
+</head>
+
+
+  <body>
+  
+     
+     <table border="0" cellspacing="0" cellpadding="0" width="100%" id="table1">
+         <tr>
+               <td style="width:50%;">
+                   <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}" />
+                   <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}" />
+               </td>
+               <td></td>
+               <td></td>
+               <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+               <td align= "right" style="width:50%;padding-right:10px;text-align:right;font-size:11px;font-family: Verdana-Bold;">
+                  <b> <apex:outputText value="SHIPMENT RECEIPT" style="font-size:15px; font-family: Verdana-Bold;"/> </b> 
+               </td>
+         </tr>
+     </table> 
+     
+     
+     <table border="0" width="100%" >
+          <tr>
+              <td width="50%" style="font-size:11px;font-family:Verdana-Bold;padding-right:80px;">
+                 <b>Client</b>
+                 <hr color="black"/>
+                 <apex:outputField value="{!Shipment__c.job__r.JS_Client__r.Name}" /><br/>
+                 <apex:outputLabel value="Phone : " style="font-weight:bold;"/><apex:outputField value="{!Shipment__c.job__r.JS_Client__r.Phone__c}" /><br/> 
+                 <apex:outputLabel value="Fax : " style="font-weight:bold;"/><apex:outputField value="{!Shipment__c.job__r.JS_Client__r.Client_Fax__c}" /><br/>
+                 <apex:outputLabel value="Notes : " style="font-weight:bold;" rendered="{!Shipment__c.job__r.JS_Client__r.Client_Notes__c!=''}" /><apex:outputField value="{!Shipment__c.job__r.JS_Client__r.Client_Notes__c}" /><br/><br />
+              </td> 
+          </tr>
+          
+          <tr width="100%">
+                 <td valign="top"  width="50%" style="font-size:11px;font-family:Verdana-Bold;padding-right:80px;">
+                    <apex:outputtext rendered="{!Shipment__c.job__r.JS_Client__r.Name!=''}"><b>Billing Address </b></apex:outputtext><br/><hr color="black"/>
+                    <apex:outputField value="{!Shipment__c.job__r.JS_Client_Contact__r.Name}" /><br/>
+                    <apex:outputField value="{!Shipment__c.job__r.JS_Client__r.Billing_Street__c} " rendered="{!Shipment__c.job__r.JS_Client__r.Billing_Street__c!=''}" /> <br/>   
+                    <apex:outputText value="{!Shipment__c.job__r.JS_Client__r.Billing_City__c} " rendered="{!Shipment__c.job__r.JS_Client__r.Billing_City__c!=''}" ></apex:outputText>                                            
+                    <apex:outputText value="{!Shipment__c.job__r.JS_Client__r.Billing_State__c} " rendered="{!Shipment__c.job__r.JS_Client__r.Billing_State__c!=''}" />                  
+                    <apex:outputText value="{!Shipment__c.job__r.JS_Client__r.Billing_Postal_Code__c}" rendered="{!Shipment__c.job__r.JS_Client__r.Billing_Postal_Code__c!=''}" ></apex:outputText><br/> <br />
+                </td>
+                
+                 <td valign="top"  width="50%" style="font-size:11px;font-family:Verdana-Bold;padding-left:110px;">
+                      <apex:outputtext ><b>Shipping Address </b></apex:outputtext><br/><hr color="black"/>
+                      <apex:outputField value="{!Shipment__c.job__r.JS_Client_Contact__r.Name}" /><br/>
+                      <apex:outputField value="{!Shipment__c.Shipment_Street_Address__c} " rendered="{!Shipment__c.Shipment_Street_Address__c!=''}" /> <br/>   
+                      <apex:outputField value="{!Shipment__c.Shipment_Address_2__c} " rendered="{!Shipment__c.Shipment_Address_2__c!=''}"/><br/> 
+                      <apex:outputText value="{!Shipment__c.Shipment_City__c} " rendered="{!Shipment__c.Shipment_City__c!=''}" /> 
+                      <apex:outputText value="{!Shipment__c.Shipment_State__c} " rendered="{!Shipment__c.Shipment_State__c!=''}" />                                             
+                      <apex:outputField value="{!Shipment__c.Shipment_Zip_code__c}" rendered="{!Shipment__c.Shipment_Zip_code__c!=null}" ></apex:outputField><br/> <br />
+                      <apex:outputtext rendered="{!Shipment__c.Special_Instructions__c!=''}"><b>Special Instructions : </b></apex:outputtext>
+                      <apex:outputField value="{!Shipment__c.Special_Instructions__c} " rendered="{!Shipment__c.Special_Instructions__c!=''}" /> <br/>   
+                      
+                 </td>
+          </tr>
+       
+      </table>  
+      
+      
+      
+      
+      <!-------------------------------- Shipment Details -------------------------------------->     
+   
+   
+         <table width="100%">
+         
+               <tr width="100%">
+                  <td align="left">
+                       <hr color="black" width="100%"/>
+                  </td>
+               </tr>
+                        
+              <tr width="100%">
+                  <td width="100%">
+                      <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                          <tr style="page-break-inside: avoid;">
+                               <td width="100%">
+                                  <b> <apex:outputText value="DETAILS" style="font-size:12px;font-family:Verdana-Bold;font-weight:bold;font-color:#0000FF;"/>  </b>
+                               </td>
+                          </tr>
+                      </table>
+                   </td>
+              </tr>
+              <br/>
+            
+            
+             <tr style="font-size:11px;font-family:Verdana-Bold;" width="100%">
+                <td width="50%">
+                    <apex:outputLabel value="Shipment #" style="font-weight:bold;"/>
+                </td>
+                <td width="50%">
+                   <apex:outputField value="{!Shipment__c.Name}"/>
+                </td>
+             </tr>
+             
+             <tr style="font-size:11px;font-family:Verdana-Bold;" width="100%">
+                <td  width="50%">
+                    <apex:outputLabel value="Shipment Method" style="font-weight: bold;"></apex:outputLabel>
+                </td>
+                <td width="50%">
+                    <apex:outputField value="{!Shipment__c.Shipping_Method__c}"/>
+                </td>
+             </tr>
+             
+             <tr style="font-size:11px;font-family:Verdana-Bold;" width="100%">
+                <td width="50%">
+                    <apex:outputLabel value="Tracking #" style="font-weight: bold;"/>
+                </td>
+                <td width="50%">
+                    <apex:outputField value="{!Shipment__c.Tracking_Number__c}"/>
+                </td>
+             </tr>
+             <tr style="font-size:11px;font-family:Verdana-Bold;" width="100%">
+                <td width="50%">
+                    <apex:outputLabel value="Shipment Sent Date" style="font-weight: bold;"></apex:outputLabel>
+                </td>
+                <td width="50%">
+                   <apex:outputField value="{!Shipment__c.Shipment_Date__c}"/>
+                </td>
+               
+               
+               
+               
+             </tr>
+           
+           
+         </table> <br/>
+         
+  <!-------------------------------- END Shipment Details --------------------------------------> 
+      
+      
+       
+       
+      
+     
+     
+     
+      <table width="100%" border="0" style="font-size:11px;font-family: Verdana-Bold;">
+           
+           
+            <tr width="100%">
+                  <td align="left">
+                       <hr color="black" width="100%"/>
+                  </td>
+                </tr>
+                
+                <tr width="100%">
+                  <td width="100%">
+                    <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                        <tr style="page-break-inside: avoid;">
+                              <td width="100%">
+                                   <b> <apex:outputText value="LINE ITEMS" style="font-size:12px;font-family:Verdana-Bold;font-weight:bold;font-color:#0000FF;"/>  </b>
+                              </td>
+                        </tr>
+                    </table>
+                   </td> 
+                </tr>
+           
+           
+             
+         
+             
+           <tr>
+              <td colspan="2" width="100%" align="left" valign="top" style="font-size:11px;font-family:Verdana-Bold;"><br/> 
+          
+                <table width="100%">
+                    <tr style="font-size:11px;font-family: Verdana-Bold;">
+                          <th width="30%" style="text-align:left;"><b>{!$ObjectType.Shipment_Line_Item__c.Fields.Production_Estimate__c.Label}</b></th>
+                          <th width="30%" style="text-align:left;"><b>{!$ObjectType.Shipment_Line_Item__c.Fields.Job_Name__c.Label}</b></th>                          
+                          <th width="20%" style="text-align:left;"><b>{!$ObjectType.Shipment_Line_Item__c.Fields.Job__c.Label}</b></th>
+                          <th width="20%" style="text-align:left;"><b>{!$ObjectType.Shipment_Line_Item__c.Fields.Qty_Shipped__c.Label}</b></th>
+                   </tr>
+                   <tr>
+                         <td colspan="7"><hr color="black"/></td>
+                   </tr>
+                   
+                 
+                 
+                  <apex:repeat value="{!wrapout}" var="parent" rendered="{!tempSLI.Size > 0}" > 
+                 <!--   <table width="100%" >-->
+                       
+                            <tr style="font-size:11px;font-family: Verdana-Bold;">
+                                <apex:outputPanel layout="none">
+                                    <td width="30%" style="text-align:left;" valign="top">
+                                    
+                                        <apex:outputField value="{!parent.sili.Production_Estimate__r.Name}"  rendered="{!ShowProductionEstimate}"/>
+                                        <apex:outputField value="{!parent.sili.Estimate_Line_Item__r.name}"  rendered="{!!ShowProductionEstimate}"/>
+                                    
+                                    </td>
+                                </apex:outputPanel>  
+                                <td width="30%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.sili.Job_Name__c}"/></td>
+                                
+                                <td width="20%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.sili.Job__c}"/></td>                                
+                                <td width="20%" style="text-align:left;" valign="top"><apex:outputField value="{!parent.sili.Qty_Shipped__c}"/></td> 
+                                
+                             
+                            </tr>
+                   
+                            <tr style="font-size:11px;font-family: Verdana-Bold;">
+                                  <td width="100%" colspan="4" style="margin-left:8px;font-size:11px;font-family:Verdana-Bold;">
+                                 
+                                   <!--  <table width="100%" border="0" style="padding-left:18px;font-size:11px;font-family: Verdana-Bold;">
+                                         <tr style="font-size:11px;font-family: Verdana-Bold;">
+                                             <td colspan="2"> <apex:outputtext rendered="{!(parent.Pesis.Size > 0)}"><b>Spec Item</b></apex:outputtext></td>
+                                         </tr>
+                                    
+                                       
+                                       <apex:repeat value="{!parent.pesis}" var="child" rendered="{!(parent.pesis.Size > 0)}">  
+                                           <tr style="font-size:11px;font-family: Verdana-Bold;">
+                                          
+                                              <td width="30%" valign="top" align="left">
+                                                 <apex:outputField value="{!child.pesi.Name}"/><br/>
+                                              </td>
+                                     
+                                              <td width="70%" valign="top" align="left">
+                                                <apex:outputField value="{!child.pesi.Description__c}"/><br/>
+                                              </td>                                  
+                                           </tr> 
+                                       </apex:repeat>
+                                       
+                                       
+                                       
+                                    
+                                      
+                                     </table>-->
+                                  </td>
+                            </tr>
+                            <tr><td>&nbsp;</td></tr>
+                   
+                  </apex:repeat>
+                                    
+                  
+    
+                </table>               
+              
+              </td>
+           </tr> 
+       
+         
+        
+        
+  </table>
+  </body>
+  
+</apex:page>

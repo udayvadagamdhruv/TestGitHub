@@ -1,0 +1,377 @@
+<apex:page standardController="User" tabStyle="MyAdmin__tab" extensions="StaffandUserDetailPageExtension" sidebar="true" docType="html-5.0" applyBodyTag="false" standardStylesheets="true" applyHtmlTag="False"  showHeader="False"  >
+  
+  
+   <style>
+   
+   body{
+               //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed;
+     }
+     .slds-page-header{
+             background-color: #851225 !important;
+             border-bottom: 3px solid #851255 !important;
+             color: white !important;
+     }
+     .slds-page-header p {
+         color: white !important;
+     }
+     .slds .slds-tabs--scoped__nav {
+           background-color: #e2e4e6 !important;
+           font-size: 15px;
+       }
+ .SectionHeader
+       {
+           background-color:Grey !important;
+           color:white;
+       }
+   
+   
+      
+          .customImage{ height: 10px; width: 10px; }
+          #rcorners1 
+          {
+                 border-radius:0%;
+                 border: 1px solid #cccccc;
+                 padding: 0px; 
+                 width: 100%;
+                 height: 0%;
+          }
+          #pagemessage
+          {
+              color:blue;
+          }
+          
+          .required:after { content:" *";  color: Red;font:bold;}
+           
+           .slds table
+           {
+                height: 50px;
+           }
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+           {
+               margin-top: -19px; 
+           }
+           .detailPage .bPageBlock, .editPage .bPageBlock
+           {
+               border-top-width: 0px;
+           }
+          
+           .slds .slds-text-heading--large
+           {
+                font-size: 27px;
+           }
+           
+           .pbHeader
+           {
+               background: white !important;
+           }
+           
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+           {
+               background: white;
+           }
+          
+           .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+           {
+               border:none;
+           }
+           
+           body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+           {
+               border:none;
+           }
+                       
+           .slds .slds-checkbox .slds-checkbox--faux 
+           {
+                width: 25px;
+                height: 25px;
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                border-width: 2px;
+                border-style: solid;
+                border-color: lightgrey;
+                border-image: initial;
+                border-radius: 2px;
+                background: white;
+                transition: border 0.1s linear, background-color 0.1s linear;
+           }
+            
+           .slds .slds-checkbox [type=checkbox]:checked > .slds-checkbox--faux:after, .slds .slds-checkbox [type=checkbox]:checked ~ .slds-checkbox--faux:after 
+           {
+                height: 6px;
+                width: 11px;
+           }
+           
+           .bPageBlock .requiredInput .requiredBlock 
+           {
+                background-color:white;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+           
+            errorM6, .errorM4, .errorM3, .errorM2, .errorS1 
+            {
+                  border-color: #c00;
+            }
+            .message 
+            {
+                background-color: #c00;
+                border-style: solid;
+                border-width: 0px;
+                color: #000;
+                padding: 0px 0px 0px 0px;
+                margin: 0px 0px;
+            }
+            .errorM3 .msgIcon, .errorMedium 
+            {
+                background-image: url(); 
+                background-position: 0 0;
+                width:0px;
+                height: 0px;
+            }
+            .pbBody td
+            {
+                color:white;
+            }
+            .message .messageText h4 
+            {
+                 font-weight: bold; 
+                 display:block;
+                 color:white;
+            }
+                
+       <!----------------------------------- error Mesgg-------------------------------------->
+       
+        body
+       {
+            background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+            background-repeat: repeat-x;
+            background-position: left top;
+            background-attachment: fixed;
+       }
+       .slds .slds-icon-standard-user {
+       background-color: #b55d5b;
+    }
+       
+    </style>  
+    
+    
+     
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+           <body>
+             
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+              
+              
+                   <!----------------------------------- Header Starting ------------------------------------------------------->
+        
+                      <div class="slds-page-header" style="width:100%;{!if($User.UITheme == 'Theme1' || $User.UITheme == 'Theme2' || $User.UITheme == 'Theme3','', 'position:fixed;z-index:15;')}" >
+                           <div class="slds-grid">
+                                <div class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-media slds-no-space slds-grow">
+                                        <div class="slds-media__figure">
+                                           
+                                          <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                               <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom103"></use>
+                                           </svg>
+                                        </div>                        
+                                        <div class="slds-media__body">
+                                            <p class="slds-text-title slds-line-height--reset">JobSuite User</p>
+                                            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="{!(User.FirstName+' '+User.LastName)}">{!(User.FirstName+' '+User.LastName)}</h1>
+                                        </div>
+                                   </div>
+                                </div>
+                          </div>
+                     </div>
+ 
+                     <br/> <br/>
+                     <div class="slds" style="display:{!IF(($User.UITheme="Theme4d"),'block','none')};margin-top:12px">
+                          <br/><br/><br/>
+                     </div>
+ 
+                    <!--------------------------------------------------------Header Ending -------------------------------------------------------------------------------------------->
+
+              
+                   <apex:form html-novalidate="novalidate" style="padding-left: 19px;padding-right: 19px;border-radius:50%;">
+                       
+                      <apex:pageBlock mode="edit">
+         
+                    
+                           <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                <apex:pageMessages />
+                           </div> <br/>
+                          
+                           <div class="SectionHeader" style="background-color:SteelBlue;color:white;margin:0px 10px 0px 10px">
+                           
+                           <h3 class="slds-section-title"><b>&nbsp;&nbsp;Jobsuite User Details</b></h3></div>
+                           
+                           <br/>
+                           
+                            <div align="Center">
+                           
+                                <apex:commandButton action="{!EditUser}" value="Edit" styleClass="slds-button slds-button--neutral"/>
+                                <apex:commandButton action="{!UsersView}" value="List View" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                <apex:commandButton action="{!resetpassword}" value="Reset Password" onclick="alert('Your New Password will be sent to your email id');" styleClass="slds-button slds-button--neutral"/> 
+                            <!---    <apex:commandButton action="{!displayStaffCalendar}" value="Calendar View" styleClass="slds-button slds-button--neutral"/> ---->
+                                <apex:commandButton action="{!deactivateUser}" value="Deactivate" onclick="window.confirm('Are you sure, you want to deactivate this User?');" styleClass="slds-button slds-button--neutral"/>
+                           
+                             </div>
+                             
+                             <br/>
+                                  
+                           <div class="slds-grid slds-wrap">
+                               <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                   <div class="slds-grid slds-wrap"> 
+                                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.User_Types__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.User_Types__c}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.IsActive.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.IsActive}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.FirstName.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.FirstName}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.Username.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.Username}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.LastName.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.LastName}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.Email.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.Email}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         
+                                        <!----- 
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.alias.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.alias}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.CommunityNickName.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.CommunityNickName}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         -------------->
+                                         
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.Phone.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.Phone}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.User.Fields.Department.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.Department}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">Profile</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.ProfileId}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">Role</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.UserRoleId}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">Fax</label>
+                                                <div class="slds-form-element__control" >
+                                                    <apex:outputField value="{!User.Fax}" />
+                                                </div>
+                                             </div>
+                                         </aside>
+                                        
+                                   </div>
+                                </main>
+                           </div><br/><br/>
+                           
+                           <div align="Center">
+                           
+                                <apex:commandButton action="{!EditUser}" value="Edit" styleClass="slds-button slds-button--neutral"/>
+                                <apex:commandButton action="{!UsersView}" value="Users View" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                <apex:commandButton action="{!resetpassword}" value="Reset Password" onclick="alert('Your New Password will be sent to your email id');" styleClass="slds-button slds-button--neutral"/> 
+                                <apex:commandButton action="{!displayStaffCalendar}" value="Calendar View" styleClass="slds-button slds-button--neutral"/>
+                                <apex:commandButton action="{!deactivateUser}" value="Deactivate" onclick="window.confirm('Are you sure, you want to deactivate this User?');" styleClass="slds-button slds-button--neutral"/>
+                           
+                             </div>
+                          <br/><br/>
+                    </apex:pageBlock>
+                 </apex:form>
+             </div>
+         </body>
+     </html>
+    
+</apex:page>

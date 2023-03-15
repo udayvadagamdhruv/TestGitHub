@@ -1,0 +1,13 @@
+.THIS .JobSearchClass {
+    line-height: 30px;
+}
+
+.THIS .slds-text-heading_small {
+    font-size: 1.4rem;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+      height:150px !important;
+}

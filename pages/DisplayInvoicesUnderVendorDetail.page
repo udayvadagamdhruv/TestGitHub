@@ -1,0 +1,55 @@
+<apex:page controller="DisplayInvoicesUnderVendorDetail" readOnly="true">
+<head>
+ <style>
+  .hd{text-align:right;padding-right:20px!important;}
+  </style>
+</head>   
+ 
+  <apex:form >
+  
+   <apex:pageBlock tabStyle="Invoice__c">
+    <table>
+          <tr>
+              <td> <apex:image url="{!$Resource.BigTop}" width="25" height="25" /> </td>
+              <td>  <h3 style="color: #000000;font-size:1.2em;">Invoices</h3> </td>
+          </tr>
+      </table>
+      <div>
+       <apex:outputPanel layout="block" style="overflow:auto;height:150px;" rendered="{!invoice.size > 0}">
+      <apex:pageBlockTable value="{!invoice}" var="in"> <br/><br/><br/> 
+           
+           <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Name.Label}">
+     <!--    <apex:outputField value="{!in.Name}"/>  -->
+      <apex:outputLink tabindex="tab1" value="/apex/Invoicedetailpage?id={!in.Id}">{!in.Name}</apex:outputLink> 
+          </apex:column>   
+          
+          <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Job__c.Label}">
+           <apex:outputField value="{!in.Job__r.Name}"/>
+          </apex:column>       
+         
+          <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Purchase_Order__c.Label}">
+          <apex:outputfield value="{!in.Purchase_Order__r.Name}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Date_Received__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+          <apex:outputField value="{!in.Date_Received__c}"/>
+          </apex:column> 
+                
+           <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Total_Amount__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+          <apex:outputField value="{!in.Total_Amount__c}"/>
+          </apex:column>
+          
+      </apex:pageBlockTable>
+      </apex:outputpanel>
+      <br/>
+     </div>
+    
+         <apex:pageBlockSection rendered="{!invoice.size <= 0}">
+           <apex:pageBlockSectionItem >
+         <b>  No records to display </b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+   </apex:pageBlock>
+ </apex:form>     
+</apex:page>
+<!-- End of Page -->

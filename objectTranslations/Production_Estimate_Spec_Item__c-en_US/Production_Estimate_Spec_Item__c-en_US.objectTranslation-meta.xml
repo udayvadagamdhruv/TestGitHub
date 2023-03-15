@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Production Estimate Spec Item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Production Estimate Spec Items</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>proestSpecFieldset</name>
+    </fieldSets>
+    <layouts>
+        <layout>Production Estimate Spec Item Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Production_Estimate_Detail</name>
+    </webLinks>
+</CustomObjectTranslation>

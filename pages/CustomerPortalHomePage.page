@@ -1,0 +1,7 @@
+<apex:page sidebar="true">
+<!--  <apex:pageBlock title="YMT">
+     <apex:pageBlockSection title="MCA">1.Amit<br/>2.Vineet<br/>3.Deep<br/>
+     </apex:pageBlockSection> 
+     <apex:pageBlockSection title="MMS">1.Anuj<br/>2.Alok<br/>3.Suraj<br/></apex:pageBlockSection>
+  </apex:pageBlock> -->  
+</apex:page>

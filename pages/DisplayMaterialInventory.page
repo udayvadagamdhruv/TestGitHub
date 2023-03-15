@@ -1,0 +1,61 @@
+<apex:page controller="DisplayMaterialInventoryController">
+<apex:form >
+  <apex:pageBlock title="Material Inventory Section">
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+       <apex:commandButton action="{!createMI}" value="Add Material Inventory" id="btn2" rendered="{!$ObjectType.Material_Inventory_Item__c.Createable}"/> 
+       
+       </span> 
+       
+ 
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!MI}" var="MIItem" rendered="{!MI.Size>0}" >
+         <apex:column headerValue="Action" width="10%" rendered="{!$ObjectType.Material_Inventory_Item__c.Deletable}">
+              <apex:commandButton value="Delete" action="{!deleteMI}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock2" >
+                  <apex:param name="param2" value="{!MIItem.id}" assignTo="{!strMI}"></apex:param>
+              </apex:commandButton>
+          </apex:column>
+          
+        <apex:column headerValue="{!$ObjectType.Material_Inventory_Item__c.Fields.Name.Label}">
+              <apex:outputfield value="{!MIItem.Name}"/>
+          </apex:column>
+          
+       <apex:column headerValue="{!$ObjectType.Material_Inventory_Item__c.Fields.Inventory_Date__c.Label}">
+              <apex:outputfield value="{!MIItem.Inventory_Date__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Material_Inventory_Item__c.Fields.Mfg_Item_Number__c.Label}">
+              <apex:outputfield value="{!MIItem.Mfg_Item_Number__c}"/>
+          </apex:column>
+          
+       <!--   <apex:column headerValue="{!$ObjectType.Material_Item__c.Fields.Qty_On_Hand_Roll__c.Label}" rendered="{!ShowqtyRolls}">
+              <apex:outputfield value="{!MIItem.Qty_On_Hand__c}"/>
+          </apex:column>
+         
+           
+          <apex:column headerValue="{!$ObjectType.Material_Item__c.Fields.Qty_On_Hand_Case__c.Label}" rendered="{!ShowqtyCases}">
+              <apex:outputfield value="{!MIItem.Qty_On_Hand__c}"/>
+          </apex:column>
+          
+          <apex:column headerValue="{!$ObjectType.Material_Inventory_Item__c.Fields.Qty_On_Hand__c.Label}" rendered="{!NOT(OR(ShowqtyCases,ShowqtyRolls))}">
+              <apex:outputfield value="{!MIItem.Qty_On_Hand__c}"/>
+          </apex:column>-->
+          
+           <apex:column headerValue="{!$ObjectType.Material_Inventory_Item__c.Fields.Qty_On_Shelf__c.Label}">
+              <apex:outputfield value="{!MIItem.Qty_On_Shelf__c  }"/>
+          </apex:column>
+          
+          
+         
+     </apex:pageBlockTable>
+     
+     
+        <apex:pageBlockSection rendered="{!MI.size <= 0}" >
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+
+</apex:page>

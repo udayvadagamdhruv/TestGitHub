@@ -1,0 +1,377 @@
+<apex:page standardController="Media_Type__c" tabStyle="MyAdmin__tab" sidebar="false"   showHeader="false" standardStylesheets="false"  applyBodyTag="false" docType="html-5.0">
+    <style>
+       body{
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed;
+      }
+      .slds-page-header{
+              background-color: #851225 !important;
+              border-bottom: 3px solid #851255 !important;
+              color: white !important;
+      }
+      .slds-page-header p {
+          color: white !important;
+      }
+      .slds .slds-tabs--scoped__nav {
+            background-color: #e2e4e6 !important;
+            font-size: 15px;
+        }
+       
+       .apexp .bPageBlock.apexDefaultPageBlock .pbBody 
+       {
+           margin: 0px 0px 0px;
+       }
+        body 
+       {
+            display: block;
+            margin: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            margin-left: 0px;
+       }
+       body
+       {
+            background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+            background-repeat: repeat-x;
+            background-position: left top;
+            background-attachment: fixed;
+       }
+       .slds .slds-tabs--scoped 
+       {
+             display: block;
+             width: 100%;
+             background-color: white;
+             margin-top: 2px;
+             border-radius: 10px;
+       }   
+       .slds .slds-tabs--scoped__content
+       {
+           padding:26px;
+       }
+      .slds .slds-icon-standard-user {
+       background-color: #f28b00;
+    }
+  
+    </style>
+ 
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <script>
+
+        function selectTab(elmnt) 
+        {
+            // slds-active
+            $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+            $(elmnt).parent("li").addClass("slds-active");
+
+            // tabindex
+            $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+            $(elmnt).attr("tabindex", 0);
+
+            // aria-selected
+            $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+            $(elmnt).attr("aria-selected", true);
+
+            // hiding previously selected tab (slds-show/slds-hide)
+
+            $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+            $(elmnt).closest(".slds-tabs--scoped").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+            // displaying newly selected tab (slds-show/slds-hide)
+            $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='" + elmnt.id + "']").addClass("slds-show");
+            $(elmnt).closest(".slds-tabs--scoped").children("div[aria-labelledby='" + elmnt.id + "']").removeClass("slds-hide");
+        }
+
+       
+        
+    </script>
+    
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head> 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+
+
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+   
+    
+         <div class="slds">
+         
+                 <!----------------------------------- Header Starting ------------------------------------------------------->
+        
+                      <div class="slds-page-header" style="width:100%;{!if($User.UITheme == 'Theme1' || $User.UITheme == 'Theme2' || $User.UITheme == 'Theme3','', 'position:fixed;z-index:15;')}" >
+                           <div class="slds-grid">
+                                <div class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-media slds-no-space slds-grow">
+                                        <div class="slds-media__figure">
+                                           
+                                          <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                               <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom99"></use>
+                                           </svg>
+                                        </div>                        
+                                        <div class="slds-media__body">
+                                            <p class="slds-text-title slds-line-height--reset">Media Type</p>
+                                            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"><apex:outputField value="{!Media_Type__c.Name}"/></h1>
+                                        </div>
+                                   </div>
+                                </div>
+                          </div>
+                     </div>
+ 
+                     <br/>
+                     <div class="slds" style="display:{!IF(($User.UITheme="Theme4d"),'block','none')};margin-top:12px">
+                          <br/><br/><br/>
+                     </div>
+ 
+                    <!--------------------------------------------------------Header Ending -------------------------------------------------------------------------------------------->
+
+          
+                    <!----------------------------------------------------------Detail page------------------------------------------------------------------------------------------->
+            
+            
+                    <div class="slds-grid" style="padding-left:25px;padding-right:25px;width:75% !important;" >
+                         <div class="slds-col"  id="details">
+                              <div class="slds-tabs--scoped" style="padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;" >
+                                 <ul class="slds-tabs--scoped__nav" role="tablist">
+                                     <li class="slds-tabs--scoped__item slds-active" title="Item One" role="presentation"><a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item" style="text-decoration: none !important;" onclick="selectTab(this);">DETAILS</a></li>
+                                 </ul>
+                                 
+                                 <div id="tab-scoped-1" class="slds-tabs--scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item">
+                                     <apex:detail id="DetailsSection" inlineEdit="true" relatedList="false" title="true" showChatter="false"  /> 
+                                 </div>  
+                                 
+                                 <br/>
+             <!-------------------------------------------------------Detail Page Ending-------------------------------------------------------------------------------------------------------------->  
+                          </div>                      
+                      </div>
+                  </div>    
+               </div>      
+                
+   <script>
+   
+        var j$ = jQuery.noConflict();  
+        j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+        j$('.slds-section__title').click(function() {
+            {
+             j$(this).parent().toggleClass('slds-is-open');
+                if (j$(this).parent().hasClass('slds-is-open')) {
+                    j$(this).parent().find('.slds-section__content').show();
+                } else {
+                    j$(this).parent().find('.slds-section__content').hide();
+                }
+            }
+        });
+        
+        
+        
+        j$('td.labelCol').removeClass('labelCol');
+        j$('td.last').removeClass('last');
+        //j$('td.pbButton').addClass('slds-button-group');
+        var pbButton = j$('td.pbButton').html();
+        j$('td.pbButton').html("");
+        j$('td.pbButton').html("<center><div>" + pbButton + "</div></center>");
+        //j$('td.pbButtonb').addClass('slds-button-group');
+        var pbButtonb = j$('td.pbButtonb').html();
+        j$('td.pbButtonb').html("");
+        j$('td.pbButtonb').html("<center><div>" + pbButtonb + "</div></center>");
+        j$('input.btn').addClass('slds-button slds-button--neutral');
+        var trList = j$('.detailList > tbody > tr');
+         for (var i = 0; i < trList.length; i++) {
+            var tdList = trList[i].getElementsByTagName('td');
+            
+            var label1 = tdList[0].innerHTML;
+            
+            tdList[0].innerHTML = '';
+            
+            j$(tdList[0]).append("<label class='slds-form-element__label mobileSeperator' style='width:30%'>" + label1 + "</label>" +"<span   style='display: inline-flex;'>"+tdList[1].innerHTML+"</span>");
+            
+            
+            if (tdList.length >= 3) {
+                var label2 = tdList[2].innerHTML;
+                tdList[2].innerHTML = '';
+                j$(tdList[2]).append("<label class='slds-form-element__label ' style='width:30%'>" + label2 + "</label>" + "<span  style='display: inline-flex;'>"+tdList[3].innerHTML)+"</span>"; 
+                
+                tdList[0].innerHTML = '';
+                j$(tdList[0]).append("<div class='mobileSeperator'><label class='slds-form-element__label ' style='width:30%'>" + label1 + "</label>" +"<span  style='display: inline-flex;'>"+tdList[1].innerHTML+"</span></div>");
+                j$(tdList[0]).append("<div class='mobile' style='padding-top: 10px !important'><div class='mobileSeperator'>" + tdList[2].innerHTML+"</div></div>");
+                
+            }
+            
+        }
+        
+          j$('.pbBody').prepend("<br/>");
+          j$('.pbButton').prepend("<br/>");
+          j$('td.dataCol').hide();
+          j$('td.data2Col').hide();
+          j$('td.pbTitle').hide();
+          j$('.detailList > tbody > tr > td').width('50%');
+ 
+        
+    </script>
+
+    <style>
+        h3 
+        {
+            display: inline !important;
+        }
+        
+        .brandTertiaryBrd 
+        {
+            border: none !important;
+        }
+        
+        .mainTitle 
+        {
+            display: none !important;
+        }
+        
+        .detailList > tbody > tr > td 
+        {
+            padding-top: 15px !important;
+            padding-bottom: 7px !important;
+            padding-left:10px !important;
+            border-bottom: 1px solid lightgray !important;
+        }
+        
+        .pbBody td 
+        {
+            color:black;
+        }
+        
+        .pbSubsection 
+        {
+            padding-left: 20px;
+            padding-right: 10px;
+        }
+        
+        .pbBottomButtons 
+        {
+            display: none;
+        }
+        
+        .publishercontainer,
+        .cxfeedinnerwrapper 
+        {
+            padding-left: 20px !important;
+        }
+        
+        .bPageBlock,
+        .brandSecondaryBrd,
+        .bDetailBlock,
+        .secondaryPalette,
+        .pbHeader,
+        .pbBody,
+        .pbError,
+        .pbBottomButtons,
+        .pbFooter,
+        .secondaryPalette,
+        .brandTertiaryBrd,
+        .first pbSubheader,
+        .tertiaryPalette 
+        {
+            border: 0px solid white !important;
+        }
+        
+        .pbButton,
+        .pbBody 
+        {
+            background: white !important;
+        }
+        
+        .pbError 
+        {
+            display: none !important;
+        }
+        
+        @media only screen and (min-width:0px) and (max-width:1000px) {
+            .mobile 
+            {
+                display: block;
+            }
+            .desktop 
+            {
+                display: none;
+            }
+            .detailList > tbody > tr > td:nth-child(2),.detailList > tbody > tr > td:nth-child(3),.detailList > tbody > tr > td:nth-child(4) 
+            {
+               display:none !important;
+            }
+            .mobileSeperator 
+            {
+                border-bottom: 1px solid lightgray;
+                padding-bottom: 7px;
+            }
+            .detailList > tbody > tr > td 
+            {
+              //  padding-top: 20px !important;
+                padding-bottom: 0px !important;
+                padding-left: 10px !important;
+                border-bottom: 0px solid lightgray !important;
+                color:black;
+            }
+            .slds-button--neutral 
+            {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+            .slds-scope .slds-button 
+            {
+                line-height: 25px !important;
+            }
+            .mobile > .slds-icon 
+            {
+                width: 25px !important;
+                height: 25px !important;
+            }
+            .detailList > tbody > tr > td > div:hover 
+            {
+                cursor: pointer;
+                background: #f1f1f1;
+                
+            }
+            
+        }
+        
+        @media only screen and (min-width:1001px) and (max-width:6000px) {
+            .mobile 
+            {
+                display: none;
+            }
+            .desktop 
+            {
+                display: block;
+            }
+            .detailList > tbody > tr > td:hover 
+            {
+                cursor: pointer;
+                background: #f1f1f1;
+            }
+            .detailList > tbody > tr > td:nth-child(2),.detailList > tbody > tr > td:nth-child(4) 
+            {
+                display:none !important;
+            }
+            .detailList > tbody > tr > td:nth-child(1),.detailList > tbody > tr > td:nth-child(3) 
+            {
+                width:50% !important;
+                color:black;
+            }
+            
+            .pbBody td 
+            {
+                color:black;
+            }
+        }
+    </style>
+   
+ </html>
+   
+</apex:page>
+<!-- End of Page -->

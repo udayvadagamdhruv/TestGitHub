@@ -1,0 +1,16 @@
+<apex:page standardController="Staff__c" extensions="StaffEditPageSwitchExt" tabStyle="MyAdmin__tab" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="false">
+ 
+    <script>
+
+         var s = '{!$User.UITheme == 'Theme3'}';
+         if(s == 'true')
+         {
+             window.open("/apex/StaffEditPage?id="+'{!StaffId}',  "_self");
+         }
+        
+    </script>
+    
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="StaffEditPageLightning"/>
+    </apex:outputPanel>
+</apex:page>

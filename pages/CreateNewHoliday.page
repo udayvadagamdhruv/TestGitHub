@@ -1,0 +1,26 @@
+<!-- This Page is used to override the New (Create) button of Holiady object --> 
+<apex:page standardController="Holiday__c" showHeader="true" sidebar="true" tabStyle="MyAdmin__tab" extensions="createHoliday">
+   <apex:sectionHeader title="Holiday"/>
+   <apex:form >
+      <apex:pageBlock mode="edit">
+         <apex:pageMessages />
+         <apex:pageBlockButtons location="top">
+            <apex:commandButton action="{!saveme}" value=" Save" ></apex:commandButton>
+            <apex:commandButton action="{!cancelme}"  value="Cancel" immediate="true" ></apex:commandButton>
+         </apex:pageBlockButtons>
+              
+         <apex:pageBlockSection title="Holiday Information" columns="2" collapsible="false"> 
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Holiday__c.Fields.Name.Label}"></apex:outputLabel>
+                  <apex:inputField value="{!Holiday__c.Name}" required="true" />
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Holiday__c.Fields.Date__c.Label}"></apex:outputLabel>
+                   <apex:inputField value="{!Holiday__c.Date__c}"/>
+             </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

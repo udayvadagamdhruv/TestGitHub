@@ -1,0 +1,78 @@
+<apex:page controller="addPELineitemToSLineitem">
+  
+  <apex:form >
+    <apex:pageBlock rendered="{!roleWraps.size > 0}">
+     <center>
+        <apex:commandButton action="{!Save}" value="Add To Shipment" />&nbsp;&nbsp;
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/> <br/><br/>
+     </center>
+        
+        <apex:pageMessages ></apex:pageMessages>
+      
+        <apex:pageBlockTable value="{!roleWraps}" var="p" id="ProductsTable" rendered="{!ShowProductionEstimate}">
+            <apex:column headerValue="Action">
+                <apex:inputCheckbox value="{!p.checked}"/>
+            </apex:column>
+            <apex:column value="{!p.e.Name}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}" />
+           
+             <apex:column value="{!p.e.Job__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Job__c.Label}" />
+             <apex:column value="{!p.e.Job__r.JS_Client__c}" headerValue="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}" />
+            <apex:column value="{!p.e.Quantity__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}" />
+            
+        </apex:pageBlockTable>
+      
+        
+    </apex:pageBlock>
+    
+    <apex:pageBlock rendered="{!ShowProductionEstimate}"> 
+        <apex:outputPanel rendered="{!roleWraps.size <= 0}">
+        <p>
+          <b> No Records to display.</b>
+        </p>       
+        <br/>
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+        </apex:outputPanel>
+   </apex:pageBlock> 
+    
+    
+    <apex:pageBlock rendered="{!EstLTwrapper.size > 0}">
+    <center>
+        <apex:commandButton action="{!Save}" value="Add To Shipment" />&nbsp;&nbsp;
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/> <br/><br/>
+    </center>
+        <apex:pageMessages ></apex:pageMessages>
+    
+     <apex:pageBlockTable value="{!EstLTwrapper}" var="p" id="EstTable" >
+            <apex:column headerValue="Action">
+                <apex:inputCheckbox value="{!p.checked}"/>
+            </apex:column>
+            <apex:column value="{!p.est.Name}" headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Name.Label}" />
+           
+             <apex:column value="{!p.est.Job__c}" headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Job__c.Label}" />
+             <apex:column value="{!p.est.Job__r.JS_Client__c}" headerValue="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}" />
+            <apex:column value="{!p.est.Quantity__c}" headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Quantity__c.Label}" />
+            
+        </apex:pageBlockTable>
+    
+    </apex:pageBlock>
+    
+    
+    <br/>
+    
+    <apex:pageBlock rendered="{!!ShowProductionEstimate}"> 
+        <apex:outputPanel rendered="{!EstLTwrapper.size <= 0}">
+        <p>
+          <b> No Records to display.</b>
+        </p>       
+        <br/>
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+        </apex:outputPanel>
+   </apex:pageBlock> 
+    
+</apex:form> 
+  
+  
+  
+  
+  
+</apex:page>

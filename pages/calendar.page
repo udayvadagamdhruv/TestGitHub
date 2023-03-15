@@ -1,0 +1,5 @@
+<!-- This Page is used to display Job Task in Calender View for selected Job.  -->
+<apex:page standardStylesheets="false" expires="1" cache="false" showHeader="true" sidebar="true" standardController="Job__c">
+
+</apex:page>
+<!-- End of Page -->

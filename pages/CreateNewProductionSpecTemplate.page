@@ -1,0 +1,24 @@
+<!-- This page is used to create new Production Spec Template. (Overriding Create New button of Production Spec Template) -->
+<apex:page standardController="Production_Spec_Template__c" tabStyle="MyAdmin__tab" extensions="CreateProductionSpecTemplate">
+   <apex:sectionHeader title="{!$ObjectType.Production_Spec_Template__c.Label}"/> 
+   <apex:form >
+      <apex:pageBlock mode="edit">
+         <apex:pageMessages />
+         
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value=" Save "></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+              
+         <apex:pageBlockSection title="{!$ObjectType.Production_Spec_Template__c.Label} Information" columns="2" collapsible="false"> 
+                 
+            <apex:pageBlockSectionitem > 
+               <apex:outputLabel Value="{!$ObjectType.Production_Spec_Template__c.Fields.Name.Label}"/>
+               <apex:inputField value="{!Production_Spec_Template__c.Name}" required="true"/>
+            </apex:pageBlockSectionitem> 
+            
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

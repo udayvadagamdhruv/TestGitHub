@@ -1,0 +1,6 @@
+<apex:page standardController="Campaign__c" tabstyle="Campaign__c" showHeader="false" extensions="CampaignTabOverrideExt" action="{!campaignsview}" >
+  
+  
+  
+  
+</apex:page>

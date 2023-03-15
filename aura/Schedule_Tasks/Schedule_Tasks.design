@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="SchduleTaskSection" label="Schedule Tasks Section Label" description="This name will reflect in the Schedule Tasks Section"/>
+</design:component>

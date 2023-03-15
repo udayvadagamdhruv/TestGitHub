@@ -1,0 +1,123 @@
+<apex:page controller="DisplayTimesheetEntriesunderjobtabext" id="frm" >
+
+<head>
+<style>
+    #table_id td
+    {
+        border:0px;
+    }
+    #table_dd td
+    {
+    border:0px;
+    }
+    #table_s td
+    {
+    border:0px;
+    }
+  .hd
+  {
+  text-align:right;
+  padding-right:20px!important;
+  }
+</style>
+</head>
+  <apex:form id="pb11"> 
+  <apex:pageMessages id="pagemsgId4"></apex:pageMessages>
+    
+   <apex:pageBlock id="pb" title="Timesheet Entries">
+      
+    <apex:pageBlockButtons location="top">
+    
+         <apex:commandlink target="_blank" action="{!CreateTsEntry}" style="text-decoration: none;" >
+              <apex:commandButton value="Timesheet Entry" action="{!CreateTsEntry}" id="btn1"/>
+         </apex:commandlink>
+         <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  
+         <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb1"/> 
+    </apex:pageBlockButtons>
+    
+    <div>
+    
+      <apex:actionStatus id="mark">
+             <apex:facet name="start">
+                <img src="/img/loading.gif" />&nbsp;&nbsp; <b> Please Wait....... </b>
+             </apex:facet>
+         </apex:actionStatus> 
+            <apex:pageBlockTable value="{!TimeSheetEnt}" var="ci" rendered="{!TimeSheetEnt.Size > 0}" id="abc">
+            
+                <apex:column headerValue="Action">
+                     <apex:commandButton value="Delete" action="{!del}" reRender="hiddenBlock1,pb11" status="edstatus1" onclick="if(!confirm('Are you sure?')){return false;}" >
+                         <apex:param name="param1" value="{!ci.Id}" assignTo="{!ciid}"> </apex:param>
+                     </apex:commandButton> 
+                </apex:column> 
+            
+                <apex:column headerValue="{!$ObjectType.Timesheet_Entries__c.Fields.Name.Label}">
+                    <apex:outputLink tabindex="tab1" value="/{!ci.Id}">{!ci.Name}</apex:outputlink>
+                </apex:column> 
+                
+                 <apex:column headerValue="{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.Label}">
+                    <apex:outputField value="{!ci.Task_Name__c}"/>
+                </apex:column>
+              
+                <apex:column headerValue="{!$ObjectType.Timesheet_Entries__c.Fields.GL_Code__c.Label}">
+                    <apex:outputField value="{!ci.GL_Code__c}"/>
+                    <apex:facet name="footer">
+                            <apex:outputText value="Total Hours" style="float:right;">
+                              </apex:outputText>
+                    </apex:facet>
+                    
+                </apex:column>
+              
+                <apex:column headerValue="{!$ObjectType.Timesheet_Entries__c.Fields.Hours_Worked__c.Label}"> 
+                    <apex:outputField value="{!ci.Hours_Worked__c}"/> 
+                    
+                    <apex:facet name="footer">
+                            <apex:outputText value="{0,Number, ##,##.00}">
+                               &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumhrs}"/>
+                            </apex:outputText>
+                    </apex:facet>
+                    
+                  
+                    
+                </apex:column>
+              
+                <apex:column headerValue="{!$ObjectType.Timesheet_Entries__c.Fields.Date__c.Label}">
+                    <apex:outputField value="{!ci.Date__c}"/>
+                </apex:column>
+                
+                <apex:column headerValue="{!$ObjectType.Timesheet_Entries__c.Fields.User__c.Label}">
+                    <apex:outputField value="{!ci.User__c}"/>
+                </apex:column>
+                
+                
+                
+               
+            </apex:pageBlockTable>
+            <br/>
+            
+            
+            
+      </div>
+      <br/>
+  <center>    
+     <apex:commandButton value="<<First Page" rerender="pb" action="{!FirstPage}" disabled="{!prev}" rendered="{!TimeSheetEnt.Size > 0}" status="edstatus1"/>
+    <apex:commandButton value="<Previous" rerender="pb" action="{!previous}" disabled="{!prev}" rendered="{!TimeSheetEnt.Size > 0}" status="edstatus1"/>
+    <apex:commandButton value="Next>" rerender="pb" action="{!next}" disabled="{!nxt}" rendered="{!TimeSheetEnt.Size > 0}" status="edstatus1"/>
+    <apex:commandButton value="Last Page>>" rerender="pb" action="{!LastPage}" disabled="{!nxt}" rendered="{!TimeSheetEnt.Size > 0}" status="edstatus1"/>
+    &nbsp; &nbsp;    
+            <apex:actionStatus id="edstatus1">
+             <apex:facet name="start">
+                  <img src="/img/loading.gif" />&nbsp;&nbsp; <b> Please Wait....... </b>
+             </apex:facet>
+         </apex:actionStatus> 
+ </center>
+    <apex:pageBlockSection rendered="{!TimeSheetEnt.Size == 0}">
+     <apex:pageBlockSectionItem >
+          <b>No records to display</b>
+     </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+   </apex:pageBlock>
+  </apex:form>
+
+
+
+</apex:page>

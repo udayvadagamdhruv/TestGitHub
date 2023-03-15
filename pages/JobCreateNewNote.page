@@ -1,0 +1,37 @@
+<!-- This page is used to create Note for a particular Job. -->
+<apex:page standardController="Job__c" extensions="JobCreateNewNoteExtensions" id="pg">
+<apex:form id="frm">
+    <apex:pageMessages id="msg1"/>
+    <apex:sectionHeader title="{!$ObjectType.Job__c.Label} Note"/>
+        <apex:pageBlock id="pb">
+    
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!SaveNote}" value="Save"/>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"/>
+        </apex:pageBlockButtons>
+
+        <apex:pageBlockSection >
+             <apex:pageBlockSectionItem >
+                    <apex:outputLabel Value="{!$ObjectType.Note.Fields.Title.Label}"></apex:outputLabel>
+                    <apex:inputField value="{!mynote.Title}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel Value="{!$ObjectType.Note.Fields.IsPrivate.Label}"></apex:outputLabel>
+                    <apex:inputField value="{!mynote.IsPrivate}"/>
+            </apex:pageBlockSectionItem>  
+            
+            <apex:pageblockSectionItem ></apex:pageblockSectionItem>          
+            
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel Value="{!$ObjectType.Note.Fields.Body.Label}"></apex:outputLabel>
+                    <apex:inputtextarea value="{!mynote.Body}" rows="10" cols="55" style="resize:none"/>
+            </apex:pageBlockSectionItem>            
+
+        </apex:pageBlockSection>
+     </apex:pageBlock>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

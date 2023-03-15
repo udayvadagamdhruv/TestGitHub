@@ -1,0 +1,9 @@
+<!-- This Page is Used to display List of Clients (we have used Account(Standard Object) as Client), we have override this page with Accounts Tab(GoTo Setup->Customize->Account-> Buttons and links) -->
+<apex:page showHeader="true" sidebar="true" tabStyle="Campaign__c" controller="CampaignTabOverrideExt" >
+
+
+    <!-- To display Enhanced list of Clients --> 
+         <apex:enhancedList type="Campaign__c" height="1000" rowsPerPage="50" id="Accountlist" customizable="True" />  
+    <!-- End of Enhanced List -->
+ 
+ </apex:page>

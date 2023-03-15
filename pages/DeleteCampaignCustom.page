@@ -1,0 +1,20 @@
+<!-- This Page is used to override the delete button of Campaign Object -->
+<apex:page standardController="Campaign__c" extensions="deleteCampaignCustomExtension" showHeader="false" sidebar="false"> 
+       
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        
+        <apex:form >
+         <apex:actionFunction name="doInit" action="{!CheckDelete}" reRender="msg,po"/> 
+           <apex:outputPanel id="po">
+                <center> <apex:outputLink value="/{!oId}" rendered="{!(isError!=False)}">Click here to Go to List</apex:outputLink> </center>
+            </apex:outputPanel>
+        </apex:form>
+       
+</apex:page>
+<!-- End of Page -->

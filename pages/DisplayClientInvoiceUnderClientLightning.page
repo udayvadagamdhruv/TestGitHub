@@ -1,0 +1,66 @@
+<apex:page controller="DisplayClientInvoiceUnderClientDetail" showHeader="false">
+
+<head>
+ 
+</head>  
+<apex:slds />
+<div class="slds">
+  <apex:form >
+   <apex:outputPanel id="pb">
+      
+    <div>
+     <apex:outputPanel layout="block" style="overflow:auto;height:150px;" rendered="{!ClientInvoice.size > 0}">
+     <div class="slds-card">
+    <apex:dataTable styleClass="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover" value="{!ClientInvoice}" var="ci" >
+    
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Name.Label}">
+       <apex:outputLink tabindex="tab1" value="/apex/ClientInvoiceDetailpageSwitchPage?id={!ci.Id}">{!ci.Name}</apex:outputLink>
+       </apex:column>
+       
+        <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Job__c.Label}"> 
+      <apex:outputField value="{!ci.Job__r.Name}"/> 
+      </apex:column>
+      
+     
+                 
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}"  >
+       <apex:outputField value="{!ci.Invoice_Date__c}"/>
+      </apex:column>
+      
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}"  >
+       <apex:outputField value="{!ci.Date_Due__c}"/>
+      </apex:column>
+      
+      <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Total__c.Label}"  >
+       <apex:outputField value="{!ci.Invoice_Total__c}"/>
+      </apex:column>
+      
+        <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Status__c.Label}">
+       <apex:outputField value="{!ci.Invoice_Status__c}"/>
+      </apex:column>
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Term__c.Label}">
+       <apex:outputField value="{!ci.Term__c}"/>
+      </apex:column>
+       <apex:column headerValue="{!$ObjectType.Client_Invoice__c.Fields.Notes__c.Label}">
+       <apex:outputField value="{!ci.Notes__c}"/>
+      </apex:column>
+    
+    </apex:dataTable>
+    </div>
+    </apex:outputpanel>
+    </div>
+  
+    <apex:outputpanel rendered="{!ClientInvoice.Size == 0}">
+     <apex:outputpanel >
+     <b> No records to display </b>
+     
+     </apex:outputpanel>
+    </apex:outputpanel>
+    
+   </apex:outputPanel>
+   
+  </apex:form>
+</div>
+
+
+</apex:page>

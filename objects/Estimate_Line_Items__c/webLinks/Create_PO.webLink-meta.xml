@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Create_PO</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Create PO</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/16.0/connection.js&quot;)}
+
+var result = sforce.connection.query(&quot;select id,job__c,Vendor__c from Purchase_Order__c where Vendor__c=&apos;{!Estimate_Line_Items__c.VendorId__c}&apos; and Job__c=&apos;{!Estimate_Line_Items__c.JobId__c}&apos; &quot;);
+
+var records = result.getArray(&quot;records&quot;); 
+if (records.length == 0)
+{
+//alert(&quot;PO is not created for this vendor&quot;);
+var msg=confirm(&apos;PO is not created for this vendor,if you want to Create new PO for this Vendor then Press OK&apos;); 
+if (msg==true)
+ {
+ window.open(&apos;/apex/CreatePOfromEstimateLI?id={!Estimate_Line_Items__c.Id}&apos;,&apos;_self&apos;);
+//CreatePOfromEstimateLI this page is deleted on 12 Oct
+ }
+else
+ {
+ alert(&quot;You Pressed Cancel&quot;);
+ }
+}
+else
+{
+alert(&quot;There is already a PO is created for this Vendor&quot;);
+}</url>
+</WebLink>

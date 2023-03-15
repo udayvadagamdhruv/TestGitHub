@@ -1,0 +1,227 @@
+<!-- This page is used to display Music Usage under Job Tab. -->
+<apex:page controller="displayMusicUsageUnderJobsTab" tabStyle="Job__c">
+  <head>
+       <Style>
+            #table_music_library td
+            {
+                border:0px;
+            }
+            #table_music_start_date td
+            {
+                border:0px;
+            }
+            #table_music_end_date td
+            {
+                border:0px;
+            }
+             #table_music_promo_length td
+            {
+                border:0px;
+            }
+             #table_music_library td
+            {
+                border:0px;
+            }
+              #table_music_track td
+            {
+                border:0px;
+            }
+              #table_music_track_info td
+            {
+                border:0px;
+            }
+              #table_music_drop td
+            {
+                border:0px;
+            }
+             #table_music_note td
+            {
+                border:0px;
+            }
+       </Style>
+  </head>      
+         
+
+  <apex:form id="formId">
+     
+      <apex:pageMessages id="pagemsgId"></apex:pageMessages>
+       <apex:outputPanel id="panelId">
+       
+      <apex:pageblock id="pageBlockId">   
+          <center>
+                <apex:commandButton value="Add Music" action="{!createNewMusicUsage}" id="btnAddMusic"/>
+                <apex:commandButton value="Save" action="{!save}" id="btnSave" style="display:none"/>
+                <apex:commandButton value="Cancel" action="{!cancel}" id="btnCancel" style="display:none"/>
+          </center> <br/>
+          <apex:pageBlockTable value="{!lstMU}" var="music" rendered="{!lstMU.size>0}">
+              <apex:column headerValue="Action" width="10%">
+                  <apex:commandButton value="Edit" action="{!editMusicUsage}" reRender="hiddenBlock7">
+                      <apex:param name="param1" value="{!music.id}" assignTo="{!strMusicId}"></apex:param>
+                  </apex:commandButton>&nbsp;
+              
+                  <apex:commandButton value="Delete" action="{!deleteMusicUsage}" reRender="hiddenBlock8,panelId" onclick="if(!confirm('Are you sure?')){return false;}">
+                      <apex:param name="param2" value="{!music.id}" assignTo="{!strMusicId}"></apex:param>
+                  </apex:commandButton>
+              </apex:column>
+            
+              <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Name.Label}" width="17%">
+                    <apex:outputLink tabindex="tab1" value="/apex/MusicUsageDetailPage?id={!music.Id}">{!music.Name}</apex:outputLink>
+              </apex:column>
+              
+              <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Library__c.Label}" width="25%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_library">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Library__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Library"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>
+              
+         <!--     <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Drop__c.Label}" width="10%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_drop">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Drop__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Drop"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>  -->
+              
+              
+              <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Track__c.Label}" width="25%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_track">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Track__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Track"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>
+
+
+      <!--       <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Track_Info__c.Label}" width="10%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_track_info">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Track_Info__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Track Info"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column> -->
+              
+         <!--     <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Promo_Length__c.Label}" width="10%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_promo_length">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Promo_Length__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Promo Length"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>  -->
+              
+         <!--     <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Note__c.Label}" width="10%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_note">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Note__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Note"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>   -->
+
+
+              <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_Start_Date__c.Label}" width="17%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_start_date">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_Start_Date__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Start Date"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>
+  
+              <apex:column headerValue="{!$ObjectType.Music_Usage__c.Fields.Music_Usage_End_Date__c.Label}" width="16%" style="resize:none">
+                    <apex:actionRegion >
+                        <table border="0" id="table_music_end_date">
+                            <tr>
+                                <td border="0">
+                                     <apex:outputField value="{!music.Music_Usage_End_Date__c}" style="resize:none">
+                                           <apex:inlineEditSupport event="ondblClick" hideOnEdit="btnAddMusic" showOnEdit="btnSave,btnCancel"/>                                       
+                                     </apex:outputField>
+                                </td>
+                                
+                                <td border="0">
+                                     <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit End Date"/>  
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:actionRegion>
+              </apex:column>
+
+          </apex:pageBlockTable>
+          
+          <apex:outputPanel rendered="{!lstMU.size<=0}">
+              <b>No records to display</b>
+          </apex:outputPanel>
+      </apex:pageBlock>
+      </apex:outputPanel> 
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

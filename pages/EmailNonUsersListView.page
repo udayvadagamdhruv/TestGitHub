@@ -1,0 +1,63 @@
+<apex:page standardController="Job__c" extensions="EmailNonUsersListViewExtension" id="thePage">
+
+
+<apex:form id="theForm">
+      <apex:pageBlock id="thePageBlock" title="Email List View (Non Licensed Users)">
+         
+         <div>
+          <apex:pageBlockTable value="{!Tasks}" var="lst" id="thePageBlockable" rendered="{!Tasks.size > 0}">
+          
+               
+          
+                 <apex:column headerValue="From">
+                    <apex:outputField value="{!lst.Sender_Address__c}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+
+                
+                
+                
+                
+                <apex:column headerValue="To">
+                    <apex:outputField value="{!lst.Email_Address__c}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+
+                
+
+              
+              <apex:column headerValue="{!$ObjectType.Task.Fields.subject.Label}">
+               <apex:outputLink tabindex="tab1" value="/apex/SforceTaskDetailPage?id={!lst.Id}">{!lst.subject}</apex:outputLink>  
+              </apex:column>
+              
+              <apex:column headerValue="Body">
+                    <apex:outputField value="{!lst.Description}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+              
+              
+            <!--  <apex:column headerValue="{!$ObjectType.Task.Fields.Status.Label}">
+                    <apex:outputField value="{!lst.status}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column> -->
+                
+                <apex:column headerValue="{!$ObjectType.Task.Fields.Lastmodifieddate.Label}">
+                    <apex:outputField value="{!lst.Lastmodifieddate}" /> 
+                    <apex:facet name="header"></apex:facet>
+                </apex:column>
+           
+                    </apex:pageBlockTable>
+             </div> 
+          
+           <apex:pageBlockSection rendered="{!Tasks.size <= 0}">
+               <apex:pageBlockSectionItem >
+                   <b>No records to display</b>
+               </apex:pageBlockSectionItem>              
+           </apex:pageBlockSection>  
+         
+           
+      </apex:pageBlock>
+  </apex:form>
+
+  
+</apex:page>

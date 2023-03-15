@@ -1,0 +1,211 @@
+<!-- This Page is used to Display Calender for Staff Record , calender displays all active task for active jobs for selected Staff -->
+
+<apex:page standardController="Staff__c" extensions="DisplayCalendarFilterByStaffExtension" sidebar="false" showHeader="false">
+
+  <html>
+  <head>
+  <script type="text/javascript" src="{!$Resource.Calendar_Jquery}"></script> 
+ <apex:stylesheet value="{!URLFOR($Resource.PrintCalendarStyle)}"/>
+ <link rel='stylesheet' type='text/css' href="{!URLFOR($Resource.CalendarResources,'theme.css')}" />
+ <script type='text/javascript' src="{!URLFOR($Resource.CalendarResources,'fullcalendar.min.js')}"></script>
+ <script type="text/javascript" src="{!URLFOR($Resource.CalendarResources,'dragresize.js')}"></script>
+
+
+<script type='text/javascript'>
+   // var jsonString;
+    var allEvents;
+    var visibleClasses = '';
+    var events;
+    $(document).ready(function()
+    {
+        //alert('Hello');
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+    
+       
+
+        $('#calendar').fullCalendar({
+            theme: true,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+                
+            },
+           
+            editable: false,  
+             events:{!JSENCODE(HTMLENCODE(jsonString))},    
+           /* loading: function(isLoading, view)
+            {
+                if(isLoading)
+                {
+                $("#lightbox, #lightbox-panel").fadeIn(300); 
+                }
+                if(!isLoading)
+                {
+                    events = $('#calendar').fullCalendar('clientEvents');
+                    filterEvents(document.getElementById('filterType').value, document.form.filterCriteria.value);
+                    $("#lightbox, #lightbox-panel").fadeOut(300);
+                }
+            },*/
+            
+            eventRender: function(event, element) 
+            {
+                var newdiv = document.createElement('div');
+                newdiv.setAttribute('id', 'NoticeDiv_'+event.id);
+                newdiv.setAttribute('class', 'drsElement');
+                document.getElementById("Body").appendChild(newdiv);
+                document.getElementById('NoticeDiv_'+event.id).innerHTML = '<div class="drsMoveHandle" id="TitleBar_'+event.id+'"></div>';
+            },  
+                      
+            eventClick: function(event, jsEvent, view ) 
+            {
+                var str1 = "/apex/JobTaskDetailPage?id=" + event.id;
+                window.location = str1;
+            }, 
+            
+            eventMouseover : function(event, jsEvent, view ) 
+            {
+               showMessage(event, jsEvent, view )
+            },
+            
+            eventMouseout : function(event, jsEvent, view ) 
+            {
+              $("#NoticeDiv_"+event.id).slideUp('fast',function(){});
+            }
+            
+            
+            
+        });
+        
+     updateVisible(document.form.classesToShow);});  
+     
+     function naviagate(event,jsEvent,view)
+     {
+           
+     } 
+
+    function showMessage(event, jsEvent, view)
+    {
+        document.getElementById("NoticeDiv_"+event.id).style.left = jsEvent.pageX+'px';+'px';
+        document.getElementById("NoticeDiv_"+event.id).style.top = jsEvent.pageY+'px';
+        document.getElementById("NoticeDiv_"+event.id).innerHTML = '<div id="TitleBar_'+event.id+'" class="drsMoveHandle">'+event.title+'<img src="{!$Resource.Calendar_Image_Close_Fed}" id="closeButton_'+event.id+'" name="closeButton_'+event.id+'" onmouseover=\'javascript:roll_over("closeButton_'+event.id+'", "{!$Resource.Calendar_Image_Close}");\' onmouseout= \'javascript:roll_over("closeButton_'+event.id+'", "{!$Resource.Calendar_Image_Close_Fed}");\' onClick="javascript:hideMessage(\''+event.id+'\');" ></div> \
+                                                          Staff: '+event.staff+'<br>'
+          $("#NoticeDiv_"+event.id).slideDown('fast', function()
+          {
+          });   
+ }
+    
+    function hideMessage(id)
+    {
+                  $("#NoticeDiv_"+id).slideUp('fast', function(){});
+    }
+ 
+    
+    function roll_over(img_name, img_src)
+    {
+        document[img_name].src = img_src;
+    }
+
+    function updateVisible(classNames)
+    {
+         visibleClasses='';
+         for(var i=0; i<classNames.length; i++)
+         {
+             if(classNames[i].checked)
+             {
+                 visibleClasses += classNames[i].value;
+             }    
+         }     
+    }
+    function filterEvents(filterField, filterValue)
+    {
+        var matchesFilter = -1;
+        var matchesClass = -1;
+        
+        for(var i=0; i<events.length; i++)
+        {
+            try
+            {
+                //alert('Finding '+events[i].status.toLowerCase()+'. In: '+visibleClasses.toLowerCase()+'. Result: '+visibleClasses.toLowerCase().indexOf(events[i].status.toLowerCase()));
+    
+                matchesFilter = events[i][filterField].toLowerCase().indexOf(filterValue.toLowerCase());
+                matchesClass = visibleClasses.toLowerCase().indexOf(events[i].status.toLowerCase());
+            }         
+            catch(e)
+            {
+                //Sometimes they will try and filter on a value that an event object doesn't have a value for.
+                //in that case, just say that it passes the event filter. It can still fail the class filter though.
+                matchesFilter = 1;
+            }    
+            
+            if((matchesFilter != -1 && filterValue.length > 0 && matchesClass != -1) || (filterValue.length < 1 && matchesClass != -1))
+            {
+                  $('.'+events[i].id).slideDown('fast', function()
+                  {
+                  
+                  });
+            }
+            else
+            {
+                  $('.'+events[i].id).slideUp('fast', function()
+                  {
+                  
+                  });           
+            }
+        }
+    }  
+    function jumpToDate(dateString)
+    {
+        var gotoDate = dateString;
+
+        gotoDate = $.fullCalendar.parseDate( gotoDate  )
+        if(gotoDate == 'Invalid Date')
+        {
+            alert('Please enter a valid date in MM/DD/YYYY format');    
+        }
+        else
+        {
+            $('#calendar').fullCalendar( 'gotoDate', gotoDate  )
+        }
+    }
+</script>
+
+</head>
+
+<body id="Body">
+   <apex:pageMessages />
+  
+       <table align="center" cellspacing="0" cellpadding="0">
+       <tr>
+           <td>
+                <div style="font-size:2.0em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                   <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+                   <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+                </div>
+          </td>
+       </tr>
+       <tr>
+           <td>
+              <div style="font-size:2.0em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                  <font size="5px"><b>{!$ObjectType.Staff__c.Fields.Name.Label} : <apex:outputLabel value="{!strStaff}"/></b></font>
+              </div>
+            </td>
+       </tr>
+        <tr>
+            <td></td>
+        </tr>
+         <tr>
+             <td>
+                 <div id='calendar' ></div> 
+             </td>
+         </tr>
+      </table>
+         <div id="lightbox"> </div>
+       <br/>
+    </body>
+</html>
+</apex:page>
+<!-- End of the Page -->

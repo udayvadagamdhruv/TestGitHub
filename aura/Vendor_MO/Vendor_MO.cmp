@@ -1,0 +1,138 @@
+<aura:component controller="Vendor_MO_Controller"  implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="ObjectType" type="Object"/> 
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="fieldset" type="List"/>
+    
+    <aura:attribute name="vendorrecordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="record" type="Object"/>
+    
+    <aura:attribute name="VendorMOSec" type="String" default="Material Order" required="true" access="global"/>
+    <aura:attribute name="isAccess" type="list" /><!-- to check  permissions(creatable,editable)-->
+    
+    <aura:attribute name="isMOOpen" type="boolean" default="false"/>
+    <aura:attribute name="MORecordid" type="String" />
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    
+     <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    
+     <aura:attribute name="DynamicLabels" type="list"/>
+      <aura:attribute name="TotalAmount" type="double" />
+    
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="VendorQuotes">
+                <lightning:accordionSection name="VendorQuotes" label="{!v.VendorMOSec}"  class="slds-card" >
+                    <br/>
+                    <div align="center">
+                        <lightning:button variant="neutral" label="New" title="New" onclick="{!c.MOCreate}"/>
+                    </div>
+                    <br/>
+                     <aura:if isTrue="{!empty(v.data)}">
+           <b>No records to display</b>
+                          
+            <aura:set attribute="else">
+                <lightning:card>
+                    <div>
+                        <lightning:datatable class="POtablecss"
+                                             aura:id="PODataTable"
+                                             columns="{!v.columns}"
+                                             data="{!v.data}"
+                                             keyField="Id"
+                                             onsave ="{!c.onSave}"
+                                             hideCheckboxColumn="true"
+                                             showRowNumberColumn="false"
+                                             errors="{!v.errors}"
+                                             onsort="{!c.updateColumnSorting}"
+                                             sortedBy="{!v.sortedBy}"
+                                             sortedDirection="{!v.sortedDirection}" 
+                                             onrowaction="{!c.handleRowAction}" />
+                    </div>
+                    <br/>
+                    
+                </lightning:card>
+                <aura:if isTrue="{!v.isLoading}">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+   
+                </lightning:accordionSection>
+            </lightning:accordion>
+    
+    <aura:if isTrue="{!v.isMOOpen}">
+        <lightning:recordEditForm aura:id="JobMOEditform" density="comfy" objectApiName="Material_Order__c" recordId="{!v.MORecordid}" onload="{!c.jobMOload}"  onsubmit="{!c.jobMOOnsubmit}" onsuccess="{!c.onMORecordSuccess}"  >
+            <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.MORecordid==null?'New ':'Edit '} {!v.Labelname}</h2>
+                    </header>
+                    
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:layout multipleRows="true">  
+                            <aura:iteration items="{!v.fieldset}" var="field">
+                                
+                                <aura:if isTrue="{!field=='Vendor_Name__c'}"> 
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-form-element  slds-p-horizontal_x-small" >
+                                            <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Material_Order__c.Vendor_Name__c.label}</label>
+                                            <div class="slds-form-element__control">
+                                                <ui:outputText value="{!v.simpleRecord.Name}"  /> 
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                     <aura:set attribute="else">  
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                    <lightning:inputField fieldName="{!field}" aura:id="JobMOField"  class="{! ' slds-p-horizontal_x-small'+' '+ ((field=='MO_Due_Date__c' || field=='Issue_Date__c')?'frequired':' ')}"    /> 
+                                    </lightning:layoutItem>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </aura:iteration>
+                        </lightning:layout>
+                    </div>
+                     <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+    
+    
+</aura:component>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Record_Type_will_be_changed_to_read_only</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>When_status_is_Booked</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>Record Type will be changed to read only</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Unit_cost_populated_based_on_GLCode</fullName>
+        <description>Unit Cost Default Value</description>
+        <field>Unit_Cost__c</field>
+        <formula>GL_Code__r.Unit_Cost__c</formula>
+        <name>Unit cost populated based on GLCode</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>When_Status_is_other_than_booked</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>When_Status_is_other_than_booked</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>When Status is other than booked</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Unit Cost Default Value for Session object</fullName>
+        <actions>
+            <name>Unit_cost_populated_based_on_GLCode</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Session__c.Unit_Cost__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </criteriaItems>
+        <description>When new Session is created, Default value for unit cost is populated based on selected GL Code.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>When Session status is Booked</fullName>
+        <actions>
+            <name>Record_Type_will_be_changed_to_read_only</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Session__c.Session_Status__c</field>
+            <operation>equals</operation>
+            <value>Booked</value>
+        </criteriaItems>
+        <description>When Session status is Booked its layout will be change</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>When Status is other than booked</fullName>
+        <actions>
+            <name>When_Status_is_other_than_booked</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Session__c.Session_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Booked</value>
+        </criteriaItems>
+        <description>When status is changed from Booked to anything else, then layout will be changed to editable.</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

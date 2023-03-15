@@ -1,0 +1,120 @@
+<apex:page controller="DisplayInvoiceunderjobtabExtension">
+     <head>
+         <style>
+             #table_dr td
+             {
+                border:0px;
+             }
+             #table_amount td
+             {
+                 border:0px;
+             }
+             .hd
+             {
+             text-align:right;
+             padding-right:20px!important;
+             }
+             
+        </style>
+     </head>
+     
+     <apex:form >
+      <apex:pageMessages id="pagemsgId5"></apex:pageMessages>
+          <apex:pageBlock tabStyle="Invoice__c" title="Invoices">
+               <apex:pageBlockButtons location="top">
+                     <apex:commandButton action="{!CreateInvoice}" value="Log Invoice" id="btn1"/> 
+                     <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display: none;"/>  
+                     <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display: none;" reRender="pb11"/>   
+              </apex:pageBlockButtons>
+      <div>
+      <apex:pageBlockTable value="{!inv}" var="in" rendered="{!inv.Size > 0}"> <br/><br/><br/>
+      
+          <apex:column headerValue="Action">
+
+            <apex:commandButton value="Delete" action="{!del}" reRender="hiddenBlock1" rendered="{!in.Invoice_Line_Items__r.size ==0}" onclick="if(!confirm('Are you sure?')){return false;}" >
+                 <apex:param name="param1" value="{!in.Id}" assignTo="{!Delinvid}"> </apex:param>
+             </apex:commandButton> 
+             <apex:commandButton value="Delete" title="Delete Invoice" onclick="alert('Invoices with line items cannot be deleted.Please delete each line item before you delete this invoice.' );" rendered="{!in.Invoice_Line_Items__r.size >0}" reRender="pb1"/>
+         </apex:column> 
+    
+        
+      
+      
+       
+           <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Name.Label}" width="25%">
+              <apex:outputLink tabindex="tab1" value="/apex/Invoicedetailpage?id={!in.Id}">{!in.Name}</apex:outputLink> 
+           </apex:column>       
+          
+          <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Vendor__c.Label}" width="25%">
+              <apex:outputfield value="{!in.Vendor__c}"/>
+          </apex:column>
+   
+          <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Purchase_Order__c.Label}" width="20%">
+              <apex:outputfield value="{!in.Purchase_Order__r.Name}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Date_Received__c.Label}" width="20%" style="text-align:right;padding-right:20px;">
+            <apex:actionRegion >
+               <table border="0" id="table_dr">
+               <tr>
+               <td border="0">
+               <apex:outputField value="{!in.Date_Received__c}">
+               <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/> </apex:outputfield> </td> 
+               <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Date Received"/>  </td>
+               </tr>
+              </table>
+          </apex:actionRegion>
+           
+          </apex:column> 
+          
+           <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Total_Amount__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd" width="10%">
+          <apex:outputField value="{!in.Total_Amount__c}"/>
+          </apex:column>
+          
+        
+    <!--  This Field is not needed by 2nd March       <apex:column headerValue="{!$ObjectType.Invoice__c.Fields.Revised_Amount__c.Label}">
+           <apex:actionRegion >
+               <table border="0" id="table_amount">
+               <tr>
+               <td border="0">
+               <apex:outputField value="{!in.Revised_Amount__c}">
+               <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1"/> </apex:outputfield> </td> 
+               <td> <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Actual Amount"/>  </td>
+               </tr>
+              </table>
+          </apex:actionRegion> 
+          </apex:column>   -->
+       
+          
+      </apex:pageBlockTable>
+     
+      <br/>
+      <div style="float:right;padding-right:20px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+       <apex:outputPanel rendered="{!inv.Size > 0}">
+        
+       
+        <!--     <apex:outputLabel value="Invoice Total " style="font-style:italic;" /> 
+                 <apex:outputText value="{0,Number, $###,###,###.00}">
+                 &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:param value="{!sumCash3}"/>
+                 </apex:outputText>   -->
+      
+           
+            
+             <apex:outputLabel value="Actual Amount Total   " style="font-style:italic;" /> 
+             <apex:outputText value="{0,Number,$###,###,###.00}">
+                &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:param value="{!sumCash4}"/>
+            </apex:outputText>
+        </apex:outputPanel>
+      </div> 
+      <br/> 
+   
+         <apex:pageBlockSection rendered="{!inv.size <= 0}">
+           <apex:pageBlockSectionItem >
+        <b>   No records to display </b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection> 
+          </div>
+   </apex:pageBlock>
+ </apex:form>     
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,46 @@
+<!-- This Page is used to create New Invoice Line Item for a particular Invoice --> 
+<apex:page standardController="Invoice_Line_Item__c" extensions="AddInvoiceLineItemExtension" tabStyle="Job__c">
+   <apex:form >
+      <apex:sectionHeader title="Line Item Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton> 
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+            <apex:pageBlockSectionItem >
+             <!--  <apex:outputLabel value="Invoice"/>
+               <apex:outputLabel value="{!InvoiceName}"/> -->
+               
+                 <apex:outputLabel value="{!$ObjectType.Invoice_Line_Item__c.Fields.Invoice__c.Label}"/>
+                 <apex:outputField value="{!Invoice_Line_Item__c.Invoice__c}"/>
+               
+            </apex:pageBlockSectionItem>
+             
+           <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Invoice_Line_Item__c.Fields.GL_Code__c.Label}" for="prol">  </apex:outputLabel>
+               <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                     <div class="requiredBlock"> </div>
+                     <apex:selectList value="{!Invoice_Line_Item__c.GL_Code__c}" multiselect="false" size="1" id="selectedvendorId" onselect="{!Invoice_Line_Item__c.GL_Code__c}" Required="true">
+                        <apex:selectOptions value="{!GLCode}"/>
+                     </apex:selectList>
+                  </span>
+               </apex:outputPanel>  
+            </apex:pageBlockSectionItem>   
+            
+            
+             
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Invoice_Line_Item__c.Fields.Amount__c.Label}"/>
+               <apex:inputField value="{!Invoice_Line_Item__c.Amount__c}" required="true"/>
+            </apex:pageBlockSectionItem>
+            
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Job_mini_page_layout</fullName>
+    <fields>Job_Auto_Number__c</fields>
+    <fields>Name</fields>
+    <fields>Campaign__c</fields>
+    <fields>Media_Types__c</fields>
+    <fields>Schedule_Template__c</fields>
+    <fields>JS_Client__c</fields>
+    <fields>Status__c</fields>
+    <fields>Start_Date__c</fields>
+    <fields>Due_Date__c</fields>
+    <label>Job mini page layout</label>
+</CompactLayout>

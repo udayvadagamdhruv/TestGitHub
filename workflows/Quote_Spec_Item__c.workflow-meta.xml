@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Description_of_QSI_will_be_updated</fullName>
+        <field>Description__c</field>
+        <formula>&quot;Enter Spec Description here&quot;</formula>
+        <name>Description of QSI will be updated</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Set Default value when Description is null for Quote Spec Item%2E</fullName>
+        <actions>
+            <name>Description_of_QSI_will_be_updated</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Quote_Spec_Item__c.Description__c</field>
+            <operation>equals</operation>
+        </criteriaItems>
+        <description>When New Quote Spec Item is created and if Description field is null then it will set Default Value to &quot;Enter Description here&quot;.</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

@@ -1,0 +1,10 @@
+<apex:page standardController="Billboard_Invoice__c" tabStyle="Billboard__c" >
+
+ 
+ 
+ 
+ <apex:detail relatedList="True" inlineEdit="True" showChatter="true"/>
+     
+ <apex:include pageName="DisplayBillboardInvoiceLI" />
+ <apex:include pageName="DisplayBillboardInvoicePayments" />
+</apex:page>

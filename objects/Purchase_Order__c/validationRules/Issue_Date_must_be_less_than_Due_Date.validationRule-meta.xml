@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Issue_Date_must_be_less_than_Due_Date</fullName>
+    <active>true</active>
+    <description>PO Issue date must be less than PO Due Date</description>
+    <errorConditionFormula>Issue_Date__c  &gt;  Due_Date__c</errorConditionFormula>
+    <errorDisplayField>Due_Date__c</errorDisplayField>
+    <errorMessage>Due date must be greater than Issue Date</errorMessage>
+</ValidationRule>

@@ -1,0 +1,169 @@
+<apex:page standardController="Job__c" extensions="createNewJobExtensionNew">
+   <apex:sectionHeader title="Job Details"/>
+<apex:pagemessages id="pgMsg"/>
+   <apex:form >
+      <apex:pageBlock id="pb">
+          
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:actionRegion >
+            <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+            
+            
+               <apex:pageBlockSectionItem rendered="{!AND(Not(ShowNotrequiredJob),$ObjectType.Job__c.Fields.Name.accessible)}">
+               
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}" rendered="{!If(orgId='00DG0000000k48JMAQ' || orgId='00DJ000000371J9MAI',false,true)}" />
+                  <apex:inputField value="{!Job__c.Name}"  rendered="{!If(orgId='00DG0000000k48JMAQ' || orgId='00DJ000000371J9MAI' ,false,true)}" required="true"/>
+                  
+               </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem id="pgSectionItem15" rendered="{!AND(ShowNotrequiredJob,$ObjectType.Job__c.Fields.Name.accessible)}"> 
+                         
+                              <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}"/>
+                                  <apex:inputField value="{!Job__c.Name}" html-placeholder="Auto Populate After Saving"/>
+                </apex:pageBlockSectionItem>
+             
+             
+             
+             
+               <apex:pageBlockSectionItem >  
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" for="Campaign"  ></apex:outputLabel>
+                  <!-- <apex:selectList id="CampName" value="{!CampaignName}" size="1" readonly="true" >
+                      <apex:selectOptions value="{!Campaigns}"></apex:selectOptions>                  
+                  </apex:selectList> -->
+                  <apex:outputText value="{!cmpName }"></apex:outputText>           
+               </apex:pageBlockSectionItem>
+                    
+                <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}"  /> 
+                  <apex:inputField value="{!Job__c.Status__c}"  id="oppNameInput" />
+                    
+               </apex:pageBlockSectionItem>
+             
+       
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Calc__c.Label}" /> 
+                  <apex:inputField value="{!Job__c.Schedule_Calc__c}"/>
+                   <!--  <apex:selectList id="ScheduleCalc" value="{!ScheduleCalc}" size="1" >
+                              <apex:selectOptions value="{!ScheduleCalcList}"/>
+                     </apex:selectList> -->
+               </apex:pageBlockSectionItem>
+         
+              
+              <apex:pageBlockSectionItem >                  
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Media_Types__c.Label}" for="MediaTypeName" >
+                  </apex:outputLabel>
+                  <apex:actionRegion >
+                     <apex:outputPanel >
+                        <!--span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">-->
+                        <span  class="requiredInput"  Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                           <div class="requiredBlock"> </div>
+                          <!-- <div> </div>-->
+                           <apex:selectList id="MtName" value="{!MTName}" size="1" >
+                              <apex:actionSupport event="onchange" rerender="ST"/>
+                              <apex:selectOptions value="{!MediaTypes}">
+                              </apex:selectOptions> 
+                           </apex:selectList>
+                        </span>
+                     </apex:outputPanel>  
+                  </apex:actionRegion>
+               </apex:pageBlockSectionItem>
+              
+              
+               
+                            
+               <apex:pageBlockSectionItem >
+                 <!-- <apex:outputLabel value="Start Date"/>   -->
+                         <apex:outputLabel value="{!$ObjectType.Job__c.fields.Start_Date__c.label}"/>
+                 <!--   <apex:inputField value="{!Job__c.Start_Date__c}" required="true"/>-->
+                  <apex:inputField value="{!Job__c.Start_Date__c}" />
+               </apex:pageBlockSectionItem>
+               
+               
+                <apex:pageBlockSectionItem id="pbs">
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}"  for="JT">
+                  </apex:outputLabel>
+                  <apex:outputPanel >
+                     <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                        <div class="requiredBlock"></div>
+                      <!--   <div></div>-->
+                        <apex:selectList id="ST" value="{!ScheduleTemp}" size="1" onselect="{!Job__c.Schedule_Template__c}">
+                           <apex:selectOptions value="{!ScheduleTemplates}">
+                           </apex:selectOptions>
+                        </apex:selectList>
+                     </span>
+                  </apex:outputPanel>  
+               </apex:pageBlockSectionItem>  
+               
+               
+               <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" />
+                  <apex:inputField value="{!Job__c.Due_Date__c}"/>
+               </apex:pageBlockSectionItem>
+               
+               
+                              
+             
+               <apex:pageBlockSectionItem rendered="{!displayclient_contact}">                  
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.JS_Client__c.Label}"  for="ClientName" >
+                  </apex:outputLabel>
+                  <apex:actionRegion >
+                     <apex:selectList id="ClientName" value="{!ClientName}" size="1" >
+                        <apex:actionSupport event="onchange" rerender="CC"/>
+                        <apex:selectOptions value="{!Clients}"></apex:selectOptions>
+                     </apex:selectList>
+                  </apex:actionRegion>  
+               </apex:pageBlockSectionItem>
+                
+                
+                <apex:pageBlockSectionItem >                  
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Specification_Template__c.Label}"  for="SpecTemp" >
+                  </apex:outputLabel>
+                  <apex:selectList id="SpecTempName" value="{!SpecTempName}" size="1" >
+                     <apex:selectOptions value="{!SpecificationTemplates}"></apex:selectOptions>
+                  </apex:selectList>  
+               </apex:pageBlockSectionItem>
+                
+                
+               
+               
+               <apex:pageBlockSectionItem id="pbsCC" rendered="{!displayclient_contact}">
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.JS_Client_Contact__c.Label}"  for="CC">
+                  </apex:outputLabel>
+                  <apex:selectList id="CC" value="{!CCName}" size="1">
+                     <apex:selectOptions value="{!ClientContacts}">
+                     </apex:selectOptions>
+                  </apex:selectList>
+               </apex:pageBlockSectionItem> 
+
+              
+                <apex:pageBlockSectionItem rendered="{!$ObjectType.Job__c.fields.Budgeted_Cost__c.accessible}">
+                       <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Budgeted_Cost__c.Label}" />
+                       <apex:inputField value="{!Job__c.Budgeted_Cost__c}"/>
+               </apex:pageBlockSectionItem>  
+               
+               </apex:pageBlockSection>
+                </apex:actionRegion>
+                
+               
+              <apex:pageBlockSection collapsible="false">
+               
+               <apex:repeat value="{!$ObjectType.Job__c.fieldsets.Job_Field_sets}" var="fieldValue">
+               
+               
+                 <apex:Inputfield value="{!Job__c[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="height:100px;width:400px" rendered="{!OR(CONTAINS(LOWER(fieldValue) , LOWER('Job_Description__c')),CONTAINS(LOWER(fieldValue) , LOWER('Traffic_Notes__c')),CONTAINS(LOWER(fieldValue) , LOWER('Status_Notes__c'))) }"/>
+                 
+                 <apex:Inputfield value="{!Job__c[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}"  rendered="{!NOT(OR(CONTAINS(LOWER(fieldValue) , LOWER('Job_Description__c')),CONTAINS(LOWER(fieldValue) , LOWER('Traffic_Notes__c')),CONTAINS(LOWER(fieldValue) , LOWER('Status_Notes__c'))))}"/>  
+                
+                     
+             </apex:repeat>   
+               
+               
+             </apex:pageBlockSection>
+        
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>

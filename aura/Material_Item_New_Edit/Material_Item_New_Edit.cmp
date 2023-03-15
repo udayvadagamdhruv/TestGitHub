@@ -1,0 +1,72 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="recordTypeId" type="String"/>
+    <aura:attribute name="FieldSet" type="List"/>
+    
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    
+    <aura:attribute name="selectedLookUpRecord_GLD" type="sObject" />
+    <aura:attribute name="selectedLookUpRecord_GLC" type="sObject" />
+    <aura:attribute name="GLDRecord" type="String" />
+    
+    
+    <force:recordData aura:id="MIrecord"
+                      recordId="{!v.recordId}"
+                      layoutType="FULL"
+                      fields="Id,Name"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInIt}" />
+    
+    <lightning:recordEditForm aura:id="MIEditForm" density="comfy"  objectApiName="{!v.sObjectName}"  recordId="{!v.recordId}" onsubmit="{!c.onrecordSubmit}" onload="{!c.onrecordLoad}"  onsuccess="{!c.onrecordSuccess}" >
+        <lightning:messages /> 
+        <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+            <div aura:id="errorMsgs"></div>
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium"> 
+                        {!v.recordId==null?'New Materail Item 111':'Edit'+ v.simpleRecord.Name}
+                    </h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium slds-grid slds-wrap ">
+                    <aura:iteration items="{!v.fieldSet}" var="field">
+                        <aura:if isTrue="{!(field=='GL_Department__c') || (field=='GL_Code__c')}">    
+                            <aura:set attribute="else">   
+                                <lightning:inputField fieldName="{!field}" aura:id="MIField"  class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='Name')? 'frequired' :' ')}"/> 
+                            </aura:set>
+                        </aura:if>
+                       
+                           <aura:if isTrue="{!field=='GL_Department__c'}">
+                            <div class="slds-size--1-of-1 slds-p-horizontal_x-small">
+                                <c:customLookup aura:id="GLD_GLC_AuraId" objectAPIName="GL_Department__c" DepobjectAPIName="GL_Code__c" IconName="custom:custom94" DepIconName="custom:custom24" selectedRecord="{!v.selectedLookUpRecord_GLD}" 
+                                                DepenselectedRecord="{!v.selectedLookUpRecord_GLC}" label="GL Depatment" Depelabel="GL Code" RelationShipName="GL_Department__c" ParentFilter=""  ChildFilter=""
+                                                ParentRecId="{!v.GLDRecord}" ParentSortBy="Order By Name" ChildSortBy="Order By Name" IsDependent="true" IsParentReq="true" IsChildReq="true"/>
+                                
+                            </div>   
+                        </aura:if> 
+                        
+                    </aura:iteration>
+                    <br></br>
+                </div>
+                <div class="slds-modal__footer">                
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.doCancel}" />
+                    <lightning:button  variant="brand"  label="Save" type="submit" />
+                </div>              
+            </div>
+        </div>
+    </lightning:recordEditForm> 
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop--open"></div>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            {!v.recordError}</div>
+    </aura:if>   
+    
+    
+    
+</aura:component>

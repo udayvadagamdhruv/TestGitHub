@@ -1,0 +1,19 @@
+<apex:page standardController="Invoice_Line_Item__c" extensions="myEditInvoiceExtension">
+    <apex:form title="Edit Invoice Line Item">
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!savbtn}"/>
+                <apex:commandButton value="Cancel" action="{!cancl}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="2" >
+                <apex:inputField value="{!ILIobj.Amount__c}" id="Ammount" label="{!$ObjectType.Invoice_Line_Item__c.Fields.Amount__c.Label} :"/>
+                <apex:inputField value="{!ILIobj.Quantity__c}" id="Quantity" label="{!$ObjectType.Invoice_Line_Item__c.Fields.Quantity__c.Label} :"/>
+                
+                <apex:selectList value="{!vgl}" size="1" label="{!$ObjectType.Invoice_Line_Item__c.Fields.GL_Code__c.Label} :">
+                    <apex:selectOptions value="{!GLcode}"></apex:selectOptions>
+                </apex:selectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

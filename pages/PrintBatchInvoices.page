@@ -1,0 +1,336 @@
+<apex:page standardController="Client_Invoice__c"  tabStyle="Job__c"   contentType="application/x-pdf#ClientInvoice.pdf" sidebar="false" standardStylesheets="false" showHeader="false" applyHtmlTag="false">
+ 
+<!-- <apex:include pageName="PrintBatchInvoicesTest"/>
+ 
+ 
+
+<head>
+    <style type="text/css">
+
+      
+        @page
+        {
+            /* Landscape orientation */
+            size:potrait;
+
+            /* Put page numbers in the bottom right corner of each
+            page in the pdf document. */
+        
+            @bottom-right
+            {
+            content: "Page " counter(page);
+            font-family:Helvetica;
+            font-size:8pt;
+            }
+   
+            @bottom-left 
+            {
+            content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>"; 
+            background-repeat: no-repeat;
+            font-size:8pt;
+            font-family:Helvetica;
+            } 
+        }
+
+       
+  
+        div.footer
+        {
+        position : running(footer) ;
+        }
+    </style>
+    </head>
+  <body>
+  
+  <!--<table  width="100%"><tr width="100%"><td width="100%" colspan="2">-->
+  
+  
+  
+  <!--apex:repeat value="{!lstinvoice}" var="CI" >
+  
+   <!-- <apex:outputPanel style="page-break-after:always;">
+    
+    <table><tr><td  colspan="2">-->
+     
+     <!--table border="0" cellspacing="0" cellpadding="0" width="100%" id="table1">
+       
+       
+       
+        <tr>
+                 
+                    <td width="50%" valign="top" style="padding-top:4px;">
+                        <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}" />
+                        <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}" />
+                    </td>
+                    
+                    <td width="50%" align="right"> 
+                        <table width="100%" border="0">
+                            <tr >
+                                <td colspan="2">
+                                     <b><apex:outputLabel value="CLIENT INVOICE" style="font-size:15px; font-family: Verdana-Bold;"></apex:outputLabel><br/></b>
+                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <b> 
+                                     #<apex:outputField value="{!CI.Name}" style="font-size:11px;font-family:Arial;"/></b>
+                                </td>
+                            </tr>
+                    
+                            <tr style="font-size:10px;">
+                                <td>
+                                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}" style="font-size:12px;font-family:Arial;font-weight: bold;"/> &nbsp;&nbsp;
+                                 </td>
+                                 <td width="10px">
+                                    <apex:outputfield value="{!CI.Invoice_Date__c}" style="font-size:11px;font-family:Arial;"/> 
+                                </td>
+                            </tr>
+                   
+                            <tr style="font-size:10px;">
+                                <td>
+                                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}" style="font-size:12px;font-family:Arial;font-weight: bold;"/> &nbsp;&nbsp;
+                                     </td>
+                                 <td width="11px">
+                                    <apex:outputfield value="{!CI.Date_Due__c}"/>
+                                </td>
+                            </tr>
+                            
+                             <tr style="font-size:12px;">
+                               <td valign="top">
+                                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Payment_Term__c.Label}" style="font-size:12px;font-family:Arial;font-weight: bold;"/> &nbsp;&nbsp;
+                                     </td>
+                                 <td width="11px">
+                                    <apex:outputfield value="{!CI.Payment_Term__c}"/>
+                                </td>
+                                
+                             
+                            </tr>
+                           
+                             
+                        </table>
+                    </td>
+                </tr>
+     
+          <!-------------------------------- Address Details ---------------------------   
+                
+             <tr style="height:15px">
+                   
+                </tr> 
+           
+                <tr  style="font-size:13px;font-family:Arial;">
+                    
+                    <td  align="left" >
+                        <b>Client</b>
+                        <br/>
+                        <b>  <hr color="black" style="width:80%;margin-left:0px;"/></b>
+                    </td>
+                    
+                    <td style="padding-left:40px;">
+                        <b>Send Payment To</b>
+                        <br/>
+                         <hr color="black" style="width:100%;margin-left:0px;"/>
+                    </td>
+                   
+                </tr>
+             
+                <tr>
+                    
+                     <td width="50%" align="left" valign="top"  style="font-size:11px;font-family:Arial;">
+                   
+                         <apex:outputField rendered="{!CI.Client_Name__r.Billing_Street__c!= null}" value="{!CI.Client_Name__r.Billing_Street__c}"> &nbsp;  </apex:outputField><br/>
+                         <apex:outputField value="{!CI.Client_Name__r.Billing_City__c}"/><apex:outputText value=", " rendered="{!CI.Client_Name__r.Billing_City__c!=''}"/>
+                         <apex:outputField value="{!CI.Client_Name__r.Billing_State__c}"/> &nbsp; <apex:outputField value="{!CI.Client_Name__r.Billing_Postal_Code__c}"/> <br/>
+                         <!-- Phone:&nbsp;<apex:outputField value="{!Client_Invoice__c.Client_Name__r.Phone__c}" />&nbsp; Fax:&nbsp;<apex:outputField value="{!Client_Invoice__c.Client_Name__r.Fax__c}" rendered="{!Client_Invoice__c.Client_Name__r.Fax__c!=''}"/><br/>-->
+                       
+                  <!--  </td>
+                
+                    <td width="50%" style="padding-left:40px;font-size:11px;font-family:Arial;">
+                       
+                    <apex:outputText value="{!SUBSTITUTE(JSENCODE($Organization.Street),'\r\n','<br/>')}" style="white-space:pre;" escape="false"/>
+                    <br/>   
+                        <apex:outputText value="{!$Organization.City}"></apex:outputText> <apex:outputText value=", " rendered="{!$Organization.City!=''}"/>                                           
+                        <apex:outputText value=" {!$Organization.State}" rendered="{!$Organization.State!=''}"/>                  
+                        <apex:outputText value="{!$Organization.Country}" rendered="{!$Organization.Country!=''}"></apex:outputText><br/> 
+                        Phone:&nbsp;<apex:outputtext value=" {!$Organization.Phone}" rendered="{!$Organization.Phone!=''}"/>&nbsp; Fax:&nbsp;<apex:outputtext value="{!$Organization.Fax}" rendered="{!$Organization.Fax!=''}"/><br/>
+                        
+                        <br/>  
+                   
+                    </td>
+                </tr>
+        </table>
+        
+        
+         <!-------------------------------- END Address Details -------------------------------------    
+                   
+                
+     
+     <br/><br/>
+     
+     
+      <!-------------------------------- Job Details -------------------------------------  
+   
+   
+         <table width="100%">
+         
+               <tr width="100%">
+                          <td align="left">
+                               <hr color="black" width="100%"/>
+                          </td>
+                        </tr>
+                        
+                        <tr width="100%">
+                          <td width="100%">
+                            <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                                <tr style="page-break-inside: avoid;">
+                                      <td width="100%">
+                                           <b> <apex:outputText value="DETAILS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                      </td>
+                                </tr>
+                            </table>
+                           </td>
+            </tr><BR/>
+            <tr style="font-size:11px;font-family:Arial;">
+                <td width="50%">
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" style="font-weight: bold;"/>
+                </td>
+                <td width="50%">
+                  <apex:outputfield value="{!CI.Job__r.Job_Auto_Number__c}"/> 
+                </td>
+            </tr>
+            
+            <tr style="font-size:11px;font-family:Arial;">
+                <td width="50%">
+                  <apex:outputLabel value="{!$ObjectType.Job__c.Fields.name.Label}" style="font-weight: bold;"/>
+                </td>
+                <td width="50%">
+                  <apex:outputfield value="{!CI.Job__r.name}"/> 
+                </td>
+            </tr>
+             <tr style="font-size:11px;font-family:Arial;">
+                 <td width="50%">
+                      <b> <apex:outputText value="{!$ObjectType.Client_Invoice__c.Fields.Notes__c.Label}" style="font-weight:bold;"/>  </b>
+                 </td>
+                 <td width="50%">
+                  <apex:outputfield value="{!CI.Notes__c}"/> 
+                </td>
+            </tr>
+            
+     
+            
+           
+         </table> <br/>
+         
+  <!-------------------------------- END Job Details -------------------------------------
+  
+  
+  
+  
+  
+  
+  
+                   <table width="100%" border="0" title="Allocation Section" style="page-break-after:always;">
+      
+                       <tr width="100%">
+                          <td align="left">
+                               <hr color="black" width="100%"/>
+                          </td>
+                        </tr>
+                        
+                        <tr width="100%">
+                          <td width="100%">
+                            <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                                <tr style="page-break-inside: avoid;">
+                                      <td width="100%">
+                                           <b> <apex:outputText value="INVOICE LINE ITEMS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                                      </td>
+                                </tr>
+                            </table>
+                           </td>  
+                        </tr>
+                                
+                   <tr width="100%">
+                      <td colspan="2" width="100%" align="left" valign="top"> <br/>          
+                        <table width="100%" style="font-size:11px;font-family:Arial;">
+                            <tr width="100%">
+                          <th width="75%" >   <b><apex:outputlabel value="Description"/></b></th>
+                             <th width="75%" style="text-align:right;"><b>Amount</b></th>
+                                 
+                           </tr>
+                           <tr width="100%">
+                                 <td colspan="7" ><hr color="black"/></td>
+                           </tr>
+                           
+                         
+                          <apex:repeat value="{!CI.Client_Invoice_Line_Items__r}" var="parent"> 
+                         <!--   <table width="100%" >--
+        
+                         <tr width="100%">
+                          <td width="75%" valign="top">  <apex:outputField value="{!parent.Estimate_Line_Item__r.Name}"/></td>
+                              <td width="75%" style="text-align:right;" valign="top"><apex:outputField value="{!parent.Billable_Amount__c}"/></td> 
+                         </tr>
+                            
+                            <tr><td>&nbsp;</td></tr>
+                           
+                          </apex:repeat> 
+                      
+                      </table>
+                          
+                     <table width="100%" style="font-size:11px;font-family:Arial;">
+                          <tr width="100%">
+                          
+                              <td width="70%"></td>
+                         
+                              <td width="15%" align="right">
+                                  <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Taxable_Total_field__c.Label}" style="font-weight: bold;"/>
+                              </td>  
+                              <td width="15%">   
+                                  &nbsp;&nbsp; <apex:outputField value="{!CI.Taxable_Total_field__c}"/> <br/>
+                              </td>
+                          </tr>
+                          
+                          <tr width="100%">
+                          
+                              <td width="70%"></td>  
+                              
+                              <td width="15%" align="right">
+                                  <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Sales_Tax__c.Label}" style="font-weight: bold;"/>
+                              </td>
+                              <td width="15%">
+                                  &nbsp;&nbsp; <apex:outputField value="{!CI.Sales_Tax__c}"/><br/>
+                              </td>
+                         </tr>   
+                                 
+                         <tr width="100%">
+                          
+                              <td width="75%"></td>  
+                              
+                              <td width="15%" align="right">
+                                  <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Total_new__c.Label}" style="font-weight: bold;"/>
+                              </td>
+                              <td width="15%">
+                                  &nbsp;&nbsp; <apex:outputField value="{!CI.Invoice_Total_new__c}"/> 
+                             </td>
+                         </tr> 
+                            
+                          
+                        </table>               
+                      </td>
+                   </tr> 
+                 <br/>
+     </table>
+  
+  
+  
+  
+  
+  <!--</apex:outputPanel>
+ 
+        </td></tr></table>--
+     </apex:repeat>
+    
+   
+  </body>
+
+
+
+-->
+
+ 
+</apex:page>

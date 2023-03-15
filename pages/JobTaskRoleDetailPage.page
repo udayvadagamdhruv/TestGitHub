@@ -1,0 +1,7 @@
+<!-- This page is used to display Job Task Role detail information -->
+<apex:page standardController="Job_Task_Role__c" tabStyle="Job__c">
+    <apex:form >
+         <apex:detail relatedList="false" showChatter="false" title="false"/>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

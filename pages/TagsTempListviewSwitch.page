@@ -1,0 +1,6 @@
+<apex:page standardController="Tag_Template__c" extensions="TagsTempListviewSwitchExt" standardStylesheets="true" sidebar="false" showHeader="false" applyHtmlTag="false" applyBodyTag="false"  docType="html-5.0" action="{!Tagslistview}" >
+
+
+
+
+</apex:page>

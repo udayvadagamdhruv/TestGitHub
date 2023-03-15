@@ -1,0 +1,28 @@
+<!-- This page is used to add extra Roles to Job Team (This is used to override "ADD Role" Button under job detail.)-->
+<apex:page standardController="Job__c" extensions="AddRoleToJobTeamExtension">
+    <apex:form >
+        <apex:pageBlock >
+             <apex:pagemessages />
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!save}" value="Save"  rendered="{!roleWraps.size  > 0}"></apex:commandButton>
+                 <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+             <apex:pageBlockSection rendered="{!roleWraps.size > 0}">
+                  <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$ObjectType.UserRole.Fields.Name.Label}"/>
+                         <apex:repeat value="{!roleWraps}" var="r">
+                             <apex:inputCheckbox value="{!r.checked}"/>
+                             <apex:outputField value="{!r.u.Name}"/><br/>
+                         </apex:repeat>
+                  </apex:pageBlockSectionItem>
+             </apex:pageBlockSection>
+             
+             <apex:pageBlockSection rendered="{!roleWraps.size  <= 0}">
+                 <apex:pageBlockSection >
+                     <b>No role records to display</b>
+                  </apex:pageBlockSection>
+             </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

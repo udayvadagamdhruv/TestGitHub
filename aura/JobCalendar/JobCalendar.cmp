@@ -1,0 +1,50 @@
+<aura:component controller="calendarCmpController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <!-- *************************************** Aura Methods ***************************************************** -->
+    <aura:method name="loadCal" action="{!c.loadCalendar}"></aura:method>
+    <aura:method name="loadCalforcampagins" action="{!c.loadCalforcampaginsevents}"></aura:method>
+    <aura:method name="loadCalforjobs" action="{!c.loadCalforjobsevents}"></aura:method>
+    <aura:method name="loadCalforTasks" action="{!c.loadCalfortasksevents}"></aura:method>
+    
+    <!-- *************************************** Calendar Attributes *****************************************************-->
+    <aura:attribute name="ShowJobCal" type="boolean" default="true" description="Show/Hide the Job Calendar"/>
+    <aura:attribute name="ShowCampCal" type="boolean" description="Show/Hide the Campaign Calendar"/>
+    <aura:attribute name="ShowTaskCal" type="boolean" description="Show/Hide the Task Calendar"/>
+    <aura:attribute name="data" type="Object"/>
+    <!-- *************************************** Job Calendar Attributes *****************************************************-->
+    <aura:attribute name="CampaignVal" type="String"  description="It fetches the selected Campaign record value from the Calendar Component"/>
+    <aura:attribute name="ClientVal" type="String"  description="It fetches the selected Client record value from the Calendar Component"/>
+    <aura:attribute name="MediaVal" type="String"  description="It fetches the selected Media Type record value from the Calendar Component"/>
+    <aura:attribute name="SchedVal" type="String"  description="It fetches the selected Schedule Template record value from the Calendar Component"/>
+    <aura:attribute name="JobStatusVal" type="String"  description="It fetches the selected Job Status value from the Calendar Component"/>
+    <aura:attribute name="JobVal" type="String"  description="It fetches the selected Job record value from the Calendar Component"/>
+    
+    <!-- *************************************** Campaign Calendar Attributes *****************************************************-->
+    <aura:attribute name="CampNameVal" type="String"  description="It fetches the selected Campaign record value from the Calendar Component"/>
+    <aura:attribute name="CampStatusVal" type="String"  description="It fetches the selected Campaign Status value from the Calendar Component"/>
+    <aura:attribute name="Campcreatedbyval" type="String"  description="It fetches the selected user value from the Calendar Component"/>
+    
+    <!-- *************************************** Task Calendar Attributes *****************************************************-->
+    <aura:attribute name="tskCampaignVal" type="String"  description="It fetches the selected Campaign record value from the Calendar Component"/>
+    <aura:attribute name="tskClientVal" type="String"  description="It fetches the selected Client record value from the Calendar Component"/>
+    <aura:attribute name="tskMediaVal" type="String"  description="It fetches the selected Media Type record value from the Calendar Component"/>
+    <aura:attribute name="tskSchedVal" type="String"  description="It fetches the selected Schedule Template record value from the Calendar Component"/>
+    <aura:attribute name="tskJobStatusVal" type="String"  description="It fetches the selected Job Status value from the Calendar Component"/>
+    <aura:attribute name="tskJobVal" type="String"  description="It fetches the selected Job record value from the Calendar Component"/>
+    <aura:attribute name="taskval" type="String"  description="It fetches the selected task record value from the Calendar Component"/>
+    <aura:attribute name="roleval" type="String"  description="It fetches the selected role value from the Calendar Component"/>
+    <aura:attribute name="staffval" type="String"  description="It fetches the selected staff value from the Calendar Component"/>
+   
+    <!-- *************************************** Spinner Attribute *****************************************************-->
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading, Please Wait..." title="Loading, Please Wait..." variant="brand" size="large"/>
+    </aura:if>
+    
+    <aura:attribute name="Objectlist" type="Object[]" />
+    <aura:attribute name="dateval" type="String" />
+    
+    <div id="{!v.dateval}" class="calendar"><br/><br/><br/><br/><br/><br/><br/></div>
+    
+</aura:component>

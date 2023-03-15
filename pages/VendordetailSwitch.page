@@ -1,0 +1,6 @@
+<apex:page standardController="Vendor_Contact__c" extensions="VendordetailSwitchExt" standardStylesheets="true" sidebar="false" showHeader="false" applyHtmlTag="false" applyBodyTag="false"  docType="html-5.0" action="{!Venlistview}" >
+
+
+
+
+</apex:page>

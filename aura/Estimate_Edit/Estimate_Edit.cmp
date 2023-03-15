@@ -1,0 +1,106 @@
+<aura:component controller="job_Cost_Tab_cmp"  implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,lightning:actionOverride,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:hasSObjectName" access="global" >
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="recordError" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="fieldSet" type="List"  />
+    <aura:attribute name="Labelname" type="string"  />
+    <aura:attribute name="GL_CodeRecords" type="List" />
+    <aura:attribute name="GL_DepartmentRecords" type="List" />
+    <aura:attribute name="GLDSelectId" type="String" />
+    <aura:attribute name="GLCodeSelectId" type="String" />
+    <aura:attribute name="VendorRecords" type="Object"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <lightning:recordEditForm aura:id="EstimateEditform" density="comfy"  objectApiName="{!v.sObjectName}"  recordId="{!v.recordId}" onsubmit="{!c.RecordSubmit}" onload="{!c.onloadrecord}"  onsuccess="{!c.onRecordSuccess}" >
+        <lightning:messages /> 
+        <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+            <div aura:id="errorMsgs"></div>
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium"> 
+                        Edit {!v.simpleRecord.Name}
+                    </h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium slds-grid slds-wrap ">
+                    <lightning:layout multipleRows="true">
+                        <aura:iteration items="{!v.fieldSet}" var="field">
+                            <aura:if isTrue="{!(field=='Job__c') || (field=='GL_Department__c') || (field=='GL_Code__c') || (field=='Vendor__c')}">        
+                                <aura:set attribute="else">   
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="JobEstField"  class="{!'slds-form-element slds-p-horizontal_x-small' + ' ' +((field=='Name') || (field=='Quantity__c') || (field=='Amount__c') ? 'frequired' :' ')}" /> 
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='Job__c'}"> 
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-form-element slds-p-horizontal_x-small">
+                                        <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Estimate_Line_Items__c.Job__c.label}</label>
+                                        <div class="slds-form-element__control">
+                                            <ui:outputText value="{!v.simpleRecord.Job__r.Name}"  />
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='GL_Department__c'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                    <div class=" slds-p-horizontal_x-small">
+                                        <lightning:select  name="GLDepatmentselect" aura:id="GLDSelectId" label="{!v.ObjectType.Estimate_Line_Items__c.GL_Department__c.label}"  onchange="{!c.GLDepatment}" class="frequired" >
+                                            <option text="--None--" value="" /> 
+                                            <aura:iteration items="{!v.GL_DepartmentRecords}" var="GLD">
+                                                <option text="{!GLD.Name}" value="{!GLD.Id}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                </lightning:layoutItem>
+                            </aura:if> 
+                            <aura:if isTrue="{!field=='GL_Code__c'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-p-horizontal_x-small"> 
+                                        <lightning:select  name="GL_Code" aura:id="GLCodeSelectId" label="{!v.ObjectType.Estimate_Line_Items__c.GL_Code__c.label}" onchange="{!c.GLCode}" class="frequired">
+                                            <option text="--None--" value="" />  
+                                            <aura:iteration items="{!v.GL_CodeRecords}" var="GLC">
+                                                <option text="{!GLC.GL_Id__c +' '+GLC.Name}" value="{!GLC.Id}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                </lightning:layoutItem>
+                            </aura:if> 
+                            <aura:if isTrue="{!field=='Vendor__c'}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                    <div class="slds-p-horizontal_x-small"> 
+                                        <lightning:select  name="Vendor" aura:id="VendorId" label="{!v.ObjectType.Estimate_Line_Items__c.Vendor__c.label}" class="frequired" >
+                                            <option text="--None--" value="" /> 
+                                            <aura:iteration items="{!v.VendorRecords}" var="Ven">
+                                                <option text="{!Ven.Vendor__r.Name}" value="{!Ven.Vendor__c}" />
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                </lightning:layoutItem>
+                            </aura:if> 
+                            
+                        </aura:iteration>
+                        <br></br>
+                    </lightning:layout>
+                </div>
+                <div class="slds-modal__footer">                
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.doCancel}" />
+                    <lightning:button  variant="brand"  label="Save" type="submit" />
+                </div>              
+            </div>
+        </div>
+    </lightning:recordEditForm> 
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop--open"></div>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            {!v.recordError}</div>
+    </aura:if>   
+    
+</aura:component>

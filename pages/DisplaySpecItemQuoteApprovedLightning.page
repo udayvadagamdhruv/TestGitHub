@@ -1,0 +1,185 @@
+<!-- This page is used to Display Spec Item When Quote is Approved. -->
+<apex:page standardController="Quote__c" extensions="DisplaySIwhenQuoteApproved" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+    
+     <head>
+      
+         <style>
+         
+             .slds .slds-max-medium-table--stacked-horizontal td:before
+            {
+              text-transform:none;
+            }
+          
+             .customImage{ height: 10px; width: 10px; }
+             #rcorners1 {
+                            border-radius:0%;
+                            border: 1px solid #cccccc;
+                            padding: 0px; 
+                            width: 100%;
+                            height: 0%;
+                        }
+            #pagemessage
+                        {
+                            color:blue;
+                        }
+           .required:after { content:" *";  color: Red;font:bold;}
+           
+                       .slds table
+                       {
+                            height: 50px;
+                       }
+                       body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                       {
+                            margin-top: -19px; 
+                       }
+                       .detailPage .bPageBlock, .editPage .bPageBlock
+                       {
+                          border-top-width: 0px;
+                       }
+                      
+                       .slds .slds-text-heading--large
+                       {
+                               font-size: 27px;
+                       }
+                       
+                        .pbHeader
+                       {
+                           background: white !important;
+                       }
+                       
+                       
+                       body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                       {
+                           background: white;
+                       }
+                      
+                       .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                       {
+                           border:none;
+                       }
+                       
+                       body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                       {
+                           border:none;
+                       }
+                       .slds b, .slds strong, .slds dfn 
+                       {
+                            font-weight: unset;
+                       }
+                        
+                       .slds .slds-table tr > td:first-child 
+                       {
+                            padding-left: 6px;
+                            padding: 15px;
+                       }
+                      
+            
+        </style>
+        
+     </head>
+    
+     <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+    
+     <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+      
+       <body> 
+      
+          <div class="slds">
+           
+                <apex:form html-novalidate="novalidate">
+    
+                    
+                    
+                    <br/>
+                           
+                      <apex:outputPanel rendered="{! qsi.size > 0}" >      
+                      <div class="slds-grid slds-wrap">
+                        <apex:repeat value="{!qsi}" var="qsitem" rendered="{! qsi.size > 0}">
+                            
+                                <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                                    <div class="slds-media slds-tile slds-hint-parent">
+                    
+                                        <div class="slds-media__figure">
+                                            <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#record')}"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                <p class="slds-tile__title slds-truncate">
+                                                    <apex:outputLink tabindex="tab1" value="/apex/QuoteSpecItemDetailPageLightning?id={!qsitem.id}" rendered="{!$ObjectType.Quote_Spec_Item__c.updateable}"><font color="#0070d2">{!qsitem.Name}</font></apex:outputLink>
+                                                </p>
+                    
+                                              
+                    
+                                            </div>
+                                            <div class="slds-tile__detail slds-text-body--small">
+                                                <p >{!qsitem.Description__c}</p>
+                                            </div>
+                    
+                                        </div>
+                                    </div> <br/>
+                               
+                            </div><br/>
+                           
+                        </apex:repeat>
+                    </div>
+               </apex:outputPanel> 
+                           
+                           
+                           
+                  <apex:outputPanel rendered="{!qsi.size <= 0}">
+                             
+                                <b>No records to display.</b>
+                                       
+                        </apex:outputPanel>          
+                           
+                           
+                           
+                <!--           
+                            <div class="slds-box" style="display:{!IF(qsi.size > 0, 'block','none')};">    
+                        
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                <thead>
+                                   <tr class="slds-text-title">
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="{!$ObjectType.Quote_Spec_Item__c.Fields.Name.Label}" ><b>{!$ObjectType.Quote_Spec_Item__c.Fields.Name.Label}</b></div>
+                                      </th>
+                                      <th scope="col">
+                                        <div class="slds-truncate" title="{!$ObjectType.Quote_Spec_Item__c.Fields.Description__c.Label}"><b>{!$ObjectType.Quote_Spec_Item__c.Fields.Description__c.Label}</b></div>
+                                      </th>
+                                      
+                                  </tr>
+                               </thead>
+                               
+                               
+                               <tbody>
+                                   <apex:repeat value="{!qsi}" var="qsitem" rendered="{!qsi.size > 0}">
+                                        <tr>
+                                             
+                                              <td data-label="{!$ObjectType.Quote_Spec_Item__c.Fields.Name.Label}">
+                                                <div >
+                                                   <apex:outputText >{!qsitem.name}</apex:outputText>
+                                                </div>
+                                              </td>
+                                              
+                                              <td data-label="{!$ObjectType.Quote_Spec_Item__c.Fields.Description__c.Label}">
+                                                <div>
+                                                      <apex:outputField value="{!qsitem.Description__c}"/> 
+                                                </div>
+                                              </td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>-->
+                    
+                       
+     
+                       
+              </apex:form> 
+     </div> 
+      </body>
+    </html>  
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,138 @@
+<apex:page controller="JobsUnderCampaignTemplateController" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true"  >
+ 
+ <style>
+    .slds .slds-dropdown-trigger .slds-dropdown
+           {
+               margin-left: 56px;
+    
+           }
+           
+    .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }        
+
+</style>
+
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+          
+          
+       <div class="slds" >
+        <apex:form html-novalidate="novalidate">
+                <br/>
+                  <div align="center">
+                       <apex:commandButton value="New Campaign Job" action="{!NewCampaignJob}" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                  </div>
+                <br/>
+                
+                <apex:outputPanel rendered="{!CTempJobs.Size > 0}" > 
+                
+                            
+                    
+                      
+                 <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-4" scope="col">Action</th>
+                                        <th class="slds-size--1-of-4" scope="col"> {!$ObjectType.Campaign_Jobs__c.Fields.Name.Label} </th>
+                                        <th class="slds-size--1-of-4" scope="col">{!$ObjectType.Campaign_Jobs__c.Fields.Media_Type__c.Label} </th>
+                                        <th class="slds-size--1-of-4" scope="col"> {!$ObjectType.Campaign_Jobs__c.Fields.Schedule_Template__c.Label} </th>
+                                        
+                                        
+                                  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <apex:repeat value="{!CTempJobs}" var="a" rendered="{!CTempJobs.Size > 0}">
+                                            <tr class="slds-hint-parent">
+                                           
+                                            
+                                            <td class="slds-size--1-of-3" data-label="Action">
+                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                                       &nbsp;&nbsp;  
+                                                         <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon "  >
+                                                          <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                        </div>
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                              <li class="slds-dropdown__item" role="presentation">
+                                                                 <a href="/apex/EditCampaignJobLightning?id={!a.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>
+                                                                           &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                                   <li class="slds-dropdown__item" role="presentation">
+                                                                      <a href="/apex/DeleteCampaignJob?id={!a.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Delete">Delete</span>
+                                                                            &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>
+                                                                        </a>
+                                                                    
+                                                                    
+                                                                                                                                  
+                                                                </li>
+                                                                </ul>
+                                                            </div> 
+                                                       </div>  
+                                            
+                                                </td>
+                                                
+                                                <td class="slds-size--1-of-3" data-label="{!$ObjectType.Campaign_Jobs__c.Fields.Name.Label}">
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/apex/DetailCampaignJobLightning?id={!a.id}">{!a.Name}</apex:outputLink>
+                                                </div>
+                                                
+                                                </td>
+                                                
+                                                <td class="slds-size--1-of-3" data-label="{!$ObjectType.Campaign_Jobs__c.Fields.Media_Type__c.Label}">
+                                                <div>
+                                                  <apex:outputField value="{!a.Media_Type__c}" />
+                                                </div>
+                                                </td>
+                                                
+                                                 <td class="slds-size--1-of-3" data-label="{!$ObjectType.Campaign_Jobs__c.Fields.Schedule_Template__c.Label}">
+                                                <div>
+                                                  <apex:outputField value="{!a.Schedule_Template__c}" />
+                                                </div>
+                                                </td>
+                                                
+                                            </tr>
+                                        
+                                        
+                                        </apex:repeat>
+                                
+                                </tbody>
+                                
+                                </table>
+                                
+                                
+                          
+                      </apex:outputPanel>
+                      
+                      <apex:outputPanel rendered="{!CTempJobs.Size <= 0}" > 
+                      <p>No Records to display</p>
+                      </apex:outputPanel>
+         </apex:form> 
+        </div>
+   
+ </html>
+ 
+
+
+
+</apex:page>

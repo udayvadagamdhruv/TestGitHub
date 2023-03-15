@@ -1,0 +1,140 @@
+<!-- This page is used to Edit Tag of Job record. -->
+<apex:page standardController="Tag__c" sidebar="true" extensions="EditTagExtensions" tabStyle="Job__c">
+  <apex:form id="formId">
+      <apex:sectionHeader title="{!$ObjectType.Tag__c.Label} Details"/>
+        <apex:pageBlock mode="edit" id="pageBlockId">
+        <apex:pageMessages id="msg1"/>
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save"></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="{!$ObjectType.Tag__c.Label} Information" columns="2" collapsible="false" id="pageBlockSectionId"> 
+              
+                      <apex:repeat var="f" value="{!$ObjectType.Tag__c.FieldSets.TagsFieldsets}">
+                       
+                              <apex:outputField value="{!Tag__c[f]}"  rendered="{!OR(CONTAINS(LOWER(f) , LOWER('Job__c')))}"/>
+                        
+                              <apex:Inputfield value="{!Tag__c[f]}"  required="True" rendered="{!OR(CONTAINS(LOWER(f) , LOWER('Name')))}"/>
+                              <apex:Inputfield value="{!Tag__c[f]}"  required="{!OR(f.DBRequired, f.required)}" rendered="{!NOT(OR(CONTAINS(LOWER(f) , LOWER('Job__c')),CONTAINS(LOWER(f) , LOWER('Name'))))}"/>
+                              
+                       </apex:repeat>
+              
+              
+              
+              
+              <!--    <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Name.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!Tag__c.Name}" required="true"/>
+                  </apex:pageBlockSectionItem>
+                  
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Job__c.Label}"></apex:outputLabel>
+                  <apex:outputField value="{!Tag__c.Job__c}"/>
+                  </apex:pageBlockSectionItem>
+                  
+                    <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_Program_Title__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_Program_Title__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_Air_Time__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_Air_Time__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_Start_Date__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_Start_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_End_Date__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_End_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_Due_Date__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_Due_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_Air_Date__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_Air_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Tag_Lengths__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Tag_Lengths__c}"/>
+            </apex:pageBlockSectionItem>
+            
+ <!-- Added 4 Dummy Text Fields,4 Dummy Date and 4 Dummy Picklist Fields -->
+             
+      <!--      <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Text_1__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Text_1__c}"/>
+            </apex:pageBlockSectionItem>    
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Date_1__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Date_1__c}"/>
+            </apex:pageBlockSectionItem>    
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Text_2__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Text_2__c}"/>
+            </apex:pageBlockSectionItem>  
+                            
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Date_2__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Date_2__c}"/>
+            </apex:pageBlockSectionItem>   
+                    
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Text_3__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Text_3__c}"/>
+            </apex:pageBlockSectionItem>  
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Date_3__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Date_3__c}"/>
+            </apex:pageBlockSectionItem>   
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Text_4__c.Label!='Dummy Text 4'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Text_4__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Text_4__c}"/>
+            </apex:pageBlockSectionItem>  
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Date_4__c.Label!='Dummy Date 4'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Date_4__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Date_4__c}"/>
+            </apex:pageBlockSectionItem>    
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_1__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Picklist_1__c}"/>
+            </apex:pageBlockSectionItem>   
+             
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_2__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Picklist_2__c}"/>
+            </apex:pageBlockSectionItem>
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_3__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Picklist_3__c}"/>
+            </apex:pageBlockSectionItem>
+                
+            <apex:pageBlockSectionItem rendered="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_4__c.Label!='Dummy Picklist 4'}">
+                <apex:outputLabel value="{!$ObjectType.Tag__c.Fields.Dummy_Picklist_4__c.Label}"/>
+                <apex:inputField value="{!Tag__c.Dummy_Picklist_4__c}"/>
+            </apex:pageBlockSectionItem>
+                
+ <!-- End Of "Added 4 Dummy Text Fields and 4 Dummy Date Fields and 4 dummy picklist fields" -->
+                         
+            
+           </apex:pageBlockSection>
+       </apex:pageBlock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

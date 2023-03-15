@@ -1,0 +1,336 @@
+<apex:page standardController="Tag_Template_Item__c" tabStyle="MyAdmin__tab" extensions="CreateTagtempLineItemsExt"  sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+
+         <style>
+         
+            .dateFormat
+            {
+                display: block !important;
+            }
+       .pageHeader
+       {
+           color:white;
+           background-color:#851225;
+           height:70px;
+           padding-top:23px; 
+           position:fixed;
+           z-index:999;
+           width:100% !important;
+           padding-left:22px;
+       }
+   
+       .SectionHeader
+       {
+           background-color:Grey !important;
+           color:white;
+       }
+       
+       .bPageBlock 
+       {
+            margin: 20px 20px 20px 20px !important;
+       }
+       
+       
+       body
+       {
+               //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed; 
+               margin:0px !important;
+       }
+      
+          .customImage{ height: 10px; width: 10px; }
+          #rcorners1 
+          {
+                 border-radius:0%;
+                 border: 1px solid #cccccc;
+                 padding: 0px; 
+                 width: 100%;
+                 height: 0%;
+          }
+          #pagemessage
+          {
+              color:blue;
+          }
+          
+          .required:after { content:" *";  color: Red;font:bold;}
+           
+           .slds table
+           {
+                height: 50px;
+           }
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+           {
+               margin-top: -19px; 
+           }
+           .detailPage .bPageBlock, .editPage .bPageBlock
+           {
+               border-top-width: 0px;
+           }
+          
+           .slds .slds-text-heading--large
+           {
+                font-size: 27px;
+           }
+           
+           .pbHeader
+           {
+               background: white !important;
+           }
+           
+           body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+           {
+               background: white;
+           }
+          
+           .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+           {
+               border:none;
+           }
+           
+           body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+           {
+               border:none;
+           }
+                       
+           .slds .slds-checkbox .slds-checkbox--faux 
+           {
+                width: 25px;
+                height: 25px;
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                border-width: 2px;
+                border-style: solid;
+                border-color: lightgrey;
+                border-image: initial;
+                border-radius: 2px;
+                background: white;
+                transition: border 0.1s linear, background-color 0.1s linear;
+           }
+            
+           .slds .slds-checkbox [type=checkbox]:checked > .slds-checkbox--faux:after, .slds .slds-checkbox [type=checkbox]:checked ~ .slds-checkbox--faux:after 
+           {
+                height: 6px;
+                width: 11px;
+           }
+           
+           .bPageBlock .requiredInput .requiredBlock 
+           {
+                background-color:white;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+           
+            errorM6, .errorM4, .errorM3, .errorM2, .errorS1 
+            {
+                  border-color: #c00;
+            }
+            .message 
+            {
+                background-color: #c00;
+                border-style: solid;
+                border-width: 0px;
+                color: #000;
+                padding: 0px 0px 0px 0px;
+                margin: 0px 0px;
+            }
+            .errorM3 .msgIcon, .errorMedium 
+            {
+                background-image: url(); 
+                background-position: 0 0;
+                width:0px;
+                height: 0px;
+            }
+            .pbBody td
+            {
+                color:white;
+            }
+            .message .messageText h4 
+            {
+                 font-weight: bold; 
+                 display:block;
+                 color:white;
+            }
+            
+            .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                
+                 .slds td {
+                    padding: 0;
+                    padding-left: 0px;
+                }
+                
+                
+              
+            
+       <!----------------------------------- error Mesgg-------------------------------------->
+       
+    </style>  
+  
+   
+   <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+           <body>
+             
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+              
+                  
+                  
+                   <apex:form html-novalidate="novalidate"> 
+                   
+                   
+                     <div class="slds-media__body pageHeader">
+                           <span  class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" style="color:white;font-size:18px;"><b>Tag Temp Line Items</b></span>
+                           <span style="float:right;padding-right:20px;">     
+                              <b>  
+                                   <apex:commandButton action="{!saveme}" value=" Save" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                                   <apex:commandButton action="{!cancel}" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                              </b>
+                           </span>
+                          <!-- <p class="slds-page-header__title slds-m-right--medium slds-align-middle slds-truncate" title="Create Task" style="color:white;font-size:18px;"><b>Create Task</b> </p>-->
+                     </div> 
+                     
+         <br/><br/><br/><br/>
+                   
+                         <apex:pageBlock mode="edit" id="pbs">
+                         
+                         <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                <apex:pageMessages />
+                           </div> <br/>
+                         
+                            
+              
+                         <div style="background-color:SteelBlue;color:white;" class="SectionHeader">
+                           
+                           <h3 class="slds-section-title"><b>&nbsp;Information</b></h3></div>
+                           
+                           <div class="slds-grid slds-wrap">
+                               <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                   <div class="slds-grid slds-wrap"> 
+                                       
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label required">{!$ObjectType.Tag_Template_Item__c.Fields.Name.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Name}" required="true" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.TagTemplate__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:outputField value="{!Tag_Template_Item__c.TagTemplate__c}"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Description__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Description__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Air_Time__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Air_Time__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Show_Air_Date__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Show_Air_Date__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Promo_End_Date__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Promo_End_Date__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Promo_Due_Date__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Promo_Due_Date__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Air_Date__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Air_Date__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label">{!$ObjectType.Tag_Template_Item__c.Fields.Lengths__c.Label}</label>
+                                                <div class="slds-form-element__control" >
+                                                   <apex:inputField value="{!Tag_Template_Item__c.Lengths__c}" styleClass="slds-input"/>
+                                                </div>
+                                             </div>
+                                         </aside>
+                                         
+                                          
+                                         
+                                     
+                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                         </aside>
+                                   </div>
+                                </main>
+                           </div><br/><br/>
+                         
+                         
+                       </apex:pageBlock>
+                     </apex:form>
+                </div>
+              </body>
+             </html>
+                  
+   
+   
+ 
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,17 @@
+<!-- This Page is used to override the delete functionality of Purchase Order Object --> 
+<apex:page standardController="Purchase_Order__c" extensions="DeletePOExtension" showHeader="false" sidebar="false">
+       
+        <script>
+           window.onload=function()
+           {
+             doInit();
+             
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+       
+</apex:page>
+<!-- End of Page -->

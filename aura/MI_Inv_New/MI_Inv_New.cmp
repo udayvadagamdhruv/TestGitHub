@@ -1,0 +1,92 @@
+<aura:component controller="Material_Items_Controller" implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="sObjectName" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="MInvFieldSet" type="List"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    <aura:attribute name="today" type="string" default=""/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+      <ltng:require  styles="{!$Resource.LtngStyles + '/LCmpModalandChart/Styles/ModalHederFooterStyles.css'}"/>
+    <!--Custom Styles for Modal Header and Footer--> 
+   
+    
+    <lightning:recordEditForm aura:id="MInvEditform" density="comfy"  objectApiName="Material_Inventory_Item__c" onsubmit="{!c.MInvOnSubmit}" onsuccess="{!c.MInvOnSuccess}">
+        <lightning:messages />
+        
+        <!--Modal Header-->  
+        <div class="modal-header slds-modal__header slds-size_1-of-1">
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Material Inventory</h2>
+        </div>
+        <!--End Modal Header-->  
+        
+        <!--Modal Body-->   
+        <div class="slds-modal__content slds-p-around--x-small slds-align_absolute-center slds-size_1-of-1 slds-is-relative">
+            <lightning:layout multipleRows="true"> 
+                <aura:iteration items="{!v.MInvFieldSet}" var="field">
+                    
+                    <aura:if isTrue="{!(field=='Material_Item__c') || (field=='Mfg_Item_Number__c')  || (field=='Name')}">    
+                        <aura:set attribute="else">   
+                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                <lightning:inputField fieldName="{!field}" aura:id="MInvField" class="{!((field=='Name' || field=='Qty_On_Shelf__c') ? 'frequired' :' ')}"   /> 
+                            </lightning:layoutItem>
+                        </aura:set>
+                    </aura:if>
+                    <aura:if isTrue="{!field=='Mfg_Item_Number__c'}"> 
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" for="text-input-id-1"> Manufacturer Item Number</label>
+                            <div class="slds-form-element__control">
+                                <ui:outputText value="{!v.simpleRecord.Manufacturer_Item_No__c}"  />
+                            </div>
+                        </lightning:layoutItem>
+                    </aura:if>
+                    
+                     <aura:if isTrue="{!field=='Material_Item__c'}"> 
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" for="text-input-id-1"> Material Item</label>
+                            <div class="slds-form-element__control">
+                                <ui:outputText value="{!v.simpleRecord.Name}"  />
+                            </div>
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!field=='Name'}"> 
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" for="text-input-id-1">Inventory Item Name</label>
+                            <div class="slds-form-element__control">
+                                <ui:outputText value="{!'Inventory-('+(v.today)+')'}"  />
+                            </div>
+                        </lightning:layoutItem>
+                    </aura:if>
+                    
+                    
+                </aura:iteration>
+            </lightning:layout>
+        </div>
+        <!--End of Modal Body--> 
+        
+        <!--Modal Footer-->
+        <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+            <lightning:button variant="neutral" 
+                              label="Cancel"
+                              title="Cancel"
+                              onclick="{! c.doCancel}"/>
+            <lightning:button variant="brand" 
+                              label="Save"
+                              title="Save"
+                              type="submit" />
+        </div>
+        <!--End of Modal Footer-->
+    </lightning:recordEditForm> 
+</aura:component>

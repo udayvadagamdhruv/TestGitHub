@@ -1,0 +1,474 @@
+<!-- This page is used to display detail information of each job -->
+
+<apex:page standardController="Job__c" showHeader="true" tabStyle="Job__c" extensions="testTabController" id="page">
+<script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+       <script>
+               var j$ = jQuery.noConflict();
+               j$(document).ready(function(){
+               
+               });
+               /*j$(document).click(function(event){
+               
+                   if( j$(event.target).hasClass("cxaddcommentaction") )
+                   {
+                       return;
+                   }
+                   if( j$(event.target).hasClass("cxnewcommenttext") )
+                   {
+                       return;
+                   }
+                   if( j$(event.target).hasClass("newcommentbutton") )
+                   {
+                       return;
+                   }
+                    j$(".newcommenttextwrapper textarea:visible").each(function() {
+                        if((j$(this).val().trim().length > 0))
+                        {
+                            if (confirm("Please Click on Comment, to save")){
+                                event.preventDefault();
+                            }
+                        }
+                    });
+               });*/
+         </script>
+<head>
+  <!-- Style Code Goes here -->
+  
+  <style>
+    
+    
+    .slds .slds-page-header {
+    padding: 1rem .75rem; 
+     border-bottom: 1px solid #d8dde6; 
+     background:white; 
+}
+.slds {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 100%;
+    line-height: 1.5;
+    background: #fff;
+    color: #16325c;
+    -webkit-tap-highlight-color: transparent;
+}
+    .slds .slds-page-header {
+   
+    padding-top: 0rem;
+    padding-right: 0rem;
+    padding-bottom: 0rem;
+    padding-left: 0.75rem;
+    
+    
+    }
+      .activeTab
+      {
+          font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #3090C7; color:white;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+          -moz-border-radius-topleft: 10px;
+          -moz-border-radius-topright: 10px;
+          -moz-border-radius-bottomright: 0px;
+          -moz-border-radius-bottomleft: 0px;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          border-bottom-left-radius: 0 px;
+          border-bottom-right-radius: 0 px;
+    }
+
+    .inactiveTab
+    {
+         font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #E0FFFF; color:black;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+        -moz-border-radius-topleft: 10px;
+        -moz-border-radius-topright: 10px;
+        -moz-border-radius-bottomright: 0px;
+        -moz-border-radius-bottomleft: 0px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+     }
+     
+     .labelCol
+      {
+         font-size:1.1em;
+         vertical-align: middle!important;
+       
+      }
+
+      body .btn{font-size:0.8em;font=weight:bold;font-family: 'Calibri';font-style:normal;}
+
+      body .bodyDiv .bFilterView select, .listViewportWrapper .listViewport .topNav .title{font-size:0.9em;font-style:normal;font-weight:normal}
+        
+      .tabContent 
+    {
+        background: #fff;
+    
+    }
+    
+     body .rich-tabpanel-content
+    {
+        border: 1px solid #D4DADC;
+        border-top: 3px solid #3090C7;
+        -moz-border-radius: 0px;
+        -webkit-border-radius: 0px;
+        background-color: #F8F8F8;
+        padding: 6px;
+    } 
+    
+    body td[id$="Tab_lbl"] 
+    {
+        padding: 8px;
+        background-color: #f8f8f8;
+        border: 1px solid #eaeaea;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+    }
+  
+    .tabNavigation
+    {
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+        margin: 0 5px;
+        padding: 3px 0 0;
+        position: relative;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+    }
+
+    .theTabPanel 
+    {
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+        margin-top: 0.05em !important;
+        padding-top: 0px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+    }
+
+    .theTabPanel img
+    {
+        margin: 0px;
+    }
+
+     .rich-tabhdr-side-cell 
+    {
+        border-top-style: solid;
+        border-top-width: 0px;
+    }
+
+    .rich-tabhdr-side-border 
+    {
+        background-image: url("/img/alohaSkin/tabbar_sprite.png");
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+
+    .activeTab:hover 
+    {
+       cursor:pointer;
+       cursor:hand; 
+       text-decoration:underline;
+       color: white;
+    }
+
+    .inactiveTab:hover 
+    {
+       cursor:pointer;
+       cursor:hand; 
+       text-decoration:underline;
+       color: #007FFF;
+    }
+    
+    
+    .slds .slds-page-header__detail-row {
+    margin: 0rem ; 
+    padding: .75rem 1.5rem;
+    background-color: #fff;
+}
+    
+    
+    </style>
+
+        
+</head>
+
+
+
+
+<body>
+ 
+   <!-- Start Tab Panel --> 
+   <apex:sectionHeader subtitle="{!Job__c.Name}({!Job__c.Job_Auto_Number__c})" title="Job"/>
+   
+     
+ 
+
+   <chatter:feedWithFollowers entityId="{!Job__c.Id}" rendered="{!spClientChatterFeedCheckVF}" /> 
+  
+   
+   
+   <div class="SectionHeader" style="background-color:SteelBlue;color:white;">
+                           <h1 class="slds-section-title" style="font-size:125%"><b>&nbsp;Job Information</b></h1></div>
+    <div class="slds">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+
+            <table  width="100%">
+            
+                <tr class="slds-grid slds-page-header__detail-row" width="100%">
+                       <td width="18.6%">
+                            <b>  <p title="{!$Objecttype.Job__c.Fields.Campaign__c.label}">{!$Objecttype.Job__c.Fields.Campaign__c.label}</p> </b> 
+                            <div class="slds-text-body--regular slds-truncate" title="{!Job__c.Campaign__r.name}">
+                                 <apex:outputField value="{!Job__c.Campaign__c}" title="{!Job__c.Campaign__r.name}"/>
+                            </div>
+                       </td>
+                       <td width="10.6%">
+                            <b>  <p title="Status">{!$Objecttype.Job__c.Fields.Status__c.label}</p> </b> 
+                            <p class="slds-text-body--regular slds-truncate" title="{!Job__c.Status__c}">{!Job__c.Status__c}</p>
+                       </td>
+                       <td width="18.6%">
+                            <b> <p title="{!$Objecttype.Job__c.Fields.JS_Client__c.label}">{!$Objecttype.Job__c.Fields.JS_Client__c.label}</p> </b> 
+                           <apex:outputField value="{!Job__c.JS_Client__c}" title="{!Job__c.JS_Client__r.name}"/>
+                       </td>
+                       <td width="20.6%">
+                             <b> <p title="{!$Objecttype.Job__c.Fields.Media_Types__c.label}">{!$Objecttype.Job__c.Fields.Media_Types__c.label}</p> </b> 
+                            <div class="slds-text-body--regular slds-truncate" title="{!Job__c.Media_Types__r.name}">
+                                <apex:outputField value="{!Job__c.Media_Types__c}" title="{!Job__c.Media_Types__r.name}"/>
+                            </div>
+                       </td>
+                       <td width="20.6%">
+                             <b> <p title="{!$Objecttype.Job__c.Fields.Schedule_Template__c.label}">{!$Objecttype.Job__c.Fields.Schedule_Template__c.label}</p> </b> 
+                            <div class="slds-text-body--regular slds-truncate" title="{!Job__c.Schedule_Template__r.name}">
+                                <apex:outputField value="{!Job__c.Schedule_Template__c}" title="{!Job__c.Schedule_Template__r.name}"/>
+                            </div>
+                       </td>
+                       <td width="10.6%">
+                             <b> <p title="{!$Objecttype.Job__c.Fields.Budgeted_Cost__c.label}">{!$Objecttype.Job__c.Fields.Budgeted_Cost__c.label}</p> </b> 
+                            <div class="slds-text-body--regular slds-truncate" title="{!Job__c.Budgeted_Cost__c}">
+                                <apex:outputField value="{!Job__c.Budgeted_Cost__c}" title="{!Job__c.Budgeted_Cost__c}"/>
+                            </div>
+                       </td>
+               </tr>
+                            
+               <tr class="slds-grid slds-page-header__detail-row">
+                   <td width="18.6%">
+                        <b> <p title="{!$Objecttype.Job__c.Fields.Start_Date__c.label}">{!$Objecttype.Job__c.Fields.Start_Date__c.label}</p> </b> 
+                       <div class="slds-text-body--regular slds-truncate" title="{!Job__c.Start_Date__c}">
+                           <apex:outputField value="{!Job__c.Start_Date__c}" title="{!Job__c.Start_Date__c}"/>
+                       </div>
+                   </td>
+                   <td width="10.6%">
+                         <b> <p title="DueDate">{!$Objecttype.Job__c.Fields.Due_Date__c.label}</p> </b> 
+                        <div class="slds-text-body--regular slds-truncate" title="{!Job__c.Due_Date__c}">
+                            <apex:outputField value="{!Job__c.Due_Date__c}" title="{!Job__c.Due_Date__c}"/>
+                        </div>
+                   </td>
+                   <td width="18.6%">
+                        <b> <p title="{!Job__c.JS_Client_Contact__r.name}">{!$Objecttype.Job__c.Fields.JS_Client_Contact__c.label}</p> </b> 
+                        <apex:outputField value="{!Job__c.JS_Client_Contact__c}" title="{!Job__c.JS_Client_Contact__r.name}"/>
+                   </td>
+                   <td width="20.6%">
+                        <b> <p title="Created By">Created By</p> </b> 
+                       <div class="slds-text-body--regular slds-truncate" title="Created By">
+                          <apex:outputfield value="{!Job__c.createdby.name}"/>&nbsp;
+                          <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"> <apex:param value="{!Job__c.createddate}" /> </apex:outputText>
+                      </div>
+                   </td>
+                   <td width="20.6%" colspan="2">
+                        <b> <p title="Last Modified By">Last Modified By</p> </b> 
+                       <div class="slds-text-body--regular slds-truncate" title="Last Modified By">
+                          <apex:outputfield value="{!Job__c.LastModifiedBy.name}"/>&nbsp;
+                          <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"> <apex:param value="{!Job__c.LastModifieddate}"/> </apex:outputText>
+                       </div>
+                   </td>
+                  
+             </tr>
+                
+      </table>
+
+
+<!-- / PAGE HEADER DETAIL ROW -->
+
+</div>
+   
+   
+   
+   
+    <!--   <apex:tabPanel switchType="client" selectedTab="Details" id="JobTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab">  -->
+   
+    <apex:tabPanel switchType="Ajax" value="{!tabInFocus}" id="JobTabPanel" tabClass="activeTab" activeTabClass="activeTab" inactiveTabClass="inactiveTab" width="100%" contentClass="tabContent" styleClass="theTabPanel">
+               
+     <!--     <script> alert("{!JSENCODE(HTMLENCODE(tabInFocus))}");</script>         -->
+         
+      <!-- Detail Tab-->
+      <apex:tab label="Details"  name="Details" id="tabdetails" styleClass="labelCol" rendered="{!$ObjectType.Job__c.accessible}" >
+      
+       
+         <apex:detail relatedList="True"  title="False" showChatter="false"  oncomplete="parent.location.href = '/{!Job__c.Id}'"/>
+       
+        <apex:include pageName="JobTeamStaffSection" rendered="{!$ObjectType.Job_Team__c.accessible}"/> 
+        
+           <!-- <apex:include pageName="Job_Box_Section" /> -->
+        
+        <apex:include pageName="displayTagsUnderJobTab_New" rendered="{!($ObjectType.Tag__c.accessible)&& If(tagValue='YES SEC',true,false)}" />
+        <apex:include pageName="displayGraphicsDeliverablesUnderJobsTab"  rendered="{!($ObjectType.Graphics_Deliverables__c.accessible) && If(graphicsValue='YES SEC',true,false)}" />
+        <apex:include pageName="EmailNonUsersListView" rendered="{!(ShowEmailListviewSection)}"/> 
+        
+                
+      </apex:tab> <!-- Include page Modified by subhranshu -->  
+      
+      
+      <!-- End of Detail Tab -->
+      
+      <!-- Start Job Task Tab -->
+      <apex:tab label="Schedule" name="Schedules" id="tabjobtasks" style="width:60px" styleClass="labelCol" rendered="{!$ObjectType.Job_Task__c.accessible}">
+           <apex:include pageName="DisplayJobTaskInJobTabNew" rendered="true"/>  
+           
+       </apex:tab>    
+      <!-- End Job Task Tab -->
+  
+<!-- this code added by Rahul -->      
+      <!-- Start Job Spec Tab for HD org-->
+      <apex:tab label="Specs" name="Specs" id="tabjobspecsHd" styleClass="labelCol" style="width:120px" rendered="{!$ObjectType.Job_Spec__c.accessible&& If(orgId='00DE0000000Z7vWMAS'|| orgId = '00Dc0000000yhAiEAI',true,false)}">
+          <!-- <apex:relatedList subject="{!Job__c}" list="Job_Specs__r"/>  -->
+        <apex:include pageName="DisplayJobSpecInJobTab" rendered="true"/>
+      </apex:tab>
+      <!-- End Job Spec Tab for HD org-->
+
+      <!-- Start Job Spec Tab for Michigan State University org-->
+<!-- Commented code for new package release on 29th April 2014.
+      <apex:tab label="Job Specs" name="Job Specs" id="tabjobspecsMSU" styleClass="labelCol" style="width:120px" rendered="{!$ObjectType.Job_Spec__c.accessible&& If(orgId='00DG0000000j0J6MAI'|| orgId = '00DJ000000372ipMAA' || orgId = '00DA0000000Cir8MAC',true,false)}">
+        <apex:include pageName="DisplayJobSpecInJobTab" rendered="true"/>
+      </apex:tab>
+-->
+      <!-- End Job Spec Tab for Michigan State University org-->
+      
+      <!-- Start Job Spec Tab for other orgs-->
+      <apex:tab label="Creative Brief" name="Creative Brief" id="tabjobspecs" styleClass="labelCol" style="width:120px" rendered="{!$ObjectType.Job_Spec__c.accessible&& If(orgId='00DE0000000Z7vWMAS'|| orgId = '00Dc0000000yhAiEAI',false,true)}"> 
+      <!--Commented code for new package release on 29th April 2014.
+       || orgId='00DG0000000j0J6MAI'|| orgId = '00DJ000000372ipMAA' || orgId = '00DA0000000Cir8MAC' 
+       -->
+          <apex:include pageName="DisplayJobSpecInJobTab" rendered="true"/>
+      </apex:tab>
+      <!-- End Job Spec Tab for other orgs-->
+<!-- added code ends here -->      
+
+     <!-- code added by rahul hide this tab for USA -->
+       <!-- Start Job Spec Tab -->
+      <apex:tab label="Quotes" name="Quotes" id="tabjobquotes" style="width:60px" styleClass="labelCol" rendered="{!$ObjectType.Quote__c.accessible && If(orgId='00Di0000000YKOKEA4'|| orgId = '00De0000001KaOkEAK',false,true)}">
+   <!--   <apex:relatedList subject="{!Job__c}" list="Quotes__r"/>  -->
+          <apex:include pageName="DisplayQuoteUnderJobTab" rendered="true"/> 
+      </apex:tab>
+      <!-- End Job Spec Tab -->
+      <!-- added code ends here -->
+      
+      <!-- Start Estimate Tab -->
+      <apex:tab label="Estimate" name="Estimates" id="tabEstimate" styleClass="labelCol" rendered="{!AND(Not(ShowProductionEstimate),$ObjectType.Estimate_Line_Items__c.accessible)}">
+           <!--  <apex:relatedList subject="{!Job__c}" list="Estimate__r" />  --> 
+           <apex:include pageName="DisplayEstimateunderJobTab"/> 
+      </apex:tab>
+      <!-- End Estimate Tab -->
+      
+      <!-- Start Production Estimate Tab -->
+      <apex:tab label="Production Estimate" name="Production Estimates" id="tabProductionEstimate" style="width:150px" styleClass="labelCol" rendered="{!AND(ShowProductionEstimate,$ObjectType.Production_Estimate__c.accessible)}">
+           
+           <apex:include pageName="DisplayProductionEstimateJobTab"/> 
+      </apex:tab>
+      <!-- End Production Estimate Tab -->
+      
+      
+      
+    <!-- Start Purchase Order Tab -->
+       <apex:tab label="Purchase Orders" name="Purchase Orders" id="tabPurchaseOrder" style="width:120px" styleClass="labelCol" rendered="{!$ObjectType.Purchase_Order__c.accessible}">
+           <!--  <apex:relatedList subject="{!Job__c}" list="Purchase_Orders__r" /> -->
+           <apex:include pageName="DisplayPOunderjobtab"/>  
+       </apex:tab>
+     <!-- End Purchase Order Tab -->
+     
+     <!-- Start Invoices Tab-->
+       <apex:tab label="Vendor Invoices" name="Invoices" id="tabInvoice" styleClass="labelCol" style="width:130px" rendered="{!$ObjectType.Invoice__c.accessible}">
+         <!--   <apex:relatedList subject="{!Job__c}" list="Invoices__r" /> -->
+         <apex:include pageName="DisplayInvoiceunderjobtab"/>  
+      </apex:tab>
+      <!-- End Invoices Tab -->
+      
+      <!-- Start Client Invoices Tab -->
+       <apex:tab label="Client Invoices" name="Client Invoices" id="tabClientInvoices" style="width:120px" styleClass="labelCol" rendered="{!$ObjectType.Client_Invoice__c.accessible}">
+           <!--  <apex:relatedList subject="{!Job__c}" list="Purchase_Orders__r" /> -->
+           <apex:include pageName="DisplayClientInvoiceunderjobtab"/>  
+       </apex:tab>
+     <!-- End Client Invoices Tab -->
+      
+      
+      
+       <!-- Start Notes and Attachments Tab -->
+      <apex:tab label="Notes and Files" name="Notes" id="tabNoteAtt" style="width:140px" styleClass="labelCol" rendered="{!$Setup.ProductionEstimate__c.Notes_and_Files_Tab_Setting__c ||  If(checkedSFUser==False,true,false)}">
+       <!--   <apex:relatedList subject="{!Job__c}" list="NotesAndAttachments" /> -->
+       <apex:include pageName="JobNote_Attachment"/>
+      </apex:tab>
+      <!-- End of Notes and Attachment Tab -->
+  
+      
+     <!-- Start Tags Tab -->
+      <apex:tab label="{!$ObjectType.Tag__c.Label}" name="Tags" id="tabTag" style="width:140px" styleClass="labelCol" rendered="{!($ObjectType.Tag__c.accessible)&& If(tagValue='YES',true,false)}"> 
+             <!-- <apex:include pageName="displayTagsUnderJobTab" rendered="true"/>   commented by yogini on 30-apr-13-->
+             <apex:include pageName="displayTagsUnderJobTab_New" rendered="true"/> <!--added by yogini on 30-apr-13-->
+            <!--  <apex:relatedList subject="{!Job__c}" list="Tags__r" /> -->
+      </apex:tab>
+     <!-- End of Tags Tab -->
+
+     <!-- code added by rahul hide this tab for USA -->
+     <!-- Start Sessions Tab -->
+      <apex:tab label="Sessions" name="Sessions" id="tabSession" style="width:100px" styleClass="labelCol" rendered="{!($ObjectType.Session__c.accessible)&& If(sessionValue='YES',true,false) && If(orgId='00Di0000000YKOKEA4'|| orgId = '00De0000001KaOkEAK',false,true )}">
+              <apex:include pageName="DisplaySessionsUnderJob" rendered="true"/>   
+      </apex:tab>
+     <!-- End of Sessions Tab -->
+     <!--added code ends here -->
+     
+<!-- added new tab by Rahul  hide this tab for USA-->
+     <!-- Start Graphics Deliverables Tab for syfy org-->
+      <apex:tab label="Graphics Deliverables" name="Graphics Deliverables" id="tabGraphicsSyfy" style="width:140px" styleClass="labelCol" rendered="{!($ObjectType.Graphics_Deliverables__c.accessible) && If(graphicsValue='YES',true,false) && If(orgId='00DE0000000Xp80MAC'|| orgId = '00DL00000027DtxMAE',true,false) && If(orgId='00Di0000000YKOKEA4'|| orgId = '00De0000001KaOkEAK',false,true)}" >
+               <apex:include pageName="displayGraphicsDeliverablesUnderJobsTab" rendered="true"/>
+              <!-- <apex:relatedList subject="{!Job__c}" list="Graphics_Deliverables__r"/> -->
+      </apex:tab>
+     <!-- End of Graphics deliverables Tab -->
+     
+     <!-- Start Graphics Deliverables Tab for other orgs-->
+      <apex:tab label="{!$ObjectType.Graphics_Deliverables__c.Label}" name="Deliverables" id="tabGraphics" style="width:140px" styleClass="labelCol" rendered="{!($ObjectType.Graphics_Deliverables__c.accessible) && If(graphicsValue='YES',true,false) && If(orgId='00DE0000000Xp80MAC'|| orgId = '00DL00000027DtxMAE',false,true) && If(orgId='00Di0000000YKOKEA4'|| orgId = '00De0000001KaOkEAK',false,true)}" >
+               <apex:include pageName="displayGraphicsDeliverablesUnderJobsTab" rendered="true"/>
+              <!-- <apex:relatedList subject="{!Job__c}" list="Graphics_Deliverables__r"/> -->
+      </apex:tab>
+     <!-- End of Graphics deliverables Tab -->
+          
+        <!-- Start Music Usage Tab -->
+  
+      <apex:tab label="Music Usage" name="Music Usage" id="tabMusic" style="width:100px" styleClass="labelCol" rendered="{!($ObjectType.Music_Usage__c.accessible) && If(musicValue='YES',true,false)}">
+               <apex:include pageName="displayMusicUsageUnderJobsTab" rendered="true"/>
+      </apex:tab>
+     
+     <!-- End of Sessions Tab -->
+     
+     
+     <!-- Start Job TimeSheet EntriesTab -->
+      <apex:tab label="Job Time" name="Job Time" id="tabTimeSheetEntries" style="width:90px" styleClass="labelCol" rendered="{!($ObjectType.Timesheet_Entries__c.accessible) && (ShowJobTimeTab)}">
+           <apex:include pageName="DisplayTimesheetEntriesunderjobtab" rendered="true"/>  
+      </apex:tab>    
+      <!-- End Job TimeSheet EntriesTab-->
+    
+      <apex:tab label="Shipments" name="Shipment" id="tabShippment" style="width:90px" styleClass="labelCol" rendered="{!($ObjectType.Shipment__c.accessible) && (ShowShipmentTab)}">
+           <apex:include pageName="DisplayShippmentsunderjobtab" rendered="true"/>  
+      </apex:tab> 
+  
+   <!--   <apex:tab label="Business Card" name="BusinessCard" id="tabBusinessCard" style="width:120px" styleClass="labelCol" rendered="{!CONTAINS(Job__c.name, 'Corporate Business Card')}" >
+           <!--apex:include pageName="DisplayShippmentsunderjobtab" rendered="true"/-->
+         <!--  <apex:iframe src="/apex/LovesBussinessCardTemplate?jobid={!Job__c.id}" scrolling="false" id="theIframe" rendered="true"/>
+  
+      </apex:tab> -->
+    
+     
+   </apex:tabPanel>
+   <!-- End Of Tab Panel --> 
+  
+   </body>
+  
+ </apex:page>
+ <!-- End of Page -->

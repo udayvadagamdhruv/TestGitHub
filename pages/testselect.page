@@ -1,0 +1,10 @@
+<apex:page controller="picklistTest">
+<apex:form >
+    <apex:selectList value="{!selectedVal}" size="1">
+        <apex:selectOptions value="{!options1}"/>
+        <apex:selectOption itemValue="Hi StackExchange" itemLabel="Hi StackExchange"/>
+        <apex:selectOptions value="{!options2}"/>
+        <apex:selectOptions value="{!options3}"/>
+    </apex:selectList> 
+</apex:form>
+</apex:page>

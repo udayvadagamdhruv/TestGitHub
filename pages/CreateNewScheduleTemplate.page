@@ -1,0 +1,41 @@
+<!-- This Page is used to Create New Schedule Template .(Overriding Create New button of Schedule template Object) --> 
+<apex:page standardController="Schedule_Template__c" sidebar="true" tabStyle="MyAdmin__tab" extensions="CreateNewScheduletemplate">
+   <apex:sectionHeader title="Schedule Template"/> 
+   <apex:form >
+      <apex:pageBlock mode="edit">
+         <apex:pageMessages />
+   
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+              
+         <apex:pageBlockSection title="Schedule Template Information" columns="2" collapsible="false"> 
+           <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Schedule_Template__c.Fields.Name.Label}"></apex:outputLabel>
+               <apex:inputField value="{!Schedule_Template__c.Name}" required="true"/>
+           </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >                  
+               <apex:outputLabel Value="{!$ObjectType.Schedule_Template__c.Fields.Media_Types__c.Label}" for="MediaTypeName" ></apex:outputLabel>
+               <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                     <div class="requiredBlock"> </div>
+                     <apex:selectList id="MtName" value="{!MTName}" size="1">
+                        <apex:actionSupport event="onchange" rerender="pb"/>
+                        <apex:selectOptions value="{!MediaTypes}"></apex:selectOptions> 
+                     </apex:selectList>  
+                  </span>
+               </apex:outputPanel>  
+            </apex:pageBlockSectionItem>
+                  
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Schedule_Template__c.Fields.Active__c.Label}"></apex:outputLabel>
+                <apex:inputField value="{!Schedule_Template__c.Active__c}"/>
+            </apex:pageBlockSectionItem>
+                  
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
+<!-- End of Page -->

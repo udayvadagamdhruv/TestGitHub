@@ -1,0 +1,167 @@
+<!-- This page is used to display detail information of each job to Client Contact -->
+
+<apex:page standardController="Job__c" showHeader="true" tabStyle="Client_Job__tab" extensions="JobListViewExtension" sidebar="false">
+<head>
+<script type="text/javascript">
+     function InlineSave()
+        {
+          // alert("Marketing Request Submitted");
+          // top.window.close();
+         // ID idVal = ApexPages.currentPage().getParameters().get('id');
+         window.location.reload();
+        }
+</script>
+  <!-- Style Code Goes here -->
+      <style>
+          .activeTab {font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #3090C7; color:white;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+          -moz-border-radius-topleft: 10px;
+          -moz-border-radius-topright: 10px;
+          -moz-border-radius-bottomright: 0px;
+          -moz-border-radius-bottomleft: 0px;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          border-bottom-left-radius: 0 px;
+          border-bottom-right-radius: 0 px;
+    }
+
+    .inactiveTab {font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #E0FFFF; color:black;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0 px;
+    border-bottom-right-radius: 0 px;
+    background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+    }
+ 
+  .labelCol
+  {
+         font-size:1.25em;
+  }
+
+  body .btn{font-size:0.8em;font=weight:bold;font-family: 'Calibri';font-style:normal;}
+
+  body .bodyDiv .bFilterView select, .listViewportWrapper .listViewport .topNav .title{font-size:0.9em;font-style:normal;font-weight:normal}
+        
+  .tabContent 
+ {
+    background: #fff;
+ }
+ body .rich-tabpanel-content
+ {
+    border: 1px solid #D4DADC;
+    border-top: 3px solid #3090C7;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    background-color: #F8F8F8;
+    padding: 6px;
+ } 
+    
+  body td[id$="Tab_lbl"] 
+  {
+        padding: 8px;
+        background-color: #f8f8f8;
+        border: 1px solid #eaeaea;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+    }
+  
+
+    .tabNavigation 
+    {
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+        margin: 0 5px;
+        padding: 3px 0 0;
+        position: relative;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+    }
+
+    .theTabPanel 
+    {
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+        margin-top: 0.05em !important;
+        padding-top: 0px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+    }
+
+    .theTabPanel img
+    {
+        margin: 0px;
+    }
+
+     .rich-tabhdr-side-cell 
+    {
+        border-top-style: solid;
+        border-top-width: 0px;
+    }
+
+    .rich-tabhdr-side-border 
+    {
+        background-image: url("/img/alohaSkin/tabbar_sprite.png");
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+
+    .activeTab:hover 
+    {
+       cursor:pointer;
+       cursor:hand; 
+       text-decoration:underline;
+        color: white;
+    }
+
+    .inactiveTab:hover 
+    {
+       cursor:pointer;
+       cursor:hand; 
+       text-decoration:underline;
+       color: #007FFF;
+    }
+</style>
+</head>
+   <!-- Start Tab Panel -->
+    <!-- <chatter:feed entityId="{!Job__c.id}"/> -->
+    <apex:form >
+    <!--
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!myfeed}" var="mf">
+            <apex:column value="{!mf.CreatedBy.FirstName}Has changed {!mf.FeedTrackedChanges[0].FieldName} from {!mf.FeedTrackedChanges[0].OldValue} to {!mf.FeedTrackedChanges[0].NewValue}" headerValue="CreatedBy" width="10%" ></apex:column>
+            <apex:column value="{!mf.FeedTrackedChanges[0].FieldName}" headerValue="Field" width="10%"></apex:column>
+            <apex:column value="{!mf.FeedTrackedChanges[0].OldValue}" headerValue="OldValue" width="10%"></apex:column>
+            <apex:column value="{!mf.FeedTrackedChanges[0].NewValue}" headerValue="NewValue" width="10%"></apex:column>    
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    -->
+    </apex:form>
+
+    <apex:tabPanel switchType="client" value="{!tabInFocus}" id="JobTabPanel" tabClass="activeTab" activeTabClass="activeTab" inactiveTabClass="inactiveTab" width="100%" contentClass="tabContent" styleClass="theTabPanel">
+               
+     <!--     <script> alert("{!JSENCODE(HTMLENCODE(tabInFocus))}");</script>         -->
+         
+      <!-- Detail Tab-->
+      <apex:tab label="Details" name="Details" id="tabdetails" styleClass="labelCol" style="width:100px;">
+       
+         <apex:detail relatedList="false" showChatter="false" title="true" rendered="{!Job__c.Status__c='Active'}"/>
+         <apex:detail relatedList="false" inlineEdit="true" showChatter="false" title="true" oncomplete="parent.location.href = '/apex/JobListViewClient?id={!Job__c.Id}'" rendered="{!Job__c.Status__c!='Active'}"/>
+      </apex:tab>
+      <!-- End of Detail Tab -->
+      
+      <!-- Start Job Spec Tab -->        
+          <apex:tab label="Specs" name="Job Specs" id="tabjobspecs" styleClass="labelCol">
+          <apex:relatedList subject="{!Job__c}" list="Job_Specs__r"/>  
+          <!--  <apex:include pageName="DisplayJobSpecInJobTab" rendered="true"/> -->
+      </apex:tab>
+      <!-- End Job Spec Tab -->
+      
+   </apex:tabPanel>
+   <!-- End Of Tab Panel -->
+ </apex:page>
+ <!-- End of Page -->

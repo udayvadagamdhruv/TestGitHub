@@ -1,0 +1,326 @@
+<aura:component controller="job_Cost_Tab_cmp" implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:attribute name="jobrecordId" type="String" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="isAccess" type="list" /><!-- to check PE permissions(creatable,editable)-->
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="ProEstimatecolumns" type="List"/>
+    <aura:attribute name="JobProEstRecords" type="Map"/>
+    <aura:attribute name="ProEstTemplateList" type="Object"/>
+    <aura:attribute name="ProEstObjLabel" type="String"/>
+    
+    <aura:attribute name="isProEstOpen" type="boolean" />
+    <aura:attribute name="ProEstRecordId" type="string"/>
+    <aura:attribute name="MItem_Records" type="Object"/>
+    <aura:attribute name="GL_DepartmentRecords" type="Object"/>
+    <aura:attribute name="GL_CodeRecords" type="Object"/>
+    <aura:attribute name="VendorRecords" type="Object"/>
+    <aura:attribute name="isCalUnitSheet" type="boolean" />
+    <aura:attribute name="isCalUnitSize" type="boolean"  />
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    <aura:attribute name="TotalAmount" type="double" />
+    <aura:attribute name="Materialitemwidth" type="Decimal" default = "0"/>
+    
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:handler event="c.UpdateRecordsforChanges" action="{!c.recordsUpdateforchanges}" />
+    
+    <!-- <aura:attribute name="sortedBy" type="String" default="Sort_Order__c" />
+         <aura:attribute name="sortedDirection" type="String" default="asc" />
+               onsort="{!c.updateColumnSorting}"
+               sortedBy="{!v.sortedBy}"
+              sortedDirection="{!v.sortedDirection}" -->
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.jobrecordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!!v.isMobile}">
+        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+            
+            <div class="slds-size_2-of-10">
+                <div class="slds-m-around_x-small">
+                    <lightning:select name="ProEstTemplate" aura:id="ProEstTemplateId" label="Production Estimate Template"  >
+                        <option text="--None--" value="" />
+                        <aura:iteration items="{!v.ProEstTemplateList}" var="ProEstTemp">
+                            <option text="{!ProEstTemp.Name}" value="{!ProEstTemp.Id}" />
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+            </div>
+            
+            <div class="slds-size_2-of-10">
+                <div class="slds-m-around_x-small" style="padding-top: 22px !important;">
+                    <lightning:button variant="neutral" label="Import Production Estimate Template" onclick="{!c.ImportProEstimateTempSpecItems}"/>
+                </div>
+            </div>
+            
+            <div class="slds-size_2-of-10">
+                <div class="slds-m-around_x-small" style="padding-top: 22px !important;">
+                    <lightning:button variant="neutral" label="New Line Item" onclick="{!c.newProEstLineItem}"/>
+                </div>
+            </div>
+            
+            <div class="slds-size_2-of-10" style="padding-top: 22px !important;">
+                <div class="slds-m-around_x-small">
+                    <lightning:button variant="neutral" label="Print Estimate" onclick="{!c.PrintProEstimate}" />
+                </div>
+            </div>
+        </div>
+        <br/>
+        
+        <!--lightning:layout multipleRows="true"-->
+        <aura:if isTrue="{!empty(v.JobProEstRecords)}">
+            <b> No records to display.</b>
+            <aura:set attribute="else">
+                <lightning:card>
+                    <aura:iteration items="{!v.JobProEstRecords}" var="PEMap">
+                        <b style="padding:6px 0px 6px 0px;font-size:16px;">  {!PEMap.PETemp!='null'?PEMap.PETemp:''} </b>
+                        <div>
+                            <lightning:datatable class="ProEstimateTableClass"
+                                                 aura:id="ProEstimateTable"
+                                                 columns="{!v.ProEstimatecolumns}"
+                                                 data="{!PEMap.value}"
+                                                 keyField="Id"
+                                                 draftValues="{ !v.ProEstimatedraftValues}"
+                                                 hideCheckboxColumn="true"
+                                                 onsave="{!c.handleSaveProEstimate}"
+                                                 onrowaction="{!c.handleProEstimateRowActions}"
+                                                 />
+                        </div> <br/>
+                    </aura:iteration>
+                    <div style="float:right;padding-right:20px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                        <span style="font-style:italic;" >Production Estimate Total Cost </span>
+                        &nbsp;:&nbsp;&nbsp; <ui:outputCurrency value="{!v.TotalAmount}"/>  
+                    </div>    
+                </lightning:card>
+            </aura:set>
+        </aura:if>
+        <!--/lightning:layout-->
+    </aura:if>
+    <aura:if isTrue="{!v.isMobile}">
+        <div class="slds-m-around_x-small" style="padding-top: 2px !important;">
+            <center> <lightning:button variant="neutral" label="New Line Item" onclick="{!c.newProEstLineItem}"/></center>
+        </div>
+        <aura:if isTrue="{!empty(v.JobProEstRecords)}">
+            <b> No records to display.</b>
+            <aura:set attribute="else">
+                <lightning:card>      
+                    <aura:iteration items="{!v.JobProEstRecords}" var="PEMap">
+                        
+                        <b style="padding:6px 0px 6px 0px;font-size:16px;">  {!PEMap.PETemp!='null'?PEMap.PETemp:''} </b>
+                        <table>
+                            <aura:iteration items="{!PEMap.value}" var="PEM">
+                                <tr>
+                                    <td colspan="2">
+                                        <a href="{!'/'+PEM.Id}" style="white-space:pre-wrap;">{!PEM.Name}</a>  
+                                    </td>
+                                    <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                        <lightning:buttonMenu name="{!PEM.Id}" aura:id="EstItem" onselect="{! c.handlePEMQuickAction }">
+                                            <lightning:menuItem value="Edit_PEstimate" label="Edit" disabled="{!PEM.Approved__c}" iconName="utility:edit"/>
+                                            <lightning:menuItem value="Delete_PEstimate" label="Delete" disabled="{!PEM.Approved__c}" iconName="utility:delete"/>
+                                            <lightning:menuItem value="Dup_PEstimate" label="Duplicate" disabled="{!PEM.Approved__c}" iconName="action:clone"/>
+                                            <lightning:menuItem value="Approve_PEstimate" label="Approve" disabled="{!PEM.Approved__c}" iconName="action:approval"/>
+                                            <lightning:menuItem value="UnApprove_PEstimate" label="Unapprove" disabled="{!!PEM.Approved__c}" iconName="utility:close"/>
+                                        </lightning:buttonMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <ui:outputText value="{!v.DynamicLabels[0].Quantity}"/>:
+                                    </td>
+                                    <td width="60%">
+                                        {!PEM.Quantity__c}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <ui:outputText value="{!v.DynamicLabels[0].TotalCost}"/>:
+                                    </td>
+                                    <td width="60%">
+                                        <p><lightning:formattedNumber value="{!PEM.Total_Cost__c}" style="currency" currencyCode="USD"/></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><hr style="margin: 0.4rem 0;width:100%;"/></td>
+                                </tr>
+                            </aura:iteration>
+                        </table><br/>
+                    </aura:iteration>
+                    <div style="float:right;padding-right:20px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                        <span style="font-style:italic;" >Production Estimate Total Cost </span>
+                        &nbsp;:&nbsp;&nbsp; <ui:outputCurrency value="{!v.TotalAmount}"/>  
+                    </div>
+                </lightning:card>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.isProEstOpen}">
+        <lightning:recordEditForm aura:id="JobProEstEditform" density="comfy" objectApiName="Production_Estimate__c" recordId="{!v.ProEstRecordId}" onload="{!c.jobProEstload}"  onsubmit="{!c.jobProEstOnsubmit}" onsuccess="{!c.jobProEstRecordOnSuccess}"  >
+            
+            <!--************************************************  MODAL BOX Start *************************************************-->
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.ProEstRecordId==null?'New ':'Edit '} {!v.ProEstObjLabel}</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <lightning:messages />
+                        <lightning:layout multipleRows="true">
+                            <aura:iteration items="{!v.fieldset}" var="field">
+                                
+                                <aura:if isTrue="{!field=='Job__c' || field == 'Width_in_Inches__c' || field=='Calc_Unit__c' || field == 'Equipment_Type__c' || field=='Material_Item__c' || field=='GL_Department__c' || field=='GL_Code__c' || field=='Vendor__c' || field=='Divide_Sheets_By_Two__c' || field=='Qty_Up__c' || field=='of_Pages__c'}">
+                                   
+                                    <aura:set attribute="else">
+                                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                            <lightning:inputField fieldName="{!field}" aura:id="JobProEstField"  class="{!'slds-form-element slds-p-horizontal_x-small' + ' ' +((field=='Name') || (field=='Amount__c')  ? 'frequired' :' ')}"  />
+                                        </lightning:layoutItem>
+                                    </aura:set>
+                                </aura:if>
+                                
+                                <!--   ["Name", "Job__c", "Calc_Unit__c", "Material_Item__c", "GL_Department__c", "GL_Code__c", "Vendor__c",
+                            "Equipment_Type__c", "Quantity__c", "Sided__c", "Qty_Up__c", "Color__c", "Length_in_Inches__c",
+                            "Width_in_Inches__c", "Commission__c", "Amount__c", "Total_Cost__c", "Shippment_status__c", "Sort_Order__c", "Divide_Sheets_By_Two__c"]
+                            -->
+                                <aura:if isTrue="{!field=='Job__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-form-element slds-p-horizontal_x-small">
+                                            <label class="slds-form-element__label" for="text-input-id-1"> {!v.ObjectType.Production_Estimate__c.Job__c.label}</label>
+                                            <div class="slds-form-element__control">
+                                                <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Calc_Unit__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="CalUnitFieldId" onchange="{!c.CalUnitChange}" class="slds-form-element slds-p-horizontal_x-small frequired"/>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Equipment_Type__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="EquipFieldId" onchange="{!c.EquipChange}" class="slds-form-element slds-p-horizontal_x-small frequired"/>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Material_Item__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-p-horizontal_x-small">
+                                            <lightning:select  name="MaterialItemSelect" aura:id="MISelectId" label="{!v.ObjectType.Production_Estimate__c.Material_Item__c.label}" onchange="{!c.OnChangeMaterialItem}" class="frequired" >
+                                                <option text="--None--" value="" />
+                                                <aura:iteration items="{!v.MItem_Records}" var="mi">
+                                                    <option text="{!mi.Name}" value="{!mi.Id}" />
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='GL_Department__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-p-horizontal_x-small">
+                                            <lightning:select  name="GLDepatmentselect" aura:id="GLDSelectId" label="{!v.ObjectType.Production_Estimate__c.GL_Department__c.label}"  onchange="{!c.OnChangeGLDepatment}" class="frequired">
+                                                <option text="--None--" value="" />
+                                                <aura:iteration items="{!v.GL_DepartmentRecords}" var="GLD">
+                                                    <option text="{!GLD.Name}" value="{!GLD.Id}" />
+                                                </aura:iteration>
+                                            </lightning:select>
+                                            
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='GL_Code__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-p-horizontal_x-small">
+                                            <lightning:select  name="GL_Code" aura:id="GLCodeSelectId"   label="{!v.ObjectType.Production_Estimate__c.GL_Code__c.label}" onchange="{!c.OnchangeGLCode}" class="frequired">
+                                                <option text="--None--" value="" />
+                                                <aura:iteration items="{!v.GL_CodeRecords}" var="GLC">
+                                                    <option text="{!GLC.GL_ID__c +' '+GLC.Name}" value="{!GLC.Id}" />
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Vendor__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <div class="slds-p-horizontal_x-small">
+                                            <lightning:select  name="Vendor" aura:id="VendorId" label="{!v.ObjectType.Production_Estimate__c.Vendor__c.label}" class="frequired" >
+                                                <option text="--None--" value="" />
+                                                <aura:iteration items="{!v.VendorRecords}" var="Ven">
+                                                    <option text="{!Ven.Vendor__r.Name}" value="{!Ven.Vendor__c}" />
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <!--- &amp;&amp; v.isCalUnitSheet
+                                 &amp;&amp; !v.isCalUnitSize     -->
+                                <aura:if isTrue="{!field=='Divide_Sheets_By_Two__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="JobProEstField" class="slds-form-element slds-p-horizontal_x-small"/>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='of_Pages__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="JobProEstField" class="slds-form-element slds-p-horizontal_x-small"/>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Qty_Up__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="JobProEstField" class="slds-form-element slds-p-horizontal_x-small"/>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!field=='Width_in_Inches__c'}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                        <lightning:inputField fieldName="{!field}" aura:id="ProEstFieldWidth" class="slds-form-element slds-p-horizontal_x-small frequired"/>
+                                                                                            
+                                    </lightning:layoutItem>
+                                </aura:if>
+                                
+                            </aura:iteration>
+                            <br></br>
+                        </lightning:layout>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand"
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm>
+    </aura:if>
+</aura:component>

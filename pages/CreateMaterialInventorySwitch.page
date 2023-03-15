@@ -1,0 +1,11 @@
+<apex:page standardController="Material_Inventory_Item__c" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+     
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="CreateMaterialInventoryLightning"/>
+    </apex:outputPanel>
+    
+     <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+         <apex:include pageName="CreateMaterialInventory"/>
+    </apex:outputPanel>
+     
+</apex:page>

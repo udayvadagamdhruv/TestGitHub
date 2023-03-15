@@ -1,0 +1,7 @@
+<!-- Start Page--->
+<apex:page standardController="Billboard_Contract__c" tabStyle="Billboard__c">
+  <apex:form >
+    <apex:detail relatedList="true" showChatter="true"/>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

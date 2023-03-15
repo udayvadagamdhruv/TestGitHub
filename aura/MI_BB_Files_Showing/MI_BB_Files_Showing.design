@@ -1,0 +1,3 @@
+<design:component>
+	    <design:attribute name="MIBIImagesSection" label="Images Section Label" description="This will reflect the Images Section Label" />
+</design:component>

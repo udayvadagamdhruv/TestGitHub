@@ -1,0 +1,27 @@
+<!-- This page is used to create Duplicate Schedule Template-->
+<apex:page standardController="Schedule_Template__c" extensions="DuplicateScheduletemplateExtensionNew" sidebar="false" showHeader="false">
+<script>
+ window.onload = function()
+ {
+     if (confirm('Are you sure you want to duplicate this?')) {
+        doIntit();
+     } else {
+        window.history.back();
+     }
+ 
+ };
+ </script>
+     <apex:pageMessages id="msg"></apex:pageMessages>
+     <apex:form >
+        <apex:actionFunction name="doIntit" action="{!duplicateScheduleTemplate}" reRender="op,msg"/>
+        <apex:outputPanel id="op">
+            <center>
+        <!--       <apex:outputLink value="https://jobsuite.cs14.visual.force.com/apex/ScheduleTemplateTabOverride?id={!oldScheduleTemplateId}" rendered="{!(isError = True)}" target="_top">Click here to navigate to old Schedule 
+               Template</apex:outputLink>  -->
+                <apex:commandLink action="{!AfterError}" id="theCommandLink" target="_top" rendered="{!(isError = True)}"> 
+                 Click here to navigate to old Schedule Template
+                </apex:commandLink> 
+            </center>
+        </apex:outputPanel>
+     </apex:form>
+</apex:page>

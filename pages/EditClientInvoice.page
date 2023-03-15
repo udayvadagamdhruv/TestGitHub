@@ -1,0 +1,176 @@
+<apex:page standardController="Client_Invoice__c" tabStyle="Job__c" extensions="EditClientInvoiceExtension">
+
+<apex:form >
+      <apex:sectionHeader title="Client Invoice Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+ 
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Name.Label}"/>
+               <apex:outputfield value="{!Client_Invoice__c.Name}"/>
+            </apex:pageBlockSectionItem>
+            
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Job__c.Label}"/>
+               <apex:outputLabel value="{!jobName}"/>
+            </apex:pageBlockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Client_Name__c.Label}"/>
+                  <apex:selectList id="ClientName" value="{!ClientName}" size="1" >
+                     <apex:selectOptions value="{!Clients}"></apex:selectOptions>
+                  </apex:selectList> 
+             </apex:pageBlockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Status__c.Label}"></apex:outputLabel>
+                   <apex:inputField value="{!Client_Invoice__c.Invoice_Status__c}"/>
+            </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Invoice_Date__c.Label}"/>
+               <apex:inputField value="{!Client_Invoice__c.Invoice_Date__c}"/>
+            </apex:pageBlockSectionItem> 
+            
+             <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Tax_Rate__c.Label}"></apex:outputLabel>
+                   <apex:inputField value="{!Client_Invoice__c.Tax_Rate__c}"/>
+            </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Notes__c.Label}"></apex:outputLabel>
+                   <apex:inputField value="{!Client_Invoice__c.Notes__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            
+            
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Date_Due__c.Label}"/>
+               <apex:inputField value="{!Client_Invoice__c.Date_Due__c}"/>
+            </apex:pageBlockSectionItem>            
+                 
+            
+            
+         <!--   <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Term__c.Label}"></apex:outputLabel>
+                   <apex:inputField value="{!Client_Invoice__c.Term__c}"/>
+            </apex:pageBlockSectionItem>-->
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel Value="{!$ObjectType.Client_Invoice__c.Fields.Payment_Term__c.Label}"></apex:outputLabel>
+                   <apex:inputField value="{!Client_Invoice__c.Payment_Term__c}"/>
+            </apex:pageBlockSectionItem>
+              
+            
+            
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+             
+             <!-- Start Dummy (Variable) fields here -->
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_1__c.Label}"/>
+                        <apex:inputField value="{!Client_Invoice__c.Dummy_Text_1__c}"/>
+             </apex:pageBlockSectionItem>    
+                
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_1__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Date_1__c}"/>
+             </apex:pageBlockSectionItem> 
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Purchase_Order__c.Fields.Dummy_Text_2__c.Label}"/>
+                        <apex:inputField value="{!Client_Invoice__c.Dummy_Text_2__c}"/>
+             </apex:pageBlockSectionItem>    
+                
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_2__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Date_2__c}"/>
+             </apex:pageBlockSectionItem>        
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_3__c.Label}"/>
+                        <apex:inputField value="{!Client_Invoice__c.Dummy_Text_3__c}"/>
+             </apex:pageBlockSectionItem>    
+                
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_3__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Date_3__c}"/>
+             </apex:pageBlockSectionItem> 
+             
+             
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_4__c.Label!='Dummy Text 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_4__c.Label}"/>
+                        <apex:inputField value="{!Client_Invoice__c.Dummy_Text_4__c}"/>
+             </apex:pageBlockSectionItem>    
+                
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_4__c.Label!='Dummy Date 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_4__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Date_4__c}"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_5__c.Label!='Dummy Text 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Text_5__c.Label}"/>
+                        <apex:inputField value="{!Client_Invoice__c.Dummy_Text_5__c}"/>
+             </apex:pageBlockSectionItem>    
+                
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_5__c.Label!='Dummy Date 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Date_5__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Date_5__c}"/>
+             </apex:pageBlockSectionItem>
+             
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_1__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Picklist_1__c}"/>
+             </apex:pageBlockSectionItem> 
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_2__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Picklist_2__c}"/>
+             </apex:pageBlockSectionItem> 
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_3__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Picklist_3__c}"/>
+             </apex:pageBlockSectionItem> 
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_4__c.Label!='Dummy Picklist 4'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_4__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Picklist_4__c}"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem rendered="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_5__c.Label!='Dummy Picklist 5'}">
+                    <apex:outputLabel value="{!$ObjectType.Client_Invoice__c.Fields.Dummy_Picklist_5__c.Label}"/>
+                    <apex:inputField value="{!Client_Invoice__c.Dummy_Picklist_5__c}"/>
+             </apex:pageBlockSectionItem>
+             
+             
+        <!-- End of Dummy Fields-->
+
+
+
+
+
+
+
+
+</apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>  
+
+
+
+</apex:page>

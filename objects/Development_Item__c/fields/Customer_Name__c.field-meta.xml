@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Name__c</fullName>
+    <description>Name of Client.</description>
+    <externalId>false</externalId>
+    <label>Customer Name</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Baptist</fullName>
+                <default>false</default>
+                <label>Baptist</label>
+            </value>
+            <value>
+                <fullName>Base</fullName>
+                <default>true</default>
+                <label>Base</label>
+            </value>
+            <value>
+                <fullName>BIDMC</fullName>
+                <default>false</default>
+                <label>BIDMC</label>
+            </value>
+            <value>
+                <fullName>Brocade</fullName>
+                <default>false</default>
+                <label>Brocade</label>
+            </value>
+            <value>
+                <fullName>CNB</fullName>
+                <default>false</default>
+                <label>CNB</label>
+            </value>
+            <value>
+                <fullName>CNE</fullName>
+                <default>false</default>
+                <label>CNE</label>
+            </value>
+            <value>
+                <fullName>E!</fullName>
+                <default>false</default>
+                <label>E!</label>
+            </value>
+            <value>
+                <fullName>Entertainment Mktg</fullName>
+                <default>false</default>
+                <label>Entertainment Mktg</label>
+            </value>
+            <value>
+                <fullName>Epson</fullName>
+                <default>false</default>
+                <label>Epson</label>
+            </value>
+            <value>
+                <fullName>Fox</fullName>
+                <default>false</default>
+                <label>Fox</label>
+            </value>
+            <value>
+                <fullName>HD</fullName>
+                <default>false</default>
+                <label>HD</label>
+            </value>
+            <value>
+                <fullName>Loves</fullName>
+                <default>false</default>
+                <label>Loves</label>
+            </value>
+            <value>
+                <fullName>Michigan State University</fullName>
+                <default>false</default>
+                <label>Michigan State University</label>
+            </value>
+            <value>
+                <fullName>NBC Agency LA</fullName>
+                <default>false</default>
+                <label>NBC Agency LA</label>
+            </value>
+            <value>
+                <fullName>NBC CC</fullName>
+                <default>false</default>
+                <label>NBC CC</label>
+            </value>
+            <value>
+                <fullName>NBC IM</fullName>
+                <default>false</default>
+                <label>NBC IM</label>
+            </value>
+            <value>
+                <fullName>NBC Sports</fullName>
+                <default>false</default>
+                <label>NBC Sports</label>
+            </value>
+            <value>
+                <fullName>Oxygen</fullName>
+                <default>false</default>
+                <label>Oxygen</label>
+            </value>
+            <value>
+                <fullName>Suzanne TV</fullName>
+                <default>false</default>
+                <label>Suzanne TV</label>
+            </value>
+            <value>
+                <fullName>SyFy</fullName>
+                <default>false</default>
+                <label>SyFy</label>
+            </value>
+            <value>
+                <fullName>Universal Theme Parks</fullName>
+                <default>false</default>
+                <label>Universal Theme Parks</label>
+            </value>
+            <value>
+                <fullName>USA</fullName>
+                <default>false</default>
+                <label>USA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

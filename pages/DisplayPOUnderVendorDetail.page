@@ -1,0 +1,67 @@
+<apex:page controller="DisplayPOUnderVendorDetail" readOnly="true">
+<head>
+ <style>
+  .hd{text-align:right;padding-right:20px!important;}
+  </style>
+</head>  
+  <apex:form >
+   <apex:pageBlock id="pb">
+      <table>
+          <tr>
+              <td> <apex:image url="{!$Resource.BigTop}" width="25" height="25"/> </td>
+               <td> <h3 style="color:#000000;font-size:1.2em;">Purchase Orders</h3> </td>
+          </tr>
+      </table>
+    <div>
+     <apex:outputPanel layout="block" style="overflow:auto;height:150px;" rendered="{!purchaseorder.size > 0}">
+    <apex:pageBlockTable value="{!purchaseorder}" var="po" id="abc">
+    
+       <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Name.Label}">
+       <apex:outputLink tabindex="tab1" value="/apex/PODetailpage?id={!po.Id}">{!po.Name}</apex:outputLink>
+       </apex:column>
+       
+        <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Job__c.Label}"> 
+      <apex:outputField value="{!po.Job__r.Name}"/> 
+      </apex:column>
+      
+     
+      <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Approved_By_Staff__c.Label}"> 
+      <apex:outputField value="{!po.Approved_By_Staff__r.Name}"/> 
+      </apex:column>
+      
+      <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Invoice_Created__c.Label}"> 
+      <apex:outputField value="{!po.Invoice_Created__c}"/> 
+      </apex:column>
+           
+       <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!po.Issue_Date__c}"/>
+      </apex:column>
+      
+       <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!po.Due_Date__c}"/>
+      </apex:column>
+      
+      <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Total_Amount__c.Label}" style="text-align:right;padding-right:20px;" headerClass="hd">
+       <apex:outputField value="{!po.Total_Amount__c}"/>
+      </apex:column>
+      
+        <apex:column headerValue="{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}">
+       <apex:outputField value="{!po.Status__c}"/>
+      </apex:column>
+      
+    
+    </apex:pageBlockTable>
+    </apex:outputpanel>
+    </div>
+  
+    <apex:pageBlockSection rendered="{!purchaseorder.Size == 0}">
+     <apex:pageBlockSectionItem >
+     <b> No records to display </b>
+     
+     </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+   </apex:pageBlock>
+   
+  </apex:form>
+</apex:page>

@@ -1,0 +1,3 @@
+<design:component>
+    <design:attribute name="StatusNotesSection" label="Status Notes Section Label" description="This will reflect the Status Notes Section Label" />
+</design:component>

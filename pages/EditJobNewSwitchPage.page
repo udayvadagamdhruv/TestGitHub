@@ -1,0 +1,12 @@
+<apex:page standardController="Job__c" extensions="CreateNewJobNewSwitchPageExt" sidebar="{!isLtng}" docType="html-5.0" applyBodyTag="{!isLtng}" applyHtmlTag="{!isLtng}" showHeader="{!isLtng}">
+
+     <apex:outputPanel id="cls" rendered="{! !isLtng}">
+        <apex:include pageName="EditJobNew"/>
+    </apex:outputPanel> 
+    <apex:outputPanel id="ltng" rendered="{!isLtng}">
+         <apex:include pageName="EditJobNewLightning"/>
+    </apex:outputPanel>
+  
+
+
+</apex:page>

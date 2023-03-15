@@ -1,0 +1,65 @@
+<apex:page standardController="Timesheet_Entries__c"  extensions="EditTimesheetEntryLightningExt" standardStylesheets="true" >
+ 
+ <apex:sectionHeader title="Edit Timesheet Entry"/>
+ <apex:form >
+ <apex:pageMessages />
+ <apex:pageBlock >
+ <apex:pageBlockButtons location="both" > 
+ <apex:commandButton value="Save" action="{!save}" />
+ <apex:commandButton value="Cancel" action="{!cancel}"/>
+ </apex:pageBlockButtons>
+  <apex:pageBlockSection columns="2" id="pbs"  title="Information" collapsible="true" >
+  
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel value="{!$ObjectType.Timesheet_Entries__c.Fields.Name.label}"></apex:outputLabel>
+    <apex:outputField value="{!TSEntry.Name}"/>
+    </apex:pageBlockSectionItem>
+    
+     <apex:pageBlockSectionItem >
+    <apex:outputLabel value="{!$ObjectType.Timesheet_Entries__c.Fields.Job__c.label}"></apex:outputLabel>
+     <apex:outputText value="{!jobname}"/>
+    </apex:pageBlockSectionItem>
+    
+      <apex:pageBlockSectionItem >
+     <apex:outputLabel value="{!$ObjectType.Timesheet_Entries__c.Fields.Hours_Worked__c.label}"></apex:outputLabel>
+     <apex:inputField value="{!TSEntry.Hours_Worked__c}"/>
+    </apex:pageBlockSectionItem>
+    
+       <apex:pageBlockSectionItem rendered="{!!showTaskSelectList}" >
+       <apex:outputLabel value="{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.label}"></apex:outputLabel>
+     <apex:outputText value="{!TSEntry.Task_Name__c }" />
+       </apex:pageBlockSectionItem>
+       
+     <apex:pageBlockSectionItem rendered="{!showTaskSelectList}" >
+     <apex:outputLabel value="{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.label}"></apex:outputLabel>
+     <apex:selectList multiselect="false"   size="1"  value="{!selectedTask}">
+     <apex:selectOptions value="{!TaskName}"  ></apex:selectOptions>
+     <apex:actionSupport event="onchange" reRender="txtGL"/>
+     </apex:selectList>
+    </apex:pageBlockSectionItem>
+    
+     <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Date</apex:outputLabel>
+                    <apex:inputField value="{!TSEntry.Date__c}" />
+                </apex:pageBlockSectionItem>
+    
+  
+   <apex:pageBlockSectionItem >
+                    <apex:outputLabel >GL Code</apex:outputLabel>
+                    <apex:outputText value="{!GlCodeofTask}" id="txtGL" />
+    </apex:pageBlockSectionItem>
+    
+     <apex:pageBlockSectionItem >
+                    <apex:outputLabel rendered="{!$Profile.Name =='System Administrator'}" >User</apex:outputLabel>
+                    <apex:inputField value="{!TSEntry.User__c}" rendered="{!$Profile.Name =='System Administrator'}" />
+                </apex:pageBlockSectionItem> 
+  
+    </apex:pageBlockSection>
+    
+    
+   
+   
+    </apex:pageBlock>
+ </apex:form>
+ 
+</apex:page>

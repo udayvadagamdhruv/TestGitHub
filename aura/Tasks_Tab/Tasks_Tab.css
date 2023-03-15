@@ -1,0 +1,96 @@
+.THIS  .tablecss {
+    line-height: 30px;
+}
+
+.THIS .slds-accordion__summary
+{
+    margin-top: 5px;
+    margin-bottom: 18px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.THIS .frequired label:after {
+    content:" *";
+    color: #e32;
+}
+
+
+
+/*.THIS table {
+color: black !important;
+}
+.THIS table th{
+color: black !important;
+padding: 4px;
+}
+.THIS td{
+color: black !important;
+padding: 5px;
+white-space: nowrap;
+}
+
+.THIS .customTable th {
+background-color: #a1a1a1 !important;
+position: -webkit-sticky !important;
+position: sticky !important;
+top: 0 !important;
+z-index: 1 !important;
+}
+
+.THIS .customTable th[scope=row]:nth-child(1) {
+position: -webkit-sticky !important;
+position: sticky !important;
+left: 0 !important;
+z-index: 1 !important;
+}*/
+
+.THIS .slds-grid .slds-wrap{
+    width:100%;
+}
+
+.THIS .slds-modal__content{
+    /* overflow-y: hidden !important;*/
+}
+
+.THIS .helptext{
+    align-items:right !important;
+}
+
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+    height:150px !important;
+}
+.THIS .slds-p-horizontal_x-small{
+    /*added for edit layout fields alignment*/
+    padding-left:0px !important;
+    padding-right:0px !important;
+}
+.THIS .slds-p-around_small{
+    /*added for edit layout fields alignment*/
+    padding: 0 10px 0 10px !important;
+}
+
+.THIS .slds-accordion__summary
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* For Scrolling */
+/*The below is for scroolbar width and height  */
+.THIS ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.THIS ::-webkit-scrollbar-track {
+    display: none !important;
+}
+
+/*The below is for scroll line */
+.THIS ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.4);
+}

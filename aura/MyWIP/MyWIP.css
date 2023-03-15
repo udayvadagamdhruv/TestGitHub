@@ -1,0 +1,23 @@
+.THIS .tableClass{
+    line-height: 35px;
+}
+.THIS .fc {
+    font-size: 16.5px;
+}
+.THIS .rowcss {
+    background-color:green;
+    font-weight:bold;
+}
+.THIS .layoutPadding {
+    padding:9px 4px;
+}
+
+.THIS .slds-tabs_scoped__content {
+    padding:9px 6px;
+}
+.THIS .slds-textarea{
+    height:115px !important;
+}
+.THIS .slds-rich-text-area__content{
+      height:150px !important;
+}

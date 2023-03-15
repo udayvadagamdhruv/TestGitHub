@@ -1,0 +1,84 @@
+<apex:page standardController="Job__c" extensions="googlegantchart" standardStylesheets="false" showHeader="false" tabStyle="Job__c">
+ <html>
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+     function InitCharts() 
+                     {
+                             alert("hi");
+                             <!-- calls the function called 'loadrecords' in googlegantchart controller-->
+                             Visualforce.remoting.Manager.invokeAction(
+                              '{!$RemoteAction.googlegantchart.loadrecords}','{!recordId}',
+                             <!-- following the usual remoting syntax-->
+                             function(result, event) 
+                             {
+                             
+                                alert("result :: "+event.status);
+                                
+                                alert("result :: "+result[0]);
+                                 
+                                 //  var visualization = new google.visualization.Gantt(document.getElementById('chart_div'));
+                                 
+                                 var visualization = new google.visualization.Gantt(document.getElementById('chart_div'));
+                                 <!--adding data to Chart-->
+                                 var data = new google.visualization.DataTable();<!-- variable declaration-->
+                                  
+                                  data.addColumn('string', 'Task ID');
+                                  data.addColumn('string', 'Task Name');
+                                  data.addColumn('string', 'Resource');
+                                  data.addColumn('date', 'Start Date');
+                                  data.addColumn('date', 'End Date');
+                                  data.addColumn('number', 'Duration');
+                                  data.addColumn('number', 'Percent Complete');
+                                  data.addColumn('string', 'Dependencies');
+                                 
+                                 var tempId = '';
+                                 for (var i = 0; i < result.length; i++) 
+                                 {
+                                      var r = result[i];
+                                       alert("Name:: "+r);  
+                                      alert("Name:: "+r.Task_Name__c);  
+                                   
+                                  //   data.addRow(['TO: '+r.Task_Order__c ,''+r.Task_Name__c,''+r.Assigned_Users__c,new Date(2018,8,2), new Date(2018,8,18),null, null,null]);
+                                     
+                                     
+                                      data.addRow(['TO: '+r.Task_Order__c ,''+r.Task_Name__c,''+r.Assigned_Users__c,new Date(r.Start_Date__c), new Date(r.Revised_Due_Date__c),null, null,null]);
+                                     
+                                 }
+                                 
+                                 
+                                 
+                                 var options = 
+                                 {
+                                     height: 800,
+                                     width:1000,
+                                     gantt: 
+                                     {
+                                        //  trackHeight: 30
+                                        //  criticalPathEnabled:true
+                                        editable: true,
+                                        eventDurationEditable: true,
+                                        eventStartEditable: true,
+                                     }
+                                 };
+                                visualization.draw(data, options);<!-- draws a table that contains the result of data-->
+                             },
+                             {escape:true}
+                            
+                             
+                             );
+                     }
+  </script>
+</head>
+<body>
+  <div id="chart_div"></div>
+</body>
+</html>
+</apex:page>

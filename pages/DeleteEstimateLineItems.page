@@ -1,0 +1,16 @@
+<!-- This page is used to override the delete button of Estimate Line Item  -->
+<apex:page standardController="Estimate_Line_Items__c" extensions="DeleteEstimateLineItemExtension" sidebar="false" showHeader="false">
+
+       <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+       </script>   
+      
+       <apex:form >
+         <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+       </apex:form> 
+ 
+</apex:page>
+<!-- End of Page -->

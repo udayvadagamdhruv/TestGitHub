@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dummy_Text_6__c</fullName>
+    <description>This is dummy text field 6. It will be used as a variable field in subscriber org.</description>
+    <externalId>false</externalId>
+    <label>Dummy Text 6</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

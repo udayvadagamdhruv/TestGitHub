@@ -1,0 +1,50 @@
+<apex:page standardController="Job__c" showHeader="false"> 
+    <apex:slds />
+    <apex:includeLightning />
+     
+     <div class="slds-section slds-is-open">
+                             <h3 class="slds-section__title">
+                                <button class="slds-button slds-section__title-action" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; color: darkslategrey;font-weight: normal;line-height: 1.875rem;">
+                                  <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                    <use href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                  </svg>
+                                   
+                                  
+                                    Quip
+                                </button>
+                            </h3>
+                            
+                                <div class="slds-section__content" style="padding-left:30px;padding-right:30px;">     
+     
+     
+         <div id="quipdocs"  />
+         
+         </div>
+         </div>
+             <br/><br/> 
+        
+        
+            <script>
+             
+                quipRecordId = "{!JSENCODE(HTMLENCODE(Job__c.Id))}";
+                 $Lightning.use("c:QuipApp", function() {
+                    $Lightning.createComponent("quip:quip",
+                    {
+                        "recordId":quipRecordId,
+                        "orgId":"{!JSENCODE(HTMLENCODE($Organization.Id))}",
+                        "sObjectName":"Job__c"
+                        
+                    },
+                    "quipdocs",
+                    function(cmp) {});
+                });    
+            
+        
+   
+            </script>
+
+ <style>
+ .QuipQuip>iframe{width:100% !important;height:300px !important;}
+ </style>
+    
+ </apex:page>

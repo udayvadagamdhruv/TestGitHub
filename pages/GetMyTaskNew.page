@@ -1,0 +1,87 @@
+<apex:page controller="getMyTasksController" sidebar="false" showHeader="false" tabStyle="Job__c" >
+    <head>
+        <style>
+            .createNewButton
+            {
+                display:none;
+            }
+        </style>
+    </head>
+    
+    <apex:form >
+   
+   <apex:pageBlock title="JobSuite Tasks" >
+    
+  <!--   <apex:pageBlock >-->
+    
+       <apex:pageBlockButtons location="top">
+              <apex:commandButton value="My Calendar" onclick="window.open('apex/displayMyCalendarHome','_top')"></apex:commandButton>
+       </apex:pageBlockButtons>
+       <br/>
+     
+   <apex:outputPanel layout="block" rendered="{!taskroleWrap.size>0}" > <!-- style="overflow:auto;width:100%;height:350px" -- code commented by sushma for the display change -->
+        <apex:pageBlockTable value="{!taskroleWrap}" var="lst" rendered="{!taskroleWrap.size > 0}" columns="6" style="width:100%" id="pB">
+       
+        <apex:column width="20%">
+         <apex:facet name="header">   
+          <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job__c.Fields.Name.Label}{!IF(sortExpression=='Job_Task__r.Job__r.Name',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort2">
+          <apex:param value="Job_Task__r.Job__r.Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+          </apex:commandLink>
+         </apex:facet>
+         <apex:outputLink value="/apex/JobListView?id={!lst.jobTaskrole.Job_Task__r.Job__c}" target="_parent">
+         {!lst.jobTaskrole.Job_Task__r.Job__r.Name}
+         </apex:outputLink>
+       </apex:column>
+       
+        <apex:column width="20%">
+          <apex:facet name="header">   
+             <apex:commandLink action="{!ViewData}"  value="{!$ObjectType.Job_Task__c.Fields.Name.Label}{!IF(sortExpression=='Job_Task__r.Name',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort">
+             <apex:param value="Job_Task__r.Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+             </apex:commandLink>
+          </apex:facet>
+        <apex:outputLink tabindex="tab1" style="color:black;" value="/apex/JobTaskDetailPage?id={!lst.jobTaskrole.Job_Task__c}" target="_top" rendered="{!lst.color=='Black'}">{!lst.jobTaskrole.Job_Task__r.Name}</apex:outputLink>
+        <apex:outputLink tabindex="tab1" style="color:red;" value="/apex/JobTaskDetailPage?id={!lst.jobTaskrole.Job_Task__c}" target="_top" rendered="{!lst.color=='Red'}" >{!lst.jobTaskrole.Job_Task__r.Name}</apex:outputLink>
+        <apex:outputLink tabindex="tab1" style="color:green;" value="/apex/JobTaskDetailPage?id={!lst.jobTaskrole.Job_Task__c}" target="_top" rendered="{!lst.color=='Green'}" >{!lst.jobTaskrole.Job_Task__r.Name}</apex:outputLink>
+       </apex:column>
+          
+       <apex:column width="15%" value="{!lst.jobTaskrole.Job_Task__r.Revised_Due_Date__c}">
+         <apex:facet name="header">   
+           <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}{!IF(sortExpression=='Job_Task__r.Revised_Due_Date__c',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort1">
+           <apex:param value="Job_Task__r.Revised_Due_Date__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+         
+       <apex:column value="{!lst.jobTaskrole.Job_Task__r.Status__c}" width="8%" headerValue="Status"></apex:column>
+          
+      
+          
+       <apex:column width="12%" value="{!lst.jobTaskrole.Job_Task__r.Job__r.Job_Auto_Number__c}">
+          <apex:facet name="header">   
+           <apex:commandLink action="{!ViewData}" value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}{!IF(sortExpression=='Job_Task__r.Job__r.Job_Auto_Number__c',IF(sortDirection='ASC','▼','▲'),'')}" id="cmdSort3">
+           <apex:param value="Job_Task__r.Job__r.Job_Auto_Number__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+          </apex:facet>
+       </apex:column>   
+       
+       <apex:column width="13%" headerValue="Action">
+         <apex:commandButton value="Task Done" action="{!assignMarkedDone1}" reRender="pB" oncomplete="window.location.reload();">
+         <apex:param name="param5" value="{!lst.jobTaskrole.Job_Task__r.Id}" assignTo="{!strJTID}" > </apex:param>
+         </apex:commandButton>
+       </apex:column>   
+              
+   </apex:pageBlockTable>
+ </apex:outputPanel>
+          
+        
+        <apex:pageBlockSection rendered="{!taskroleWrap.size <= 0}" >
+           <apex:pageBlockSectionItem >
+           <b>No task to display</b>
+           </apex:pageBlockSectionItem>              
+         </apex:pageBlockSection>
+         
+             </apex:pageBlock>
+  
+    </apex:form>
+   
+</apex:page>

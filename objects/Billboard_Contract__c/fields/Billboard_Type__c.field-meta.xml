@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Billboard_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Billboard Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Billboard</fullName>
+                <default>false</default>
+                <label>Billboard</label>
+            </value>
+            <value>
+                <fullName>DOT</fullName>
+                <default>false</default>
+                <label>DOT</label>
+            </value>
+            <value>
+                <fullName>Cost Share</fullName>
+                <default>false</default>
+                <label>Cost Share</label>
+            </value>
+            <value>
+                <fullName>Land Lease</fullName>
+                <default>false</default>
+                <label>Land Lease</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

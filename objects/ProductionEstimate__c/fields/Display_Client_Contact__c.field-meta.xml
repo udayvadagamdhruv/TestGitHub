@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Display_Client_Contact__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>To display the Client Contact field in the Job New/Edit Layout or Not (BLIH)</description>
+    <externalId>false</externalId>
+    <label>Display Client Contact</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

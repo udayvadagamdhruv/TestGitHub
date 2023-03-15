@@ -1,0 +1,6 @@
+<apex:page standardController="Campaign_Template__c" tabStyle="MyAdmin__tab">
+ 
+ <apex:detail relatedList="false" showChatter="true"/>
+ 
+ <apex:include pageName="JobsUnderCampaignTemplate" />
+</apex:page>

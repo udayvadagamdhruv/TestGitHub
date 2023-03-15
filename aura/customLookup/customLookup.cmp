@@ -1,0 +1,118 @@
+<aura:component controller="customLookUpController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <!--declare attributes--> 
+    <aura:attribute name="selectedRecord" type="sObject" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="DepenselectedRecord" type="sObject" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="listOfSearchRecords" type="List" description="Use,for store the list of search records which returns from apex class"/>
+    <aura:attribute name="listOfDepenRecords" type="List" description="Use,for store the list of search dependent records which returns from apex class"/>
+    <aura:attribute name="SearchKeyWord" type="string"/>
+    <aura:attribute name="DepSearchKeyWord" type="string"/>
+    <aura:attribute name="objectAPIName" type="string" default=""/>
+    <aura:attribute name="DepobjectAPIName" type="string" default=""/>
+    <aura:attribute name="RelationShipName" type="string" default=""/>
+    <aura:attribute name="ParentFilter" type="string" default=""/>
+    <aura:attribute name="ChildFilter" type="string" default=""/>
+    <aura:attribute name="ParentSortBy" type="string" default=""/>
+    <aura:attribute name="ChildSortBy" type="string" default=""/>
+    <aura:attribute name="IconName" type="string" default=""/>
+    <aura:attribute name="DepIconName" type="string" default=""/>
+    <aura:attribute name="ParentRecId" type="string" default=""/>    
+    <aura:attribute name="label" type="string" default=""/>
+    <aura:attribute name="Depelabel" type="string" default=""/>
+    <aura:attribute name="Message" type="String" default=""/>
+    <aura:attribute name="DepMessage" type="String" default=""/>
+    <aura:attribute name="IsDependent" type="boolean" default="true"/>
+    <aura:attribute name="IsParentReq" type="boolean" default="false"/>
+    <aura:attribute name="IsChildReq" type="boolean" default="false"/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInIt}"/> 
+    <!--declare events hendlers-->
+    
+    <!--register event name must be same as handler name for component events -->
+    <aura:handler name="oSelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.handleComponentEvent}"/>
+    <aura:handler name="DepoSelectedRecordEvent" event="c:DepselectedsObjectRecordEvent" action="{!c.DephandleComponeSntEvent}"/>
+    
+    <!--Application event for the get the Controlling Lookfield Id to fetch the dependent records -->
+    <aura:handler name="ParentChangedEvent" event="c:dependentappEvent" action="{!c.getDependentRecords}"/> 
+    
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ --> 
+    
+    <aura:method name="sampleMethod" action="{!c.PopulateLookupvalues}" description="This will the SObject record" access="public"> 
+        <aura:attribute name="ParentObject" type="sObject" default="" /> 
+        <aura:attribute name="ChildObject" type="sObject" default=""  /> 
+    </aura:method>
+    
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="{!v.IsDependent?'6':'12'}" largeDeviceSize="{!v.IsDependent?'6':'12'}"  class="{!v.IsDependent?'paddingclass':''}" >
+            <div onmouseleave="{!c.onblur}" aura:id="searchRes" class="slds-form-element slds-lookup slds-is-close" data-select="single">
+                <label class="{!'slds-form-element__label' + ' ' +(v.IsParentReq? 'frequired' :' ')}" for="lookup-348">{!v.label}</label>
+                <!--This part is for display search bar for lookup-->  
+                <div class="slds-form-element__control">
+                    <div class="slds-input-has-icon slds-input-has-icon--right">
+                        <!-- This markup is for when an record is selected -->
+                        <div aura:id="lookup-pill" class="slds-pill-container slds-hide">
+                            <lightning:pill class="pillSize" label="{!v.selectedRecord.Name}" name="{!v.selectedRecord.Name}" onremove="{! c.clear }">
+                                <aura:set attribute="media">
+                                    <lightning:icon iconName="{!v.IconName}" size="x-small" alternativeText="{!v.IconName}"/>
+                                </aura:set>
+                            </lightning:pill>
+                        </div>
+                        <div aura:id="lookupField" class="slds-show">
+                            <lightning:icon class="slds-input__icon slds-show" iconName="utility:search" size="x-small" alternativeText="search"/>
+                            <span class="slds-icon_container  slds-combobox__input-entity-icon" title="record">
+                                <lightning:icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default" iconName="{!v.IconName}" size="x-small" alternativeText="icon"/>
+                                <span class="slds-assistive-text"></span>
+                            </span>
+                            <ui:inputText click="{!c.onfocus}" updateOn="keyup" keyup="{!c.keyPressController}" class="slds-lookup__search-input slds-input leftPaddingClass" value="{!v.SearchKeyWord}" placeholder="search.."/>
+                        </div>   
+                    </div>
+                </div>
+                <ul style="min-height:40px;max-height:300px;overflow:auto;margin-top:0px !important;" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-lookup__menu slds" role="listbox"> 
+                    <lightning:spinner class="slds-hide" variant="brand" size="small" aura:id="mySpinner"/>
+                    <center> {!v.Message}</center>
+                    <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
+                        <c:customLookupResult aura:id="ParentObjId" oRecord="{!singleRec}" IconName="{!v.IconName}"/>
+                    </aura:iteration>
+                </ul>
+                
+            </div>
+        </lightning:layoutItem> 
+        
+        <aura:if isTrue="{!v.IsDependent}"> 
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" class="{!v.IsDependent?'Deppaddingclass':''}" >   
+                <div onmouseleave="{!c.Deponblur}" aura:id="DepsearchRes" class="slds-form-element slds-lookup slds-is-close" data-select="single">
+                    <label class="{!'slds-form-element__label'+ ' ' +(v.IsChildReq?'frequired':' ')}" for="lookup-348">{!v.Depelabel}</label>
+                    <!--This part is for display search bar for lookup-->  
+                    <div class="slds-form-element__control">
+                        <div class="slds-input-has-icon slds-input-has-icon--right">
+                            <!-- This markup is for when an record is selected -->
+                            <div aura:id="Deplookup-pill" class="slds-pill-container slds-hide">
+                                <lightning:pill class="pillSize" label="{!v.DepenselectedRecord.Name}" name="{!v.DepenselectedRecord.Name}" onremove="{! c.Depclear}">
+                                    <aura:set attribute="media">
+                                        <lightning:icon iconName="{!v.DepIconName}" size="x-small" alternativeText="{!v.DepIconName}"/>
+                                    </aura:set>
+                                </lightning:pill>
+                            </div>
+                            <div aura:id="DeplookupField" class="slds-show">
+                                <lightning:icon class="slds-input__icon slds-show" iconName="utility:search" size="x-small" alternativeText="search"/>
+                                <span class="slds-icon_container  slds-combobox__input-entity-icon" title="record">
+                                    <lightning:icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default" iconName="{!v.DepIconName}" size="x-small" alternativeText="icon"/>
+                                    <span class="slds-assistive-text"></span>
+                                </span>
+                                <ui:inputText click="{!c.Deponfocus}" updateOn="keyup" keyup="{!c.DepkeyPressController}" class="slds-lookup__search-input slds-input leftPaddingClass" value="{!v.DepSearchKeyWord}" placeholder="search.."/>
+                            </div>   
+                        </div>
+                    </div>
+                    <ul style="min-height:40px;max-height:300px;overflow:auto;margin-top:0px !important;" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-lookup__menu slds" role="listbox"> 
+                        <lightning:spinner class="slds-hide" variant="brand" size="small" aura:id="depmySpinner"/>
+                        <center> {!v.DepMessage}</center>
+                        <aura:iteration items="{!v.listOfDepenRecords}" var="DepsingleRec" >
+                            <c:customLookupResultDependent aura:id="ChildObjId"  DepoRecord="{!DepsingleRec}" DepIconName="{!v.DepIconName}"/>
+                        </aura:iteration>
+                    </ul>
+                </div>
+            </lightning:layoutItem> 
+        </aura:if>   
+    </lightning:layout>
+    
+</aura:component>

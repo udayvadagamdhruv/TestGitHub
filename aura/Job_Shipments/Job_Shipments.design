@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="ShipmentSection" label="Shipment Section Label"  description="This will reflect the Shipment Section Label"/>
+</design:component>

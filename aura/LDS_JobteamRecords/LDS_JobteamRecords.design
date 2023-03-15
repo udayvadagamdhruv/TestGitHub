@@ -1,0 +1,7 @@
+<design:component>
+    <design:attribute name="SectionName1" label="Team Section Label"  description="This will reflect the  Team Section Label" />
+    <design:attribute name="SectionName2" label="Tasks Section Label" description="This will reflect the  Tasks Section Label" />
+    <design:attribute name="SectionName3" label="Specs Section Label" description="This will reflect the  Specs Section Label" />
+    <design:attribute name="UpdateButton" label="Update Button" description="This will reflect the show or hide the update button on team section" />
+	<design:attribute name="helpteam" label="Help Text for team" description="Help text for team" />
+</design:component>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Material Usage line item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Material Usage line items</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>MIUIFieldSet</name>
+    </fieldSets>
+    <layouts>
+        <layout>Material Usage line item Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

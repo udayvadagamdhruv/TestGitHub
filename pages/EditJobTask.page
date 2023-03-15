@@ -1,0 +1,235 @@
+<!-- This page is used to edit Job Task (Schedule) under Job Tab-->
+
+<apex:page standardController="Job_Task__c" extensions="EditJobTaskExtension" tabStyle="Job__c" >
+     <head>
+     
+     
+        <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-1.5.1.min.js')}" type="text/javascript" />
+        <script src="{!URLFOR($Resource.jQueryScheduleUpadate,'/js/jquery-ui-1.8.13.custom.min.js')}" type="text/javascript" />
+        <apex:stylesheet value="{!URLFOR($Resource.jQueryScheduleUpadate,'/css/ui-lightness/jquery-ui-1.8.13.custom.css')}" />
+  
+       <script>
+
+           var PEboo;
+           var str,sch;
+           
+            
+              var j$ = jQuery.noConflict();
+                 
+                 j$(document).ready(function(){
+                 j$( "#dialog-confirm1").dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    height:150,
+                    modal: true,
+                    buttons: {
+                        "Yes": function() {
+                             //alert(document.getElementById('{!$Component.frm1}').value);
+                             document.getElementById('{!$Component.frm1}').value = 'true';
+                         
+                             j$( this ).dialog( "close" );
+                        },
+                        "No": function() {
+                        
+                            sch.value = str;  
+                            j$( this ).dialog( "close" );
+                           
+                        }
+                    }
+                });
+                
+                
+                
+                 j$( "#dialog-confirm2").dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    height:150,
+                    modal: true,
+                    buttons: {
+                        "Yes": function() {
+                            
+                           
+                             //document.getElementById('{!$Component.frm1}').value = 'true';
+                         
+                             j$( this ).dialog( "close" );
+                        },
+                        "No": function() {
+                        
+                            sch.value = str;  
+                            j$( this ).dialog( "close" );
+                           
+                        }
+                    }
+                });
+                
+                
+                
+                
+                
+                });
+                    
+                function scheduleRevisedDateUpdate(strvalue,scheduleCalc)
+                {
+                    str=strvalue;
+                    sch=scheduleCalc;
+                   
+                    
+                    j$( "#dialog-confirm1" ).dialog( "open" ); 
+                }    
+            
+      
+                
+                function scheduleDaysUpdate(strvalue,schedule)
+                {  
+                
+                      j$( "#dialog-confirm2" ).dialog( "open" ); 
+                
+                    str=strvalue;
+                    sch=schedule;
+                      
+                }
+                
+            </script>
+     </head>
+     <apex:form id="frm1">
+       
+      
+        <apex:pageBlock mode="edit">
+        <apex:pageMessages />
+            <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveme}" value=" Save "></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+                 </apex:pageBlockButtons>
+              
+              <apex:pageBlockSection title="Task Detail" columns="2" collapsible="false"> 
+              
+            
+              
+              <apex:pageBlockSectionItem rendered="{!Job_Task__c.Locked__c==False}">
+                    <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Name.Label}"/><apex:inputfield value="{!Job_Task__c.Name}" required="true"/>
+              </apex:pageBlockSectionItem>
+              
+              <apex:pageBlockSectionItem rendered="{!Job_Task__c.Locked__c==True}">
+                    <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Name.Label}"/><apex:outputfield value="{!Job_Task__c.Name}" />
+              </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionitem > 
+                     <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Job__c.Label}"/>
+                     <apex:outputfield value="{!Job_Task__c.Job__c}"/>
+                </apex:pageBlockSectionitem>
+
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Status__c.Label}"></apex:outputLabel>
+                     <apex:inputField value="{!Job_Task__c.Status__c}" required="true"/>
+                 </apex:pageBlockSectionItem>
+                         
+               <apex:pageBlockSectionItem >                  
+                  <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.GL_Code__c.Label}" for="GLCName" ></apex:outputLabel>
+                  <apex:outputPanel >
+                  <span class="requiredInput" Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">
+                  <!-- <div class="requiredBlock"> </div> -->
+                  <apex:selectList id="glcName" value="{!GLCName}" size="1">
+                  <apex:selectOptions value="{!GLCodes}"></apex:selectOptions> 
+                  </apex:selectList>
+                  </span>
+                  </apex:outputPanel>  
+               </apex:pageBlockSectionItem>
+                  
+                 <apex:pageBlockSectionitem > 
+                     <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Start_Date__c.Label}"/>
+                     <apex:inputField value="{!Job_Task__c.Start_Date__c}"/>
+                 </apex:pageBlockSectionitem>
+                  
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}"></apex:outputLabel>
+                      <apex:inputField value="{!Job_Task__c.Revised_Due_Date__c}" required="true" onchange="scheduleRevisedDateUpdate('{!Job_Task__c.Revised_Due_Date__c}',this);"/>
+                 </apex:pageBlockSectionItem>
+                  
+                  
+             
+                
+                <apex:pageBlockSectionitem > 
+                      <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Task_Start_Time_Text__c.Label}" />
+                      <apex:inputField value="{!Job_Task__c.Task_Start_Time_Text__c}" html-placeholder="H:MM AM/PM"/>
+                </apex:pageBlockSectionitem>
+                
+                 <apex:pageBlockSectionitem > 
+                      <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Task_End_Time_Text__c.Label}"/>
+                      <apex:inputField value="{!Job_Task__c.Task_End_Time_Text__c}" html-placeholder="H:MM AM/PM"/>
+                </apex:pageBlockSectionitem>
+                
+                
+                   <apex:pageBlockSectionitem > 
+                       <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Completion_Date__c.Label}"/>
+                       <apex:inputField value="{!Job_Task__c.Completion_Date__c}"/>
+                </apex:pageBlockSectionitem>
+                
+                <apex:pageBlockSectionitem > 
+                      <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}"/>
+                      <apex:outputField value="{!Job_Task__c.Marked_Done__c}"/>
+                </apex:pageBlockSectionitem>
+                
+                
+               <apex:pageBlockSectionitem rendered="{!Job_Task__c.Locked__c==False}"> 
+                   <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Days__c.Label}"/>
+                   <apex:inputField value="{!Job_Task__c.Days__c}"  onchange="scheduleDaysUpdate('{!Job_Task__c.Days__c}',this);"/>
+               </apex:pageBlockSectionitem>
+                 
+                 <apex:pageBlockSectionitem rendered="{!Job_Task__c.Locked__c==True}"> 
+                       <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Days__c.Label}"/>
+                       <apex:outputField value="{!Job_Task__c.Days__c}"/>
+                 </apex:pageBlockSectionitem>
+                   
+                  <apex:pageBlockSectionitem > 
+                      <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Task_Order__c.Label}"/>
+                      <apex:outputField value="{!Job_Task__c.Task_Order__c}"/>
+                </apex:pageBlockSectionitem>
+                  
+                  
+            <!--    <apex:pageBlockSectionitem > 
+                       <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Start_Date__c.Label}"/>
+                       <apex:outputField value="{!Job_Task__c.Start_Date__c}"/>
+                </apex:pageBlockSectionitem>  -->
+               
+               <apex:pageBlockSectionitem > 
+                   <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Locked__c.Label}"/>
+                   <apex:outputField value="{!Job_Task__c.Locked__c}"/>
+               </apex:pageBlockSectionitem>
+
+                
+                                            
+               <apex:pageBlockSectionitem > 
+                   <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Report__c.Label}"/><apex:outputField value="{!Job_Task__c.Report__c}"/>
+               </apex:pageBlockSectionitem>       
+                           
+             <!--   <apex:pageBlockSectionItem >
+                 <apex:outputLabel Value="{!$ObjectType.Job_Task__c.Fields.Due_Date__c.Label}"  ></apex:outputLabel>
+                 <apex:outputField value="{!Job_Task__c.Due_Date__c}"/>
+                </apex:pageBlockSectionItem> -->
+                 
+               
+                
+                     
+        <div id="dialog-confirm1">
+            <p>
+                Do you want to update the rest of the tasks on the schedule?
+            </p>
+        </div> 
+        
+        
+         <div id="dialog-confirm2">
+            <p>
+               Do you want to update the rest of the tasks on the schedule?
+            </p>
+        </div>                                        
+              
+                
+             
+                
+                
+                
+           </apex:pageBlockSection>
+       </apex:pageblock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

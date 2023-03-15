@@ -1,0 +1,110 @@
+<apex:page controller="Example1">
+   <!-- <apex:form >
+        <apex:pageMessages id="ff"/>
+
+            <apex:pageBlock id="pb">
+            
+            <apex:pageBlockButtons >
+                      <apex:commandButton value="Mark Complete" action="{!Complete}" reRender="pb,tstpopup2" status="mark"/>
+                      
+                        <apex:actionStatus id="mark">
+                             <apex:facet name="start">
+                                <img src="/img/loading.gif" />&nbsp;&nbsp; <b> Please Wait....... </b>
+                             </apex:facet>
+                         </apex:actionStatus> 
+                      
+                      <apex:commandButton value="Cancel" action="{!CancelBut}"/>
+                  </apex:pageBlockButtons>
+            
+               <b style="color:maroon; margin-left:90%; " > Total Records {!count}</b><br/><br/>
+                  <apex:variable var="ind" value="{!-1}">
+                     <apex:pageBlockTable value="{!jobsInnerObj}" var="inner">
+                          <apex:column width="10%" headerValue="Action">
+                              <apex:inputCheckbox value="{!inner.isSelected}"/>
+                          </apex:column> 
+                           <apex:column headerValue="Job#" width="20%">
+                                <apex:outputField value="{!inner.jobs.Job_Auto_Number__c }"/> 
+                           </apex:column>
+                           <apex:column headerValue="Job Name" width="40%">
+                               <apex:variable var="ind" value="{! ind +1}"/>
+                               <apex:outputField value="{!inner.jobs.name}"/> 
+                           </apex:column>
+                          
+                      </apex:pageBlockTable>
+                  </apex:variable>
+                  
+                  <br/><br/>
+                  
+                  <apex:outputPanel >
+                  
+                  
+                  <apex:actionStatus id="edstatus">
+                             <apex:facet name="start">
+                                <img src="/img/loading.gif" />&nbsp;&nbsp; <b> Please Wait....... </b>
+                             </apex:facet>
+                         </apex:actionStatus> 
+                      
+                       
+                      <apex:commandButton value="<<Previous" action="{!previous}" rendered="{!hasPrevious}" status="edstatus" rerender="pb"/>
+                      <apex:commandButton value="Next >>" action="{!next}" rendered="{!hasNext}" status="edstatus1" rerender="pb"/>
+                      
+                       <apex:actionStatus id="edstatus1">
+                             <apex:facet name="start">
+                                  <img src="/img/loading.gif" />&nbsp;&nbsp; <b> Please Wait....... </b>
+                             </apex:facet>
+                         </apex:actionStatus> 
+                         
+                  </apex:outputPanel>
+                  
+                  
+              
+        </apex:pageBlock>
+        
+         <apex:outputPanel id="tstpopup2">
+                <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!load}"/>
+                <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!load}" ><br/>
+                    <center>
+                        <b><Font style="color:orange;font-size:25px;">Sucessfully Updated {!size} Jobs</Font></b><br/><br/>
+                        <apex:pageMessages /><br/>
+                        <b> <apex:commandButton value="OK" action="{!CancelBut}" style="width:20%;height:40%;font-size:160%;"/> </b>
+                    </center>
+               </apex:outputPanel>
+        </apex:outputPanel>
+        
+    </apex:form>
+    
+     <style type="text/css">
+        .custPopup{
+            background-color: white;
+            border: 2px solid orange;
+            border-radius: 20px;
+            z-index: 9999;
+            left: 50%;
+            padding:10px;
+            position: absolute;
+            /* These are the 3 css properties you will need to change so the popup 
+            displays in the center of the screen. First set the width. Then set 
+            margin-left to negative half of what the width is. You can add 
+            the height property for a fixed size pop up if you want.*/
+            width: 500px;
+            margin-left: -250px;
+            top:50px;
+        }
+        .popupBackground{
+            background-color:lightblue;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        .a:focus {
+            background-color:orange;
+        }
+
+    </style> 
+-->
+</apex:page>

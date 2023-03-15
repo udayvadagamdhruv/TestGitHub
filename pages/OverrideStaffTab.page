@@ -1,0 +1,14 @@
+<!-- this page is used to override staff tab -->
+<apex:page tabStyle="Staff__c">
+    <apex:form >
+        <apex:pageblock >
+            <apex:pagemessages />
+        
+            <apex:pageblockbuttons >
+                <apex:commandButton value="New User" action="{!}"/>
+                <apex:commandButton value="New Staff" action="{!}"/>
+            </apex:pageblockbuttons>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>
+<!-- End of Page -->

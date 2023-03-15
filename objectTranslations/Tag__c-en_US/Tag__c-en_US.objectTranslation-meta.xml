@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Job Tags</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Job Tags</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>TagsFieldsets</name>
+    </fieldSets>
+    <layouts>
+        <layout>Tag Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Delete</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Tag_Start_Date_Less_Than_Tag_Due_Date</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Tag_Start_Date_Less_Than_Tag_End_Date</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Tags_View</name>
+    </webLinks>
+</CustomObjectTranslation>

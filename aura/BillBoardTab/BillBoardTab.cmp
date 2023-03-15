@@ -1,0 +1,95 @@
+<aura:component controller="BillBoardController" implements="lightning:actionOverride,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="fieldSet" type="List"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="sObjectName" type="string"/>
+    <aura:attribute name="selectedLookUpRecord_Ven" type="sObject" default="{}"/>
+    <aura:attribute name="VenRecord" type="String" default="" /> 
+    <aura:attribute name="selectedLookUpRecord_CLI" type="sObject" default="{}"/>
+    <aura:attribute name="CLIRecord" type="String" default="" /> 
+    <aura:attribute name="VenPopulate" type="sObject" />
+    <aura:attribute name="CLIPopulate" type="sObject" />
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:recordEditForm aura:id="BBEditform" density="comfy"  objectApiName="{!v.sObjectName}"  recordId="{!v.recordId}" onsubmit="{!c.RecordSubmit}" onload="{!c.onloadrecord}"  onsuccess="{!c.onRecordSuccess}" >
+        <lightning:messages />
+        <!--************************************************  MODAL BOX Start *************************************************--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{!c.doCancel}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 class="slds-text-heading--medium"> 
+                        <aura:if isTrue="{!v.recordId!=null}">
+                            Edit {!v.record.fields.Name.value}
+                            <aura:set attribute="else">
+                                New {!v.Labelname} 
+                            </aura:set>
+                        </aura:if> 
+                    </h2>
+                </header>
+                <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                    <lightning:messages/>
+                    <aura:iteration items="{!v.fieldSet}" var="field">
+                        <aura:if isTrue="{!(field=='BB_Vendor__c')||(field=='Client_Name__c')}">    
+                            <aura:set attribute="else">   
+                                <lightning:inputField fieldName="{!field}" aura:id="BBField"  class="{!'slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small' + ' ' +((field=='Name') ? 'frequired' :' ')}"/> 
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!field=='BB_Vendor__c'}">
+                            <div class="slds-size--1-of-2 slds-p-horizontal_x-small">
+                                <c:customLookup aura:id="VenauraId" objectAPIName="Vendor__c" DepobjectAPIName="" IconName="custom:custom14" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_Ven}" 
+                                                DepenselectedRecord="" label="{!v.ObjectType.Billboard__c.BB_Vendor__c.label}" Depelabel="" RelationShipName="" ParentFilter="Vendor_Type__c ='Outdoor'"  ChildFilter=""
+                                                ParentRecId="{!v.VenRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                            </div>   
+                        </aura:if> 
+                         <aura:if isTrue="{!field=='Client_Name__c'}">
+                            <div class="slds-size--1-of-2 slds-p-horizontal_x-small">
+                                <c:customLookup aura:id="CLIauraId" objectAPIName="Client__c" DepobjectAPIName="" IconName="standard:partner_fund_request" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_CLI}" 
+                                                DepenselectedRecord="" label="{!v.ObjectType.Billboard__c.Client_Name__c.label}" Depelabel="" RelationShipName="" ParentFilter=""  ChildFilter=""
+                                                ParentRecId="{!v.CLIRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />
+                            </div>   
+                        </aura:if> 
+                    </aura:iteration>    
+                </div>
+                <!--************************************************ MODAL BOX FOOTER Part Start **************************************************-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{!c.doCancel}"/>
+                    <lightning:button variant="brand" 
+                                      label="Save"
+                                      title="Save"
+                                      type="submit" />
+                </footer>
+            </div>
+            
+        </section>
+        <!--************************************************ MODAL BOX Part END Here **************************************************-->
+    </lightning:recordEditForm> 
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            {!v.recordError}</div>
+    </aura:if>   
+    
+</aura:component>

@@ -1,0 +1,16 @@
+<!-- This page is used to Delete Job Task(Schedules) on a Job tab -->
+<apex:page standardController="Job_Task__c" extensions="DeleteJobTaskExtension" showHeader="false" sidebar="false">
+
+        <script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+
+</apex:page>
+<!-- Endo of Page -->

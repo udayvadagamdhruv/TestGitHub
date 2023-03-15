@@ -1,0 +1,22 @@
+<apex:page standardController="Production_Spec_Template__c" standardStylesheets="true"  sidebar="false" showHeader="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+
+ <script>
+ var sw='{!$User.UITheme=='Theme3'}';
+ if(sw=='true')
+ {
+ 
+   window.open('/apex/CreateNewProductionSpecTemplate','_self');
+ }
+ 
+ </script>
+ 
+ 
+  <apex:outputpanel rendered="{!$User.UITheme=='Theme4d'}" >
+ 
+       <apex:include pageName="CreateNewProductionSpecTemplateLightning" />
+       
+  </apex:outputpanel>
+ 
+ 
+ 
+</apex:page>

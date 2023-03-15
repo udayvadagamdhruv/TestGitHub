@@ -1,0 +1,22 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" controller="Fetch_Completed_Jobs">
+    <aura:attribute name="recordId" type="id" />  
+    <aura:attribute name="Jobs" type="List" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="selectedjobrecords" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}"/>
+    
+    <lightning:card>
+        <aura:set attribute="actions">
+            <lightning:button label="create Invoice"  onclick="{!c.select}" variant="brand" />
+        </aura:set>
+        <div style="height: 300px;color:black;">
+            <lightning:datatable
+                                 keyField="id"
+                                 data="{! v.Jobs }"
+                                 columns="{! v.columns }"
+                                 hideCheckboxColumn="false"
+                                 onrowselection="{!c.viewRecord}">
+            </lightning:datatable>          
+        </div>
+    </lightning:card>
+</aura:component>

@@ -1,0 +1,132 @@
+<aura:component controller="BillBoardController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalength" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="DESC" />
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isBBInvLIOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="BBInvLIRecordid" type="String"/>
+    
+    <aura:attribute name="selectedLookUpRecord_GLD" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpRecord_GLC" type="sObject" default="{}"/>
+       
+    <aura:attribute name="GLDRecords" type="Object" />
+    <aura:attribute name="GLCRecords" type="Object" />
+    
+    <aura:attribute name="SelectedGLDId" type="String" />
+    <aura:attribute name="changeGLDId" type="String" />
+    
+    <aura:attribute name="GLDRecord" type="String"/>  
+    <aura:attribute name="GLCRecord" type="String"/>
+
+    <aura:attribute name="ObjectType" type="Object"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="BBInvLISection" type="String" default="Billboard Invoice Line Item" required="true" access="global"/>
+    
+    <force:recordData aura:id="BBInvLIID"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.record}"
+                      targetError="{!v.recordError}"
+                      targetFields="{!v.simpleRecord}"
+                      />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="BillboardInvoiceLineItem">
+        <lightning:accordionSection name="BillboardInvoiceLineItem" label="Billboard Invoice Line Item"  class="slds-card" >  
+            <div align="center">
+                <lightning:button variant="neutral" label="New" title="New" onclick="{!c.BBInvLICreate}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else">
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="tablecss"
+                                                 aura:id="BBInvLIDatatable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 onrowaction="{! c.handleRowAction }" />
+                        </div>
+                    </lightning:card>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    <aura:if isTrue="{!v.isBBInvLIOpen}">
+        <lightning:recordEditForm aura:id="BBInvLIEditform" density="comfy" objectApiName="Billboard_Invoice_Line_Item__c" recordId="{!v.BBInvLIRecordid}" onload="{!c.BBInvLIload}"  onsubmit="{!c.BBInvLIOnsubmit}" onsuccess="{!c.BBInvLIonSuccess}">
+            <lightning:messages />
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.BBInvLIRecordid==null?'New ':'Edit '} {!v.Labelname}</h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                        <aura:iteration items="{!v.fieldset}" var="field">
+                            <aura:if isTrue="{!(field=='GL_Department__c') || (field=='GL_Code__c')}">
+                                <aura:set attribute="else"> 
+                                    <lightning:inputField fieldName="{!field}" aura:id="BBInvLIField" class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small"/> 
+                                </aura:set>
+                            </aura:if>
+                            <aura:if isTrue="{!field=='GL_Department__c'}">
+                                <div class="slds-size--1-of-1 slds-p-horizontal_x-small" >
+                                    <c:customLookup aura:id="GLD_GLCId"  objectAPIName="GL_Department__c" DepobjectAPIName="GL_Code__c" IconName="custom:custom94" DepIconName="custom:custom24" selectedRecord="{!v.selectedLookUpRecord_GLD}" 
+                                                    DepenselectedRecord="{!v.selectedLookUpRecord_GLC}" label="{!v.ObjectType.Billboard_Invoice_Line_Item__c.GL_Department__c.label}" Depelabel="{!v.ObjectType.Billboard_Invoice_Line_Item__c.GL_Code__c.label}" RelationShipName="GL_Department__c" ParentFilter=""  ChildFilter=""
+                                                    ParentRecId="{v.GLDRecord}" ParentSortBy="Order By Name" ChildSortBy="Order By Name" IsParentReq="" IsChildReq="" />
+                                </div> 
+                            </aura:if> 
+                            <aura:if isTrue="{!field=='GL_Code__c'}">
+                                
+                            </aura:if> <br/><br/>
+                            
+                        </aura:iteration>
+                        <br></br>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

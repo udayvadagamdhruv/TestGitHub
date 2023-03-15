@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="VendorPOSec" label="Vendor PO Label"  description="This will reflect the Vendor PO Label"/>
+</design:component>

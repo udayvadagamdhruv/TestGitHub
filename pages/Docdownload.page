@@ -1,0 +1,7 @@
+<apex:page controller="DocdownloadExt">
+   <apex:form >
+       <apex:commandLink action="{!documentId}" oncomplete="window.location.href='../servlet/servlet.FileDownload?file={!docId}';" value=" Download" >
+         <apex:param name="documentname" value="Checklist" assignTo="{!documentname}"/>
+       </apex:commandLink>
+   </apex:form>
+</apex:page>

@@ -1,0 +1,11 @@
+<apex:page standardController="Job__c" tabStyle="Job__c" showHeader="false" sidebar="false" recordSetVar="job">
+    <script>
+    var compDefinition = { 
+        "componentDef" : "JobSuite:Search_Jobs", 
+    };
+    // Base64 encode the compDefinition JS object
+    var encodedCompDef = btoa(JSON.stringify(compDefinition));
+    window.parent.location = "/one/one.app#"+encodedCompDef;
+    </script>
+    
+</apex:page>

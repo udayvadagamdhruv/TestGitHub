@@ -1,0 +1,274 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"  access="global" controller="DetailPageComponentController">
+
+  <!--  <ltng:require styles="{!$Resource.SLDS + '/assets/styles/salesforce-lightning-design-system-vf.min.css'}"/> -->
+    <ltng:require styles="/resource/SLDS/assets/styles/salesforce-lightning-design-system-vf.min.css"/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="jobRecords" type="Object" />
+    <aura:attribute name="jobNotes" type="Object" />
+    <aura:attribute name="jobAttachs" type="Object" />
+    <aura:attribute name="jobChatterFiles" type="Object" />
+    <aura:attribute name="statusPicklist" type="String[]" default="Active"/>
+    <aura:attribute name="CampTempList" type="Object" />
+    <aura:attribute name="activeSections" type="List" default="['Jobs','JobNotes','JobAttachments','JobChatterFiles']" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+        
+   <!-- <c:svgIcon svgPath="/resource/SLDS/assets/icons/standard-sprite/svg/symbols.svg#user" category="standard" size="small" name="user" /> -->
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.activeSections}">
+        <lightning:accordionSection name="Jobs" label="Jobs"  class="slds-card" >
+           <!--   <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="{!v.activeSections}"> -->
+             <!-- <span>     
+            <lightning:icon iconName="custom:custom93" alternativeText="Event" />
+            </span> -->
+            
+            <lightning:card>
+                
+                
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                    <div class="slds-size_2-of-10">
+                          <div class="slds-m-around_x-small">
+                        <lightning:select name="select1" aura:id="pickJob" label="Job Status" onchange="{!c.StatusChange}"   >
+                            <aura:iteration items="{!v.statusPicklist}" var="option">
+                                <option text="{!option}" value="{!option}" />
+                            </aura:iteration>
+                        </lightning:select>  
+                        </div>
+                    </div>
+                    <div class="slds-size_2-of-10">
+                         <div class="slds-m-around_x-small">
+                        <lightning:select name="campSelect" aura:id="campSelectId" label="Campaign Template"  >
+                            <aura:iteration items="{!v.CampTempList}" var="Temp">
+                                <option text="{!Temp.value}" value="{!Temp.key}" />
+                            </aura:iteration>
+                        </lightning:select>
+                        </div>
+                    </div>
+                    <div class="slds-size_2-of-10">
+                         <div class="slds-m-around_x-small" style="margin-top:20%">
+                        <lightning:button variant="neutral" label="Import Template" onclick="{!c.ImportTemplate}" />
+                        </div>
+                    </div>
+                    <div class="slds-size_2-of-10">
+                         <div class="slds-m-around_x-small" style="margin-top:30%">
+                             <lightning:button variant="neutral" label="New Job"  onclick="{!c.NewJobRedirect}" />
+                        </div>
+                    </div>
+                </div>
+                
+                <br/>
+                
+               <aura:iteration items="{!v.jobRecords}" var="jobvalue">
+                    
+                  
+                    
+                   <aura:renderIf isTrue="{!jobvalue.value.length>0}">
+                    <aura:renderIf isTrue="{!jobvalue.key=='Jobs'}">
+                          <div class="slds-card">
+                        <table class="slds-table  slds-table_bordered slds-no-row-hover  slds-max-medium-table_stacked-horizontal slds-table_fixed-layout">
+                            <thead>
+                                <tr class="slds-text-heading--label">
+                                     <th scope="col" style="width:15%" >
+                                        <div class="slds-truncate" title="Job#">Job#</div>
+                                    </th>
+                                    <th scope="col" style="width:20%" >
+                                        <div class="slds-truncate" title="Job Name">Job Name</div>
+                                    </th>
+                                    <th scope="col" style="width:15%">
+                                        <div class="slds-truncate" title="Status">Status</div>
+                                    </th>
+                                    <th scope="col" style="width:20%">
+                                        <div class="slds-truncate" title="Client">Client</div>
+                                    </th>
+                                    <th scope="col" style="width:15%">
+                                        <div class="slds-truncate" title="Budgeted Job Cost">Budgest Job Cost</div>
+                                    </th>
+                                    <th scope="col" style="width:15%">
+                                        <div class="slds-truncate" title="Estimate">Estimate</div>
+                                    </th>
+                                    <th scope="col" style="width:15%">
+                                        <div class="slds-truncate" title="Invoice">Invoice</div>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <aura:iteration items="{!jobvalue.value}" var="job">
+                                    <tr>
+                                        <td data-label="Job#" >
+                                            <div class="slds-truncate" title="{!job.Job_Auto_Number__c}">{!job.Job_Auto_Number__c}</div>
+                                        </td>
+                                        <td data-label="Job Name" >
+                                            <div class="slds-truncate" title="{!job.Name}">
+                                                <ui:outputURL value="{!'/'+job.Id}" label="{!job.Name}" aura:id="detailContURL" target="_blank" />
+                                            </div>
+                                        </td>
+                                        <td data-label="Status" >
+                                            <div class="slds-truncate" title="{!job.Status__c}">{!job.Status__c}</div>
+                                        </td>
+                                        <td data-label="Client Name"  >
+                                            <div class="slds-truncate" title="{!job.JS_Client__r.Name}">{!job.JS_Client__r.Name}</div>
+                                        </td>
+                                        <td data-label="Budgest Job Cost" >
+                                            <div class="slds-truncate" title="{!job.Budgeted_Cost__c}"> <ui:outputCurrency  value="{!job.Budgeted_Cost__c}"/></div>
+                                        </td>
+                                        <td  data-label="Estimate" >
+                                            <div class="slds-truncate" title="{!job.Estimate_Total__c}"> <ui:outputCurrency  value="{!job.Estimate_Total__c}"/></div>
+                                        </td>
+                                        <td data-label="Invoice">
+                                            <div class="slds-truncate" title="{!job.Invoice_Actual_Amounts__c}"> <ui:outputCurrency value="{!job.Invoice_Actual_Amounts__c}"/></div>
+                                        </td>
+
+                                 
+                                        
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                          </div>
+                    </aura:renderIf>
+                       <aura:set attribute="else">
+                                No records to display
+                         </aura:set>
+                   </aura:renderIf>      
+                </aura:iteration>
+
+               
+            </lightning:card>
+                  
+                  
+                
+                   <!--  </lightning:accordion> -->
+            </lightning:accordionSection>
+            
+               <lightning:accordionSection name="JobNotes" label="Job Notes">
+            
+            <lightning:card>
+
+                <aura:iteration items="{!v.jobNotes}" var="jnotes">
+                       <aura:renderIf isTrue="{!jnotes.value.length>0}">
+                    <aura:renderIf isTrue="{!jnotes.key=='Job__Notes'}">
+                       
+                            <div class="slds-grid slds-wrap">
+                                <aura:iteration items="{!jnotes.value}" var="jnotev">
+                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">   
+                                     <ul >
+                                        <li class="slds-item">
+                                            <lightning:tile  label="{!jnotev.Title}" href="{!'/'+jnotev.Id}">
+                                                <aura:set attribute="media">
+                                                   <lightning:icon iconName="standard:note" size="small"/>
+                                                </aura:set>
+                                                
+                                             <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                <li class="slds-item">{!jnotev.Body}</li>
+                                            </ul>
+                                            </lightning:tile>
+                                        </li>
+                                     </ul>
+                                    </aside>
+                                    
+                                </aura:iteration>
+                                  
+                               </div>
+                             
+                    </aura:renderIf>
+                       <aura:set attribute="else">
+                                No records to display
+                       </aura:set>     
+                     </aura:renderIf>        
+                </aura:iteration>
+
+            </lightning:card>
+
+          </lightning:accordionSection>
+            
+             <lightning:accordionSection name="JobAttachments" label="Job Attachments">
+            
+            <lightning:card>
+
+                <aura:iteration items="{!v.jobAttachs}" var="jattchs">
+                     <aura:renderIf isTrue="{!jattchs.value.length>0}">
+                         <aura:renderIf isTrue="{!jattchs.key=='Job__Attachments'}">
+                            <div class="slds-grid slds-wrap">  
+                             <aura:iteration items="{!jattchs.value}" var="jattchv">   
+                             <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                 <ul >
+                                        <li class="slds-item">
+                                            <lightning:tile  label="{!jattchv.Name}" href="{!'/servlet/servlet.FileDownload?file='+jattchv.Id}">
+                                                <aura:set attribute="media">
+                                                   <lightning:icon iconName="doctype:attachment" size="small" />
+                                                </aura:set>
+                                                
+                                              <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                   <ui:outputURL value="{!'/'+jattchv.ParentId}" label="{!jattchv.Parent.Name}" aura:id="jobDetailattUrl" target="_blank" />
+                                                 </ul>   
+                                            </lightning:tile>
+                                        </li>
+                                     </ul>                     
+                                   </aside>
+                                </aura:iteration>
+                             
+                          </div>
+                        </aura:renderIf> 
+                          <aura:set attribute="else">
+                                No records to display
+                        </aura:set>
+                    </aura:renderIf>
+                </aura:iteration>
+
+            </lightning:card>
+            </lightning:accordionSection>
+                  
+             <lightning:accordionSection name="JobChatterFiles" label="Job Chatter Files">
+            
+            <lightning:card>
+                     <aura:iteration items="{!v.jobChatterFiles}" var="jobchatter">
+                           <aura:renderIf isTrue="{!jobchatter.key=='Job__ChatterFiles'}">
+                              <div class="slds-grid slds-wrap">  
+                               <aura:iteration items="{!jobchatter.value}" var="jchatter"> 
+                                       <aura:renderIf isTrue="{!jchatter.ContentDocumentLinks.length>0}">
+                                             
+                                 <aura:iteration items="{!jchatter.ContentDocumentLinks}" var="jobcondoc">
+                                     <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                     <ul >
+                                        <li class="slds-item">
+                                            <lightning:tile  label="{!jobcondoc.ContentDocument.Title}"  href="{!'/'+jobcondoc.ContentDocumentId}">
+                                                <aura:set attribute="media">
+                                                   <lightning:icon iconName="standard:file" size="small"  />
+                                                </aura:set>
+                                                
+                                                 <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                   <ui:outputURL value="{!'/'+jchatter.Id}" label="{!jchatter.Name}" aura:id="jobDetailUrl" target="_blank" />
+                                                 </ul>
+                                               
+                                            </lightning:tile>
+                                        </li>
+                                     </ul>         
+                                      
+                                    </aside>
+                                     
+                   
+                              </aura:iteration>
+                                   
+                                           
+                                      </aura:renderIf>
+                                            
+                               </aura:iteration>
+                               </div>      
+                          </aura:renderIf> 
+                         
+                </aura:iteration>
+    
+            
+            </lightning:card>
+            </lightning:accordionSection>       
+              
+           </lightning:accordion>
+    
+        
+
+            
+      
+</aura:component>

@@ -1,0 +1,28 @@
+<apex:component controller="SFC_MonthController" access="Global">
+<apex:attribute name="months" assignTo="{!month}" description="Month" type="integer"/>
+<apex:attribute name="years" assignTo="{!year}" description="Year" type="integer"/>
+<apex:attribute name="holidayss" assignTo="{!holidays}" description="Hoidays" type="string"/>
+{!printCalendar}
+<table>
+<tr>
+<th colspan="7" class="monthheader">
+{!monthname} {!year}
+</th></tr>
+<tr>
+<th>Mo</th>
+<th>Tu</th>
+<th>We</th>
+<th>Th</th>
+<th>Fr</th>
+<th>Sa</th>
+<th>Su</th>
+</tr>
+<apex:repeat value="{!days}" var="week">
+<tr>
+<apex:repeat value="{!week}" var="d">
+<td class="{!IF(d==0,'',IF(d<0,'holiday','day'))}">{!IF(d==0,'',IF(d<0,text(d*-1),text(d)))}</td>
+</apex:repeat>
+</tr>
+</apex:repeat>
+</table>
+</apex:component>

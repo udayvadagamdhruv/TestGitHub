@@ -1,0 +1,4 @@
+<design:component>
+	<design:attribute name="QuoteSpecSection" label="Spec Items Section Label"  description="This will reflect the Spec Item Section Label" />
+    <design:attribute name="VendorQuoteSection" label="Vendor Quote Section Label" description="This will reflect the Vendor Quote Section Label" />
+</design:component>

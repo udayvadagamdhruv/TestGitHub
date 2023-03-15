@@ -1,0 +1,115 @@
+<!-- This page is used to display Job Note Attachment. -->
+<apex:page standardController="Job__c" extensions="JobNote_Attachment_Controller">
+    <apex:form >
+      <apex:pageMessages id="pagemsgId6"></apex:pageMessages>
+        <apex:pageblock tabStyle="Job__c">
+             <apex:pageBlockButtons >
+                   <apex:commandButton value="New Note" action="{!CreateNote}"/>
+                   <apex:commandButton value="Attach File" action="{!AttachFile}"/>
+                   <apex:commandButton value="Print" onClick="window.open('/apex/NotesandFilesReport?id={!$CurrentPage.Parameters.Id}');" />   
+             </apex:pageBlockButtons>
+
+             <apex:pageBlockSection title="Notes Section" columns="1">
+                  <apex:pageBlocktable value="{!n1}" var="na" rendered="{!n1.Size > 0}" style="width:100%">
+                        <apex:column headerValue="Action" style="width:10%">
+                             <apex:commandButton action="{!editNote}" value="Edit" reRender="hiddenBlock1">
+                                   <apex:param name="param1" value="{!na.Id}" assignTo="{!strNoteId}"></apex:param>
+                             </apex:commandButton> &nbsp;
+                     
+                             <apex:commandButton action="{!deleteNote}" value=" Delete" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock9">
+                                   <apex:param name="param2" value="{!na.Id}" assignTo="{!strNoteId1}"> </apex:param>
+                             </apex:commandButton>
+                        </apex:column>
+    
+                        <apex:column headerValue="{!$ObjectType.Note.Fields.Title.Label}" style="width:10%"><apex:outputLink value="/apex/JobNoteDetailPage?id={!na.Id}" tabindex="tab1">{!na.Title}</apex:outputLink> </apex:column>
+                    
+                        <apex:column headerValue="{!$ObjectType.Note.Fields.Body.Label}" value="{!na.Body}" style="width:80%"/>
+                  </apex:pageBlocktable>
+            </apex:pageBlockSection>
+        
+            <apex:pageBlockSection rendered="{!n1.size <= 0}">
+                   <apex:pageBlockSectionItem >
+                           <b>No Notes to display</b>
+                   </apex:pageBlockSectionItem>              
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Attachments Section" columns="1">
+                   <apex:pageBlocktable value="{!n2}" var="n" rendered="{!n2.Size > 0}" width="100%">
+                        <apex:column headerValue="Action" style="width:15%">
+                              <apex:commandButton action="{!editAttachment}" value="Edit " reRender="hiddenBlock3">
+                                   <apex:param name="param3" value="{!n.Id}" assignTo="{!strAttId}"></apex:param>
+                              </apex:commandButton>&nbsp;
+      
+                              <apex:commandButton action="{!deleteAttachment}" value=" Delete" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock4">
+                                   <apex:param name="param4" value="{!n.Id}" assignTo="{!strAttId}"></apex:param>
+                               </apex:commandButton>
+                        </apex:column>
+  
+                        <apex:column headerValue="{!$ObjectType.Attachment.Fields.Name.Label}" style="width:85%">
+                              <apex:outputLink value="/servlet/servlet.FileDownload?file={!n.Id}" tabindex="tab1" target="_blank">{!n.Name}</apex:outputLink>
+                        </apex:column>
+                        <!--    <apex:column value="{!n.Name}" headerValue="Name"/> -->
+                   </apex:pageBlocktable>
+            </apex:pageBlockSection>
+
+           <apex:pageBlockSection rendered="{!n2.size <= 0}">
+               <apex:pageBlockSectionItem >
+                       <b>No Attachments to display</b>
+               </apex:pageBlockSectionItem>              
+       </apex:pageBlockSection>  
+       
+          <apex:pageBlockSection title="Chatter Files Section" columns="1">
+                   <apex:pageBlocktable value="{!n4}" var="nf4" rendered="{!n4.Size > 0}" width="100%">
+                        
+                    
+  
+                        <apex:column headerValue="Title">
+                              <apex:outputLink value="/{!nf4.ContentDocumentId}" tabindex="tab1" target="_blank" >{!nf4.ContentDocument.Title}</apex:outputLink>
+                        </apex:column> 
+                        
+                         <apex:column headerValue="Created By">
+                             {!nf4.ContentDocument.CreatedBy.Name}
+                        </apex:column> 
+                        
+                         <apex:column headerValue="Last Modified Date">
+                         
+                          <apex:outputText value="{0,date,MM'/'dd'/'yy}" >
+                                <apex:param value="{!nf4.ContentDocument.LastModifiedDate}"/>
+                          </apex:outputText>
+                          
+                        </apex:column> 
+                        
+                        
+                        
+                   </apex:pageBlocktable>
+            </apex:pageBlockSection>
+       
+     
+  <!--   <apex:pageBlockSection title="Feed Attachments Section" columns="1">
+                   <apex:pageBlocktable value="{!n3}" var="nf" rendered="{!n3.Size > 0}" width="100%">
+                        
+                     <apex:column headerValue="Action" rendered="{!nf.ContentFileName != null}">
+                              <apex:commandButton action="{!deleteFeedAttachment}" value=" Delete" onclick="if(!confirm('Are you sure?')){return false;}" reRender="hiddenBlock4" rendered="{!nf.ContentFileName != null}">
+                                   <apex:param name="param4" value="{!nf.Id}" assignTo="{!FeedAttId}"></apex:param>
+                               </apex:commandButton>
+                        </apex:column> 
+  
+                        <apex:column headerValue="{!$ObjectType.FeedItem.Fields.ContentFileName.Label}" style="width:85%" rendered="{!nf.ContentFileName != null}">
+                              <apex:outputLink value="/{!nf.Id}" tabindex="tab1" target="_blank" rendered="{!nf.ContentFileName != null}">{!nf.ContentFileName}</apex:outputLink>
+                        </apex:column> 
+                        
+                        
+                        
+                   </apex:pageBlocktable>
+            </apex:pageBlockSection>-->
+            
+            
+           
+       
+       
+       
+       
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>
+<!-- End of Page -->

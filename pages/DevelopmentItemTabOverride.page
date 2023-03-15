@@ -1,0 +1,4 @@
+<apex:page showHeader="true" tabStyle="Development_Item__c">
+  <apex:enhancedList type="Development_Item__c" customizable="true" height="800" rowsPerPage="200"/>
+  <!-- <apex:listViews type="Development_Item__c"/> -->
+</apex:page>

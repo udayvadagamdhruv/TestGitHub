@@ -1,0 +1,10 @@
+<apex:page standardController="JS_TS_Details__c">
+<head>
+<script type="text/javascript">
+function openJobEntry(){
+window.top.location.href = '/apex/enterJsTsDetail';
+}
+setTimeout('openJobEntry()',0);
+</script>
+</head>
+</apex:page>

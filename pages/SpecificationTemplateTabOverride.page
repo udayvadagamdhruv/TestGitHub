@@ -1,0 +1,8 @@
+<!-- This page is used display Specidication Template-->
+<apex:page standardController="Specification_Template__c" tabStyle="MyAdmin__tab">
+ 
+        <apex:detail relatedList="false"/>
+        <apex:include pageName="DisplayCreativeBriefSpecItems" />
+  
+</apex:page>
+<!-- End of Page -->

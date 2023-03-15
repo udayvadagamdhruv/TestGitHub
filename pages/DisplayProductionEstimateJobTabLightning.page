@@ -1,0 +1,418 @@
+<apex:page Controller="DisplayProductionEstimateJobTab" id="frm" sidebar="flase" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="true">
+  
+        <head>
+        <style>
+
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            .slds .slds-dropdown-trigger .slds-dropdown
+           {
+                 margin-left: 37px;
+    
+           }
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+        
+        .dateOnlyInput input {
+            width: 10.5em !important;
+        }
+               
+               
+       .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+                         
+                        
+     </style>
+     
+       
+        
+    </head>
+    
+    
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    
+         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+     
+   <apex:slds />
+    
+
+         <apex:outputPanel id="pbload"> 
+            <div class="slds">
+                       
+          
+                <apex:form html-novalidate="novalidate" id="frmid">
+              
+                       
+              
+                 <apex:pageBlock mode="edit">
+                      <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                         <apex:pageMessages />
+                      </div><br/>
+                              
+                          <apex:outputPanel id="div1">
+                                <table width="100%"  id="importspec">
+                                      <tr>
+                                          <td align="left" width="30%" style="padding-top:10px;" >
+                                                   
+                                            <b> <apex:outputLabel value="Production Estimate Template" style="color:black" ></apex:outputLabel></b>&nbsp;&nbsp;
+                                              <apex:selectList id="theSelectList" value="{!PETempName}" size="1"  styleClass="slds-select slds-m-right--medium">
+                                                   <apex:actionSupport action="{!importSpecs}" event="onchange" reRender="frmid" status="importspecstatus" />
+                                                   <apex:selectOptions value="{!PETemplate}" id="sp"></apex:selectOptions>
+                                               </apex:selectList> &nbsp; 
+                                             <!--  <apex:commandButton value="Import Temp" action="{!importSpecs}"  id="btn" styleClass="slds-button slds-button--neutral"></apex:commandButton>&nbsp;-->
+                                                
+                                                 
+                                           </td> 
+                                           
+                                             
+                                         <td align="left" style="padding-top:10px;">  
+                                             <apex:commandButton action="{!CreatePELI}" value="New Line Item" id="btn1" title="Press to create New Production Estimate Line Item" styleClass="slds-button slds-button--neutral"/> 
+                                  
+                                             <apex:commandButton action="{!createPO}" value="Create PO" id="btn2" rendered="{!peli.Size>0}" title="Press to create new Purchase Order" styleClass="slds-button slds-button--neutral"/>
+                                          
+                                             <apex:commandButton value="Print Estimate" id="estreport" rendered="{!vq.Size>0}" onClick="window.open('/apex/ProductionEstimateReport?id={!$CurrentPage.Parameters.Id}');" reRender="frm" title="Press to view Production Estimate Report" styleClass="slds-button slds-button--neutral"/>    &nbsp;
+                                          
+                                             <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display:none;" title="Click to save" styleClass="slds-button slds-button--neutral"/>  
+                                          
+                                             <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display:none;" reRender="pb1" title="Click to cancel" styleClass="slds-button slds-button--neutral"/>                                
+                                        </td>
+                                          
+                                       </tr>
+                                 </table>
+                                 
+                              <div class="slds-card" >             
+                               <div class="slds-card__body">     
+                                       
+                              <apex:repeat value="{!MapPE}" var="mpe">
+                             
+                                 <div >
+                                      
+                                        <h3 class="slds-section-title"><b>&nbsp;{!mpe}</b></h3>
+                                      <br style="display:{!IF(mpe!='','block','none')}"/>
+                                    </div>   
+                                     
+                                  <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover" >
+                                        <thead class="slds-truncate">
+                                            <tr class="slds-text-title">
+                                                <th class="slds-size--1-of-11" scope="col">Action</th>
+                                                <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Name.Label}</th>
+                                                <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Vendor__c.Label}</th>
+                                               <!-- <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label}</th>
+                                                <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Calc_Unit__c.Label}</th>-->
+                                                <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}</th>
+                                               <!-- <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Amount__c.Label}</th>-->
+                                                <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}</th>
+                                                <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Approved__c.Label}</th>
+                                             <!--   <th class="slds-size--1-of-11" scope="col">{!$ObjectType.Production_Estimate__c.Fields.PO_Created__c.Label}</th>
+                                                <th class="slds-size--1-of-11" scope="col">PO #</th>-->
+                                            </tr>
+                                        </thead>
+                                 
+                              <tbody> 
+                              
+                                 <apex:repeat value="{!MapPE[mpe]}" var="vquote" rendered="{!vq.Size > 0}"> 
+          
+                                    <tr class="slds-hint-parent">
+                                        <td class="slds-size--1-of-11" data-label="Action">
+                                               <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open quotebutton">
+                                                     &nbsp;&nbsp;  
+                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon ">
+                                                               <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                        </div>
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown__left slds-dropdown_xx--small quoteclass">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                             
+                                                               
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                     
+                                                                      <a href="/apex/EditProductionEstimateLightning?id={!vquote.id}" role="menuitem" tabindex="0" style="display:{!IF((vquote.Approved__c==false), 'block','none')};">
+                                                                            <span class="slds-truncate" title="Edit">Edit</span>
+                                                                             &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i> 
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink title="Delete" value="Delete" action="{!del}" rendered="{!if(vquote.Approved__c==False,True,False)}" >
+                                                                          <apex:param name="param3" value="{!vquote.id}" assignTo="{!strPEID}"></apex:param>    
+                                                                          &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i> 
+                                                                    </apex:commandLink> 
+                                                                    
+                                                                                                                                  
+                                                                </li>
+                                                                
+                                                                  <li class="slds-dropdown__item" role="presentation">
+                                                                    <apex:commandLink value="Duplicate" action="{!duplicatePE}" status="PELoadingStatus" reRender="frmid">
+                                                                          <apex:param name="param3" value="{!vquote.id}" assignTo="{!strPEID}"></apex:param>      &nbsp; &nbsp;              
+                                                                      
+                                                                         &nbsp; &nbsp; <i  class="fa fa-clone" style="font-size:20px;color:black"></i>
+                                                                         
+                                                                         
+                                                                    </apex:commandLink>
+                                                                 </li>  
+                                                                
+                                                                  <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="Approve" action="{!Approve}" status="PELoadingStatus" rendered="{!if(vquote.Approved__c==False,True,False)}" reRender="frmid,div1,div2">
+                                                                         <apex:param name="param3" value="{!vquote.id}" assignTo="{!strPEID}"></apex:param>    &nbsp; &nbsp;
+                                                                        
+                                                                         &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">check</i>                
+                                                                     </apex:commandLink>                                                              
+                                                                 </li> 
+                                                                 
+                                                              <li class="slds-dropdown__item" role="presentation">
+                                                                     <apex:commandLink value="UnApprove" action="{!UnApprove}" rendered="{!if(vquote.Approved__c==True,True,False)}" status="PELoadingStatus" reRender="frmid,div1,div2">
+                                                                         <apex:param name="param3" value="{!vquote.id}" assignTo="{!strPEID}"></apex:param>    &nbsp; &nbsp;
+                                                                        
+                                                                         &nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">clear</i>  
+                                                                     </apex:commandLink>                                                               
+                                                                 </li>
+                                                              
+                                                                
+                                                              
+                                                            </ul>
+                                                      </div> 
+                                               </div>
+                                            </td>
+                                      
+                                            <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}">
+                                                <div>
+                                                   <apex:outputLink tabindex="tab1" value="/apex/ProductionEstimatedetailpageLightning?id={!vquote.Id}">{!vquote.Name}</apex:outputLink>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Vendor__c.Label}">
+                                                <div>
+                                                  <apex:outputfield value="{!vquote.Vendor__r.Name}"/>
+                                                </div>
+                                            </td>
+                                            
+                                        <!--    <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label}">
+                                                <div>
+                                                    <apex:outputText >{!vquote.GL_Code__r.Name}</apex:outputText>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Calc_Unit__c.Label}">
+                                                <div>
+                                                   <apex:outputfield value="{!vquote.Calc_Unit__c}"/>
+                                                </div>
+                                            </td>-->
+                                            
+                                            <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}">
+                                                <div>
+                                                  <apex:outputfield value="{!vquote.Quantity__c}"/> 
+                                                </div>
+                                            </td>
+                                            
+                                       <!-- <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Amount__c.Label}">
+                                                <div>
+                                                  <apex:outputfield value="{!vquote.Amount__c}"/> 
+                                                </div>
+                                            </td>-->
+                                            
+                                             <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}">
+                                                <div>
+                                                  <apex:outputfield value="{!vquote.Total_Cost__c}"/>
+                                                </div>
+                                            </td>
+                                            
+                                             <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.Approved__c.Label}">
+                                                <div>
+                                                   <apex:outputField value="{!vquote.Approved__c}"/> 
+                                                </div>
+                                            </td>
+                                          <!--  
+                                             <td class="slds-size--1-of-11" data-label="{!$ObjectType.Production_Estimate__c.Fields.PO_Created__c.Label}">
+                                                <div>
+                                                  <apex:outputField value="{!vquote.PO_Created__c}"/>
+                                                </div>
+                                            </td>
+                                            
+                                             <td class="slds-size--1-of-11" data-label="PO #">
+                                                <div>
+                                                  <apex:outputLabel value="{!vquote.PO__c}" />  
+                                                </div>
+                                            </td>-->
+                                         
+                                    </tr>
+
+                                </apex:repeat> </tbody>
+                            </table> 
+                            
+                      
+                                </apex:repeat>
+                                 </div>  </div> 
+                                  </apex:outputPanel>     
+                           
+                       <br/>     
+                            
+                             <div style="float:right;padding-right:35px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+                                 <apex:outputPanel rendered="{!vq.Size > 0}">
+                                    <apex:outputLabel value="Estimate Total Cost" style="font-style:italic;" /> 
+                                    <apex:outputText value="{0,Number, $###,###,###.00}">
+                                        &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+                                    </apex:outputText>
+                                 </apex:outputPanel>
+                              </div> 
+                   
+           <!--          <apex:outputPanel id="div2" >
+                      <apex:outputPanel rendered="{!vq.size>5}">
+                          <div class="slds-card__footer">
+                                <apex:commandLink value="View All ({!vq.size}{!IF(vq.size>5,'+','')})" action="{!ViewAllPE}" rendered="{!ViewAll}" status="EstLoadingStatus"  reRender="frmid"/>
+                                <apex:commandLink value="Show Less ({!vq.size})" action="{!ShowLessPE}" rendered="{!ShowLess}" status="EstLoadingStatus"  reRender="frmid"/>
+                          </div>
+                      </apex:outputPanel>  
+                      </apex:outputPanel>-->
+              
+           
+                 <apex:actionStatus id="PELoadingStatus" >
+                   <apex:facet name="start">
+                      <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                         <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                           <span class="slds-assistive-text">Loading</span>
+                           <div class="slds-spinner__dot-a"></div>
+                           <div class="slds-spinner__dot-b"></div>
+                         </div></div>
+                    </apex:facet>
+                </apex:actionStatus>
+                 
+                 
+         
+    
+                </apex:pageBlock> 
+     
+        </apex:form>
+      </div>
+  </apex:outputPanel>
+      
+    </html>
+                
+                
+  
+  
+</apex:page>

@@ -1,0 +1,218 @@
+<apex:page standardController="Development_Item__c" extensions="DevItemTabMobileExt" recordSetVar="DevItems" sidebar="true" docType="html-5.0" applyBodyTag="False" standardStylesheets="false" applyHtmlTag="False"  showHeader="False">
+
+    
+     
+       <style>
+        
+        .slds .slds-tabs--scoped__nav 
+        {
+            background-color: #e2e4e6 !important;
+            font-size: 15px;
+        }
+        html,html body
+        {
+              overflow: auto;
+              -webkit-overflow-scrolling:touch;
+        }
+        body
+        {
+          position:absolute;left:0;right:0;top:0;bottom:0;
+          margin:0;
+        }
+        
+        .hd {
+                text-align: right;
+                padding-right: 20px!important;
+            }
+            
+            .slds .slds-card__footer {
+                padding: 0px 16px 0px 0px;
+            }
+            
+            .slds .slds-card__header {
+                padding: 0px 10px 0px 0px;
+            }
+            
+            .slds .slds-card__body {
+                padding: 0px;
+            }
+            
+            .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color: white;
+            }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+            }
+            
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+            }
+        </style>
+        
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        
+        
+        <body>
+     
+             <!-- REQUIRED SLDS WRAPPER -->
+              <div class="slds">
+                <!---  <ul class="slds-list--vertical slds-has-dividers">
+                       <li class="slds-list__item slds-large-size">  
+                            <div class="slds-text-heading--large"><center>Dev Items List</center></div> 
+                       </li>
+                  </ul><br/> --->
+    
+                  <apex:form html-novalidate="novalidate" id="dipageform">
+                       
+                     
+                     
+                      <div class="slds slds-page-header"  style="position:fixed;z-index:999;width:100% !important;border-bottom: 3px solid #ccc !important;padding: 0px 0px 0px 0px !important;">
+             
+          <ul class="slds-list--vertical slds-has-dividers">
+                   <li class="slds-list__item slds-large-size">
+                 
+                        
+                        <span class="slds-text-heading--medium" style="margin-left:5px;"  > 
+                               <b>Dev Items List</b> </span> 
+                                <apex:outputLink value="{!URLFOR($Action.Development_Item__c.New)}" style="float:right;margin-bottom:12px;margin-right:5px;" styleClass="slds-button slds-button--brand"><b>New</b></apex:outputLink>
+                     
+                       
+                       </li>
+                        
+
+                  </ul>
+                  
+                 
+               
+         
+            <center>
+              <div class="slds-form-element__control" style="margin:8px !important;">
+                     <apex:selectList value="{!filterId}" size="1" styleClass="slds-input">
+                                    <apex:selectOptions value="{!listViewOptions}"/>
+                                    <apex:actionSupport event="onchange" action="{!RefershPage}" reRender="dipageform"/>
+                                </apex:selectList>
+                       
+                            
+                       </div> </center>
+     
+              
+           
+           
+            </div>
+            
+            <div class="slds" >
+                    <br/><br/><br/><br/><br/><br/>
+                </div>
+                     
+                                       
+                         <apex:outputPanel id="Dev_list">   
+                         
+                         
+                      <div class="slds-card" style="width:98%;margin-left:1%;">
+
+                        <div class="slds-card__body" >
+
+                             <table style="width:100%" class="slds-table slds-table--bordered">
+                                
+
+                                    <tr class="slds-text-heading--label">
+                                        <th class="slds-truncate">
+                                            Dev Item#
+                                        </th>
+                                        <th class="slds-truncate">
+                                            NAME
+                                        </th>
+                                    </tr>
+                                
+                                <tbody>
+                                </tbody>
+                                
+                                 <apex:repeat value="{!DevList}" var="D">
+                                 
+                                  <tr class="slds-truncate">
+
+                                            <td class="slds-truncate">
+                                                <div>
+                                                    <apex:outputText value="{!D.Development_Item_Number__c}"></apex:outputText>
+                                                </div>
+                                            </td>
+
+                                            <td class="slds-truncate">
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/{!D.id}">
+                                                       <apex:outputText Styleclass="slds-truncate"  value="{!D.Name}"/>
+                                                    </apex:outputLink>
+                                                </div>
+                                            </td>
+
+                                           
+                                        </tr>
+                                 
+                                  </apex:repeat>
+                                
+                                </table>
+                        </div>
+                        </div>
+                        
+                        <br/>
+                        
+                          </apex:outputPanel>
+                        
+                        <apex:outputPanel > 
+                        
+                          <div align="center" >
+                          <!--
+                                  <apex:commandButton value="First" rerender="dipageform"  action="{!First}" disabled="{! !HasPrevious}" styleClass="slds-button slds-button--neutral" status="Jobstatus" />
+                                   <apex:commandButton value="Prev" rerender="dipageform"  action="{!Previous}" disabled="{! !HasPrevious}" styleClass="slds-button slds-button--neutral" status="Jobstatus"/>
+                                   <apex:commandButton value="Next" rerender="dipageform"  action="{!Next }" disabled="{! !HasNext}" styleClass="slds-button slds-button--neutral" status="Jobstatus"/>
+                                   <apex:commandButton value="Last" rerender="dipageform"  action="{!Last}" disabled="{! !HasNext}" styleClass="slds-button slds-button--neutral" status="Jobstatus"/>-->
+                                     
+                        <apex:commandButton value="<<First" rerender="dipageform"  action="{!setCon.First}" disabled="{!!setCon.hasPrevious}" title="First Page"  styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        <apex:commandButton value="<Previous" rerender="dipageform"  action="{!setCon.Previous}" disabled="{!!setCon.hasPrevious}" title="Previous Page" styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        <apex:commandButton value="Next>" rerender="dipageform"  action="{!setCon.Next}" disabled="{!!setCon.hasNext}" title="Next Page"  styleClass="slds-button slds-button--neutral slds-button-group"/>
+                        <apex:commandButton value="Last>>" rerender="dipageform"  action="{!setCon.Last}" disabled="{!!setCon.hasNext}" title="Last Page" styleClass="slds-button slds-button--neutral slds-button-group"/>        
+       <!--                              
+                    <apex:selectList value="{!PageSize}" size="1" style="float:right;margin-right:20px;width:12%;" styleClass="slds-select"> 
+                     <apex:actionSupport event="onchange"  rerender="dipageform" status="Jobstatus" />
+                     <apex:selectOption itemValue="10" itemLabel="10"> </apex:selectOption>
+                     <apex:selectOption itemValue="25" itemLabel="25"> </apex:selectOption>
+                     <apex:selectOption itemValue="50" itemLabel="50"> </apex:selectOption>
+                     <apex:selectOption itemValue="100" itemLabel="100"> </apex:selectOption>
+                </apex:selectList>          
+           -->                               
+                          
+                          </div>
+                        
+                      
+                        
+                     
+                      
+                        
+                    </apex:outputPanel>    
+                           
+                         
+                           
+                          
+                              
+                           
+       
+                   
+              </apex:form>     
+           </div> 
+        </body>
+    </html>
+    
+    
+    
+    
+    
+
+</apex:page>

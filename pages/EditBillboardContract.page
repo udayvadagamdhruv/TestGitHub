@@ -1,0 +1,84 @@
+<apex:page standardController="Billboard_Contract__c" extensions="EditBillboardContractExtension">
+  
+  <apex:form >
+      <apex:sectionHeader title="Billboard Contract Details"/>
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+         
+ 
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Contract__c.Fields.Contract_Number__c.Label}"/>
+                   <apex:inputfield value="{!Billboard_Contract__c.Contract_Number__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.BB_Vendor_Name__c.Label}"/>
+               <apex:selectList id="VendorName" value="{!VendorName}" size="1" >
+                     <apex:selectOptions value="{!Vendors}"></apex:selectOptions>
+                  </apex:selectList> 
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >                  
+                   <apex:outputLabel value="{!$ObjectType.Billboard_Contract__c.Fields.Contract_Title__c.Label}"/>
+                   <apex:inputfield value="{!Billboard_Contract__c.Contract_Title__c}"/>
+               </apex:pageBlockSectionItem>
+            
+            
+             <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.Status__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.Status__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.Start_Date__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.Start_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.End_Date__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.End_Date__c}"/>
+            </apex:pageBlockSectionItem>
+          
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.Expiration_Date__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.Expiration_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.Billboard_Type__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.Billboard_Type__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.Rate__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.Rate__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel Value="{!$ObjectType.Billboard_Contract__c.Fields.No_of_Insertions__c.Label}"/>
+               <apex:inputfield value="{!Billboard_Contract__c.No_of_Insertions__c}"/>
+            </apex:pageBlockSectionItem>
+            
+            
+            
+  
+  
+  
+      </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+  
+  
+  
+  
+  
+  
+</apex:page>

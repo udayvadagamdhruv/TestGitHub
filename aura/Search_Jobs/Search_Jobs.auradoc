@@ -1,0 +1,9 @@
+<aura:documentation>
+	<aura:description>Documentation
+    <pre>Search_Jobs is used for the search Jobs in the Application</pre>
+        <code>Search_Jobs</code> component used for the search Jobs in the Application
+    </aura:description>
+	<aura:example name="ExampleName" ref="JobSuite:Search_Jobs" label="Search Jobs">
+		This used to Search Jobs based on Name, Start Date and Due Date and so On.
+	</aura:example>
+</aura:documentation>

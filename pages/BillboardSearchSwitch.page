@@ -1,0 +1,11 @@
+<apex:page standardController="Billboard__c"  tabStyle="Billboard__c" extensions="BillboardSearchController" recordSetVar="Billboardset" sidebar="true" docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+     
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme4d'}">
+         <apex:include pageName="BillboardSearchLightning"/>
+    </apex:outputPanel>
+    
+     <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+         <apex:include pageName="BillboardSearch"/>
+    </apex:outputPanel>
+     
+</apex:page>

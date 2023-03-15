@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Vendor Quote</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Vendor Quotes</value>
+    </caseValues>
+    <fieldSets>
+        <label></label>
+        <name>Vendor_Quote_filedSet</name>
+    </fieldSets>
+    <layouts>
+        <layout>Layout when Approved</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Line Items</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Vendor Quote Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Line Items</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label></label>
+        <name>Read_Only_Approved</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Approve</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Quote_Detail</name>
+    </webLinks>
+</CustomObjectTranslation>

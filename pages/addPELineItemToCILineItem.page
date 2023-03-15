@@ -1,0 +1,43 @@
+<apex:page controller="addPELineItemToCILineItem" tabStyle="Job__c">
+  
+  <apex:form >
+    <apex:pageBlock rendered="{!roleWraps.size > 0}">
+    <apex:pageMessages ></apex:pageMessages>
+    
+    <apex:repeat value="{!ELIGropuMap}" var="me">
+    <apex:pageBlockSection title="{!me}"/>
+    
+    
+        <apex:pageBlockTable value="{!ELIGropuMap[me]}" var="p" id="ProductsTable">
+            <apex:column headerValue="Action">
+                <apex:inputCheckbox value="{!p.checked}"/>
+            </apex:column>
+            <apex:column value="{!p.e.Name}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}" />
+            <apex:column value="{!p.e.GL_Code__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label}" />
+            
+            <apex:column value="{!p.e.Quantity__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}" />
+            <apex:column value="{!p.e.Equipment_Type__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Equipment_Type__c.Label}" />
+            <apex:column value="{!p.e.Total_Cost__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}" />
+            <!--<apex:column value="{!p.e.PE_Template__c}" headerValue="{!$ObjectType.Production_Estimate__c.Fields.PE_Template__c.Label}" />-->
+        </apex:pageBlockTable>
+        
+     </apex:repeat>   
+        
+        <br/>
+        <apex:commandButton action="{!Save}" value="Add" title="Click on the button to Add Estimate Line Items."/>&nbsp;&nbsp;
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+    </apex:pageBlock>
+    <br/>
+    
+    <apex:pageBlock rendered="{!roleWraps.size <= 0}"> 
+        <p>
+          <b> No Records to display.</b>
+        </p>       
+        <br/>
+        <apex:commandButton action="{!Back}" value="Go Back" title="Click on the button to go back."/>
+   </apex:pageBlock> 
+</apex:form> 
+  
+  
+  
+</apex:page>

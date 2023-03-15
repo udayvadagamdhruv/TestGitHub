@@ -1,0 +1,128 @@
+<apex:page controller="SimpleDynamicControllerNew">
+
+     <style>
+      
+      .activeTab
+      {
+          font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #3090C7; color:white;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+          -moz-border-radius-topleft: 10px;
+          -moz-border-radius-topright: 10px;
+          -moz-border-radius-bottomright: 0px;
+          -moz-border-radius-bottomleft: 0px;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          border-bottom-left-radius: 0 px;
+          border-bottom-right-radius: 0 px;
+    }
+
+    .inactiveTab
+    {
+         font-size:1.25em;font-style:normal;font-family: 'Calibri';font-weight:bold;background-color: #E0FFFF; color:black;width:60px;height:20px;background-image:none;border: 0px solid #747e96;border-bottom: 0px solid #fff; 
+        -moz-border-radius-topleft: 10px;
+        -moz-border-radius-topright: 10px;
+        -moz-border-radius-bottomright: 0px;
+        -moz-border-radius-bottomleft: 0px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+     }
+     
+     .labelCol
+      {
+         font-size:1.1em;
+         vertical-align: middle!important;
+       
+      }
+
+      body .btn{font-size:0.8em;font=weight:bold;font-family: 'Calibri';font-style:normal;}
+
+      body .bodyDiv .bFilterView select, .listViewportWrapper .listViewport .topNav .title{font-size:0.9em;font-style:normal;font-weight:normal}
+        
+      .tabContent 
+    {
+        background: #fff;
+    
+    }
+    
+     body .rich-tabpanel-content
+    {
+        border: 1px solid #D4DADC;
+        border-top: 3px solid #3090C7;
+        -moz-border-radius: 0px;
+        -webkit-border-radius: 0px;
+        background-color: #F8F8F8;
+        padding: 6px;
+    } 
+    
+    body td[id$="Tab_lbl"] 
+    {
+        padding: 8px;
+        background-color: #f8f8f8;
+        border: 1px solid #eaeaea;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+    }
+  
+    .tabNavigation
+    {
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+        margin: 0 5px;
+        padding: 3px 0 0;
+        position: relative;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+    }
+
+    .theTabPanel 
+    {
+        background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+        margin-top: 0.05em !important;
+        padding-top: 0px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 0 px;
+        border-bottom-right-radius: 0 px;
+    }
+
+    .theTabPanel img
+    {
+        margin: 0px;
+    }
+
+     .rich-tabhdr-side-cell 
+    {
+        border-top-style: solid;
+        border-top-width: 0px;
+    }
+
+    .rich-tabhdr-side-border 
+    {
+        background-image: url("/img/alohaSkin/tabbar_sprite.png");
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+
+    .activeTab:hover 
+    {
+       cursor:pointer;
+       cursor:hand; 
+       text-decoration:underline;
+       color: white;
+    }
+
+    .inactiveTab:hover 
+    {
+       cursor:pointer;
+       cursor:hand; 
+       text-decoration:underline;
+       color: #007FFF;
+    }
+
+    </style>
+   <!-- <apex:dynamicComponent componentValue="{!dynamicHeader}"/ -->
+   <apex:dynamicComponent componentValue="{!dynamicDetail}" /> 
+</apex:page>

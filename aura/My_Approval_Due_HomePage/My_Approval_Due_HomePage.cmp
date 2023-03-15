@@ -1,0 +1,57 @@
+<aura:component controller="Home_Page" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate"/>
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    <aura:attribute name="activeSections" type="List" default="['My Approval Due']" />
+    <aura:attribute name="isTaskLogTime" type="boolean" default="false"/>
+    <aura:attribute name="LogTaskId" type="String" default=""/>
+    <aura:attribute name="TSAccessable" type="boolean" default="false"/>
+    <aura:attribute name="isListview" type="boolean" default="true"/>
+    
+    <aura:attribute name="isCreateAppSteps" type="boolean" default="false"/>
+    
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="DynamicLabels" type="list"/>
+    
+    <aura:attribute name="MyApprovalTasksDue" type="String" default="My Approval Tasks Due" required="true" access="global"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />   
+   <body>
+    <aura:if isTrue="{!!v.isMobile}">   
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="MyTask">
+            <lightning:accordionSection name="MyTask" label="{!v.MyApprovalTasksDue}"  class="slds-card" >
+                <lightning:card title="">
+                    
+                    <aura:if isTrue="{!empty(v.data)}">
+                        <b>No records to display</b>
+                        <aura:set attribute="else" >
+                                <div style="height:420px;">
+                                   <lightning:datatable aura:id="MyJobs"
+                                                         class="tablecss"
+                                                         columns="{! v.columns }"
+                                                         data="{!v.data}"
+                                                         keyField="Id"
+                                                         hideCheckboxColumn="true"
+                                                         errors="{! v.errors }"
+                                                         sortedBy="{!v.sortedBy}"
+                                                         sortedDirection="{!v.sortedDirection}"
+                                                         onsort="{! c.updateColumnSorting }"
+                                                         onrowaction="{! c.handleRowAction }"
+                                                         />
+                                </div>
+                        </aura:set>
+                    </aura:if>
+                    
+                </lightning:card>
+                
+                <!--aura:if isTrue="{!v.isTaskLogTime}">
+                    <c:Task_Log_Time taskId="{!v.LogTaskId}" aura:id="LogTimeId" actionFrom="Task"  />  
+                </aura:if-->
+                
+            </lightning:accordionSection>
+        </lightning:accordion>
+    </aura:if>
+    
+    </body>
+</aura:component>

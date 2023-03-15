@@ -1,0 +1,569 @@
+<!-- This Page is used to create New Purchase Order for a particular Job --> 
+<apex:page standardController="Purchase_Order__c" extensions="CreateNewPOExtension"  tabStyle="Job__c" sidebar="true"  docType="html-5.0" standardStylesheets="true" showHeader="false" applyBodyTag="false" applyHtmlTag="false" > 
+<apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+<style>
+     
+    .pageHeader
+        {
+            color:white;
+            background-color:#851225;
+            height:70px;
+            padding-top:15px; 
+            position:fixed;
+            z-index:999;
+            width:100% !important;
+            padding-left:22px;
+        }
+    
+        .SectionHeader
+        {
+            background-color:Grey !important;
+            color:white;
+        }
+        
+        .bPageBlock 
+        {
+             margin: 20px 20px 20px 20px !important;
+        }
+        
+        
+        body
+        {
+                //background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+                background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+                //background-image:none !important;
+                //background-color:#D7D7D7 !important;
+                background-repeat: repeat-x;
+                background-position: left top;
+                background-attachment: fixed; 
+                margin:0px !important;
+        }
+        
+        
+        .errorM3 .msgIcon, .errorMedium 
+        {
+            background-image: url(); 
+            background-position: 0 0;
+            width:0px;
+            height: 0px;padding-left: 4px;
+        }
+        
+
+        .customImage{ height: 10px; width: 10px; }
+         #rcorners1 {
+                        border-radius:0%;
+                        border: 1px solid #cccccc;
+                        padding: 0px; 
+                        width: 100%;
+                        height: 0%;
+                    }
+        #pagemessage
+                    {
+                        color:blue;
+                    }
+       .required:after { content:" *";  color: Red;font:bold;}
+       
+       
+         .slds table
+                   {
+                        height: 50px;
+                   }
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons
+                   {
+                        margin-top: -19px; 
+                   }
+                   .detailPage .bPageBlock, .editPage .bPageBlock
+                   {
+                      border-top-width: 0px;
+                   }
+                  
+                   .slds .slds-text-heading--large
+                   {
+                           font-size: 27px;
+                   }
+                   
+                    .pbHeader
+                   {
+                       background: white !important;
+                   }
+                   
+                   
+                   body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons 
+                   {
+                       background: white;
+                   }
+                  
+                   .slds .slds-list--vertical.slds-has-dividers > .slds-list__item
+                   {
+                       border:none;
+                   }
+                   
+                   body .bEditBlock .pbBottomButtons, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons
+                   {
+                       border:none;
+                   }
+                   
+          .dateFormat
+            {
+                display: block !important;
+            }
+          <!--- error Mesgg-------------------------------------->
+       
+       
+       .bPageBlock .requiredInput .requiredBlock {
+                    background-color:white;
+                    position: absolute;
+                    left: -4px;
+                    width: 3px;
+                    top: 1px;
+                    bottom: 1px;
+                }
+       
+              errorM6, .errorM4, .errorM3, .errorM2, .errorS1 {
+                    border-color: #c00;
+                }
+                .message {
+                    background-color: #c00;
+                    border-style: solid;
+                    
+                    border-width: 0px;
+                    color: #000;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px;
+                }
+                .errorM3 .msgIcon, .errorMedium {
+                    background-image: url(); 
+                    background-position: 0 0;
+                    width:0px;
+                    height: 0px;
+                }
+            .pbBody td{
+             color:white;
+             }
+             .message .messageText h4 {
+                     font-weight: bold; 
+                     display:block;
+                     color:white;
+                }
+                
+                .messageText br
+                {
+                   display:none !important;
+                }
+                .messageTable tr
+                {
+                   padding-top:10px !important;
+                   padding-bottom:10px !important;
+                }
+                .slds-notify, .slds-text-heading--small, .slds-theme--error, .message, .errorM3
+                {
+                    border-radius: 15px !important;
+                }
+                .pbBody
+                {
+                    padding:10px !important;
+                }
+                
+                 .slds td {
+                    padding: 0;
+                    padding-left: 0px;
+                }
+                
+            <!--- error Mesgg-------------------------------------->
+                
+                
+       
+       
+    </style>  
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+ <body>
+<div class="slds">
+   
+              
+       <apex:form html-novalidate="novalidate">
+       
+      
+        
+         <div class="slds-media__body pageHeader">
+               <span  class="slds-text-title--caps slds-line-height--reset" style="color:white;font-size:18px;"><b>New Purchase Order</b></span>
+               <span style="float:right;padding-right:20px;">     
+                  <b>  <apex:commandButton action="{!saveme}" value="Save" styleClass="slds-button slds-button--neutral"></apex:commandButton>
+                    <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true" styleClass="slds-button slds-button--neutral"></apex:commandButton></b>
+               </span>
+         </div> 
+         <br/><br/><br/><br/>
+       
+       
+          <apex:pageBlock mode="edit" >
+          
+                             <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert" >
+                                    <apex:pageMessages />
+                             </div> <br/>
+                             
+           
+                 
+                 <div class="SectionHeader"  style="background-color:SteelBlue;color:white;">
+                           <h3 class="slds-section-title"><b>&nbsp;Information</b></h3>
+                  </div>
+                  
+                  
+                  <div class="slds-grid slds-wrap">
+                                 
+                             <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" >
+                                            
+                                   <div class="slds-grid slds-wrap"> 
+                                   
+                                   
+                                   
+                                   
+                                                          <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label required"><b>{!$ObjectType.Purchase_Order__c.Fields.Vendor__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:actionRegion >
+                                                                             <apex:outputPanel >                         
+                                                                               <span Style="padding:3px 0px 3px 0px; text-align:left; valign:middle;">                           
+                                                                                <apex:selectList id="vendorName" value="{!vendorName}" size="1" styleClass="slds-input" >
+                                                                                     <apex:actionSupport event="onchange" rerender="vc,Litems" action="{!AddLIitems}"/>
+                                                                                      <apex:selectOptions value="{!Vendor}" >
+                                                                                      </apex:selectOptions> 
+                                                                                   </apex:selectList>
+                                                                                </span>
+                                                                             </apex:outputPanel>  
+                                                                          </apex:actionRegion>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Purchase_Order__c.Fields.Job__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:outputlabel value="{!jobName}" styleClass="slds-output" />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Purchase_Order__c.Fields.Vendor_Contact__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:selectList value="{!Purchase_Order__c.Vendor_Contact__c}" multiselect="false" size="1" id="vc" styleClass="slds-input">                        
+                                                                            <apex:selectOptions value="{!VendorContact}" />
+                                                                   </apex:selectList>
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Purchase_Order__c.Fields.Status__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Status__c}" styleClass="slds-input" />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                         
+                                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Purchase_Order__c.Fields.Notes__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Notes__c}" styleClass="slds-input" />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        
+                                                         <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label required"><b>{!$ObjectType.Purchase_Order__c.Fields.Issue_Date__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Issue_Date__c}" styleClass="slds-input" required="true" />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label required"><b>{!$ObjectType.Purchase_Order__c.Fields.Due_Date__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Due_Date__c}"  styleClass="slds-input" required="true" />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label"><b>{!$ObjectType.Purchase_Order__c.Fields.Approved_By_Staff__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:selectList id="Staff" value="{!StaffName}" size="1" StyleClass="slds-input">
+                                                                      <apex:selectOptions value="{!Staffs}"></apex:selectOptions>
+                                                                   </apex:selectList> 
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                             
+                                             
+                                                   <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Text_1__c.Label!='Dummy Text 1','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Text_1__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Text_1__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Date_1__c.Label!='Dummy Date 1','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Date_1__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Date_1__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Text_2__c.Label!='Dummy Text 2','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Text_2__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Text_2__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Date_2__c.Label!='Dummy Date 2','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Date_2__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Date_2__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Text_3__c.Label!='Dummy Text 3','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Text_3__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Text_3__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                                        
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Date_3__c.Label!='Dummy Date 3','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Date_3__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Date_3__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                             
+                                             
+                                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Picklist_1__c.Label!='Dummy Picklist 1','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Picklist_1__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Picklist_1__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                             
+                                                       <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Picklist_2__c.Label!='Dummy Picklist 2','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Picklist_2__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Picklist_2__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                             
+                                             
+                                             
+                                             
+                                                     <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Purchase_Order__c.Fields.Dummy_Picklist_3__c.Label!='Dummy Picklist 3','block','none')}" >
+                                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                                <label class="slds-form-element__label "><b>{!$ObjectType.Purchase_Order__c.Fields.Dummy_Picklist_3__c.Label}</b></label>
+                                                                <div class="slds-form-element__control" >
+                                                                   <apex:inputField value="{!Purchase_Order__c.Dummy_Picklist_3__c}" styleClass="slds-input"  />
+                                                                </div>
+                                                            </div>
+                                                        </aside>
+                                             
+                                             
+                                             
+                                     </div>
+                                </main>
+                         </div><br/><br/><br/>
+                       
+                      <apex:outputPanel id="Litems">
+                        <apex:outputPanel rendered="{!ShowLIitem}">  
+                          
+                          <div class="SectionHeader"  style="background-color:SteelBlue;color:white;">
+                               <h3 class="slds-section-title"><b>&nbsp;Line Items</b></h3>
+                          </div>
+                          
+                     
+                           <apex:outputPanel rendered="{!roleWraps.Size > 0  && NOT(ShowProductionEstimate)}">
+                        
+                               <div class="slds-card" >
+                                   <div class="slds-card__body">
+                                           <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                             <thead class="slds-truncate">
+                                                    <tr class="slds-text-title">
+                                                        <th class="slds-size--1-of-6" scope="col"> Action</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Name.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.GL_Code__c.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Unit_Type__c.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Quantity__c.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Estimate_Line_Items__c.Fields.Total_Amount__c.Label}</th>
+                                                    </tr>
+                                               </thead>
+                                               <tbody>
+                            
+                                                    <apex:repeat value="{!roleWraps}" var="p" >
+                                                      <tr> 
+                                                          <td class="slds-size--1-of-6" data-label="Action">
+                                                               <div class="slds-form-element">
+                                                                  <label class="slds-checkbox" >
+                                                                     <apex:inputCheckbox value="{!p.checked}" />
+                                                                     <span class="slds-checkbox--faux"></span>
+                                                                     <span class="slds-form-element__label"></span>
+                                                                  </label>
+                                                               </div>
+                                                           </td>
+                                                           
+                                                           <td class="slds-size--1-of-6" data-label="{!$ObjectType.Estimate_Line_Items__c.Fields.Name.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Name}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Estimate_Line_Items__c.Fields.GL_Code__c.Label}">
+                                                                <div>
+                                                                    <apex:outputField value="{!p.e.GL_Code__c}" />
+                                                                </div> 
+                                                               
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Estimate_Line_Items__c.Fields.Unit_Type__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Unit_Type__c}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Estimate_Line_Items__c.Fields.Quantity__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Quantity__c}" />
+                                                                </div>                                              
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Estimate_Line_Items__c.Fields.Total_Amount__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.e.Total_Amount__c}" />
+                                                                </div>                                                
+                                                            </td>
+                                                        </tr>   
+                                                    </apex:repeat>
+                                                    
+                                                    
+                                               </tbody>
+                                        </table>
+                                   </div>
+                              </div>  
+                         </apex:outputPanel>
+                         
+                         
+                        
+                         <apex:outputPanel rendered="{!roleWraps.Size > 0 && ShowProductionEstimate}">
+                        
+                               <div class="slds-card" >
+                                   <div class="slds-card__body">
+                                           <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                             <thead class="slds-truncate">
+                                                    <tr class="slds-text-title">
+                                                        <th class="slds-size--1-of-6" scope="col"> Action</th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Name.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label} </th>
+                                                        <th class="slds-size--1-of-6" scope="col">{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}</th>
+                                                    </tr>
+                                               </thead>
+                                               <tbody>
+                            
+                                                    <apex:repeat value="{!roleWraps}" var="p"  >
+                                                      <tr> 
+                                                          <td class="slds-size--1-of-6" data-label="Action">
+                                                               <div class="slds-form-element">
+                                                                  <label class="slds-checkbox" >
+                                                                     <apex:inputCheckbox value="{!p.checked}" />
+                                                                     <span class="slds-checkbox--faux"></span>
+                                                                     <span class="slds-form-element__label"></span>
+                                                                  </label>
+                                                               </div>
+                                                           </td>
+                                                           
+                                                           <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Name.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.pe.Name}" />
+                                                                </div> 
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.GL_Code__c.Label}">
+                                                                <div>
+                                                                    <apex:outputField value="{!p.pe.GL_Code__c}" />
+                                                                </div> 
+                                                               
+                                                            </td>
+                                                            
+                                                            
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Quantity__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.pe.Quantity__c}" />
+                                                                </div>                                              
+                                                            </td>
+                                                            
+                                                            <td class="slds-size--1-of-6" data-label="{!$ObjectType.Production_Estimate__c.Fields.Total_Cost__c.Label}">
+                                                                <div style="color:#333 !important;">
+                                                                    <apex:outputField value="{!p.pe.Total_Cost__c}" />
+                                                                </div>                                                
+                                                            </td>
+                                                        </tr>   
+                                                    </apex:repeat>
+                                                    
+                                                    
+                                               </tbody>
+                                        </table>
+                                   </div>
+                              </div>  
+                         </apex:outputPanel>
+                         
+                         
+                         
+                         
+                         
+  
+                        <apex:outputPanel rendered="{!roleWraps.size <= 0}"> 
+                          
+                            <div class="slds-card">
+                                <div class="slds-card__footer">
+                                   <p>&nbsp;&nbsp;  All Approved estimate line items for this vendor have already been added to Purchase Orders.</p> 
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                          
+          </apex:outputPanel>            
+          </apex:outputPanel>
+                  
+             
+          </apex:pageBlock>
+       </apex:form>
+   </div>
+   
+   </body>
+</html>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,29 @@
+<!--  This page is used to edit Note associated with Job record. -->
+<apex:page standardController="Note" extensions="EditJobNoteExtension" tabStyle="Job__c">
+  <apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!SaveNote}" value="Save"/>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Note.Fields.Title.Label}"></apex:outputLabel>
+                <apex:inputField value="{!Note.Title}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Note.Fields.IsPrivate.Label}"></apex:outputLabel>
+                <apex:inputField value="{!Note.IsPrivate}"/>
+            </apex:pageBlockSectionItem>  
+            <apex:pageblockSectionItem ></apex:pageblockSectionItem>          
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Note.Fields.Body.Label}"></apex:outputLabel>
+                <apex:inputtextarea value="{!Note.Body}" rows="10" cols="55" style="resize:none"/>
+            </apex:pageBlockSectionItem>            
+    </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

@@ -1,0 +1,1941 @@
+<!--------------------- Latest Job detail page --------------------------------------------------------------->
+
+<apex:page standardController="Job__c" tabStyle="Job__c" extensions="JobRequestFormdetailpageext,RetrieveJobSpec,RetrieveTaskNewTesting,JobNote_Attachment_Controller" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script>
+    <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.js')}"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11.4.custom/jquery-ui.min.css')}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    
+    <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet" />
+    
+   <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+   
+
+   <script >
+        $(document).ready(function() {
+            $(".overlayDialog").dialog({
+                autoOpen: false,
+                modal: true,
+                position: 'center'
+            });
+
+        });
+        
+        
+     
+
+        var lastScrollTop = 0;
+        $(document).scroll(function(event) {
+        alert(event);
+            var st = $(this).scrollTop();
+            if (st > lastScrollTop) {
+                $("div.EditDeleDupCls").hide(300);
+            } else {
+                $("div.EditDeleDupCls").show(300);
+            }
+            lastScrollTop = st;
+        });
+        
+        
+        
+        
+        
+        
+    </script>
+    
+    
+    
+     
+    
+    
+
+    <!--   <script> 
+    (function(){try{var a=navigator.userAgent;if((a.indexOf('Salesforce')!=-1)&&(a.indexOf('iPhone')!=-1||a.indexOf('iPad')!=-1)&&(a.indexOf('OS/8')!=-1||a.indexOf('OS 8')!=-1)&&(a.indexOf('Safari')==-1)){ 
+    var s=document.createElement('style'); 
+    s.innerHTML="html,html body{overflow: auto;-webkit-overflow-scrolling:touch;}body{position:absolute;left:0;right:0;top:0;bottom:0;}"; 
+    document.getElementsByTagName('head')[0].appendChild(s);}}catch(e){}})(); 
+    </script> 
+       ---->
+    <script>
+        function selectTab(elmnt) {
+            // slds-active
+            $(elmnt).parent("li").siblings(".slds-active").removeClass("slds-active");
+            $(elmnt).parent("li").addClass("slds-active");
+
+            // tabindex
+            $(elmnt).parent("li").siblings().children("a").attr("tabindex", -1);
+            $(elmnt).attr("tabindex", 0);
+
+            // aria-selected
+            $(elmnt).parent("li").siblings().children("a").attr("aria-selected", false);
+            $(elmnt).attr("aria-selected", true);
+
+            // hiding previously selected tab (slds-show/slds-hide)
+            $(elmnt).closest(".slds-tabs--default").children("div[role='tabpanel'].slds-show").addClass("slds-hide");
+            $(elmnt).closest(".slds-tabs--default").children("div[role='tabpanel'].slds-show").removeClass("slds-show");
+            // displaying newly selected tab (slds-show/slds-hide)
+            $(elmnt).closest(".slds-tabs--default").children("div[aria-labelledby='" + elmnt.id + "']").addClass("slds-show");
+            $(elmnt).closest(".slds-tabs--default").children("div[aria-labelledby='" + elmnt.id + "']").removeClass("slds-hide");
+        }
+    </script>
+    
+    
+    
+
+    <!----------------------------------------------------------- Script Section Start----------------------------------------- -->
+    
+    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>   
+
+    <script>
+    var jq = jQuery.noConflict();
+    jq(document).ready(function(){
+       jq('.slds-section__title').find('svg').css('transition', '0.3s'); 
+        jq('.slds-section__title').click(function(){
+            jq(this).parent().toggleClass('slds-is-open');
+             if(jq(this).parent().hasClass('slds-is-open')){
+                 jq(this).parent().find('.slds-section__content').show();
+                 }
+             else{
+                jq(this).parent().find('.slds-section__content').hide();
+                }
+        });
+    });
+    </script>
+    
+    
+
+    <style>
+        html,
+        html body {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        body {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: 0;
+        }
+        
+        .EditDeleDupCls ul {
+            list-style: none;
+            width: 100%;
+            height: 20px;
+            text-align: center;
+        }
+        
+        .EditDeleDupCls ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .EditDeleDupCls ul li span {
+            color: black;
+        }
+        
+        .EditDeleDupCls ul li {
+            margin-left: 10%;
+        }
+        
+        .EditDeleDupCls ul li span {
+            display: block;
+            -webkit-transition: all 0.3s linear;
+            -moz-transition: all 0.3s linear;
+            transition: all 0.3s linear;
+        }
+        
+        div.EditDeleDupCls {
+            border-top: 1px solid #CCC;
+            padding-top: 6px;
+            background-color: white !important;
+            position: fixed !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            margin-left: -30px !important;
+            height: 60px;
+        }
+        
+        ul.slds-tabs--default__nav li {
+            margin-left: 10% !important;
+        }
+        
+        #chatterFindExistingContent {
+            width: 95% !important;
+        }
+        
+        .feedSearch a,
+        .feedcontainer .comboMenu.feedsupermenu input {
+            display: none;
+        }
+        
+        .feedcommentactions .commentActionMenu .zen-options {
+            width: auto;
+        }
+        
+        .publishercontainer .LinkPost .postInput input[type="text"] {
+            width: auto;
+        }
+        
+        .publishercontainer input[type="text"] {
+            width: auto;
+        }
+        
+        .publishercontainer .contentPublisherSlideDown table.postInput {
+            width: auto;
+        }
+        
+        .feedpage {
+            width: auto !important;
+        }
+        
+        .feedmain {
+            width: auto !important;
+        }
+        
+        .feeditemActionMenu .zen-options {
+            margin: -1px;
+            margin-left: -83px;
+        }
+        
+        .feeditemActionMenuButton {
+            margin: -11px;
+        }
+        
+        .publishercontainer .bottomBar {
+            height: 49px;
+        }
+        
+        .slds .slds-table--bordered td,
+        .slds .slds-table--bordered th {
+            border-top: none;
+        }
+        
+        .customImage {
+            height: 10px;
+            width: 10px;
+        }
+        
+        #rcorners1 {
+            border-radius: 0%;
+            border: 1px solid #cccccc;
+            padding: 0px;
+            width: 100%;
+            height: 0%;
+        }
+        
+        #pagemessage {
+            color: blue;
+        }
+        
+        .required:after {
+            content: " *";
+            color: Red;
+            font: bold;
+        }
+        
+        .detailPage .bPageBlock,
+        .editPage .bPageBlock {
+            border-top-width: 0px;
+        }
+        
+        .slds .slds-table--bordered td,
+        .slds .slds-table--bordered th {
+            border-top: none;
+        }
+        
+        .ui-state-default {
+            background: gray !important;
+        }
+        
+        .ui-state-active {
+            border: 1px solid #2a61f3 !important;
+            background: #2a61f3 !important;
+        }
+        
+        .ui-accordion-header-icon,
+        .ui-icon ui-icon-triangle-1-e {
+            background-color: white !important;
+        }
+        
+        .slds .slds-table .slds-truncate {
+            min-width: 52px !important;
+            max-width: 125px !important;
+        }
+        
+        .chatterPublisherFileActionContainerLeft {
+            display: none !important;
+        }
+        
+        #InlineEditDialog {
+            //margin-left: -209.5px !important;
+            max-width: Auto !important;
+            width: 80%
+        }
+        
+        .inlineEditCompoundDiv > textarea {
+            width: 80% !important;
+        }
+        
+        .feedcontainer .feeditemfooter,
+        .feedcontainer .feedcommentfooter {
+            border-top: 1px solid #ededed;
+            line-height: 39px !important;
+        }
+        
+        .feedcontainer .feeditemfooter {
+            margin-bottom: -54px;
+        }
+        
+        .feeditemtimestamp {
+            display: table-row-group !important;
+        }
+        
+        .feedcontainer .feeditem {
+            border: 1px solid #ededed;
+            line-height: 2em;
+        }
+        
+        .feeditembody {
+            margin-top: 16px !important;
+        }
+        
+        .chatter-photo {
+            border-radius: 50% !important;
+        }
+        
+        .feeditemclientinfo {
+            display: none !important;
+        }
+        
+        .feedrightbar {
+            display: block !important;
+        }
+        
+        .feeditemactionlink.cxaddcommentaction {
+            float: right !important;
+            padding-right: 19px;
+        }
+        
+        .chatter-avatarRegular,
+        .chatter-avatarRegular .chatter-photo,
+        .chatter-avatarRegular .chatter-avatarStyle {
+            width: 40px;
+            height: 40px;
+            line-height: 48px;
+            margin: 4px;
+        }
+        
+        .cxfeeditemlikedot.feeditemseparatingdot {
+            display: none !important;
+        }
+        
+        .cxfeeditemcommentdot.feeditemseparatingdot {
+            display: none !important;
+        }
+        
+        .feedcontainer .feeditemcontent {
+            margin-left: 2px;
+        }
+        
+        .feeditemactionlink.cxlikeitemaction {
+            padding-left: 31px;
+        }
+        
+        .feeditemattachments.cxfeeditemattachments {
+            margin: 22px;
+        }
+        
+        .feeditemaux.cxfeeditemaux.FilesCapabilityAuxBody {
+            margin-right: 0px;
+        }
+        
+        .zen-smlineSep {
+            display: none !important;
+        }
+        
+        .feedcontainer .zen-select .feeditemActionMenuButton,
+        .feedcontainer .zen-select .commentActionMenuButton {
+            padding: 6px 6px 6px 7px;
+        }
+        
+        .comboMenu.zen-line.feedsupermenu {
+            display: none;
+        }
+        
+        .publishercontainer {
+            padding-top: 20px;
+            padding-bottom: 29px;
+        }
+        
+        .chatterexpando .feedpage {
+            padding-left: 6px;
+        }
+        
+        .actionsOnHoverEnabled .feeditembody {
+            padding-right: 34px !important;
+            padding-left: 50px !important;
+        }
+        
+        .chatter-avatar .chatter-avatarStyle {
+            position: absolute;
+            left: 0px;
+            z-index: 1;
+            background: url(/img/chatter/avatar-sprite.png?v=182-1) 0px -9999px no-repeat;
+        }
+        
+        .slds .slds-text-heading--medium {
+            font-size: 20px;
+            line-height:1.5 ! important;
+        }
+        
+        .slds-tabs--default__item,
+        slds-text-heading--label,
+        slds-active {
+            border-top-left-radius: 20px !important;
+            border-top-right-radius: 20px !important;
+        }
+        
+        .slds .slds-table tr > th:first-child,
+        .slds .slds-table tr > td:first-child {
+            padding-left: 0px !important;
+        }
+        
+        .ui-helper-reset {
+            line-height: 0.9 !important;
+        }
+        
+        .slds-truncate {
+            padding-left: inherit !important;
+        }
+        
+        .ui-accordion,
+        .ui-accordion-content {
+            // padding: 1em 1.2em 1em 1.2em !important;
+            padding: 8px 8px 8px 8px !important;
+            //   overflow: -webkit-paged-y !important;
+        }
+        
+        .slds .slds-tabs--default__content {
+            padding: 1px;
+        }
+        
+        .ui-widget input,
+        .ui-widget select,
+        .ui-widget textarea,
+        .ui-widget button {
+            font-size: 0.8em !important;
+        }
+        
+        .slds-grid,
+        .slds-wrap {
+            background: white !important;
+        }
+        
+        .bPageTitle,
+        .metadata {
+            display: block !important;
+        }
+        
+        .slds .slds-table--bordered {
+            border-top: 0px solid #d8dde6;
+            border-bottom: 1px solid #d8dde6;
+        }
+        
+        .slds hr {
+            display: block;
+            margin: 0px 0;
+            border-top: 1px solid #d8dde6;
+            height: 1px;
+            clear: both;
+        }
+        
+        .ui-widget-content {
+            border: 0px solid #aaa;
+            background: #fff;
+            color: #222;
+        }
+        
+        .slds-grid {
+            margin-right: -12px;
+            margin-left: 0px;
+        }
+        
+        #followerDialog {
+            width: 450px !important;
+        }
+        
+        .overlayDialog .innerContent {
+            padding: 2px 0px 0px 0px;
+        }
+        
+        .metadata {
+            display: block !important;
+        }
+        
+        .ui-state-active {
+            border: 1px solid steelblue !important;
+            background: steelblue !important;
+        }
+        
+        .ui-accordion .ui-accordion-header {
+            padding: 5px 5px 5px 30px !important;
+        }
+        
+        .slds-grid {
+            margin-right: 0px;
+            list-style: none;
+        }
+        
+        .slds-section-title {
+            font-size: 14px !important;
+        }
+        
+        .slds-table tr {
+            padding-right: 0px !important;
+        }
+        
+        .bLeft {
+            display: none !important;
+        }
+        
+     
+        
+        .slds-dropdown{
+       // margin:-20px 20px 0px 0px !important;
+        }
+        
+        <!--- error Mesgg-------------------------------->
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: white;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+        }
+        
+        errorM6,
+        .errorM4,
+        .errorM3,
+        .errorM2,
+        .errorS1 {
+            border-color: #c00;
+        }
+        
+        .message {
+            background-color: #c00;
+            border-style: solid;
+            border-width: 0px;
+            color: #000;
+            padding: 0px 0px 0px 0px;
+            margin: 0px 0px;
+        }
+        
+        .errorM3 .msgIcon,
+        .errorMedium {
+            background-image: url();
+            background-position: 0 0;
+            width: 0px;
+            height: 0px;
+            padding-left: 1px;
+        }
+        
+        .pbBody td {
+            color: white;
+        }
+        
+        .message .messageText h4 {
+            font-weight: bold;
+            display: block;
+            color: white;
+        }
+        
+        .message .messageTable .messageCell {
+    vertical-align: middle;
+    line-height: 1.2;
+}
+        .messageText br {
+            display: none !important;
+        }
+        
+        .messageTable tr {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+        }
+        
+        .slds-notify,
+        .slds-text-heading--small,
+        .slds-theme--error,
+        .message,
+        .errorM3 {
+            border-radius: 15px !important;
+        }
+        
+       <!---- error Mesgg-------------------------------------->
+        
+        
+        
+         
+        
+       
+        .slds .slds-text-heading--small {
+          line-height: 1.8 !important;
+         }
+                
+        .slds .slds-table--bordered {
+     border-top: 0px solid #d8dde6;
+     //border-bottom: 0px solid #d8dde6;
+   }
+   
+   .slds .slds-table--bordered tbody td, .slds .slds-table--bordered tbody th {
+     border-top: 0px solid #d8dde6;
+}
+
+ .slds .slds-tabs--default__item:after {
+    display: none;
+    content:'';
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    height: 2px;
+}
+   
+  .slds .slds-tabs--default__item {
+    color: #54698d;
+    position: relative;
+    padding: 0 0.2rem;
+}      
+        
+    </style>
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <head>
+        <title>Tabs SLDS</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+       <!--   <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" /> -->
+        <!--apex:includeScript value="{!URLFOR($Resource.jquery214)}" /-->
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>jQuery UI Accordion - Collapse content</title>
+
+        <!--apex:includeScript value="{!URLFOR($Resource.jquery214)}" /-->
+        <!-- script src="{!URLFOR($Resource.Smoothness,'jquery-ui-1.11.4.custom/external/jquery/jquery.js')}"></script -->
+        <!-- script src="https://code.jquery.com/jquery-1.12.4.min.js"></script -->
+
+        <script>
+            var section;
+            if ("{!section}" == 'timesheet') {
+                section = 3;
+                }
+           else if("{!section}" == 'JobFiles') {
+                section = 4;
+            } 
+            else if("{!section}" == 'CreativeBrief') {
+                section = 2;
+            } else if ("{!section}" == 'Schedule') {
+                section = 1;
+            } else {
+                section = 0;
+            }
+            $(function() {
+                $("#accordion").accordion({
+                    collapsible: true,
+                    heightStyle: "content",
+                    
+                   active: section
+
+                });
+
+            });
+            
+           $(function(){
+                $("#accordion>h1").click(function(){
+                $('body').animate({scrollTop:0},"fast");
+                  });
+               }); 
+            
+        </script>
+
+    </head>
+
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system.css')}" />
+
+    <body>
+
+        <div class="slds">
+
+            <apex:form html-novalidate="novalidate" id="formmobile">
+            
+           <div class="slds slds-page-header" style="position:fixed;z-index:999;width:100% !important;border-bottom: 3px solid #ccc !important;padding: 0px 0px 0px 0px !important;">
+                        <div class="slds-media__body pageHeader">
+                            <div class="slds-grid" style="width:100%;">
+                                <div class="slds-size--8-of-12" style="padding:8px;">
+                                   <div class="slds-col slds-has-flexi-truncate">
+                                       <div class="slds-media slds-no-space slds-grow">
+                                       
+                                          <div class="slds-media__figure" style="margin-right: 7px;">
+                                              <svg class="slds-icon slds-icon-standard-user" aria-hidden="true" style="background-color:#8A1225 !important;">
+                                                 <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom93"></use>
+                                              </svg>
+                                          </div>
+                                          <div class="slds-media__body">
+                                            
+                                             <h1  style="color:#333;height: 14px;font-size: 11px;">Job </h1>
+                                             <p style="font-size: 14px;" class="slds-truncate"><b>{!Job__c.name}</b></p>
+                                           
+                                          </div>
+                                       </div>
+                                    </div>
+                                  
+                                </div>
+                                <div class="slds-size--4-of-12" style="padding: 8px;">
+                                  <apex:commandButton value="List View" style="float:right ! important;margin-left:3px;padding: 0px 12px 0px 12px !important;line-height: 30px;"  action="{!JobListView}" styleClass="slds-button slds-button--brand" />
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+
+                
+
+                <div class="slds">
+                    <br/><br/>
+                   
+                </div>
+
+                <apex:pageBlock mode="edit">
+
+                  
+
+                    <div class="slds-tabs--default">
+
+                        <div class="slds slds-page-header" style="position:fixed;z-index:999;width:100% !important;border-bottom: 3px solid #ccc !important;padding: 0px 0px 0px 0px !important;">
+
+                            <!-- TABS -->
+
+                            <ul class="slds-tabs--default__nav" role="tablist">
+                                <li class="slds-tabs--default__item slds-text-heading--label" title="Feed" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-0" id="tab-default-0__item" onclick="selectTab(this);"><b>Feed</b></a></li>
+                                <li class="{!if(tab=='RelatedList','slds-tabs--default__item slds-text-heading--label','slds-tabs--default__item slds-text-heading--label slds-active')}" title="Details" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item" onclick="selectTab(this);"><b>Details</b></a></li>
+                                <li class="{!if(tab=='RelatedList','slds-tabs--default__item slds-text-heading--label slds-active','slds-tabs--default__item slds-text-heading--label')}" title="Related" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item" onclick="selectTab(this);"><b>More Info</b></a></li>
+                                <!--    <li class="slds-tabs--default__item slds-text-heading--label" title="Schedule" role="presentation"><a class="slds-tabs--default__link" href="#void" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item" onclick="selectTab(this);">Schedule</a></li>-->
+
+                            </ul>
+
+                        </div>
+
+                        <div class="slds" style="margin:5px;">
+                            <br/>
+                            <br/>
+                            
+                        </div>
+                      
+                          <apex:pageMessages id="msg"></apex:pageMessages>
+
+                        <div id="tab-default-0" class="slds-tabs--default__content slds-hide " role="tabpanel" aria-labelledby="tab-default-0__item">
+                            <div class="slds-grid slds-wrap">
+
+                                <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+
+                                    <div class="slds-grid slds-wrap">
+
+                                        <apex:outputPanel >
+                                            <div id="chattertest" style="display:inline;" class="feed-container">
+                                                <chatter:feedWithFollowers entityId="{!Job__c.Id}" />
+                                            </div>
+                                        </apex:outputPanel>
+
+                                    </div>
+                                </main>
+                            </div>
+                        </div>
+
+                        <!-- ***********************************************  Details Tab  ************************************************************************ -->
+
+                        <div id="tab-default-1" class="{!if(tab=='RelatedList','slds-tabs--default__content slds-hide','slds-tabs--default__content slds-show')}" role="tabpanel" aria-labelledby="tab-default-1__item">
+
+                            <div class="slds-grid slds-wrap">
+
+                                <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+
+                                    <div class="slds-grid slds-wrap">
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.Job_Auto_Number__c}" label="" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.name.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.name}" label="" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Job__c.fields.Campaign__c.Accessible, 'block','none')};">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label" style="text-align:right;"><b>Campaign</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputtext value="{!Job__c.Campaign__r.name}" styleClass="slds-output" rendered="{!$ObjectType.Job__c.fields.Campaign__c.Accessible}" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Status__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.Status__c}" label="" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label" style="text-align:right;"><b>{!$ObjectType.Job__c.Fields.Start_Date__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.Start_Date__c}" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label" style="text-align:right;"><b>Requested Due Date</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.Due_Date__c}" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label" for="MediaTypeName" style="text-align:right;"><b>{!$ObjectType.Job__c.Fields.Media_Types__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputtext value="{!Job__c.Media_Types__r.name}" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label " style="text-align:right;"><b>Job Type</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputtext value="{!Job__c.Schedule_Template__r.name}" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.JS_Client__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputtext value="{!Job__c.JS_Client__r.name}" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.JS_Client_Contact__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputtext value="{!Job__c.JS_Client_Contact__r.name}" styleClass="slds-output" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Job__c.fields.Specification_Template__c.Accessible, 'block','none')};">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Specification_Template__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputtext value="{!Job__c.Specification_Template__r.name}" styleClass="slds-output" rendered="{!$ObjectType.Job__c.fields.Specification_Template__c.Accessible}" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Job__c.fields.Job_Description__c.Accessible, 'block','none')};">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>Description/Comments</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.Job_Description__c}" styleClass="slds-output" rendered="{!$ObjectType.Job__c.fields.Job_Description__c.Accessible}" />
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12" style="display:{!IF($ObjectType.Job__c.fields.Creative_Overview__c.Accessible, 'block','none')};">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <label class="slds-form-element__label"><b>{!$ObjectType.Job__c.Fields.Creative_Overview__c.Label}</b></label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:outputField value="{!Job__c.Creative_Overview__c}" styleClass="slds-output" rendered="{!$ObjectType.Job__c.fields.Creative_Overview__c.Accessible}" />
+                                                </div>
+                                            </div>
+                                        </aside>
+                                    </div>
+                                    <br/>
+                                    <br/>
+
+                                    <div>
+                                        <aside class="slds-col slds-size--1-of-1 slds-medium-size--2-of-2 slds-large-size--12-of-12">
+                                            <div class="slds-form-element slds-p-top--medium slds-p-left--medium">
+                                                <div class="slds-form-element__control EditDeleDupCls">
+                                                    <ul>
+                                                        <li>
+                                                            <span style="display:{!IF($ObjectType.Job__c.Updateable,'block','none')};">
+                                                                                <apex:commandLink action="{!editmethod}">
+                                                                                   <span class="slds-icon_container--circle slds-icon-action-edit" title="Edit" style="border-radius:50%;width:32px !important;padding: 0.01rem;">
+                                                                                      <svg class="slds-icon" aria-hidden="true" style="width:18px !important;">
+                                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}" ></use>
+                                                                                      </svg>
+                                                                                      <span class="slds-assistive-text">Edit</span>
+                                                            </span>
+                                                            </apex:commandLink>
+                                                            </span>
+                                                            <span style="font-size:10px;display:{!IF($ObjectType.Job__c.Updateable,'block','none')};">Edit</span>
+                                                        </li>
+                                                        <li>
+                                                            <span style="display:{!IF($ObjectType.Job__c.Deletable,'block','none')};">
+                                                                                <apex:commandLink action="{!deleteMethod}" >
+                                                                                     <span class="slds-icon_container--circle slds-icon-action-delete" title="Delete" style="border-radius:50%;width:32px !important;padding: 0.01rem;">
+                                                                                      <svg class="slds-icon" aria-hidden="true" style="width:18px !important;">
+                                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"  ></use>
+                                                                                      </svg>
+                                                                                      <span class="slds-assistive-text">Delete</span>
+                                                            </span>
+                                                            </apex:commandLink>
+                                                            </span>
+                                                            <span style="font-size:10px;display:{!IF($ObjectType.Job__c.Deletable,'block','none')};">Delete</span>
+                                                        </li>
+                                                        <li>
+                                                            <span style="display:{!IF($ObjectType.Job__c.Updateable,'block','none')};">
+                                                                                <apex:commandLink action="{!DupMethod}">
+                                                                                     <span class="slds-icon_container--circle slds-icon-action-clone" title="Duplicate"  style="border-radius:50%;width:32px !important;padding: 0.01rem;">
+                                                                                      <svg class="slds-icon" aria-hidden="true"  style="width:18px !important;">
+                                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#clone')}"  style="border-radius:50%;"></use>
+                                                                                      </svg>
+                                                                                      <span class="slds-assistive-text">Duplicate</span>
+                                                            </span>
+                                                            </apex:commandLink>
+                                                            </span>
+                                                            <span style="font-size:10px;display:{!IF($ObjectType.Job__c.Updateable,'block','none')};">Duplicate</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>
+                                                                                 <apex:commandLink action="{!TSEntryMethod}"  rendered="{!TS}">
+
+                                                                                    <span class="slds-icon_container slds-icon-custom-custom25" title="description of icon when needed"  style="border-radius:50%;width:32px !important;padding: 0.01rem; background-color: #e46fbe;">
+                                                                                      <svg class="slds-icon" aria-hidden="true" style="width:24px !important;">
+                                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/custom-sprite/svg/symbols.svg#custom25')}"></use>
+                                                                                      </svg>
+                                                                                      <span class="slds-assistive-text">Description of icon</span>
+                                                            </span>
+
+                                                            </apex:commandLink>
+                                                            </span>
+                                                            <span style="font-size:10px;"><apex:outputLabel rendered="{!TS}">TS Entry</apex:outputLabel></span>
+                                                        </li>
+
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </aside>
+
+                                    </div>
+
+                                </main>
+                            </div>
+                        </div>
+
+                        <!-- ************************************************************ Related List TAB *************************************************************************** -->
+
+                        <div id="tab-default-2" class="{!if(tab=='RelatedList','slds-tabs--default__content slds-show','slds-tabs--default__content slds-hide')}" role="tabpanel" aria-labelledby="tab-default-2__item">
+
+                            <div class="slds-tabs--default">
+
+                                <div id="accordion">
+
+                                    <!-- ************************************************************ Team *************************************************************************** -->
+
+                                    <h1 style="color:white;font-size:18px;display:{!IF((!$ObjectType.Job_Team__c.accessible), 'none','block')};">
+                                                          <svg aria-hidden="true" class="slds-icon" >
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#groups')}" ></use>
+                                                          </svg>
+                                                         <b> Team </b> ({!lstJobTeam.size})
+                                                  </h1>
+                                    <div style="display:{!IF((!$ObjectType.Job_Team__c.accessible), 'none','block')};">
+
+                                        <div class="slds-grid slds-wrap"> 
+
+                                            <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12">
+
+                                               <center> <apex:commandButton value="Add/Edit Staff" action="{!AddStaffs}" styleClass="slds-button slds-button--neutral" /></center>
+                                                <br/>
+                                               <br/>
+
+                                                <apex:outputPanel rendered="{!lstJobTeam.size>0}">
+
+                                                    <div class="slds-box slds-grid slds-wrap" style="margin: -5px;">
+
+                                                        <!--   <apex:outputPanel rendered="{!lstJobTeam.size>0}">
+                                                                   <table style="width:100%" class="slds-table slds-table--bordered">
+                                                                       <tr  class="slds-text-heading--label">
+                                                                           <th style="width:50%;text-align:left;padding-left:5px;" class="slds-truncate"><b>Roles</b></th>
+                                                                           <th style="width:50%;text-align:left;padding-left:25px;" class="slds-truncate"><b>Staff</b></th>
+
+                                                                       </tr>
+                                                                       <apex:repeat value="{!lstJobTeam}" var="lst">
+                                                                       <tr>
+                                                                           <td style="width:50%;text-align:left;padding-left:5px;" class="slds-truncate">{!lst.Role__c}</td>
+                                                                           <td style="width:50%;text-align:left;padding-left:25px;" class="slds-truncate">{!lst.Staff__c}</td>
+                                                                       </tr>
+                                                                       </apex:repeat>
+                                                                   </table>
+                                                              </apex:outputPanel>-->
+
+                                                        <apex:repeat value="{!lstJobTeam}" var="lst" id="thePageBlockable">
+                                                            <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12 draggableSpan">
+                                                                <div class="demo-only">
+                                                                    <article class="slds-tile slds-media" >
+                                                                        <div class="slds-media__figure">
+                                                                            <span class="slds-avatar slds-avatar_circle slds-avatar--medium" style="border-radius: 50%;">
+                                                                                        <img alt="" src="{!URLFOR($Resource.SLDS0122, '/assets/images/avatar2.jpg')}" title="{!lst.Staff__c}" />
+                                                                                    </span>
+                                                                        </div>
+                                                                        <div class="slds-media__body" style="margin-top: 3px;">
+                                                                            <h1 class="slds-tile__title slds-truncate" title="Staff Name">{!lst.Staff__c}</h1>
+                                                                            <div class="slds-tile__detail">
+                                                                                <dl class="slds-list_horizontal slds-wrap">
+
+                                                                                    <dd class="slds-item_detail slds-truncate" style="font-size:13px !important;line-height:2.5 !important" title="Role">{!lst.Role__c}</dd>
+
+                                                                                </dl>
+                                                                            </div>
+                                                                        </div>
+                                                                    </article>
+                                                                </div>
+                                                                <hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />
+                                                            </div>
+                                                        </apex:repeat>
+
+                                                    </div>
+                                                </apex:outputPanel>
+
+                                            </main>
+
+                                        </div> 
+
+                                    </div>
+
+                                    <!-- ************************************************************ Schedule *************************************************************************** -->
+
+                                    <h1 style="color:white;font-size:18px;display:{!IF((!$ObjectType.Job_Task__c.accessible), 'none','block')};">
+                                                          <svg aria-hidden="true" class="slds-icon" >
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#task')}" ></use>
+                                                          </svg>
+                                                     <b>Schedule</b> ({!jobTasks.size})
+                                              </h1>
+                                    <div style="display:{!IF((!$ObjectType.Job_Task__c.accessible), 'none','block')};">
+                                       <!--- <div class="slds-grid slds-wrap">
+
+                                            <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12"> --->
+
+                                              <center>   <apex:commandButton value="Create" action="{!createSchedule}" styleClass="slds-button slds-button--neutral" /> </center>
+                                                <br/>
+                                                
+
+                                                <apex:outputPanel id="Schedule">
+                                                    <apex:outputPanel rendered="{!jobTasks.size>0}">
+                                                    
+                                                    
+                                                    <!---
+                                                        <div class="slds-box slds-grid slds-wrap">
+
+                                                            <apex:variable value="{!1}" var="count" />
+                                                            <apex:repeat value="{!jobTasks}" var="jt" id="pB">
+                                                            
+                                                             <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-6" style="padding-right: 12px;padding-left: 0px;">
+
+                                                                <table class=" slds-table slds-table--bordered"  style="background-color:white;margin: 10px 0px 4px 0px;" >
+
+                                                                    <tr>
+
+                                                                        <td style="text-align:left;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" colspan="2">
+
+                                                                            <apex:outputLink tabindex="tab1" value="/apex/EditJobTaskSwitchPage?id={!jt.id}&page=Jobdetailpage" rendered="{!$ObjectType.Job_Task__c.updateable}"><font color="#0070d2">{!jt.Name}</font></apex:outputLink>
+
+                                                                        </td>
+
+                                                                        <td rowspan="4" valign="top" width="5%">
+
+                                                                            <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open" style="float:right;">
+
+                                                                                <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                                                                                    <i class="fa fa-caret-down" style="font-size:20px;color:grey;padding:0px 0px 0px 3px !important"></i>
+                                                                                    <span class="slds-assistive-text">Show More</span>
+                                                                                </div>
+
+                                                                                <div class="slds-dropdown slds-dropdown--right">
+
+                                                                                    <ul class="slds-dropdown__list" role="menu">
+
+                                                                                        <li class="slds-dropdown__item" role="presentation">
+
+                                                                                            <apex:outputLink tabindex="tab1" value="/apex/EditJobTaskSwitchPage?id={!jt.id}&page=Jobdetailpage" rendered="{!$ObjectType.Job_Task__c.updateable}">Edit &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">edit</i></apex:outputLink>
+
+                                                                                        </li>
+
+                                                                                        <li class="slds-dropdown__item" role="presentation">
+
+                                                                                            <apex:commandLink action="{!AddEditStaff}" reRender="formmobile" value="Add/Edit Staff"> &nbsp;&nbsp;
+                                                                                                <apex:param name="parmaadd" value="{!jt.id}" assignTo="{!strJTID}" /> &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">group_add</i>
+                                                                                            </apex:commandLink>
+
+                                                                                        </li>
+
+                                                                                    </ul>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style="width:20%;text-align:left;padding-left:5px;word-wrap: break-word;color:#54698d !important;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}</td>
+                                                                        <td style="width:80%;text-align:left;padding-left:15px;word-wrap: break-word;color:black !important;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink">
+                                                                            <apex:outputField value="{!jt.Revised_Due_Date__c}" />
+                                                                        </td>
+
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style="width:20%;text-align:left;padding-left:5px;word-wrap: break-word;color:#54698d !important;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}</td>
+                                                                        <td style="width:80%;text-align:left;padding-left:15px;word-wrap: break-word;color:black !important;line-height: 22px;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink">
+                                                                            <apex:repeat value="{!AssignedUsers[jt.id]}" var="astaff">
+                                                                                <apex:outputText >{!astaff}</apex:outputText>
+                                                                                <br/>
+                                                                            </apex:repeat>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                  
+                                                                    <tr>
+                                                                        <td style="width:20%;text-align:left;padding-left:5px;word-wrap: break-word;color:#54698d !important;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink">{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}</td>
+                                                                        <td style="width:80%;text-align:left;padding-left:15px;word-wrap: break-word;color:black !important;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">
+
+                                                                            <apex:image value="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/Active_false.png')}" height="20px" width="20px" rendered="{!if(jt.Marked_Done__c==true,false,true)}">
+                                                                                <apex:actionSupport event="onclick" action="{!assignMarkedDone1}" reRender="Schedule" status="SchedStatus">
+                                                                                    <apex:param name="param5" value="{!jt.id}" assignTo="{!strJTID}"> </apex:param>
+                                                                                </apex:actionSupport>
+                                                                            </apex:image>
+                                                                            <apex:image value="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/TaskDoneIcon.jpg')}" height="12px" width="25px" rendered="{!if(jt.Marked_Done__c==true,true,false)}" id="test1">
+                                                                                <apex:actionSupport event="onclick" action="{!assignMarkedDone1}" reRender="Schedule" status="SchedStatus">
+                                                                                    <apex:param name="param5" value="{!jt.id}" assignTo="{!strJTID}"> </apex:param>
+                                                                                </apex:actionSupport>
+                                                                            </apex:image>
+
+                                                                            <apex:actionStatus id="SchedStatus">
+                                                                                <apex:facet name="start">
+                                                                                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                                                                                        &nbsp;
+                                                                                    </div>
+                                                                                    <div style="display: inline-block; background-color: #fff;width:30px;" align="center">
+                                                                                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                                                                                    </div>
+
+                                                                                </apex:facet>
+                                                                            </apex:actionStatus>
+
+                                                                        </td>
+
+                                                                    </tr>
+
+                                                                </table>
+                                                                <apex:variable value="{!count+1}" var="count" />
+                                                               </div><br/>
+                                                            </apex:repeat>
+                                                             <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-6">
+                                                               </div>
+                                                              
+                                                            <br/>
+
+                                                        </div>  ---->
+                                                        
+                                                        
+                                                        <div class="slds-grid slds-wrap" style="margin:-5px !important" > 
+                                                         
+                                                            <apex:repeat value="{!jobTasks}" var="jt" id="pB">
+                                                           
+                                                            
+                                                            <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-6">
+                                                
+                                                                <div class="demo-only">
+                                                                    <div class="slds-box"  style="background-color:white;margin: 10px 0px 4px 0px;">
+                                                                        
+                                                                            <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open" style="float:right;">
+                                                
+                                                                            <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                                                                                <i class="fa fa-caret-down" style="font-size:20px;color:grey;padding:0px 0px 0px 3px !important"></i>
+                                                                                <span class="slds-assistive-text">Show More</span>
+                                                                            </div>
+                                                
+                                                                            <div class="slds-dropdown slds-dropdown--right">
+
+                                                                                    <ul class="slds-dropdown__list" role="menu">
+
+                                                                                        <li class="slds-dropdown__item" role="presentation">
+
+                                                                                            <apex:outputLink tabindex="tab1" value="/apex/EditJobTaskSwitchPage?id={!jt.id}&page=Jobdetailpage" rendered="{!$ObjectType.Job_Task__c.updateable}">Edit &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">edit</i></apex:outputLink>
+
+                                                                                        </li>
+
+                                                                                        <li class="slds-dropdown__item" role="presentation">
+
+                                                                                            <apex:commandLink action="{!AddEditStaff}" reRender="formmobile" value="Add/Edit Staff"> &nbsp;&nbsp;
+                                                                                                <apex:param name="parmaadd" value="{!jt.id}" assignTo="{!strJTID}" /> &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">group_add</i>
+                                                                                            </apex:commandLink>
+
+                                                                                        </li>
+
+                                                                                    </ul>
+                                                                                </div>
+                                                
+                                                                        </div>
+                                                                        <div class="slds-media__body">
+                                                                            <h3 class="slds-tile__title slds-truncate" style="padding:0px 0px 7px 0px !important;" title="{!jt.Name}">
+                                                                                  <apex:outputLink tabindex="tab1" value="/apex/EditJobTaskSwitchPage?id={!jt.id}&page=Jobdetailpage" rendered="{!$ObjectType.Job_Task__c.updateable}"><font color="#0070d2">{!jt.Name}</font></apex:outputLink> </h3>
+                                                
+                                                                            <div class="slds-tile__detail" style="line-height: 1.3 !important;">
+                                                                                <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}">{!$ObjectType.Job_Task__c.Fields.Revised_Due_Date__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;" title="{!jt.Revised_Due_Date__c}">
+                                                                                      <apex:outputField value="{!jt.Revised_Due_Date__c}" />
+                                                                                    </dd>
+                                                                                </dl>
+                                                                                
+                                                                                 <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}">{!$ObjectType.Job_Task__c.Fields.Assigned_Users__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;">
+                                                                                       <apex:repeat value="{!taskStaffMap[jt.id]}" var="astaff">
+                                                                                           <apex:outputText title="{!astaff}" >{!astaff}</apex:outputText>
+                                                                                            <br/>
+                                                                                         </apex:repeat>
+                                                                                    </dd>
+                                                                                </dl>
+                                                                                
+                                                                                <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label  slds-text-color--weak slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}">{!$ObjectType.Job_Task__c.Fields.Marked_Done__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;" title="{!jt.Marked_Done__c}">
+                                                                                        <apex:image value="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/Active_false.png')}" height="20px" width="20px" rendered="{!if(jt.Marked_Done__c==true,false,true)}">
+                                                                                           <apex:actionSupport event="onclick" action="{!assignMarkedDone1}" reRender="Schedule" status="SchedStatus">
+                                                                                             <apex:param name="param5" value="{!jt.id}" assignTo="{!strJTID}"> </apex:param>
+                                                                                           </apex:actionSupport>
+                                                                                         </apex:image>
+                                                                                         
+                                                                                        <apex:image value="{!URLFOR($Resource.Mobile_Icons,'Mobile_Icons/TaskDoneIcon.jpg')}" height="12px" width="25px" rendered="{!if(jt.Marked_Done__c==true,true,false)}" id="test1">
+                                                                                           <apex:actionSupport event="onclick" action="{!assignMarkedDone1}" reRender="Schedule" status="SchedStatus">
+                                                                                            <apex:param name="param5" value="{!jt.id}" assignTo="{!strJTID}"> </apex:param>
+                                                                                           </apex:actionSupport>
+                                                                                       </apex:image>
+        
+                                                                                        <apex:actionStatus id="SchedStatus">
+                                                                                            <apex:facet name="start">
+                                                                                                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                                                                                                    &nbsp;
+                                                                                                </div>
+                                                                                                <div style="display: inline-block; background-color: #fff;width:30px;" align="center">
+                                                                                                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                                                                                                </div>
+            
+                                                                                            </apex:facet>
+                                                                                        </apex:actionStatus>
+        
+                                                                                    </dd>
+                                                                                </dl>
+                                                                               
+                                                                               
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div> <br/>
+                                                            </apex:repeat>
+                                                              <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-6">
+                                                               </div>
+                                                               </div>  
+                                                            <br/>
+                                                        
+                                                        
+                                                        
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+                                           <!--- </main>
+
+                                        </div> --->
+                                    </div>
+
+                                    <!-- ************************************************************ Specs TAB *************************************************************************** -->
+
+                                    <h1 style="color:white;font-size:18px;display:{!IF((!$ObjectType.Job_Spec__c.accessible),'none','block')};">
+                                                          <svg aria-hidden="true" class="slds-icon" >
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#record')}" ></use>
+                                                          </svg>
+                                                    <apex:outputPanel id="CBTemplate">       
+                                                     <b> Creative Brief </b> ({!lstJobSpec.size})
+                                                     </apex:outputPanel>  
+                                              </h1>
+
+                                    <apex:outputPanel id="specid">
+                                  
+
+                                         
+
+                                         <div class="slds-wrap">
+                                           <br/>
+                                         <apex:pageMessages id="specmsg"></apex:pageMessages>
+
+                                              <!---  <div class="slds-grid slds-wrap">
+
+                                            <main class="slds-col slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--6-of-12"> --->
+
+                                                    <div  style="margin-left:0px !important;margin-right: 0px !important;background: white;">
+                                                    
+                                                      
+
+                                                        <table width="100%" >
+
+                                                            <tr >
+                                                                <td align="left" width="60%" style="padding-top:10px;padding-left:10px ! important;">
+                                                                    <!-- <apex:outputLabel value="Creative Brief Template" for="SpecTemp" ></apex:outputLabel>&nbsp;
+                                                                                  <apex:selectList id="theSelectList" value="{!SpecTempName}" size="1" styleClass="slds-select slds-m-right--medium">
+                                                                                      <apex:selectOptions value="{!SpecificationTemplates}" id="sp"></apex:selectOptions>
+                                                                                  </apex:selectList> <Br/><Br/>-->
+
+                                                                    <b> <apex:outputLabel value="Job Spec Template" for="SpecTemp" style="color:black" ></apex:outputLabel></b>&nbsp;&nbsp;
+                                                                    <br/>
+                                                                    <br/>
+                                                                    <apex:selectList id="theSelectList" value="{!SpecTempName}" size="1" styleClass="slds-select slds-m-right--medium">
+                                                                        <apex:actionSupport action="{!importSpecs}" event="onchange" reRender="specid,CBTemplate" status="importspecstatus" />
+                                                                        <apex:selectOptions value="{!SpecificationTemplates}" id="sp"></apex:selectOptions>
+                                                                    </apex:selectList>
+
+                                                                </td>
+                                                                <td style="padding-top:15px;">
+
+                                                                    <!-- <b>    <apex:commandButton value="Import" action="{!importSpecs}" onclick="if(!confirm('This will import new Specs')){return false;}"  id="btn1" styleClass="slds-button slds-button--neutral"></apex:commandButton>&nbsp;-->
+                                                                    &nbsp; &nbsp;  <apex:commandButton value="Add" action="{!addNewJobSpec}" id="addspec"  styleClass="slds-button slds-button--neutral" style="margin-top: 20px;"/>&nbsp;
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+
+                                                        <br/>
+                                                        <br/>
+
+                                                        <apex:outputPanel id="tbid">
+                                                           <div class="slds-grid slds-wrap">
+
+                                                            <apex:repeat value="{!MapCB}" var="mc">
+                                                            
+                                                              <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+
+                                                                <apex:variable value="{!1}" var="counter" />
+
+                                                                <div>
+                                                                    <h3 class="slds-section-title" style="height: 37px;padding-top: 10px;"><b>&nbsp;{!mc} </b></h3>
+                                                                </div>
+                                                                <div class="slds-box">
+                                                                    <apex:repeat value="{!MapCB[mc]}" var="lst">
+
+                                                                        <table class="slds-table slds-table--bordered">
+
+                                                                            <tr>
+
+                                                                                <td width="1%" rowspan="2" valign="top" style="color:black !important">
+
+                                                                                    {!floor(counter)}.
+
+                                                                                </td>
+
+                                                                                <th style="width:95%;text-align:left;padding-left:5px;word-wrap: break-word;" class="slds-truncate" styleClass="slds-cell-wrap slds-cell-shrink" valign="top">
+                                                                                    <apex:outputLink tabindex="tab1" value="/apex/EditJobSpecUnderJobSwitchpage?id={!lst.id}" rendered="{!$ObjectType.Job_Spec__c.updateable}"><font color="#0070d2">{!lst.Name}</font></apex:outputLink>
+                                                                                </th>
+
+                                                                                <td rowspan="2" valign="top" width="5%">
+
+                                                                                    <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open" style="float:right;">
+
+                                                                                        <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                                                                                            <i class="fa fa-caret-down" style="font-size:20px;color:grey;padding:0px 0px 0px 3px !important"></i>
+                                                                                            <span class="slds-assistive-text">Show More</span>
+                                                                                        </div>
+
+                                                                                        <div class="slds-dropdown slds-dropdown--right">
+
+                                                                                            <ul class="slds-dropdown__list" role="menu">
+
+                                                                                                <li class="slds-dropdown__item" role="presentation">
+                                                                                                    <apex:commandLink action="{!editJobSpec}" reRender="hiddenBlock1" rendered="{!$ObjectType.Job_Spec__c.updateable}" value="Edit"> &nbsp;&nbsp;
+                                                                                                        <apex:param name="param1" value="{!lst.id}" assignTo="{!specId}"></apex:param>
+                                                                                                        &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">edit</i>
+                                                                                                    </apex:commandLink>
+                                                                                                </li>
+
+                                                                                                <li class="slds-dropdown__item" role="presentation">
+
+                                                                                                    <apex:commandLink action="{!deljobspec}" Style="margin-left:1px;"  reRender="specid,CBTemplate" status="importspecstatus" rendered="{!$ObjectType.Job_Spec__c.deletable}" value="Delete">
+
+                                                                                                        <apex:param name="param2" value="{!lst.id}" assignTo="{!specId}"> </apex:param>
+                                                                                                        &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">delete</i>
+                                                                                                    </apex:commandLink>
+
+                                                                                                </li>
+
+                                                                                            </ul>
+                                                                                        </div>
+
+                                                                                    </div>
+
+                                                                                </td>
+
+                                                                           </tr>
+
+                                                                            <tr>
+
+                                                                                <th>
+                                                                                    <!-- <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,addspec,cbreport"/></apex:outputfield> -->
+
+                                                                                    <p style="width:100%;white-space:pre-line;word-break:keep-all;line-height: 22px">{!lst.Description__c} </p>
+                                                                                </th>
+
+                                                                            </tr>
+
+                                                                        </table>
+                                                                        <apex:variable value="{!counter+1}" var="counter" />
+                                                                        <br/>
+                                                                    </apex:repeat>
+                                                                </div>
+                                                                </div>
+                                                            </apex:repeat>
+                                                             <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--12-of-12">
+                                                             </div>
+                                                             </div>
+                                                            <br/>
+                                                        </apex:outputPanel>
+                                                    </div>
+
+                                                <!--- </main> 
+                                            </div> -->
+                                        </div>
+                                        
+                                        
+                                         <apex:outputPanel rendered="{!lstJobSpec.Size <= 0}"><br/>
+                                    <p style="padding-left:10px"> No Records to Display </p>
+                                </apex:outputPanel>   
+                                        
+                                    </apex:outputPanel>
+                                    
+                                    
+                                    
+                                    
+                                    <!-- ************************************************************ Time Sheet*************************************************************************** -->
+                                    
+                                     <h1 style="color:white;font-size:18px;display:{!IF((!$ObjectType.Timesheet_Entries__c.accessible), 'none','block')};">
+                                                          <svg aria-hidden="true" class="slds-icon" >
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#today')}"></use>
+                                                          </svg>
+                                                          <apex:outputPanel id="TSHSetion"> 
+                                                         <b> Time Sheets</b> ({!totalRecs})
+                                                         </apex:outputPanel>
+                                                  </h1>
+
+                                                <apex:outputPanel id="dv">
+                                                
+                                                    <div style="display:{!IF((!$ObjectType.Timesheet_Entries__c.accessible), 'none','block')};">
+                                                       <div class="slds-wrap">
+                                                        <br/>
+                                                        <center>
+                                                            <apex:commandButton value="New TimeSheet" action="{!TSEntryMethod}" styleClass="slds-button slds-button--neutral" /> </center>
+                                                        <br/>
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!TimeSheetList.Size > 0}">
+                                                          
+                                                           <div class="slds-grid slds-wrap" > 
+                                                            <apex:repeat value="{!TimeSheetList}" var="TSH" rendered="{!TimeSheetList.Size > 0}">
+                                                            
+                                                            <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                
+                                                                <div class="demo-only">
+                                                                    <div class="slds-box"  style="background-color:white;margin: 10px 0px 4px 0px;">
+                                                                        <!---
+                                                                            <div class="slds-media__figure">
+                                                                               <span class="slds-icon--container" title="{!TSH.Name}">
+                                                                                <svg class="slds-icon slds-icon-standard-groups" aria-hidden="true">
+                                                                                 <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#today')}"></use>
+                                                                                </svg>
+                                                                              </span>
+    
+                                                                            </div> --->
+                                                
+                                                                        <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open" style="float:right;">
+                                                
+                                                                            <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                                                                                <i class="fa fa-caret-down" style="font-size:20px;color:grey;padding:0px 0px 0px 3px !important"></i>
+                                                                                <span class="slds-assistive-text">Show More</span>
+                                                                            </div>
+                                                
+                                                                            <div class="slds-dropdown slds-dropdown--right">
+                                                
+                                                                                <ul class="slds-dropdown__list" role="menu">
+                                                
+                                                                                    <li class="slds-dropdown__item" role="presentation">
+                                                                                        <a href="/apex/EditTimesheetEntrymobile?id={!TSH.Id}&TSEdit=JobDetail" role="menuitem" tabindex="0">
+                                                                                            <span class="slds-truncate" style="padding:0 !important;" title="Edit">Edit</span>&nbsp;&nbsp;
+                                                
+                                                                                            <i class="material-icons" style="font-size:20px;color:black">edit</i>
+                                                                                        </a>
+                                                
+                                                                                    </li>
+                                                
+                                                                                    <li class="slds-dropdown__item" role="presentation">
+                                                
+                                                                                        <apex:commandLink action="{!delTimesheet}" reRender="TSHSetion,dv" status="importspecstatus" value="Delete"> &nbsp;&nbsp;
+                                                                                            <apex:param name="paramaId" value="{!TSH.id}" assignTo="{!ciid}" /> &nbsp; &nbsp; <i class="material-icons" style="font-size:24px;color:black">delete</i>
+                                                                                        </apex:commandLink>
+                                                
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                
+                                                                        </div>
+                                                                        <div class="slds-media__body">
+                                                                            <h3 class="slds-tile__title slds-truncate" style="padding:0px 0px 7px 0px !important;" title="{!TSH.Name}">
+                                                                                                                                <apex:outputLink tabindex="tab1" value="/{!TSH.Id}">{!TSH.Name}</apex:outputlink> </h3>
+                                                
+                                                                            <div class="slds-tile__detail" style="line-height: 1.3 !important;">
+                                                                                <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.Label}">{!$ObjectType.Timesheet_Entries__c.Fields.Task_Name__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;" title="{!TSH.Task_Name__c}">{!TSH.Task_Name__c}</dd>
+                                                                                </dl>
+                                                                                <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label  slds-text-color--weak slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Timesheet_Entries__c.Fields.Hours_Worked__c.Label}">{!$ObjectType.Timesheet_Entries__c.Fields.Hours_Worked__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;" title="{!TSH.Hours_Worked__c}">{!TSH.Hours_Worked__c}</dd>
+                                                                                </dl>
+                                                                                <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Timesheet_Entries__c.Fields.Date__c.Label}">{!$ObjectType.Timesheet_Entries__c.Fields.Date__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;" >
+                                                                                        <apex:outputField value="{!TSH.Date__c}" />
+                                                                                    </dd>
+                                                                                </dl>
+                                                                                <dl class="slds-list--horizontal slds-wrap" style="padding: 3px 0px 3px 0px">
+                                                                                    <dt class="slds-item--label  slds-text-color--weak slds-text-color--weak slds-truncate" style="width:50%;color:#54698d !important;font-weight: inherit;" title="{!$ObjectType.Timesheet_Entries__c.Fields.User__c.Label}">{!$ObjectType.Timesheet_Entries__c.Fields.User__c.Label}:</dt>
+                                                                                    <dd class="slds-item--detail slds-truncate" style="width:50%;" >
+                                                                                        <apex:outputField value="{!TSH.User__c}" />
+                                                                                    </dd>
+                                                                                </dl>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div> <br/>
+                                                            </apex:repeat>
+                                                              <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                               </div>
+                                                               </div>  
+                                                            <br/>
+                                                            <apex:outputpanel id="dvpag">
+                                                                <div class="slds-button-group " role="group">
+                                                                    <apex:commandButton value="<<First" rerender="dv,dvpag" action="{!setCon.First}" disabled="{!!setCon.hasPrevious}" title="First Page" rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group" />
+                                                                    <apex:commandButton value="<Previous" rerender="dv,dvpag" action="{!setCon.Previous}" disabled="{!!setCon.hasPrevious}" title="Previous Page" rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group" />
+                                                                    <apex:commandButton value="Next>" rerender="dv,dvpag" action="{!setCon.Next}" disabled="{!!setCon.hasNext}" title="Next Page" rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group" />
+                                                                    <apex:commandButton value="Last>>" rerender="dv,dvpag" action="{!setCon.Last}" disabled="{!!setCon.hasNext}" title="Last Page" rendered="{!TimeSheetList.Size > 0}" status="LoadingStatus111" styleClass="slds-button slds-button--neutral slds-button-group" />
+                                                
+                                                                    <!--  <apex:outputText >{!(setCon.pageNumber * size)+1-size}-{!IF((setCon.pageNumber * size)>noOfRecords, noOfRecords,
+                                                                     (setCon.pageNumber * size))} of {!noOfRecords}
+                                                                   </apex:outputText> 
+                                                                   --->
+                                                
+                                                                </div>
+                                                            </apex:outputpanel>
+                                                
+                                                            <apex:actionStatus id="LoadingStatus111">
+                                                
+                                                                <apex:facet name="start">
+                                                                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div style="display: inline-block; background-color: #fff;width:30px;" align="center">
+                                                                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                                                                    </div>
+                                                
+                                                                </apex:facet>
+                                                            </apex:actionStatus>
+                                                
+                                                        </apex:outputPanel>
+                                                
+                                                        <apex:outputPanel rendered="{!TimeSheetList.Size <= 0}">
+                                                            <p style="padding-left:10px"> No Records to Display </p>
+                                                        </apex:outputPanel>
+                                                
+                                                    </div>
+                                                </apex:outputPanel>
+                                                                                    
+                                    
+                                     <!-- ************************************************************ Time Sheet*************************************************************************** -->
+                                    
+                                    
+                                    <!---******************************************************* Files Section ***************************************************************************--->
+                                            <h1 style="color:white;font-size:18px;">
+                                                          <svg aria-hidden="true" class="slds-icon" >
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#file')}"></use>
+                                                          </svg>
+                                                          <apex:outputPanel id="FilesSection"> 
+                                                         <b> Files</b> 
+                                                         </apex:outputPanel>
+                                                  </h1>
+                                                  
+                                             <apex:outputPanel id="fileSection" >
+                                                    <br/>
+                                                <center>     
+                                                   <apex:commandButton styleclass="slds-button slds-button--neutral"   value="New Note" action="{!CreateNote}"/>
+                                                   <apex:commandButton styleclass="slds-button slds-button--neutral"   value="Attach File" action="{!AttachFile}"/>
+                                              <!--   <apex:commandButton styleclass="slds-button slds-button--neutral"   value="Print" onClick="window.open('/apex/NotesandFilesReport?id={!$CurrentPage.Parameters.Id}');" /> 
+                                                     <apex:outputLink styleclass="slds-button slds-button--neutral" target="_self" value="/apex/NotesandFilesReport?id={!$CurrentPage.Parameters.Id}">Print</apex:outputLink> -->
+
+                                                  </center>  
+                                             
+                                              <br/>
+                                              <div class="slds-section slds-is-open" >
+                                             
+                                                   
+                                              <h3 class="slds-section__title" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; color: darkslategrey;font-weight: normal;line-height: 1.875rem;border-radius:4px;">
+                                              
+                                                    
+                                                          <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                                      <use xlink:href="{!$Resource.SLDS0122}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                                      </svg>
+                                                       <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;width:35px !important;height:35px !important;">
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS, '/assets/icons/standard-sprite/svg/symbols.svg#note')}" ></use>
+                                                        </svg>
+                                                      
+                                                         Notes Section
+                                                     
+                                                
+                                                </h3><br/>
+                                               
+                                                
+                                                
+                                                <div class="slds-section__content" >                               
+                                       
+                                                            <apex:outputPanel rendered="{!n1.size > 0}"><div >
+                                                            <div class="slds-grid slds-wrap" style="padding: 10px 0px 0px 0px;">
+                                                              <apex:repeat value="{!n1}" var="na" rendered="{!n1.Size > 0}" >
+                                                                    <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                                    <div class="slds-media slds-tile slds-hint-parent" style="line-height: 1.5 !important;">
+                                                    
+                                                                        <div class="slds-media__figure" style="margin-right:10px;margin-top: 6px;">
+                                                                            <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#note')}"></use>
+                                                                            </svg>
+                                                                        </div>
+                                                                        <div class="slds-media__body" >  
+                                            
+                                                                          <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                                                <p class="slds-tile__title slds-truncate">
+                                                                                    <apex:outputLink tabindex="tab1" value="/apex/JobNoteDetailPageLightning?id={!na.Id}"><font color="#0070d2">{!na.Title}</font></apex:outputLink>
+                                                                                </p>
+                                                                                
+                                                                                
+                                                                                 <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open" style="float:right;">
+
+                                                                                <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                                                                                    <i class="fa fa-caret-down" style="font-size:20px;color:grey;padding:0px 0px 0px 3px !important"></i>
+                                                                                    <span class="slds-assistive-text">Show More</span>
+                                                                                </div>
+
+                                                                                <div class="slds-dropdown slds-dropdown--right slds-dropdown--xx-small">
+
+                                                                                    <ul class="slds-dropdown__list" role="menu">
+                                                    
+                                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                                <a  href="/apex/EditJobNoteLightning?id={!na.Id}" role="menuitem" tabindex="0">
+                                                                                                    <span class="slds-truncate" title="Edit">Edit
+                                                                                                     </span>&nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                                    <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                                                    </svg>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            
+                                                                                            
+                                                                                            <li class="slds-dropdown__item" role="presentation">
+                                                                                               <!-- <a href="/apex/DeleteJobSpec?id={!lst.id}" onclick="if(!confirm('Are you sure?')){return false;}" role="menuitem" tabindex="-1">-->
+                                                                                                <a href="/apex/DeleteJobNote?Id={!na.id}" role="menuitem" tabindex="-1">
+                                                                                                    <span class="slds-truncate" title="Delete">Delete</span>
+                                                                                                    &nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                                     <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                                        <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                                                    </svg> 
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                    
+                                                                            </div>
+                                                                                <div class="slds-tile__detail slds-text-body--small">
+                                                                                <b>Body: </b><p style="width:100%;white-space:pre-line;word-break:keep-all;line-height: 22px">{!na.body}</p>
+                                                                                
+                                                                            </div>
+                                                    
+                                                                        </div>
+                                                                    </div> <br/>
+                                                               
+                                                            </div><br/> 
+                                                          </apex:repeat>
+                                                          <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                           </div>
+                                                          
+                                                          </div>
+                                                          </div>
+                                                    </apex:outputPanel>
+                                                
+                                                    <apex:outputPanel rendered="{!n1.size <= 0}">
+                                                           <apex:outputPanel >
+                                                               <p style="padding-left:10px">   No Notes to display.</p>
+                                                           </apex:outputPanel>              
+                                                    </apex:outputPanel>
+                                                                      
+                                                                        </div>
+                                                                        
+                                                   </div>
+                               
+                                                <br/> <br/>
+                                                
+                                               
+                                                  <div class="slds-section slds-is-open">
+                                                  
+                                              
+                                                     <h3 class="slds-section__title" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; color: darkslategrey;font-weight: normal;line-height: 1.875rem;border-radius:4px;">
+                                                       <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                                        <use xlink:href="{!$Resource.SLDS0122}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                                      </svg>
+                                                      <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;height:35px !important;">
+                                                         <use xlink:href="{!$Resource.SLDS}/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
+                                                     </svg>
+                                                     
+                                                      
+                                                         Attachments Section
+                                                         
+                                                 
+                                                </h3>
+                                                <br/>
+                                              
+                                                            <div class="slds-section__content" >                               
+                                                                   
+                                                                    <apex:outputPanel rendered="{!n2.size > 0}"><div class="slds-grid slds-wrap"  style="padding: 10px 0px 0px 0px;">
+                                                                       <apex:repeat value="{!n2}" var="na" rendered="{!n2.Size > 0}" >
+                                                                            <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                                            <div class="slds-media slds-tile slds-hint-parent" style="line-height: 1.5 !important;">
+                                                            
+                                                                                <div  class="slds-media__figure"  style="margin-right:10px;margin-top: 6px;background-color:#779ef2;width:30px !important;height:30px !important;border-radius:10%;">
+                                                                                 <img src="{!URLFOR($Resource.attachment)}" style="width:25px !important;height:25px !important;padding-top:15%;padding-left:8%;"/>
+                                                                                  
+                                                                                </div>
+                                                                                <div class="slds-media__body">  
+                                                    
+                                                                                  <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                                                        <p class="slds-tile__title slds-truncate">
+                                                                                            <apex:outputLink tabindex="tab1" value="/servlet/servlet.FileDownload?file={!na.Id}"><font color="#0070d2">{!na.Name}</font></apex:outputLink>
+                                                                                        </p>
+                                                            
+                                                                                       <div class="slds-dropdown-trigger slds-dropdown-trigger-click slds-is-open" style="float:right;">
+
+                                                                                <div class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                                                                                    <i class="fa fa-caret-down" style="font-size:20px;color:grey;padding:0px 0px 0px 3px !important"></i>
+                                                                                    <span class="slds-assistive-text">Show More</span>
+                                                                                </div>
+
+                                                                                <div class="slds-dropdown slds-dropdown--right slds-dropdown--xx-small">
+
+                                                                                    <ul class="slds-dropdown__list" role="menu">
+                                                                                                    <li class="slds-dropdown__item" role="presentation">
+                                                                                                        <a  href="/apex/EditJobAttachmentLightning?id={!na.id}" role="menuitem" tabindex="0">
+                                                                                                            <span class="slds-truncate" title="Edit">Edit
+                                                                                                             </span>&nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                                            <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                                                            </svg>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                    
+                                                                                                    
+                                                                                                    <li class="slds-dropdown__item" role="presentation">
+                                                                                                       <!-- <a href="/apex/DeleteJobSpec?id={!lst.id}" onclick="if(!confirm('Are you sure?')){return false;}" role="menuitem" tabindex="-1">-->
+                                                                                                        <a href="/apex/DeleteJobAttachment?Id={!na.id}" role="menuitem" tabindex="-1">
+                                                                                                            <span class="slds-truncate" title="Delete">Delete</span>
+                                                                                                            &nbsp; &nbsp;&nbsp; &nbsp;
+                                                                                                             <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:15px !important;height:15px !important;">
+                                                                                                               <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                                                            </svg> 
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                </ul>
+                                                                                            </div>
+                                                                                        </div>
+                                                            
+                                                                                    </div>
+                                                                                    <div class="slds-tile__detail slds-text-body--small">
+                                                                                        <p ></p>
+                                                                                        
+                                                                                    </div>
+                                                            
+                                                                                </div>
+                                                                            </div> <br/>
+                                                                       
+                                                                    </div><br/>
+                                                                    
+                                                               </apex:repeat>
+                                                               <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                               </div>
+                                                               </div>
+                                                        </apex:outputPanel>
+                                            
+                                                       <apex:outputPanel rendered="{!n2.size <= 0}">
+                                                           <apex:outputPanel >
+                                                                 <p style="padding-left:10px"> No Attachments to display.</p>
+                                                           </apex:outputPanel>              
+                                                   </apex:outputPanel> 
+                                                          
+                                                           </div>
+                                                                           
+                                               </div>
+                                                <br/> <br/>
+                                                
+                                                
+                                                <div class="slds-section slds-is-open">
+                                              
+                                              <h3 class="slds-section__title" style=" background-color: #e2e4e6;padding: 0 0.6rem;font-size: 1.1em; color: darkslategrey;font-weight: normal;line-height: 1.875rem;border-radius:4px;">
+                                                    
+                                                      <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                                                        <use xlink:href="{!$Resource.SLDS0122}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                                      </svg>
+                                                       <svg aria-hidden="true"  class="slds-button__icon slds-button__icon--hint slds-button__icon--large " style="fill:#333;width:35px !important;height:35px !important;">
+                                                            <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#file')}" ></use>
+                                                        </svg>
+                                                      
+                                                        Chatter Files Section.
+                                                         
+                                                 
+                                                </h3><br/>
+                                                
+                                                 <div class="slds-section__content" >                               
+                                       
+                                                  <apex:outputPanel rendered="{!n4.size > 0}">
+                                                       <div class="slds-grid slds-wrap" style="padding: 10px 0px 0px 0px;">                 
+                                                           <apex:repeat value="{!n4}" var="nf4" rendered="{!n4.Size > 0}"  >
+                                                                
+                                                                
+                                                              <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                                                    <div class="slds-media slds-tile slds-hint-parent" style="line-height: 1.8 !important;" >
+                                                    
+                                                                        <div class="slds-media__figure" style="margin-right:10px;margin-top: 6px;">
+                                                                            <svg aria-hidden="true" class="slds-icon slds-icon-standard-groups">
+                                                                                <use xlink:href="{!URLFOR($Resource.SLDS0122, '/assets/icons/standard-sprite/svg/symbols.svg#file')}"></use>
+                                                                            </svg>
+                                                                        </div>
+                                                                        <div class="slds-media__body">  
+                                            
+                                                                      <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                                                                                <p class="slds-tile__title slds-truncate">
+                                                                                    <apex:outputLink tabindex="tab1" value="/{!nf4.ContentDocumentId}"><font color="#0070d2">{!nf4.ContentDocument.Title}</font></apex:outputLink>
+                                                                                </p>
+                                                    
+                                                                      </div>
+                                                                    <div class="slds-tile__detail slds-text-body--small">
+                                                                                <p ><b>Created By: </b>{!nf4.ContentDocument.CreatedBy.Name}</p>
+                                                                                <b>Last Modified Date: </b><apex:outputText value="{0,date,MM'/'dd'/'yy}" >
+                                                                    <apex:param value="{!nf4.ContentDocument.LastModifiedDate}"/>
+                                                              </apex:outputText>
+                                                            </div>
+                                    
+                                                        </div>
+                                                    </div> <br/>
+                                               
+                                                </div><br/>
+                                                
+                                           </apex:repeat>
+                                           <div class="slds-col--padded slds-size--2-of-2 slds-medium-size--6-of-6 slds-large-size--6-of-12">
+                                           </div>
+                                           </div>
+                                    </apex:outputPanel>
+                                                      
+                                    </div>
+                                
+                                                
+                                                
+                                                
+                                                </div>
+                                                
+                                                  
+                                              </apex:outputPanel>       
+                                      <!---******************************************************* Files Section ***************************************************************************--->   
+                                    
+                                    
+                                   
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </apex:pageBlock>
+
+                <apex:outputPanel >
+                    <apex:actionStatus id="importspecstatus">
+                        <apex:facet name="start">
+                            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                                &nbsp;
+                            </div>
+                            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                                <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                                    <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                                </div>
+                            </div>
+                        </apex:facet>
+
+                    </apex:actionStatus>
+
+                </apex:outputPanel>
+
+            </apex:form>
+            
+                                                 
+            
+                                                
+            
+        </div>
+
+    </body>
+
+    </html>
+
+</apex:page>

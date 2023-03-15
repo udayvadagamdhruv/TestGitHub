@@ -1,0 +1,51 @@
+<apex:page standardController="Job__c" extensions="NewJobFromSite">
+<apex:form title="Job Details">    
+        <table width="55%" style="margin:0px auto;">
+        <tr><td>
+        <apex:sectionHeader title="Job Details"/>
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="2">    
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}" ></apex:outputLabel>
+                <apex:inputField value="{!Job__c.Name}" required="true" /> 
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" ></apex:outputLabel>
+                <apex:inputField value="{!Job__c.Due_Date__c}" required="true" /> 
+            </apex:pageBlockSectionItem>
+                                    
+          <!--  <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Media_Types__c.Label}" />
+                <apex:actionRegion >
+                <apex:selectList value="{!strMediaType}" size="1" >
+                    <apex:actionSupport event="onchange" rerender="sId" />
+                    <apex:selectOptions value="{!mediaList}" />
+                </apex:selectList>
+                </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}" />
+                
+                <apex:selectList value="{!strScheduleTemp}" size="1" id="sId" >  
+                    <apex:selectOptions value="{!scheduleTemp}" />
+                </apex:selectList>               
+            </apex:pageBlockSectionItem>-->
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Description__c.Label}" ></apex:outputLabel>                
+                <apex:inputTextarea value="{!Job__c.Job_Description__c}" rows="3" cols="55"  style="resize:none"/>
+            </apex:pageBlockSectionItem>        
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockButtons location="bottom" >
+            <apex:commandButton value="Submit" action="{!Save}"/>               
+        </apex:pageBlockButtons>
+    </apex:pageBlock>          
+        </td></tr>
+        </table>
+</apex:form> 
+</apex:page>

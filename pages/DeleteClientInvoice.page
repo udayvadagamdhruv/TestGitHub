@@ -1,0 +1,16 @@
+<!-- This Page is used to override the delete functionality of Client Invoice Object --> 
+<apex:page standardController="Client_Invoice__c" extensions="DeleteClientInvoiceExtension" showHeader="false" sidebar="false">
+
+<script>
+           window.onload=function()
+           {
+             doInit();
+           };
+        </script> 
+  
+        <apex:form >
+           <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+        </apex:form>
+
+
+</apex:page>

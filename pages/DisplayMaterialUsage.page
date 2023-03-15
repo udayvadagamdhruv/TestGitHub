@@ -1,0 +1,71 @@
+<apex:page controller="DisplayMaterialUsageController">
+  
+  <apex:form id="frm">
+  <apex:pageBlock title="Material Usage Section">
+       <span style="padding-left:450px;margin:5px;padding-bottom:20px;">
+       <apex:commandButton action="{!createMU}" value="Add Material Usage" id="btn2" rendered="{!$ObjectType.Material_Usage_line_item__c.Deletable}"/> 
+       
+       </span> 
+       <apex:variable value="{!0}" var="rowNumber" />
+        <apex:outputPanel id="panelvar">
+           <apex:variable value="{!0}" var="rowNumber" />
+        </apex:outputPanel> 
+    <apex:pageMessages ></apex:pageMessages>
+  <br/> <br/> 
+  
+     <apex:pageBlockTable value="{!MU}" var="MUItem" rendered="{!MU.Size>0}">
+         <apex:column headerValue="Action" width="10%" rendered="{!$ObjectType.Material_Usage_line_item__c.Deletable}">
+             <apex:variable var="rowNumber" value="{!rowNumber+1}" />
+              <apex:commandButton value="Delete" action="{!deleteMU}" onclick="if(!confirm('Are you sure?')){return false;}" reRender="frm" disabled="{!rowNumber != 1}">
+                  <apex:param name="param2" value="{!MUItem.id}" assignTo="{!strMU}"></apex:param>
+               </apex:commandButton>
+          </apex:column>
+          
+        <apex:column headerValue="{!$ObjectType.Material_Usage_line_item__c.Fields.Date__c.Label}">
+              <apex:outputfield value="{!MUItem.Date__c}"/>
+              
+          </apex:column>
+          
+          
+         <apex:column headerValue="{!$ObjectType.Material_Usage_line_item__c.Fields.Type__c  .Label}">
+              <apex:outputfield value="{!MUItem.Type__c  }"/>
+          </apex:column>
+          
+          
+           <apex:column headerValue="{!$ObjectType.Material_Usage_line_item__c.Fields.Description__c.Label}">
+              <apex:outputfield value="{!MUItem.Description__c}"/>
+          </apex:column>
+          
+          
+           <apex:column headerValue="{!$ObjectType.Material_Usage_line_item__c.Fields.Debit__c.Label}">
+              <apex:outputfield value="{!MUItem.Debit__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Material_Usage_line_item__c.Fields.Credit__c.Label}">
+              <apex:outputfield value="{!MUItem.Credit__c}"/>
+          </apex:column>
+          
+           <apex:column headerValue="{!$ObjectType.Material_Usage_line_item__c.Fields.Qty_On_Hand__c.Label}">
+              <apex:outputfield value="{!MUItem.Qty_On_Hand__c}"/>
+          </apex:column>
+          
+          
+          
+          
+          
+         
+     </apex:pageBlockTable>
+     
+     
+        <apex:pageBlockSection rendered="{!MU.size <= 0}">
+           <apex:pageBlockSectionItem >
+               <b>No records to display</b>
+           </apex:pageBlockSectionItem>              
+        </apex:pageBlockSection> 
+     </apex:pageBlock>
+ </apex:form>
+  
+  
+  
+  
+</apex:page>

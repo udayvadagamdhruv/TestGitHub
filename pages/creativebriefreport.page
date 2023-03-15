@@ -1,0 +1,266 @@
+<!-- This Page is used to display Creative Brief Report for JobSuite Application -->
+<apex:page standardController="Job__c" showHeader="false" sidebar="false" standardStylesheets="false" extensions="CreativeBriefReportExtension" renderAs="pdf">
+
+ <head>
+    <style type="text/css">
+        div.tab
+        {
+        width:100%;
+        border:solid black;
+        }
+    
+    @page
+      {
+        /* Landscape orientation */
+        size:landscape;
+
+        /* Put page numbers in the bottom right corner of each
+        page in the pdf document. */
+        @bottom-right
+         {
+          content: "Page " counter(page);
+          font-family: sans-serif;
+          font-size:8pt;
+         }
+   
+        @bottom-left 
+         {
+          content: "<apex:outputText value="{0,date,MMMM dd,yyyy}"><apex:param value="{!NOW()}" /></apex:outputText>";
+          background-repeat: no-repeat;
+          font-size:8pt;
+          font-family: sans-serif;
+         }
+      }
+
+        body 
+         {
+          font-family: sans-serif;
+          font-size:8pt;
+         }
+  
+        th
+         {
+          font-size:10pt
+          font-style:bold;
+          font-family: sans-serif;
+         }
+
+        td
+         {
+          font-size:8pt;
+          font-family: sans-serif;
+         }
+  
+        div.footer
+         {
+          position : running(footer) ;
+         }
+    </style>
+ </head>
+
+ <body>
+      <apex:image id="JS_logo" value="{!$Resource.JSCloudLogo}" rendered="{!imageNotFound == True}"/>
+      <apex:image url="{!imageBody}" rendered="{!imageNotFound == False}"/>
+     <div style="float:right;padding-right:15px;font-size:15px;font-style:normal;font-family: sans-serif;font-weight:bold">
+        CREATIVE BRIEF
+     </div>
+     
+     <br/><br/>
+
+     <table width="100%">
+     
+     
+             <tr width="100%">
+                  <td align="left">
+                       <hr color="black" width="100%"/>
+                  </td>
+                </tr>
+                
+                <tr width="100%">
+                  <td width="100%">
+                    <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                        <tr style="page-break-inside: avoid;">
+                              <td width="100%">
+                                   <b> <apex:outputText value="DETAILS" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                              </td>
+                        </tr>
+                    </table>
+                   </td>
+                </tr> <br/>
+
+        
+        <tr>
+          
+          <td width="50%" align="left">
+            
+            <table width="100%" align="left">
+              
+              <tr>
+                <td align="left" width="20%"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Campaign__c.Label}" style="font-weight: bold;"/> </td>
+                <td width="80%" align="left"> <apex:outputText value="{!Job__c.Campaign__r.name}"/> </td>
+              </tr>
+              
+              <tr>
+                <td align="left"  width="20%"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Auto_Number__c.Label}" style="font-weight: bold;"/> </td>
+                <td  width="80%" align="left">  <apex:outputText value="{!Job__c.Job_Auto_Number__c}"/> </td>
+              </tr>
+             
+              <tr>
+                <td align="left" width="20%"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Name.Label}" style="font-weight: bold;"/> </td>
+                <td  width="80%" align="left"> <apex:outputText value="{!Job__c.Name}"/> </td>
+              </tr>
+              
+              <tr>
+                <td align="left" width="25%" valign="top"> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Job_Description__c.Label}" style="font-weight: bold;"/> </td>
+                <td  width="75%" align="left"> <apex:outputField value="{!Job__c.Job_Description__c}"/> </td>
+              </tr>
+           
+            </table>
+          
+          </td>
+          
+          <td width="50%"  style="padding-left:180px;" >
+            
+            <table>
+              
+              <tr>
+                <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label}" style="font-weight: bold;"/> </td>
+                <td align="left"> <apex:outputText value="{!Job__c.Schedule_Template__r.Name}"/> </td>
+              </tr>
+              
+              <tr>
+                <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Status__c.Label}" style="font-weight: bold;"/> </td>
+                <td align="left"> <apex:outputText value="{!Job__c.Status__c}"/> </td>
+              </tr>
+              
+              <tr>
+                <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Start_Date__c.Label}" style="font-weight: bold;"/> </td>
+                <td align="left"> <apex:outputfield value="{!Job__c.Start_Date__c}"/> </td>
+              </tr>
+              
+              <tr>
+                <td> <apex:outputLabel value="{!$ObjectType.Job__c.Fields.Due_Date__c.Label}" style="font-weight: bold;"/> </td>
+                <td align="left"> <apex:outputfield value="{!Job__c.Due_Date__c}"/> </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <br/>
+   </table>
+              
+              <!---------------------------------------------------- End of DETAILSSection ---------------------------------------------------------->     
+              
+              
+              <!---------------------------------------------------- TASK Section ---------------------------------------------------------->     
+              
+              
+     <table width="100%"> 
+          <tr width="100%">
+               <td align="left" width="100%" >
+                   <hr color="black" width="100%"/>
+               </td>
+          </tr>
+                
+                <tr width="100%">
+                  <td width="100%">
+                    <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                        <tr>
+                              <td width="100%">
+                                   <b> <apex:outputText value="TEAM" style="font-size:12px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                              </td>
+                        </tr>
+                    </table>
+                   </td>
+                </tr> <br/>
+        
+             
+        <tr>
+        
+          <td colspan="2" width="100%" align="left"> 
+          
+           <apex:dataTable value="{!JobTeam}" var="JT" columns="2"  width="100%" rendered="{!JobTeam.Size>0}">
+                      <apex:column value="{!JT.Role__c}"  width="40%"/> 
+                      <apex:column value="{!'    '}     "/>
+                      <apex:column value="{!JT.Staff__c}" width="50%"/> 
+           </apex:dataTable>
+        
+          </td>
+        
+        </tr><br/>
+        
+        </table>
+              
+               <!---------------------------------------------------- End of TASK Section ---------------------------------------------------------->     
+              
+              
+               <!---------------------------------------------------- Specs Section ---------------------------------------------------------->     
+              
+          <table width="100%" style="page-break-inside: avoid;">
+            
+               <tr width="100%">
+                  <td align="left">
+                       <hr color="black" width="100%"/>
+                  </td>
+                </tr>
+                
+                <tr width="100%">
+                  <td width="100%">
+                    <table width="100%" style = "background-color:#EEEEEE;margin-bottom:-10px;">
+                        <tr style="page-break-inside: avoid;">
+                              <td width="100%">
+                                   <b> <apex:outputText value="{!upper($ObjectType.Job_Spec__c.Label)}" style="font-size:13px;font-weight:bold;font-color:#0000FF;"/>  </b>
+                              </td>
+                        </tr>
+                     </table>
+                   </td>
+                </tr> <br/>
+                
+                
+                <table width="100%" >
+                <tr width="100%">
+             
+                    <th width="30%"><b>Spec Name</b></th>
+                           
+                    <th width="70%"><b>Description</b></th>
+                    
+                 </tr> 
+                
+                 <tr width="100%">
+             
+                    <td colspan="2">
+                        <hr/>
+                    </td>
+                    
+                 </tr>
+                
+                <tr width="100%" style="font-size:10pt;">
+                    <td width="100%" colspan="2">
+                    
+                       <apex:repeat value="{!MapCB}" var="mc" >
+                       
+                       
+                             <b> {!mc} </b>
+                                       <apex:repeat value="{!MapCB[mc]}" var="JS" >
+                                       
+                                           <table width="100%">
+                                            <tr style="font-size:10pt;">
+                                                         
+                                                <td width="30%" style="text-align:left;"  valign="top"><apex:outputField value="{!JS.Name}"/></td> 
+                                                <td width="70%" style="text-align:leftt;" valign="top"><apex:outputField value="{!JS.Description__c}"/></td>
+                                                
+                                            </tr>
+                                       </table>
+                                        
+                              </apex:repeat><br/>
+                       
+                       
+                        </apex:repeat>
+                    
+                    </td>
+                </tr>
+                </table>
+                
+            </table>  <br/>
+ </body>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="VendorGLCodeSec" label="Vendor GLCode Label"  description="This will reflect the Vendor GLCode Label"/>
+</design:component>

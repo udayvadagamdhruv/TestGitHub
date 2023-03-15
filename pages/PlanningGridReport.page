@@ -1,0 +1,426 @@
+<apex:page controller="PlanningGridReportExtensionProperty" id="pageId" >
+    <head>
+    
+<!--[if IE]>
+   <style>
+      .rotate_text
+      {
+         writing-mode: tb-rl;
+         filter: flipH() flipV();
+      }
+   </style>
+<![endif]-->
+    <!--[if !IE]><!-->
+    <style type="text/css">
+        .rotate_text
+        {
+            -moz-transform: rotate(-90deg);
+            -moz-transform-origin: top left;
+            -webkit-transform: rotate(-90deg);
+            -webkit-transform-origin: top left;
+            -o-transform: rotate(-90deg);
+            -o-transform-origin: top left;
+            position: relative;
+            top: 20px;
+            font-weight:bold;
+        }
+    </style>
+    <!--<![endif]-->
+    <style type="text/css">
+     table
+      {
+       
+         table-layout: fixed;
+         width: 100%; /*Table width must be set or it wont resize the cells*/
+      }
+       td .rotated_cell
+        {
+            padding-bottom: 5px;          
+            height: 120px;
+            vertical-align: bottom;
+            white-space:nowrap;
+        }
+    </style>
+    <style type="text/css">
+       td .b
+        {
+            text-align: left;
+            vertical-align: bottom;
+            font-weight: bold;
+        }
+    </style>    
+    
+    
+    
+   
+<style type="text/css"> 
+
+
+
+
+
+<!--
+.box_rotate 
+{
+         
+        -moz-transform: rotate(-50deg);  /* FF3.5+ */
+       -o-transform: rotate(-50deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-50deg);  /* Saf3.1+, Chrome */
+             filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+}
+-->
+
+.a
+{
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+text-align:left;
+Padding-left:30px;
+
+
+}
+ 
+   
+<!--
+#a
+{
+position:relative;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+}
+-->
+</style>
+
+         <script type="text/javascript">
+          function doSearch() {
+            searchServer
+            (
+                 document.getElementById("CampaignList").options[document.getElementById("CampaignList").selectedIndex].value,
+                 document.getElementById("clientList").options[document.getElementById("clientList").selectedIndex].value,
+                 document.getElementById("statusList").options[document.getElementById("statusList").selectedIndex].value,
+                 document.getElementById("scheduleTempList").options[document.getElementById("scheduleTempList").selectedIndex].value,
+                 document.getElementById("startdt1").value,
+                 document.getElementById("compdt1").value,
+                 document.getElementById("promoStartDt1").value,
+                 document.getElementById("promoDueDt1").value,
+                 document.getElementById("PropertyList").options[document.getElementById("PropertyList").selectedIndex].value
+            );
+          }
+          
+           function clearFields()
+      {
+             document.getElementById("CampaignList").selectedIndex = 0;
+             document.getElementById("clientList").selectedIndex = 0;
+             document.getElementById("statusList").selectedIndex = 0;
+             document.getElementById("scheduleTempList").selectedIndex = 0;
+             document.getElementById("startdt1").value = "";
+             document.getElementById("compdt1").value = "";
+             document.getElementById("promoStartDt1").value = "";
+             document.getElementById("promoDueDt1").value="";
+             document.getElementById("PropertyList").selectedIndex = 0;
+      }
+          </script>
+    </head>
+    <apex:form id="formId">
+        <apex:actionFunction name="searchServer" action="{!searchJobs}" reRender="results,debug">
+            <apex:param name="CampaignList" value=""/>
+            <apex:param name="clientList" value=""/>
+            <apex:param name="statusList" value=""/>
+            <apex:param name="scheduleTempList" value=""/>
+            <apex:param name="startdt1" value=""/>
+            <apex:param name="compdt1" value=""/>
+            <apex:param name="promoStartDt1" value=""/>
+            <apex:param name="promoDueDt1" value=""/>
+            <apex:param name="PropertyList" value=""/>
+        </apex:actionFunction>
+        <apex:pageMessages id="pgMsg"/>
+            <apex:pageBlock id="pbSearch" title="Planning Grid Report">
+            
+            <table width="100%" cellspacing="5%" cellpadding="1%">
+                <tr>
+                    <td>
+                        <table >
+                              <tr>
+                           
+                                     <td style="font-weight:bold;align:left;valign:bottom;" >{!$ObjectType.Job__c.Fields.Campaign__c.Label} </td>
+                                  <td>
+                                    <select id="CampaignList" tabindex="1" style="width:180px;">
+                                        <apex:repeat value="{!CampaignList}" var="lst">
+                                            <option value="{!lst}">{!lst}</option>
+                                        </apex:repeat>
+                                    </select>
+                                  </td> 
+                                  
+                               </tr>   
+                               
+                               
+                             <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Start_Date__c.Label} </td>
+                                <td>
+                                  <input type="text" id="startdt1" name="sdt1" onfocus="DatePicker.pickDate(false,'startdt1', false);" size="10" tabindex="4"/>
+                                </td>
+                            </tr>
+                               
+                               <tr>
+                                    <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Schedule_Template__c.Label} </td>
+                                    <td> 
+                                        <select id="scheduleTempList" tabindex="7"  style="width:180px;">
+                                            <apex:repeat value="{!scheduleTempList}" var="template">
+                                                <option value="{!template}">{!template}</option>
+                                            </apex:repeat>
+                                        </select>  
+                                    </td>
+                                </tr>
+                        </table>
+                    </td>
+                    
+                    <td>
+                        <table>
+                            <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Status__c.Label} </td>
+                                 <td>     
+                                      <select id="statusList" tabindex="2">
+                                            <apex:repeat value="{!jobStatus}" var="status">
+                                                <option value="{!status}">{!status}</option>
+                                            </apex:repeat>
+                                       </select>  
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                    <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Completion_Date__c.Label} </td>
+                                    <td>
+                                          <input type="text" id="compdt1" name="cdt1" onfocus="DatePicker.pickDate(false,'compdt1', false);" size="10" tabindex="5"/>
+                                    </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Dummy_Picklist_1__c.Label} </td>
+                                 <td>     
+                                      <select id="PropertyList" tabindex="2" style="width:150px;">
+                                            <apex:repeat value="{!jobProperty}" var="property">
+                                                <option value="{!property}">{!property}</option>
+                                            </apex:repeat>
+                                       </select>  
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </td>
+                    
+                    <td>
+                        <table>
+                             <tr>
+                                   <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.JS_Client__c.Label} </td>
+                                   <td>
+                                      <select id="clientList" tabindex="3">
+                                            <apex:repeat value="{!clientList}" var="client">
+                                                <option value="{!client}">{!client}</option>
+                                            </apex:repeat>
+                                      </select>  
+                                    </td>
+                               </tr>
+                            
+                            <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Dummy_Date_1__c.Label} </td>
+                                <td colspan="2">
+                                  <input type="text" id="promoStartDt1" name="promodt1" onfocus="DatePicker.pickDate(false,'promoStartDt1', false);" size="10" tabindex="6"/>
+                                </td>
+                            </tr>
+                            
+                             <tr>
+                                <td style="font-weight:bold;">{!$ObjectType.Job__c.Fields.Due_Date__c.Label} </td>
+                                <td colspan="2">
+                                  <input type="text" id="promoDueDt1" name="promoduedt1" onfocus="DatePicker.pickDate(false,'promoDueDt1', false);" size="10" tabindex="9"/>
+                                </td>
+                            </tr>
+                            
+                            
+                        </table>
+                    </td>
+                    
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                           <apex:commandButton value="Search" onClick="if(!doSearch()) return false;" reRender="results" tabindex="10"/> &nbsp;
+                           <apex:commandButton value="Clear" onClick="clearFields();" reRender="results" action="{!clearForm}" tabindex="11"/>
+                        </td>
+                    </tr>
+                </table>
+                   
+                 </apex:pageBlock> 
+                 
+    <apex:pageBlock id="results">
+                    
+                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              
+                    <tr>
+            <td width="13%" class="b">
+               {!$ObjectType.Job__c.Fields.Name.Label}
+            </td>
+            <td width="13%" class="b">
+               {!$ObjectType.Job__c.Fields.Job_Description__c.Label}
+            </td>
+            <td width="11%" class="b">
+                {!$ObjectType.Job__c.Fields.Dummy_Text_4__c.Label}
+            </td>
+            <td width="10%" class="b">
+               {!$ObjectType.Job__c.Fields.Dummy_Text_3__c.Label}
+            </td>
+            <td width="9%" class="b">
+                {!$ObjectType.Job__c.Fields.Dummy_Text_2__c.Label}
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Submitted</div>
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Brief</div>
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Concept Review</div>
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Script Review</div>
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Rough Review</div>
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Final Approval</div>
+            </td>
+            <td class='rotated_cell' width="5%">
+                <div class='rotate_text'>
+                    Start Date</div>
+            </td>
+            
+            <td width="9%" class="b">
+                {!$ObjectType.Job__c.Fields.Dummy_Text_5__c.Label}
+            </td>
+       
+        </tr>
+                   
+                   <tr>
+                         <td colspan="13"><hr color="black"/></td>
+                   </tr>
+                  </table>   
+                    
+                    
+                    <apex:dataTable value="{!pWrapper}" var="w" id="repeat1" width="100%" columnsWidth="100%">
+                      <apex:column style="padding-top:15px;">
+                         <b> <apex:outputText value="{!w.strProperty}" /> </b> <br/>
+                          <hr color="black" style="height:.1px;"/>
+                            <apex:dataTable value="{!w.jobWrapper}" var="wo" width="100%" columnsWidth="13%,13%,11%,10%,9%,5%,5%,5%,5%,5%,5%,5%,9%" style="padding-top:10px;">
+                                <apex:column style="vertical-align:top;">
+                                 <apex:outputText value="{!wo.name}" />
+                                </apex:column>
+                                
+                                <apex:column style="vertical-align:top;">
+                                  <apex:outputField value="{!wo.Job_Description__c}" /> 
+                                </apex:column>
+                                
+                                <apex:column style="vertical-align:top;">
+                                  <apex:outputField value="{!wo.Dummy_Text_4__c}" />
+                                </apex:column>
+                                
+                                <apex:column style="vertical-align:top;">
+                                  <apex:outputField value="{!wo.Dummy_Text_3__c}" /> 
+                                </apex:column>
+                                
+                                <apex:column >
+                                 <apex:outputField value="{!wo.Dummy_Text_2__c}" /> 
+                                </apex:column>
+                                
+                                
+                                 <apex:column style="vertical-align:top;">
+                                 <apex:outputText value="{0,date,MM'/'dd}" >
+                                 <apex:param value="{!wo.Start_Date__c}"/> 
+                                 </apex:outputText>
+                                </apex:column> 
+                                
+                             <!-- <apex:column style="vertical-align:top;">
+                                  <apex:repeat value="{!wo.Job_Task__r}" var="jt">
+                                     <apex:outputText value="{0,date,MM'/'dd}" rendered="{!LOWER(jt.Name)== 'submitted'}">
+                                        <apex:param value="{!jt.Revised_Due_Date__c}"/> 
+                                     </apex:outputText>
+                                  </apex:repeat>
+                                </apex:column>-->
+                               
+                                <apex:column style="vertical-align:top;">
+                                  <apex:repeat value="{!wo.Job_Task__r}" var="jt">
+                                     <apex:outputText value="{0,date,MM'/'dd}" rendered="{!Lower(jt.Name) == 'brief'}">
+                                        <apex:param value="{!jt.Revised_Due_Date__c}"/> 
+                                     </apex:outputText>
+                                  </apex:repeat>
+                                </apex:column>
+                            
+                                <apex:column style="vertical-align:top;">
+                                   <apex:repeat value="{!wo.Job_Task__r}" var="jt">
+                                      <apex:outputText value="{0,date,MM'/'dd}" rendered="{!Lower(jt.Name) == 'concept review'}">
+                                         <apex:param value="{!jt.Revised_Due_Date__c}"/>
+                                      </apex:outputText>
+                                   </apex:repeat>
+                                </apex:column>
+                                 
+                                <apex:column style="vertical-align:top;">
+                                   <apex:repeat value="{!wo.Job_Task__r}" var="jt">
+                                      <apex:outputText value="{0,date,MM'/'dd}" rendered="{!Lower(jt.Name) == 'script review'}">
+                                         <apex:param value="{!jt.Revised_Due_Date__c}"/>
+                                      </apex:outputText>
+                                   </apex:repeat>
+                                </apex:column>
+
+                                <apex:column style="vertical-align:top;">
+                                   <apex:repeat value="{!wo.Job_Task__r}" var="jt">
+                                      <apex:outputText value="{0,date,MM'/'dd}" rendered="{!Lower(jt.Name) == 'rough review 1'}">
+                                         <apex:param value="{!jt.Revised_Due_Date__c}"/>
+                                      </apex:outputText>
+                                   </apex:repeat>
+                                </apex:column>
+                                  
+                                <apex:column style="vertical-align:top;">
+                                   <apex:repeat value="{!wo.Job_Task__r}" var="jt">
+                                      <apex:outputText value="{0,date,MM'/'dd}" rendered="{!Lower(jt.Name) == 'final approval'}">
+                                         <apex:param value="{!jt.Revised_Due_Date__c}"/>
+                                      </apex:outputText> 
+                                   </apex:repeat>
+                                </apex:column>
+                      
+                                <apex:column style="vertical-align:top;">
+                                  <apex:outputText value="{0,date,MM'/'dd}">
+                                        <apex:param value="{!wo.Dummy_Date_2__c}"/>
+                                  </apex:outputText>
+                                 
+                               
+                                </apex:column>
+                                
+                                <apex:column style="vertical-align:top;">
+                                    <apex:outputField value="{!wo.Dummy_Text_5__c}" /> 
+                                </apex:column>
+                                
+                           </apex:dataTable>
+                         
+                      </apex:column>       
+                    </apex:dataTable>
+                     
+                    
+                    <apex:outputPanel rendered="{!(pWrapper.Size == 0) && (isTrue == True)}">
+                        <b>No records to display </b>
+                    </apex:outputPanel>
+                    
+                    <div align="right"  style="padding-top:20px;padding-right:32px;">
+                       <apex:commandButton value="Print" action="{!exportToPDF}" rendered="{!(pWrapper.Size > 0)}" tabindex="12"/>
+                    </div>
+                           
+           </apex:pageBlock>   
+     </apex:form> 
+     <script>
+         function setFocusOnLoad(){}
+     </script>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,664 @@
+<apex:page controller="Adminlighting" tabStyle="MyAdmin__tab" showHeader="false"  sidebar="false" standardStylesheets="true"   docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" >
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+ <style>
+        /* The Modal (background) */
+        .modal {
+            display:block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 60px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.1); /* Black w/ opacity */
+        }
+        
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            //height:100%;
+        }
+        
+       
+ </style>
+
+
+
+<style>
+
+            .slds .slds-icon-standard-user {
+             background-color:inherit;
+        }
+        .slds .slds-text-link {
+            color: #0070d2;
+            text-decoration: none;
+            transition: color .2s linear;
+            font-size: larger;
+        }
+
+       
+        p{
+         color:black !important;
+       }
+
+
+
+</style>
+
+
+ <style>
+        
+ 
+    
+     body
+       {
+               background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, rgba(32, 92, 159, 0), rgb(32, 92, 159));
+              // background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2), linear-gradient(to top, #d4d7da, #666) !important;
+               //background-image:none !important;
+               //background-color:#D7D7D7 !important;
+               background-repeat: repeat-x;
+               background-position: left top;
+               background-attachment: fixed; 
+               margin:0px !important;
+       }
+    body11 {
+    background-repeat: repeat-x;
+    background-position: left top;
+    font-size: 75%;
+    font-family: 'Arial','Helvetica',sans-serif;
+    background-color: rgba(175, 197, 222, 1);
+   }
+    
+  
+        
+.slds .slds-tabs--scoped {
+    display: block;
+    width: 100%;
+    background-color: white;
+   margin-top: 2px;
+    border-radius: 10px;
+}    
+        
+ 
+ .slds .slds-p-vertical--medium {
+    padding-top: 25px;
+    padding-bottom: 0px;
+}
+ .slds .slds-page-header{
+ 
+ border-radius:5px;
+ }
+  .slds .slds-text-heading--medium {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1;
+    
+}
+
+.slds-col desktop
+{
+border-radius:5px !important;
+}
+        
+    </style>
+
+
+
+
+
+
+
+
+     <script>
+     
+       function TabSelect(prefix){
+         //alert(prefix)
+        TabMethod(prefix);
+            
+       }
+       
+   
+    function UsersNavigation(){
+    
+      var compDefinition = { 
+        "componentDef" : "c:Admin_Role", 
+        };
+    var encodedCompDef = btoa(JSON.stringify(compDefinition));
+    window.parent.location = "/one/one.app#"+encodedCompDef;
+   }
+   
+    function StaffsNavigation(){
+    
+      var compDefinition = { 
+        "componentDef" : "c:Admin_Staff", 
+        };
+    var encodedCompDef = btoa(JSON.stringify(compDefinition));
+    window.parent.location = "/one/one.app#"+encodedCompDef;
+   }
+   
+
+ </script>
+      
+           
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+    <script>
+    
+                $(document).ready(function(){
+                    $("li").mouseover(function(){
+                        $(this).addClass("blue");
+                    });
+                    $("li").mouseout(function(){
+                        $(this).removeClass("blue");
+                       });
+                    
+                    });
+     </script>
+                
+                
+     <style>
+     
+             /*   .blue{
+                    background-color:#E8CCD4 !important;
+                     box-shadow: 5px 5px 5px  grey;
+                    border: 2px solid blue; 
+                  }
+               
+               */   
+               
+             .slds .slds-app-launcher__tile:hover{
+    
+                       border:2px solid #851225;
+                    }
+                 
+                 
+                  
+                  
+      </style>
+        
+  
+  
+   
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      
+    <apex:form id="c" >  
+      
+      
+       <!-- Salesforce Lightning Design System Static Resource-->
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+         
+   <!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11..custom/external/jquery/jquery.js')}"></script>
+        <script src="{!URLFOR($Resource.smoothness,'smoothness/jquery-ui-1.11..custom/jquery-ui.min.js')}"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12./jquery.min.js"></script>----->
+        
+        
+        
+         <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    </head>
+
+   
+    
+    <apex:actionFunction name="TabMethod" action="{!ShowItems}" rerender="c">
+          <apex:param name="test" value=""  assignTo="{!test}" />
+    </apex:actionFunction>
+    
+ <!------   <apex:commandButton value="ssss" action="{!redirecet}"/>---->
+    
+  <apex:pageMessages > </apex:pageMessages>
+    
+    <div class="slds" >
+    
+      <div id="myModal" class="modal">
+         <div class="modal-content">
+           
+           
+     <!-----------{ 
+      a0E=GL_Code__c,
+      a0r=Schedule_Template__c, 
+      a0x=Specification_Template__c, 
+      
+      a0k=Production_Spec_Template__c,
+      a1B=Production_Estimate_Template_c,
+      a0I=Holiday__c, 
+      
+      a0N=Invoice_Allocation_Template__c, 
+      a0y=Staff__c, 
+      00E=UserRole,
+      
+      a0c=Media_Type__c,
+      a0F=GL_Department__c,
+      a11=Tag_Template__c,}
+  ---------------->     
+           
+           
+         <br/><br/>
+         
+      
+       
+           <ul class="slds-grid slds-grid--pull-padded slds-wrap" style="margin-left:25px;margin-right:25px;">
+           
+             <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!gldepartment}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-92">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom94"></use>
+                            </svg>
+                    
+                    </span>
+                   
+                  </div> 
+                  <div class="slds-app-launcher__tile-body" title="GL Departments">
+                    <span class="slds-text-link" >
+                     <b>GL Departments</b></span>
+                    <p>Broad categories for expense line items. Parent of GL Codes.
+                      
+                    </p>
+                  </div>
+                </a>
+              </li>
+         
+      
+              
+               <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!meidatypes}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-112">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom99"></use>
+                            </svg>
+                    
+                    </span>
+                    
+                  </div>
+                  <div class="slds-app-launcher__tile-body"  title="Media Types">
+                    <span class="slds-text-link">
+                     <b> Media Types</b></span>
+                    <p>Broad categories to label jobs, parent of Schedule Types.                     
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+              
+              <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:UsersNavigation();" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-10">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom111"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body"  title="Roles">
+                    <span class="slds-text-link">
+                     <b>Roles</b></span>
+                    <p>The function a team member plays on a team (Art Director, Designer, etc.)                     
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+             
+               <br/> <br/> <br/> <br/> <br/> <br/> 
+               
+               
+              <li class="slds-p-horizontal--small  slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3 ">
+              <a href="javascript:TabSelect('{!glcode}');" class="slds-app-launcher__tile slds-text-link--reset ">
+               <div class="slds-app-launcher__tile-figure">
+                   <span class="slds-avatar slds-avatar--large slds-align--absolute-center  slds-icon-custom-1">
+                            <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom24"></use>
+                            </svg>
+                   </span>
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="GL Code">
+                    <span class="slds-text-link" >
+                     <b> GL Code</b></span>
+                    <p >Individual line items on job cost forms (Quotes, Estimates, Purchase Orders, and Invoices).
+                    </p>
+                  </div>
+                  </a>
+             
+              </li>
+               
+               
+             <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!scheduletemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-28">
+                        <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom40"></use>
+                            </svg>
+                    
+                    </span>
+                    
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Schedule Templates">
+                    <span class="slds-text-link" >
+                     <b> Schedule Templates</b></span>
+                    <p>Used to define the job type, and import a schedule template into a job schedule.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+                
+              <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:StaffsNavigation();" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-77">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom103"></use>
+                            </svg>
+                    </span>
+               
+                  </div>
+                  <div class="slds-app-launcher__tile-body"  title="Staff">
+                    <span class="slds-text-link">
+                     <b> Staff</b></span>
+                    <p>People that play a role on your job teams.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+               
+               
+             
+              
+              <br/> <br/> <br/> <br/> <br/> <br/> 
+              
+              
+               <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3" >
+                <a href="javascript:TabSelect('{!crebrieftemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-12">
+                    
+                     <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/standard-sprite/svg/symbols.svg#record"></use>
+                            </svg>
+                    
+                    </span>
+                    
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Creative Brief Templates">
+                    <span class="slds-text-link">
+                     <b> Job Spec Templates</b></span>
+                     <p> A template used to pull a group of job specs into a job.
+                     </p>
+                  </div>
+                </a>
+              </li>
+              
+              
+               
+               <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!proseptemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-32">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom62"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Production Spec Templates">
+                    <span class="slds-text-link" >
+                     <b> Production Spec Templates</b></span>
+                    <p>A template used to pull a group of production specs into estimates.</p>
+                  </div>
+                </a>
+              </li>
+              
+              
+            
+              
+              
+               <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!holidays }');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-16">
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom60"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Holidays">
+                 <span class="slds-text-link" >
+                     <b> Holidays</b></span>
+                    <p>Enter your holidays so auto schedules skip weekends and holidays.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+           
+              
+             
+              
+              
+              <br/> <br/> <br/> <br/> <br/> <br/> 
+              
+              
+            
+              
+               <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!PEtemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-38">
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom18"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Production Estimate Template">
+                 <span class="slds-text-link" >
+                     <b> Production Estimate Template </b></span>
+                    <p>A template used to pull a group of production Estimate.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+              
+              
+               <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!Invtemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-45">
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom45"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Invoice Allocation Template">
+                 <span class="slds-text-link" >
+                     <b> Invoice Allocation Template </b></span>
+                    <p>A template used to pull a group of Invoice Allocation Items
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+              
+              
+              
+              
+                <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!CampTemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-51">
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom55"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Campaign Template">
+                 <span class="slds-text-link" >
+                     <b> Campaign Template </b></span>
+                    <p>A template used to pull a group of Jobs to the Campaign
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+              
+              
+              
+              
+               <br/> <br/> <br/> <br/> <br/> <br/> 
+               
+              
+             <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!TagsTemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-32">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom62"></use>
+                            </svg>
+                    
+                    </span>
+                     
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Tag Templates">
+                    <span class="slds-text-link" >
+                     <b> Tag Templates</b></span>
+                    <p>A template used to pull a group of Tag LineItemsinto Job.</p>
+                  </div>
+                </a>
+              </li>
+               
+               
+               
+              
+          <!--   
+                <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!invoiceallotemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-69">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom17"></use>
+                            </svg>
+                    
+                    
+                    </span>
+                    
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Invoice Allocation Templates">
+                    <span class="slds-text-link" >
+                     <b>Invoice Allocation Templates</b></span>
+                    <p>This Object will be used for client invoice invoice allocation line items.
+                    </p>
+                  </div>
+                </a>
+              </li>
+            
+            
+            
+             <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!proesttemp }');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-88">
+                     <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom104"></use>
+                            </svg>
+                    
+                    
+                    </span>
+                    
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Production Estimate Templates">
+                    <span class="slds-text-link" >
+                     <b> Production Estimate Templates</b></span>
+                    <p>
+                      This is Production Estimate Templates Object.
+                    </p>
+                  </div>
+                </a>
+              </li>
+              
+              
+            
+              
+              
+              <li class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--2-of-4 slds-large-size--1-of-3">
+                <a href="javascript:TabSelect('{!tagtemp}');" class="slds-app-launcher__tile slds-text-link--reset ">
+                  <div class="slds-app-launcher__tile-figure">
+                    <span class="slds-avatar slds-avatar--large slds-align--absolute-center slds-icon-custom-65">
+                    
+                    <svg class="slds-icon slds-icon-standard-user" aria-hidden="true">
+                                <use xlink:href="{!$Resource.SLDS}/assets/icons/custom-sprite/svg/symbols.svg#custom63"></use>
+                            </svg>
+                    
+                    </span>
+                    
+                  </div>
+                  <div class="slds-app-launcher__tile-body" title="Tag Templates">Visualforce Pages Development Mode Tools  AdminListViewLightning  Adminlighting       View State          
+ 
+ 
+                    <span class="slds-text-link">
+                     <b> Tag Templates</b></span>
+                    <p>This Object holds the template for tag object.
+                     
+                    </p>Visualforce Pages Development Mode Tools    AdminListViewLightning  Adminlighting       View State          
+ 
+ 
+                  </div>
+                </a>
+              </li>
+              
+        -->   
+              
+            
+              
+            </ul>
+          
+            <br/> <br/>
+        
+        </div>
+        </div>
+   
+   
+ 
+ </div>
+ 
+ 
+      </apex:form>
+ 
+     </html>
+ 
+
+ </apex:page>

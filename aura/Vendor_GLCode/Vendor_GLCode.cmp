@@ -1,0 +1,132 @@
+<aura:component controller="VendorsController" implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="desc" />
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isVGlOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="VenGlCRecordid" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="Glcode" type="Object"/>
+    <!-- This attribute will hold the update records from data table-->
+    <aura:attribute name="updatedRecord" type="Object[]" />
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="selectedLookUpRecord_GL" type="sObject" default="{}"/>
+    <aura:attribute name="GLCRecord" type="String" default="" />  
+    <aura:attribute name="ObjectType" type="Object"/>
+    
+    <aura:attribute name="VendorGLCodeSec" type="String" default="Vendor GLCode" required="true" access="global"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="VendorGLcode">
+        <lightning:accordionSection name="VendorGLcode" label="{!v.VendorGLCodeSec}"  class="slds-card" >  
+            <div align="center" >
+                <lightning:button variant="neutral" label="New" title="New" onclick="{!c.VenGlCode}"/>
+            </div>
+            <br/>
+            <aura:if isTrue="{!empty(v.data)}">
+                <b>No records to display</b>
+                <aura:set attribute="else" >
+                    
+                    <lightning:card>
+                        <div>
+                            <lightning:datatable class="VenGlCodetablecss"
+                                                 aura:id="VenGlCodeDataTable"
+                                                 columns="{!v.columns}"
+                                                 data="{!v.data}"
+                                                 keyField="Id"
+                                                 onsave ="{!c.onSave}"
+                                                 hideCheckboxColumn="true"
+                                                 showRowNumberColumn="true"
+                                                 errors="{!v.errors}"
+                                                 onsort="{!c.updateColumnSorting}"
+                                                 sortedBy="{!v.sortedBy}"
+                                                 sortedDirection="{!v.sortedDirection}" 
+                                                 onrowaction="{!c.handleRowAction}" />
+                        </div>
+                        
+                    </lightning:card>
+                    <aura:if isTrue="{! v.isLoading }">
+                        <lightning:spinner alternativeText="Loading"/>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </lightning:accordionSection>
+    </lightning:accordion>
+    
+    <aura:if isTrue="{!v.isVGlOpen}">
+        <lightning:recordEditForm aura:id="VenGlCodeEditform" objectApiName="Vendor_GL_Code__c" density="comfy" recordId="{!v.VenGlCRecordid}" onload="{!c.VenGlCodeload}" onsubmit="{!c.VenGlCodeOnsubmit}" onsuccess="{!c.VenGlCodeonRecordSuccess}"  >
+            <lightning:messages />     
+            <!--************************************************  MODAL BOX Start *************************************************--> 
+            
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 class="slds-text-heading--medium"> 
+                            <aura:if isTrue="{!v.VenGlCRecordid!=null}">
+                                Edit {!v.Labelname}
+                                <aura:set attribute="else">
+                                    New {!v.Labelname} 
+                                </aura:set>
+                            </aura:if> 
+                        </h2>
+                    </header>
+                    <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                    <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-1">
+                        <lightning:layout multipleRows="true"> 
+                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small" >
+									<lightning:inputField fieldName="GL_Code__c" aura:id="GLCId" class="frequired"/>
+                                
+                               <!-- <c:customLookup aura:id="GLCId" objectAPIName="GL_Code__c" DepobjectAPIName="" IconName="standard:campaign" DepIconName="" selectedRecord="{!v.selectedLookUpRecord_GL}" 
+                                                DepenselectedRecord="" label="GL Code" Depelabel="" RelationShipName="" ParentFilter=""  ChildFilter=""
+                                                ParentRecId="{!v.GLCRecord}" ParentSortBy="Order By Name" ChildSortBy="" IsDependent="false" />-->
+                            </lightning:layoutItem>
+                            
+                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small" > 
+                                <label class="slds-form-element__label" for="text-input-id-1">{!v.ObjectType.Vendor_GL_Code__c.Vendor__c.label}</label>
+                                <div class="slds-form-element__control">
+                                    <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                </div>
+                            </lightning:layoutItem>
+                            <br/><br/><br/>
+                        </lightning:layout>
+                    </div>
+                    <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                   <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                         <lightning:button variant="brand" 
+                                          label="Save"
+                                          title="Save"
+                                          type="submit" />
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+        </lightning:recordEditForm> 
+    </aura:if>
+    
+</aura:component>

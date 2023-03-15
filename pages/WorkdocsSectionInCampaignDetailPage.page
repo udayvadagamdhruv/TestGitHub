@@ -1,0 +1,360 @@
+<apex:page standardController="Campaign__c" extensions="WorkdocsSectionInCampaignDetailPageCon" showHeader="false" sidebar="false" standardStylesheets="true" applyHtmlTag="false"  applyBodyTag="false" docType="html-5.0" id="wdid">
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="{!URLFOR($Resource.JobPage,'JobPage/jquery-3.3.1.js')}"></script>
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    </head>
+
+    <style>
+        .deleteicon:hover {
+            color: red !important;
+        }
+        
+        .fileType {
+            display: block;
+            position: relative;
+            width: 200px;
+            padding: 50px 0px 0px 15px;
+            margin: auto;
+            cursor: pointer;
+            border: 0;
+            height: 40px;
+            border-radius: 5px;
+            outline: 0;
+        }
+        
+        .fileType:hover:after {
+            background: #094987;
+        }
+        
+        .fileType:dragover {
+            background: #094987;
+        }
+        
+        .fileType:after {
+            transition: 200ms all ease;
+            //border-bottom: 3px solid rgba(0, 0, 0, .2);
+            background: #0070d2;
+            // background-image:url('http://i.stack.imgur.com/CVpp3.jpg');
+            //text-shadow: 0 2px 0 rgba(0, 0, 0, .2);
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            //height: 100%;
+            display: block;
+            content: 'Upload or Drop Files';
+            line-height: 40px;
+            border-radius: 5px;
+        }
+    </style>
+
+    <script language="JavaScript">
+        function uploadContentVersion(filename, filecontent, filetype, jobfolderid) {
+            Visualforce.remoting.Manager.invokeAction(
+                //Invoking controller action getcon
+                '{!$RemoteAction.WorkdocsSectionInCampaignDetailPageCon.doUploadAttachment}', filename, filecontent, filetype, jobfolderid,
+
+                function(result, event) {
+                    //alert(event.status);
+                    //alert(event.message);
+                    if (event.status == true) {
+                        if (result == 'YES') {
+                            CampCallouts();
+                        } else if (result == 'NO') {
+                            document.getElementById("loadingicon").style.display = 'none';
+                            alert('You don\'t have permission to Upload the document in this folder');
+                        };
+                    }
+                }, {
+                    buffer: false,
+                    escape: true,
+                    timeout: 120000
+                }
+            );
+
+        }
+
+        var jWdId;
+
+        function uploadFile(pId) {
+            jWdId = pId;
+            var file = document.getElementById(jWdId).files;
+
+            if (file.length > 0) {
+                folderloading();
+
+                for (var i = 0; i < file.length; i++) {
+                    var reader = new FileReader();
+                    reader.filePro = file[i];
+                    reader.onload = loaded;
+                    reader.onerror = errorHandler;
+                    reader.readAsDataURL(file[i]);
+                }
+            } else {
+                alert('Please choose the file.');
+            }
+        }
+
+        function loaded(evt) {
+            var filename = evt.target.filePro.name;
+            var filetype = evt.target.filePro.type;
+            var fileContent = String(evt.target.result);
+            fileContent = fileContent.substr(fileContent.indexOf(',') + 1);
+
+            uploadContentVersion(filename, fileContent, filetype, jWdId);
+
+        }
+
+        function errorHandler(evt) {
+            if (evt.target.error.name == 'NotReadableError') {
+                alert('File could not be read');
+            } else {
+                alert(evt.target.error);
+            }
+        }
+
+        function deletewdoc1(wdid) {
+            folderloading();
+            deletewdoc(wdid);
+
+        }
+
+        function deleteSubFolderContentJS1(wdfid) {
+            folderloading();
+            deleteSubFolderContentJS(wdfid);
+
+        }
+
+        function folderloading() {
+            document.getElementById("loadingicon").style.display = 'inline';
+        }
+    </script>
+
+    <div class="slds">
+        <apex:form id="wdform">
+
+            <script>
+                $(document).ready(function() {
+
+                    $('.subdeleteicon').click(function(e) {
+                        var fid = $(this).attr('value');
+                        e.stopPropagation();
+                        deleteSubFolderContentJS1(fid);
+                    });
+
+                    $('.RowFinder').click(function() {
+
+                        if ($(this).closest('tr').next('.hide:first').css("display") == 'none')
+                            $(this).css({
+                                "background-color": "#d8dde6"
+                            });
+                        else
+                            $(this).css({
+                                "background-color": "#e2e4e6"
+                            });
+                        $(this).closest('tr').next('.hide:first').toggle();
+                    });
+                });
+            </script>
+
+            <apex:actionFunction name="CampCallouts" action="{!CampCallouts}" reRender="wdform" />
+
+            <apex:actionFunction name="deletewdoc" action="{!deleteWorkDoc}" reRender="wdform">
+                <apex:param name="WdDocumentId" value="{!null}" />
+            </apex:actionFunction>
+
+            <apex:actionFunction name="deleteSubFolderContentJS" action="{!deltesubFolderContent}" reRender="wdform">
+                <apex:param name="SubFolderId" value="{!null}" />
+            </apex:actionFunction>
+
+            <div style="width:100% !important;height:50px;background:#1B8DE2;">
+                <img src="https://jobsuitetest.awsapps.com/workdocs/images/WorkDocs_logo_789ce6ae974f35931e901416ef4962c7.png" style="margin-top:5px;margin-left:10px;" />
+
+                <apex:outputPanel rendered="{!Camp.Workdocs_Folder_Id__c!=null && wdc.Access_Token__c!=null && Not(accTokenExpire) && folderAccess}">
+                    <apex:commandButton value="Create Sub Folder" action="{!SubFolderPopUpAction}" style="float:right;margin:6px 10px;" Styleclass="slds-button slds-button--neutral" reRender="NewPOPUP" />
+
+                </apex:outputPanel>
+
+                <apex:outputPanel rendered="{!Camp.Workdocs_Folder_Id__c==null && wdc.Access_Token__c!=null && Not(accTokenExpire)}">
+                    <apex:commandButton value="Create Folder" style="float:right;margin:6px 10px;" action="{!createWorkDocsFolder}" oncomplete="setTimeout(CampCallouts,5000);" styleClass="slds-button slds-button--neutral" />
+                </apex:outputPanel>
+
+            </div>
+
+            <br/>
+
+            <apex:pagemessages > </apex:pagemessages>
+            <apex:pageMessage severity="Error" title="Error" strength="2" summary="You Don't have Access to this Campaign's  WorkDoc Folder.Please Request the Accesss from the Folder Owner" rendered="{! Not(folderAccess) && wdc.Access_Token__c!=null && camp.Workdocs_Folder_Id__c!=null && Not(accTokenExpire)}"> </apex:pageMessage>
+            <apex:pageMessage severity="Error" title="Error" strength="2" summary="Access token Expired, Please connect once again." rendered="{!wdc.Access_Token__c!=null && accTokenExpire}" />
+
+            <apex:outputPanel id="pbtable">
+
+                <apex:outputPanel rendered="{!wdc.Access_Token__c==null || accTokenExpire}">
+                    Connect to workdocs : &nbsp;<a href="/apex/workdocsSetupPage">Connect</a>
+                    <br/>
+                </apex:outputPanel>
+
+                <apex:outputPanel rendered="{!Camp.Workdocs_Folder_Id__c!=null && Not(accTokenExpire) && folderAccess}">
+
+                    <br/>
+                    <br/>
+                    <div class="slds-card ">
+                        <div class="slds-card__body ">
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+
+                                <thead class="slds-truncate">
+                                    <tr class="slds-text-title">
+                                        <th class="slds-size--1-of-4" scope="col"><b>Folder Name</b></th>
+                                        <th class="slds-size--1-of-4" scope="col"><b>File Name</b></th>
+                                        <th class="slds-size--1-of-4" scope="col"><b>Actions</b></th>
+                                        <th class="slds-size--1-of-4" scope="col"><b>File Upload</b></th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <apex:repeat value="{!flrdocmaplst}" var="fd">
+
+                                        <tr class="RowFinder" style="background-color:#e2e4e6;display:{!if(fd==Camp.Workdocs_Folder_Id__c,'none','show')}">
+
+                                            <td scope="row" colspan="2" data-label="Folder Name" class="slds-size--1-of-4" style="padding:5px ! important;">
+                                                <div>
+                                                    <span class="material-icons" style="font-size:24px;color:grey;display:{!if(fd==Camp.Workdocs_Folder_Id__c,'none','inline')}">folder </span>
+                                                    <span style="color:thick black;vertical-align:super;display:{!if(fd!=Camp.Workdocs_Folder_Id__c,'inline;','none;')}"> {!f_SubNameIdmap[fd]}   ({!flderDocSizeMap[fd]}) </span>
+                                                </div>
+                                            </td>
+
+                                            <td class="slds-size--1-of-4">
+                                                <i class="material-icons deleteicon subdeleteicon" title="Delete" value="{!fd}" style="cursor:pointer;font-size:25px;color:grey;display:{!if(fd==Camp.Workdocs_Folder_Id__c,'none','inline')}">delete</i>
+                                            </td>
+
+                                            <td></td>
+                                        </tr>
+
+                                        <tr class="hide" style="display:{!if(fd==Camp.Workdocs_Folder_Id__c,'show','none')}">
+                                            <td></td>
+                                            <td scope="row" data-label="File Name" class="slds-size--1-of-4">
+                                                <apex:repeat value="{!flrdocmap[fd]}" var="fdc">
+                                                    <apex:repeat value="{!flrdocmap[fd][fdc]}" var="fileName">
+                                                        <apex:outputLink title="{!fileName}" value="https://{!wdc.Site_Name__c}.awsapps.com/workdocs/index.html#/document/{!fdc}" style="font-size:15.5px;color:{!if(FileHighlightMap[fdc],'orange;','')}">{!fileName}</apex:outputlink>
+                                                        <br/>
+                                                    </apex:repeat>
+                                                </apex:repeat>
+
+                                            </td>
+
+                                            <td scope="row" data-label="Action" class="slds-size--1-of-4">
+                                                <apex:repeat value="{!flrdocmap[fd]}" var="fdc">
+                                                    <apex:repeat value="{!flrdocmap[fd][fdc]}" var="fileName">
+                                                        <i class="material-icons deleteicon" title="Delete" onclick="deletewdoc1('{!fdc}');" style="font-size:17.4px;color:grey;cursor:pointer;">delete</i>
+                                                        <br/>
+                                                    </apex:repeat>
+                                                </apex:repeat>
+
+                                            </td>
+
+                                            <td scope="row" data-label="Upload" class="slds-size--1-of-5">
+
+                                                <!---
+                                                  <div class="slds-file-selector slds-file-selector--files">
+                                                        <div class="slds-file-selector--dropzone">
+                                                         <input class="slds-file-selector__input slds-assistive-text fileType" onchange="uploadFile('{!fd}')" id="{!fd}" type="file" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
+                                                            <label class="slds-file-selector__body" for="{!fd}" id="file-selector-secondary-label">
+                                                                <span class="slds-file-selector--button slds-button slds-button--brand">
+                                                                                               Upload or Drop Files</span>
+                                                                <span class="slds-file-selector__text slds-medium-show"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                                                                    
+                                                  --->
+
+                                                <div class="slds-file-selector slds-file-selector--files">
+                                                    <div class="slds-file-selector--dropzone">
+                                                        <div class="slds-form-element__control ">
+                                                            <input type="file" multiple="multiple" class="fileType" name="file" onchange="uploadFile('{!fd}')" id="{!fd}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </apex:repeat>
+
+                                </tbody>
+
+                            </table>
+                            <br/>
+                            <br/>
+                        </div>
+
+                    </div>
+
+                </apex:outputPanel>
+
+                <div id="loadingicon" style="display:none;">
+                    <div class="slds-spinner_container" style="z-index: 99999;position: fixed;">
+                        <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </apex:outputPanel>
+
+            <!-----------------Start Sub Folder Creation-------------------------->
+            <!-----------------Start Sub Folder Creation-------------------------->
+
+            <apex:outputPanel id="NewPOPUP">
+                <apex:outputPanel rendered="{!SubFolderpopUp}">
+
+                    <div class="demo-only">
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" style="background-color: rgba(2,2,2,0.5);">
+                            <div class="slds-modal__container">
+                                <header class="slds-modal__header">
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Sub Folder</h2>
+                                </header>
+
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="padding:16px !important;">
+
+                                    <apex:pageMessage severity="Error" title="Name" summary="Please enter the Folder Name" strength="5" rendered="{!subfoldererror}"> </apex:pageMessage>
+                                    <apex:pageMessage severity="Error" title="Name" summary="Alreday the Folder Name exist for this Campaign" strength="5" rendered="{!subflderconflict}"> </apex:pageMessage>
+                                    <apex:pageMessage severity="Error" title="Error" strength="2" summary="You don't have the access to Create the folder" rendered="{!subflodercrationerror}" />
+                                    <br/>
+                                    <label>Folder Name<abbr class="slds-required" title="required"> * </abbr></label>
+                                    <apex:inputText Styleclass="slds-input" value="{!SubFolderName}" html-placeholder="Folder Name" />
+                                    <br/>
+                                    <br/>
+                                </div>
+
+                                <footer class="slds-modal__footer">
+                                    <apex:commandButton value="Cancel" immediate="true;" action="{!SubFolderPopUpActionClose}" Styleclass="slds-button slds-button--neutral" reRender="NewPOPUP" />
+                                    <apex:commandButton value="Create" action="{!CreateSubFolder}" styleClass="slds-button slds-button--brand" reRender="wdform" />
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </div>
+
+                </apex:outputPanel>
+            </apex:outputPanel>
+
+            <!-----------------End Sub Folder Creation-------------------------->
+            <!-----------------End Sub Folder Creation-------------------------->
+
+        </apex:form>
+
+    </div>
+</apex:page>

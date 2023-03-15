@@ -1,0 +1,42 @@
+<apex:page standardController="Vendor_Quote_Line_Item__c" tabStyle="Job__c">
+<apex:form >
+     <apex:pageBlock >
+         <apex:pagemessages />
+             <apex:pageBlockButtons >
+                 <apex:commandButton action="{!save}" value="Save"></apex:commandButton>
+                 <apex:commandButton action="{!cancel}" value="Cancel" immediate="true"></apex:commandButton>
+             </apex:pageBlockButtons>
+             
+             <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+          
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Vendor_Quote_Line_Item__c.Fields.Name.Label}"/>
+                  <apex:inputField value="{!Vendor_Quote_Line_Item__c.Name}" required="true"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Vendor_Quote_Line_Item__c.Fields.Vendor_Quote__c.Label}"/>
+                  <apex:outputField value="{!Vendor_Quote_Line_Item__c.Vendor_Quote__c}"/>
+             </apex:pageBlockSectionItem>
+
+             
+            
+     <!--       <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="Quantity"/>
+                  <apex:outputField value="{!Vendor_Quote_Line_Item__c.Quantity__c}"/>
+             </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="Unit Price"/>
+                  <apex:inputField value="{!Vendor_Quote_Line_Item__c.Unit_Price__c}"/>
+             </apex:pageBlockSectionItem>     -->
+  
+            <apex:pageBlockSectionItem >
+                  <apex:outputLabel value="{!$ObjectType.Vendor_Quote_Line_Item__c.Fields.Description__c.Label}"/>
+                  <apex:inputtextarea value="{!Vendor_Quote_Line_Item__c.Description__c}" rows="3" cols="55" style="resize:none;" />
+             </apex:pageBlockSectionItem>
+ </apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,13 @@
+<apex:page standardController="Shipment__c" extensions="DeleteShipmentExtension" sidebar="false" showHeader="false">
+<script>
+           window.onload=function()
+           {
+             doInit();
+           };
+       </script>   
+      
+       <apex:form >
+         <apex:actionFunction name="doInit" action="{!checkDelete}"/> 
+       </apex:form> 
+ 
+</apex:page>

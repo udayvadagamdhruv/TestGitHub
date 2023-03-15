@@ -1,0 +1,185 @@
+<!-- This Page is used to display list of Estimate Line Item under Estimate tab of Job detail page -->
+<apex:page Controller="DisplayEstimateunderJobTab" id="frm">
+<head>
+    <script>
+        function buttonClicked(myButton) 
+        {
+        myButton.disabled=true;
+        return false;
+        }
+    </script>
+ 
+    <style>
+         .hd
+          {
+              text-align:right;
+              padding-right:20px!important;
+          }
+          .cellstyle
+          {
+              text-align:right;
+              padding-right:20px;
+          }
+        #table_qty td
+        {
+        border:0px;
+        }
+        
+        #table_uc td
+        {
+        border:0px;
+        }
+
+        #table_rd1 td
+        {
+        border:0px;
+        }
+
+        .labelCol2{font-size:1.0em};
+
+    </style>
+</head>
+
+<apex:form id="pb1">
+  <apex:pageMessages id="pagemsgId3"></apex:pageMessages>
+   <apex:pageBlock id="pb" title="Line Items">
+     
+      <apex:pageBlockButtons location="top">
+      
+         <apex:commandButton action="{!CreateELI}" value="New Line Item" id="btn1" title="Press to create New Estimate Line Item"/> 
+      
+         <apex:commandButton action="{!createPO}" value="Create PO" id="btn2" rendered="{!eli.Size>0}" title="Press to create new Purchase Order"/>
+      
+         <apex:commandButton value="Print Estimate" id="estreport" rendered="{!vq1.Size>0}" onClick="window.open('/apex/EstimateReport?id={!$CurrentPage.Parameters.Id}');" reRender="frm" title="Press to view Estimate Report"/>    &nbsp;
+      
+         <apex:commandButton value="Save" action="{!save}" id="saveButton" style="display:none;" title="Click to save" />  
+      
+         <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}" style="display:none;" reRender="pb1" title="Click to cancel"/> 
+      
+      </apex:pageBlockButtons>
+      
+      <div>
+       <apex:actionStatus id="mark">
+             <apex:facet name="start">
+                <img src="/img/loading.gif" />&nbsp;&nbsp; <b> Please Wait....... </b>
+             </apex:facet>
+         </apex:actionStatus> 
+          <apex:pageBlockTable value="{!vq1}" var="vquote" rendered="{!vq1.Size > 0}"> <br/><br/><br/> 
+          
+               <apex:column headerValue="Action">
+                   <apex:commandButton value="Duplicate" action="{!duplicatePE}" reRender="hiddenBlock,pb" status="mark">
+                       <apex:param name="param3" value="{!vquote.id}" assignTo="{!strPEID}"></apex:param>
+                  </apex:commandButton> 
+             </apex:column> 
+          
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Name.Label}">
+                <apex:outputLink tabindex="tab1" value="/apex/Estimatedetailpage?id={!vquote.Id}">{!vquote.Name}</apex:outputLink>
+             </apex:column> 
+          
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Vendor__c.Label}">
+                <apex:outputfield value="{!vquote.Vendor__r.Name}"/>
+             </apex:column>
+          
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.GL_Code__c.Label}">
+                <apex:outputText >{!vquote.GL_Code__r.Name}</apex:outputText>
+             </apex:column> 
+          
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Unit_Type__c.Label}">
+                <apex:outputfield value="{!vquote.Unit_Type__c}"/>
+             </apex:column>
+        
+            <!-- Inline Editing functionality is available for Quantity field  -->  
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Quantity__c.Label}">
+                <table border="0" id="table_qty">
+                   <tr>
+                     <td border="0">
+                        <apex:outputfield value="{!vquote.Quantity__c}"> 
+                           <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btn2,estreport" rendered="{!vquote.PO_Created__c = false && vquote.Approved__c = false && vquote.Restrict__c=False}"/>
+                        </apex:outputfield>
+                     </td>
+                     <td>
+                        <apex:image url="{!$Resource.Plus}" width="9" height="9" rendered="{!vquote.PO_Created__c = false && vquote.Approved__c = false && vquote.Restrict__c=False}" id="img" title="Edit Quantity"/> 
+                     </td>
+                   </tr>
+                </table>
+             </apex:column>
+         
+             <!-- Inline Editing functionality is available for Unit Cost field  -->  
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Amount__c.Label}">
+                <table border="0" id="table_uc">
+                   <tr>
+                     <td >
+                        <apex:outputfield value="{!vquote.Amount__c}">
+                           <apex:inlineEditSupport event="ondblClick" showOnEdit="saveButton,cancelButton" changedStyleClass="myBoldClass" hideOnEdit="btn1,btn2,estreport" rendered="{!vquote.PO_Created__c = false && vquote.Approved__c = false && vquote.Restrict__c=False}"/>
+                        </apex:outputfield>
+                       
+                     </td>
+                     <td>
+                        <apex:image url="{!$Resource.Plus}" width="9" height="9" rendered="{!vquote.PO_Created__c = false && vquote.Approved__c = false && vquote.Restrict__c=False}"  title="Edit Unit Cost"/>
+                     </td>
+                   </tr>
+                </table>
+             </apex:column>
+          
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Total_Amount__c.Label}">
+                <apex:outputfield value="{!vquote.Total_Amount__c}"/>
+             </apex:column>
+        
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.Approved__c.Label}">
+                <apex:actionRegion >
+                   <table border="0" id="table_rd1">
+                      <tr>
+                         <td border="0">    
+                         <!-- <apex:inputField value="{!vquote.Approved__c}"  rendered="{!vquote.PO_Created__c=False}">
+                               <apex:actionSupport event="onchange" action="{!save}"/>
+                           </apex:inputField>-->
+                         
+                           <apex:outputField value="{!vquote.Approved__c}">
+                              <apex:inlineEditSupport event="onmouseover" showOnEdit="saveButton,cancelButton" rendered="{!vquote.PO_Created__c=False}" changedStyleClass="myBoldClass" hideOnEdit="btn1,btncs1,btncs2,btnR,btn2,estreport"/>
+                           </apex:outputfield>
+                         </td>
+                         <td>
+                           <apex:image url="{!$Resource.Plus}" width="9" height="9" title="Edit Marked Done" rendered="{!vquote.PO_Created__c=False}"/> 
+                         </td>
+                      </tr>
+                   </table>
+                </apex:actionRegion>
+             </apex:column>
+         
+             <apex:column headerValue="{!$ObjectType.Estimate_Line_Items__c.Fields.PO_Created__c.Label}">
+                <apex:outputField value="{!vquote.PO_Created__c}"/>
+             </apex:column> 
+             
+              <apex:column headerValue="PO #"> 
+                <apex:outputLabel value="{!vquote.PO__c}" /> 
+             </apex:column>
+         
+         <!--    <apex:column headerValue="PO #"> 
+                <apex:outputLabel value="{!vquote.PO_Line_Items__r.Name}" /> 
+             </apex:column>  -->    
+  
+          </apex:pageBlockTable> 
+      
+        <br/>
+    
+          <div style="float:right;padding-right:35px;font-size:1.10em;font-style:normal;font-family: 'Calibri';font-weight:bold">
+             <apex:outputPanel rendered="{!vq1.Size > 0}">
+                <apex:outputLabel value="Estimate Total Cost" style="font-style:italic;" /> 
+                <apex:outputText value="{0,Number, $###,###,###.00}">
+                    &nbsp;:&nbsp;&nbsp;<apex:param value="{!sumCash}"/>
+                </apex:outputText>
+             </apex:outputPanel>
+          </div> 
+      
+   <br/>
+  
+      <apex:pageBlockSection rendered="{!vq1.size <= 0}">
+         <apex:pageBlockSectionItem >
+            <b>No records to display</b>
+         </apex:pageBlockSectionItem>              
+      </apex:pageBlockSection> 
+          </div>
+   </apex:pageBlock>
+</apex:form>
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,19 @@
+<apex:page standardController="Job__c"  extensions="DetailJobSwitchPageExt" tabStyle="Job__c" standardStylesheets="true" sidebar="true" docType="html-5.0" applyBodyTag="False" applyHtmlTag="false" showHeader="false">
+
+  <script>
+   window.onload=function(){
+      var m = '{!$User.UITheme}';
+       if(m == 'Theme4t' || m == 'Theme3' )
+          {
+                jobLoad();
+          };
+        };
+       </script> 
+  
+       <apex:form rendered="{!$User.UITheme != 'Theme4d'}" >
+          <apex:actionFunction name="jobLoad" action="{!jobMobileRedirection}"/> 
+       </apex:form>
+ 
+   <apex:include pageName="JobdetailpageLightening07" rendered="{!$User.UITheme == 'Theme4d'}"/>
+  
+</apex:page>

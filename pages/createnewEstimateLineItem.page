@@ -1,0 +1,31 @@
+<!-- This page is used to create New Estimate Spec item for particular Job -->
+
+<apex:page standardController="Estimate_Spec_Item__c" tabStyle="Job__c" extensions="CreateEstimateLIExtension">
+   <apex:form >
+      <apex:pageBlock >
+         <apex:pagemessages />
+         <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveme}" value="Save"></apex:commandButton>
+            <apex:commandButton action="{!cancelme}" value="Cancel" immediate="true"></apex:commandButton>
+         </apex:pageBlockButtons>
+             
+         <apex:pageBlockSection title="Information" columns="2" collapsible="true">
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Estimate_Spec_Item__c.Fields.Name.Label}"/>
+               <apex:inputField value="{!Estimate_Spec_Item__c.Name}" required="true"/>
+            </apex:pageBlockSectionItem>
+                 
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Estimate_Spec_Item__c.Fields.Estimates__c.Label}"/>
+               <apex:outputField value="{!Estimate_Spec_Item__c.Estimates__c}"/>
+            </apex:pageBlockSectionItem>
+ 
+            <apex:pageBlockSectionItem >
+               <apex:outputLabel value="{!$ObjectType.Estimate_Spec_Item__c.Fields.Description__c.Label}"/>
+               <apex:inputtextarea value="{!Estimate_Spec_Item__c.Description__c}" cols="55" rows="4" style="resize:none;"/>
+            </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>       
+</apex:page>
+<!-- End of Page -->

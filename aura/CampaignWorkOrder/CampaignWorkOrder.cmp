@@ -1,0 +1,16 @@
+<aura:component controller="ClientController" implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="string" default="" />
+    <aura:attribute name="statusPicklist" type="String[]" default="Active"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    
+    <div class="slds-modal__content slds-p-top--x-large slds-p-around--medium" aura:id="modalbody" id="modalbody">
+        <lightning:select name="select1" aura:id="pickJob" label="Job Status" onchange="{!c.WorkOrderPageRedirect}">
+            <option text="None" value="None" />
+            <aura:iteration items="{!v.statusPicklist}" var="option">
+                <option text="{!option}" value="{!option}" />
+            </aura:iteration>
+        </lightning:select>  
+    </div>
+    
+</aura:component>

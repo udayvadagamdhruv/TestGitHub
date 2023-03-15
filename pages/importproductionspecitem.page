@@ -1,0 +1,37 @@
+<!-- This Page is used for Import Product Spec Template functionality -->
+<apex:page standardController="Quote__c" extensions="Import_Production_Spec_Item_Extension" tabStyle="Job__c" >
+ 
+
+             
+             
+                 <apex:form id="pb1">
+                 
+      <apex:pageMessages id="pgmsg"/>
+         <apex:pageblock id="pb">    
+            <table width="100%">
+               <tr>
+                 <td align="left" width="40%">
+                    <apex:outputLabel value="{!$ObjectType.Production_Spec_Template__c.Label}" for="SpecTemp" ></apex:outputLabel>&nbsp;
+                    <apex:selectList id="theSelectList" value="{!ProductionSpecTempName}" size="1">
+                       <apex:selectOptions value="{!ProductionSpecTemplates}" id="sp">
+                       </apex:selectOptions>
+                    </apex:selectList> &nbsp; 
+                                         
+                    <apex:commandButton value="Import Spec" action="{!importSpecs}" id="btn1" reRender="pgmsg"></apex:commandButton>&nbsp;
+                    <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelme}"/>
+                 </td>      
+               </tr>
+            </table><br/>
+         </apex:pageBlock> 
+   </apex:form>
+                 
+               
+             
+        
+        
+        
+ 
+ 
+   
+</apex:page>
+<!-- End of Page -->

@@ -1,0 +1,15 @@
+<apex:page standardController="Job__c" tabStyle="Job__c" showHeader="false" sidebar="false" recordSetVar="job">
+    <apex:includeLightning />
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1">
+            <div id="CJ"></div>              
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <script>
+    $Lightning.use("c:Invoiceapp1",function(){$Lightning.createComponent("c:Invoicecmp1",{},CJ,function(){});});
+    </script>
+    
+    
+    
+    
+</apex:page>

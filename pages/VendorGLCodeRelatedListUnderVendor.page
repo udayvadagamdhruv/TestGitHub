@@ -1,0 +1,413 @@
+<apex:page controller="VendorGLCodeRelatedListUnderVendor" readOnly="true" sidebar="flase" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false" showHeader="false" standardStylesheets="true">
+    
+<apex:slds />
+    
+        <style>
+        
+        .slds-scope .slds-cell-fixed {
+    position: absolute;
+    top: 7px;
+    min-height: 2rem;
+  
+   }
+  
+   .slds .slds-card__body {
+    margin-bottom: 0.1rem !important;
+    margin-top: -0.15rem !important;
+}
+
+ @media only screen and (min-width:0px) and (max-width:1000px){
+   .slds-scope .slds-table--header-fixed tbody tr:first-child td{
+    border: 0;
+    border-bottom: 1px solid #d8dde6;
+    }  
+}
+        
+        
+        
+           .icon1
+           {
+              color:darkgrey;
+           }
+      
+           .icon1:hover
+           {
+              color:black;
+           }
+        
+        
+            
+        
+            .slds .slds-max-medium-table--stacked-horizontal td:before {
+                text-transform: none;
+            }
+            
+            .customImage {
+                height: 10px;
+                width: 10px;
+            }
+            
+            #rcorners1 {
+                border-radius: 0%;
+                border: 1px solid #cccccc;
+                padding: 0px;
+                width: 100%;
+                height: 0%;
+            }
+            
+            #pagemessage {
+                color: blue;
+            }
+            
+            .required:after {
+                content: " *";
+                color: Red;
+                font: bold;
+            }
+            
+            .slds table {
+                height: 50px;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                margin-top: -19px;
+            }
+            
+            .detailPage .bPageBlock,
+            .editPage .bPageBlock {
+                border-top-width: 0px;
+            }
+            
+            .slds .slds-text-heading--large {
+                font-size: 27px;
+            }
+            
+            .pbHeader {
+                background: white !important;
+            }
+            
+            body .bPageBlock,
+            body .bPageBlock .pbBody,
+            body .bPageBlock .pbBottomButtons {
+                background: white;
+            }
+            
+            .slds .slds-list--vertical.slds-has-dividers > .slds-list__item {
+                border: none;
+            }
+            
+            body .bEditBlock .pbBottomButtons,
+            body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+                border: none;
+            }
+            
+            .slds b,
+            .slds strong,
+            .slds dfn {
+                font-weight: unset;
+            }
+            
+            .slds .slds-table tr > td:first-child {
+                padding-left: 6px;
+                padding: 15px;
+            }
+            
+             .slds .slds-card__footer {
+               padding: 0px 16px 0px 0px;
+          }
+          .slds .slds-card__header {
+            padding: 0px 10px 0px 0px;
+            }
+           .slds .slds-card__body {
+                padding: 0px ;
+            }
+            
+          .slds .slds-card {
+                padding: 0;
+                border-radius: 0px;
+                background-clip: padding-box;
+                background-color:white;
+                }
+            
+            .slds .slds-table--bordered {
+                border-top: 0px solid #d8dde6;
+                border-bottom: 1px solid #d8dde6;
+              }
+                        
+            .slds .slds-card__body {
+                margin-bottom: -0.25rem;
+                margin-top: -0.15rem;
+               }
+               
+                
+           .dropdownmenuicon:hover{
+            background-color:#16325c !important;
+            } 
+             .dropdownmenuicon:hover #childmenu {
+              color:white !important;
+             }
+        
+        
+     </style>
+        
+        
+
+                            
+
+  
+
+
+    <html  lang="en" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+    
+     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+          <link href="{!URLFOR($Resource.JobPage,'JobPage/MaterialIcons.css')}" rel="stylesheet"/>
+         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    
+    
+       <div class="slds-scope">
+        <apex:form html-novalidate="novalidate">
+
+
+         <div class="slds-notify slds-text-heading--small slds-theme--error" role="alert">
+                <apex:pageMessages id="pagemsgId2"></apex:pageMessages>
+                
+            </div>  
+
+            
+                                 <div align="center">
+                                        <apex:commandButton value="New Vendor GL Code" action="{!CreateQuote}" id="btn1" styleClass="slds-button slds-button--neutral slds-button-group" />
+                                  </div>
+                               
+                                <br/>
+             
+                     
+               
+                  
+                            
+                  <div class="slds-card"  style="display:{!IF(q.size>0,'block','none')}">
+                            
+                      <div class="slds-card__body" style="">
+                      
+                            
+                         <div class="slds-table--header-fixed_container sco1"  style="height:{!IF(q.size>=5,'300px',if(q.size==1,'155px',if(q.size==2,'205px',if(q.size==3,'255px',if(q.size==4,'305px','')))))};background-color:#f4f6f9;">
+                              <div class="slds-scrollable--y" style="height:100%;"> 
+
+                            <table class="slds-table slds-table--bordered slds-table--header-fixed  slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                <thead class="slds-truncate">
+
+                                    <tr class="slds-text-title">
+                                        <th   scope="col">
+                                          <div class="slds-truncate slds-cell-fixed " title="Action">Action</div>
+                                        </th>
+                                        <th   scope="col">
+                                         <div class="slds-truncate slds-cell-fixed" title="Name">Name</div>
+                                         </th>
+                                         <th   scope="col">
+                                             <div class="slds-truncate slds-cell-fixed"></div>
+                                         </th>
+                                         <th   scope="col">
+                                             <div class="slds-truncate slds-cell-fixed"></div>
+                                         </th>
+                                         <th   scope="col">
+                                             <div class="slds-truncate slds-cell-fixed"></div>
+                                         </th>
+                                          <th   scope="col">
+                                             <div class="slds-truncate slds-cell-fixed"></div>
+                                         </th>
+                                          <th   scope="col">
+                                             <div class="slds-truncate slds-cell-fixed"></div>
+                                         </th>
+                                     
+                                    </tr>
+                                  
+                                </thead>
+                                
+                                
+                  <script>
+                                                                  
+                      $(document).ready(function(){
+                      
+                      
+                       $(".glcodebutton").mouseover(function(){
+                            var ss1=$(this).children(".glcode");
+                          
+                           //alert($(this).offset().top);
+                            //alert($(".sco1").offset().top);
+                           // alert($(this).offset().top-$(".sco").offset().top);
+                          //  alert(ss1.outerHeight());
+                          //  alert($(".sco1").outerHeight());
+                             
+                          //  alert($(".sco").outerHeight());
+                            
+                          if(($(this).offset().top+$(this).outerHeight()-$(".sco1").offset().top)+ss1.outerHeight()>$(".sco1").outerHeight()){
+                          
+                            // alert("drop up");
+                            //slds-dropdown_bottom
+                            $(this).children(".slds-dropdown_xx--small").addClass('slds-dropdown_bottom');
+                            //alert(ss);
+                       
+                            }
+                            
+                           else{
+                           //alert("drop down");
+                             $(this).children(".slds-dropdown_xx--small").removeClass('slds-dropdown_bottom');
+                           }
+                                  
+                        });
+                       
+                         
+                      });
+                      
+                    </script>
+                    
+
+                                
+                                <tbody>
+
+                                    <apex:repeat value="{!q}" var="quote" rendered="{!q.Size > 0}">
+
+                                        <tr class="slds-hint-parent" height="40px" style="color:#FFFFFF;">
+                                        
+                                            <td   data-label="Action">
+                                                  <div class="slds-dropdown-trigger slds-dropdown-trigger__click slds-is-open glcodebutton" style="width:100px !important;color:#FFFFFF !important;">
+                                                     &nbsp;&nbsp;  
+                                                        <div  class="slds-button slds-button--icon-border-filled slds-button--icon-x-small slds-shrink-none dropdownmenuicon "  >
+                                                           
+                                                            <i  id="childmenu" style="color:#9faab5;font-size:15px;margin:2px 5px;" class="fa">&#xf0d7;</i>
+                                                        </div>
+                                                        
+                                                        
+                                             
+                                                        <div class="slds-dropdown slds-dropdown_left slds-dropdown_xx--small glcode">
+                                                        
+                                                           <ul class="slds-dropdown__list" role="menu">
+                                                             
+                                                               
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                      <a href="/apex/EditVendorGLCodeLightning?id={!quote.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Edit">Edit</span> 
+                                                                            
+                                                                          <!--   <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#edit')}"></use>
+                                                                            </svg>
+                                                                            
+                                                                            ---->
+                                                                            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">edit</i>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                
+                                                                
+                                                               <li class="slds-dropdown__item" role="presentation">
+                                                                  
+                                                                      <a href="/apex/DeleteVendorGLCode?id={!quote.id}" role="menuitem" tabindex="0" >
+                                                                            <span class="slds-truncate" title="Delete">Delete</span>
+                                                                            
+                                                                          <!--   <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-left_small slds-shrink-none" aria-hidden="true" style="fill:#333;width:30px !important;height:15px !important;">
+                                                                                <use href="{!URLFOR($Resource.SLDS0122, '/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                                            </svg>
+                                                                            --->
+                                                                            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i  class="material-icons" style="font-size:20px;color:black">delete</i>
+                                                                        </a>
+                                                                    
+                                                                                                                               
+                                                                </li>
+                                                                 
+                                                                 
+                                                                 
+                                                                 
+                                                                 
+                                                                 
+                                                            </ul>
+                                                      </div> 
+                                               </div>
+                                            </td>
+                                      
+                                       
+                                        
+                                           
+                                            <td data-label="Name" >
+                                                <div>
+                                                    <apex:outputLink tabindex="tab1" value="/apex/GLCodeDetailPageSwitch?id={!quote.GL_Code__c}">{!quote.GL_Code__r.Name}</apex:outputLink>
+                                                    
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                </div>
+                                            </td>
+                                            
+
+                                            
+                                        </tr>
+
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                            
+                          </div>
+                          </div> 
+                      
+                      
+                    </div>
+                   
+                            
+                           
+                  
+                    
+              </div>
+             
+                 
+                 
+                
+                 
+                 
+           <apex:outputPanel id="deqt" >
+            <apex:outputPanel rendered="{!q.Size <=0}" >
+               <div> <b> No records to display </b></div>
+            </apex:outputPanel>
+          </apex:outputPanel>
+                 
+                 
+        
+                  
+
+        </apex:form>
+      </div>
+      
+      
+     
+      
+         
+    
+ 
+    </html>
+</apex:page>
+<!-- End of Page -->

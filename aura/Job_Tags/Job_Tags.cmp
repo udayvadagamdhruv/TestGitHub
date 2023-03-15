@@ -1,0 +1,219 @@
+<aura:component controller="Job_TS_GD_Tags"  implements="flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <aura:attribute name="lstOfRecords" type="Object"/>
+    <aura:attribute name="MobileTagLabels" type="List"/>
+    <aura:attribute name="columnsHeader" type="List"/>
+    <aura:attribute name="datalenght" type="boolean" default="false"/>
+    <aura:attribute name="errors" type="Object"/>
+    <aura:attribute name="sortedBy" type="String" default="CreatedDate" />
+    <aura:attribute name="sortedDirection" type="String" default="DESC" />
+    <aura:attribute name="fieldset" type="List"/>
+    <aura:attribute name="isTagOpen" type="boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="TagRecordid" type="String"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="TagTempRecords" type="Object" />
+    <aura:attribute name="TagAccessable" type="Object[]"/>
+    <aura:attribute name="Labelname" type="string"/>
+    <aura:attribute name="ObjectType" type="Object"/>
+    <aura:attribute name="isMobile" type="boolean" />
+    <aura:attribute name="mapWithTagData" type="object" />
+    
+     <aura:attribute name="helpText" type="List"/>
+    
+    
+    <aura:attribute name="TagsSection" type="String" default="Tags" required="true" access="global"/>
+    <!-- This attribute will hold the update records from data table-->
+    <aura:attribute name="updatedRecord" type="Object[]" />
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="EDIT"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.TagAccessable[2]}">
+        <lightning:accordion allowMultipleSectionsOpen="true"  activeSectionName="Tags">
+            <lightning:accordionSection name="Tags" label="{!v.TagsSection}"  class="slds-card" >
+                <c:customHelpText text="{!v.helpText[0].Tags__c}" />  
+                <aura:if isTrue="{!!v.isMobile}">
+                    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                        <div class="slds-size_2-of-10">
+                            <div class="slds-m-around_x-small">
+                                <lightning:select name="TagTempSelect" aura:id="TagTempSelectId" label="Tag Template"  >
+                                    <aura:iteration items="{!v.TagTempRecords}" var="Temp">
+                                        <option text="{!Temp.value}" value="{!Temp.key}" />
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                        </div>
+                        <div class="slds-size_2-of-10" style="padding-top: 20px !important;">
+                            <div class="slds-m-around_x-small">
+                                <lightning:button variant="neutral" label="Import Template" onclick="{!c.ImportTemplate}"/>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-size_2-of-10" style="padding-top: 20px !important;">
+                            <div class="slds-m-around_x-small">
+                                <lightning:button variant="neutral" label="New" onclick="{!c.CreateTagRecord}" />
+                            </div>
+                        </div>
+                    </div><br/>            
+                    <aura:if isTrue="{!empty(v.lstOfRecords)}">
+                        <b>No records to display</b>
+                        <aura:set attribute="else" >
+                            
+                            <lightning:card>
+                                <div>
+                                    <lightning:datatable class="tablecss"
+                                                         aura:id="TagDataTable"
+                                                         columns="{!v.columnsHeader}"
+                                                         data="{!v.lstOfRecords}"
+                                                         keyField="Id"
+                                                         onsave ="{!c.onSave}"
+                                                         hideCheckboxColumn="true"
+                                                         showRowNumberColumn="true"
+                                                         errors="{!v.errors}"
+                                                         onsort="{!c.updateColumnSorting}"
+                                                         sortedBy="{!v.sortedBy}"
+                                                         sortedDirection="{!v.sortedDirection}" 
+                                                         onrowaction="{! c.handleRowAction }" />
+                                </div>
+                            </lightning:card>
+                            <aura:if isTrue="{!v.isLoading}">
+                                <lightning:spinner alternativeText="Loading"/>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{!v.isMobile}"> 
+                    <center>
+                        <lightning:button variant="neutral" label="New" title="New" onclick="{!c.CreateTagRecord}" />    
+                    </center>
+                    <br/>
+                    <aura:if isTrue="{!empty(v.lstOfRecords)}">
+                        <br/> <b>No records to display</b>
+                        <aura:set attribute="else" >
+                            
+                            <aura:iteration items="{!v.mapWithTagData}" var="TagRec">                                   
+                                <aura:iteration items="{!TagRec.value}" var="TagObj">
+                                    <table>
+                                        <tr>
+                                            <td colspan="2">
+                                                <aura:if isTrue="{!TagObj.api=='Name'}">
+                                                    <b><a href="{!'/'+TagObj.id}"> <ui:outputText value="{!TagObj.value}"/> </a></b>
+                                                </aura:if>
+                                            </td>
+                                            <td width="20%" style="text-align:right;" class="MobileMoreActions" >
+                                                <aura:if isTrue="{!TagObj.api=='Name'}">
+                                                    <lightning:buttonMenu name="{!TagObj.id}" aura:id="tagItem" onselect="{! c.handleTagQuickAction }">
+                                                        <lightning:menuItem value="Edit" label="Edit" iconName="utility:edit"/>
+                                                        <lightning:menuItem value="Delete" label="Delete" iconName="utility:delete"/>  
+                                                        <lightning:menuItem value="Duplicate" label="Duplicate" iconName="action:clone"/>                                            
+                                                    </lightning:buttonMenu>
+                                                </aura:if>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="40%" style="vertical-align:top;">
+                                                <aura:if isTrue="{!TagObj.api=='Name'}">
+                                                    <aura:set attribute="else">
+                                                        <ui:outputText value="{!TagObj.key}"/>:
+                                                    </aura:set>
+                                                </aura:if>
+                                            </td>
+                                            <td width="60%">
+                                                <aura:if isTrue="{!TagObj.api=='Name'}">
+                                                    <aura:set attribute="else">
+                                                        <ui:outputText value="{!TagObj.value}"/> 
+                                                    </aura:set>
+                                                </aura:if>
+                                            </td>
+                                        </tr>  
+                                    </table>
+                                    
+                                </aura:iteration>
+                                <hr style="margin: 0.4rem 0;"/>
+                            </aura:iteration>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+            </lightning:accordionSection>
+        </lightning:accordion>
+        
+        
+        <aura:if isTrue="{!v.isTagOpen}">
+            <lightning:recordEditForm aura:id="TagEditform" density="comfy" objectApiName="Tag__c" recordId="{!v.TagRecordid}" onload="{!c.jobTagload}"  onsubmit="{!c.jobTagOnsubmit}" onsuccess="{!c.onTagRecordSuccess}"  >
+                <lightning:messages />
+                <!--************************************************  MODAL BOX Start *************************************************--> 
+                
+                <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    
+                    <div class="slds-modal__container">
+                        <!-- *************************************************** MODAL BOX HEADER Start ***********************************-->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeModel }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.TagRecordid==null?'New ':'Edit '} {!v.Labelname}</h2>
+                        </header>
+                        <!--*********************************************** MODAL BOX BODY Part Start **************************************************-->
+                        <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-1">
+                            
+                            <div class="{!v.isMobile?'showScroll':''}">
+                                <ui:scrollerWrapper class="{!v.isMobile?'scrollerSizecart':''}">
+                                    <lightning:layout multipleRows="true"> 
+                                        <aura:iteration items="{!v.fieldset}" var="field">
+                                            <aura:if isTrue="{!(field=='Job__c')}">    
+                                                <aura:set attribute="else">   
+                                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                        <lightning:inputField fieldName="{!field}" aura:id="JobTagField"  class="{!'slds-form-element  slds-p-horizontal_x-small' + ' ' +((field=='Name') ? 'frequired' :' ')}"/> 
+                                                    </lightning:layoutItem>
+                                                </aura:set>
+                                            </aura:if>
+                                            
+                                            <aura:if isTrue="{!field=='Job__c'}">
+                                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" padding="around-small">
+                                                    <div class="slds-form-element  slds-p-horizontal_x-small">
+                                                        <label class="slds-form-element__label" for="text-input-id-1"> {!V.ObjectType.Tag__c.Job__c.label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <ui:outputText value="{!v.simpleRecord.Name}"  />
+                                                        </div>
+                                                    </div>
+                                                </lightning:layoutItem>
+                                            </aura:if>
+                                            
+                                        </aura:iteration>
+                                        <br></br>
+                                    </lightning:layout>
+                                </ui:scrollerWrapper>
+                            </div>
+                        </div>
+                        <!--************************************************ MODAL BOX FOOTER Part Start ****************************************************************-->
+                        <footer class="slds-modal__footer">
+                            <lightning:button variant="neutral" 
+                                              label="Cancel"
+                                              title="Cancel"
+                                              onclick="{! c.closeModel }"/>
+                            <lightning:button variant="brand" 
+                                              label="Save"
+                                              title="Save"
+                                              type="submit" />
+                        </footer>
+                    </div>
+                    
+                </div>
+                
+                <div class="slds-backdrop slds-backdrop_open"></div>
+                <!--************************************************ MODAL BOX Part END Here ***************************************************-->
+            </lightning:recordEditForm> 
+        </aura:if>
+    </aura:if>
+</aura:component>

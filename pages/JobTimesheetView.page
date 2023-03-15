@@ -1,0 +1,78 @@
+<apex:page controller="JobTimesheetViewExt" >
+
+  <style>
+   
+   .odd { 
+    background-color: #D5E8F3;
+    }
+    .even {
+    background-color: #E9F3D5;
+    }
+  
+  </style>
+
+
+
+  <apex:form >
+  
+  <apex:pageBlock > 
+  
+  <apex:outputtext value="Job - {!job}" style="font-weight:bold;font-size:20px;"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <apex:commandButton value="New TimeSheet Entry" action="{!NewTs}"/><br/> <br/>
+  
+    
+          <apex:repeat value="{!GlWrapper}" var="cnw" id="repeat">   
+              
+        <b>  GL Code Name :  &nbsp;<apex:outputText value="{!cnw.strGlcodeName }" /></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+         <b>  Estimate  Hours :  &nbsp;<apex:outputText value="{!cnw.estimatehours}" /></b>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>  Remaining Hours :  &nbsp;<apex:outputText value="{!cnw.remainhours}" /></b>
+        
+        
+        <br/><br/>
+                    
+                 
+              <apex:pageblockTable value="{!cnw.TWrapper}"  var="jw" width="100%" rowClasses="even,odd" id="pbt">
+              
+                
+                <apex:column headerValue="TS No">
+                  <apex:outputLink value="/{!jw.Ts.id}">{!jw.Ts.Name}</apex:outputlink>
+                 </apex:column>
+                  
+                 <apex:column value="{!jw.Ts.Task_Name__c}"/>
+                 
+                  <apex:column Value="{!jw.Ts.Hours_Worked__c}"/>
+                 <apex:column value="{!jw.Ts.Date__c}"/>
+                 <apex:column value="{!jw.Ts.User__c}"/>
+                 <apex:column value="{!jw.Ts.Notes__c}"/>
+                 
+                 </apex:pageblockTable><br/><hr noshade="noshade"/>
+                 
+                 
+                        
+           </apex:repeat> 
+  
+          <apex:outputPanel >
+         
+         
+     <apex:pageblockTable value="{!objTsHeadwithnoglcodes}"  var="jw" width="100%" rowClasses="even,odd">
+                
+                 <apex:column headerValue="TS No">
+                  <apex:outputLink value="/{!jw.id}">{!jw.name}</apex:outputlink>
+                 </apex:column>
+              
+                 <apex:column value="{!jw.Task_Name__c}"/>
+                 
+                 <apex:column Value="{!jw.Hours_Worked__c}"/>
+                 
+                
+                
+                 <apex:column value="{!jw.Date__c}"/>
+                 <apex:column value="{!jw.User__c}"/>
+                 <apex:column value="{!jw.Notes__c}"/>
+                 
+                 </apex:pageblockTable><br/><hr noshade="noshade"/>
+      </apex:outputPanel>
+  
+        </apex:pageBlock>
+  </apex:form>
+  
+</apex:page>
