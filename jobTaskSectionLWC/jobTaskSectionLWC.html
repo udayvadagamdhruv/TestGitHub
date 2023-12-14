@@ -1,0 +1,497 @@
+<template>
+    <template if:true={JobTaskisAccessible} >
+    <lightning-accordion allow-multiple-sections-open active-section-name='JobTask'>
+        <lightning-accordion-section name="JobTask" label="Job Task"  class="slds-card" >    
+          <lightning-helptext style="float: right;" icon-name="utility:info" content="Related Task for this job"></lightning-helptext> <br>
+              
+          <div align="center" draggable="false" > 
+                <template if:true={selectedTasksforMarkDone} >
+                    <lightning-button onclick={MarkSelectedTasks} label="Complete Tasks"></lightning-button>&nbsp;
+                </template>
+                <template if:true={selectedTasksforMarkDone1} >
+                    <lightning-button onclick={handlecreateSchedule} label="Create Schedule"  disabled={ShowScheduleBtn}></lightning-button>&nbsp;
+                </template>
+                <template if:true={selectedTasksforMarkDone1} >
+                    <lightning-button onclick={printSchedule} label="Print Schedule"></lightning-button>&nbsp;
+                </template>
+                <template if:true={selectedTasksforMarkDone1} >
+                        <lightning-button onclick={copySchedule} label="Copy Schedule"></lightning-button>&nbsp;
+                </template>
+                <template if:true={CalenderViewbln} >
+                        <lightning-button onclick={showCalenderView} label="Calender view"></lightning-button>&nbsp;
+                </template>
+                <template if:true={ListViewbln} >
+                    <lightning-button onclick={showListView} label="List view"></lightning-button>&nbsp;
+                </template>
+            </div>
+                <div style="margin-top: 20px;">
+                    <lightning-datatable
+                            data-id="datatable"
+                            key-field="Id"
+                            data={taskdata}
+                            columns={taskcolumns}
+                            selected-rows={selectedRow}
+                            draft-values={saveDraftValues} 
+                            oncellchange={handleCellChangeAction}
+                            onrowaction={handleTaskRowActions}
+                            onrowselection={handleRowSelection} 
+                            onsave={handleSaveEdition}
+                            >
+                    </lightning-datatable>
+                </div>
+                <div align="center" draggable="false" style="Margin-top:20px" > 
+                      <lightning-button onclick={insertatEnd} label="Insert at End"></lightning-button>
+                </div>
+        </lightning-accordion-section>
+    </lightning-accordion>
+
+
+    <template if:true={isCopyOpen}>
+      <!-- ********************************Copy Schedule Form ************************************************ -->
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+          <!-- <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner> -->
+          <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+                <lightning-icon icon-name="utility:close"
+                alternative-text="close"
+                variant="inverse"
+                size="small" ></lightning-icon>
+              <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+            <div class="slds-modal__header">
+              <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Copy Schedule</h1>
+            </div>
+            <div class="slds-modal__content" id="modal-content-id-2" >
+              <div if:true={isLoading} style="height: 200px; position:relative">
+                <lightning-spinner variant="base" size="medium"></lightning-spinner>
+              </div>
+              <div if:false={isLoading} > 
+              <template if:true={showScheCopyJobs} >
+              <div style="padding: 5px;margin-bottom: 10px"> <b>Selected Jobs :</b>{jobcount} <br>
+                <lightning-datatable
+                  key-field="Id"
+                  data-id="datatable"
+                  data={ScheCopyJobs}
+                  columns={ScheCopyColumns}
+                  onrowselection={getSelectedName} >
+              </lightning-datatable>
+                </div> 
+                </template> 
+              </div> 
+              <template if:false={showScheCopyJobs} >
+                  <div style="padding: 25px;" align="center"><b>No Active jobs for this Schedule Template.</b> </div>
+                </template>     
+              </div> 
+              <div class="slds-modal__footer" >
+                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={SavecopySchedule} >Save</button>
+              </div>
+              </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+   <!-- ********************************Create Approval Process************************************************ -->
+<template if:true={isCreateApprovalProcess}>
+  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+    <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+    <div class="slds-modal__container">
+      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+          <lightning-icon icon-name="utility:close"
+          alternative-text="close"
+          variant="inverse"
+          size="small" ></lightning-icon>
+        <span class="slds-assistive-text">Cancel and close</span>
+      </button>
+      <div class="slds-modal__header">
+        <h1 id="modal-heading-001" class="slds-modal__title slds-hyphenate">Approval Process</h1>
+      </div>
+      <div class="slds-modal__content" id="modal-content-id-0001">
+        <lightning-layout multiple-rows>
+          <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+            <lightning-combobox  name="Files"
+                                  required="true"
+                                  label="Files"
+                                  value={JobFileValue}
+                                  placeholder="None"
+                                  options={JobFileList}
+                                  onchange={handleChangeJobfile} ></lightning-combobox>
+           </lightning-layout-item> 
+          <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+            <lightning-combobox  name="Approval Process Template" 
+                                  required="true"
+                                  class="frequired"
+                                  label="Approval Process Template"
+                                  placeholder="None"
+                                  value={AppschedTempValue}
+                                  options={AppschedTempList}
+                                  onchange={handleChangeAppProcess} ></lightning-combobox> </lightning-layout-item>
+          </lightning-layout>
+      </div>
+      <div class="slds-modal__footer">
+        <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+        <button class="slds-button slds-button_brand" onclick={handlecreateApprovalPro} >Create</button>
+      </div>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>
+ 
+ 
+  <!-- ********************************Assign Staff ************************************************ -->
+  <template if:true={isaddEditStaff}>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+      <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+      <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+          <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Assign Staff</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          <div style="border : 1px solid #e2e4e6; border-radius:5px;" >
+           <div class="slds-grid slds-wrap" >
+              <template for:each={AllstaffWrappers} for:item="teamadd">
+                <div class="slds-col slds-small-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2"  key={teamadd.staff.Id} >
+                  <div style="border-bottom: 1px solid lightgrey; padding:10px">
+                    <lightning-input style="float:right" type="checkbox" label="" onchange={handleCheck} name="teamselected"  data-id={teamadd.staff.Id} checked={teamadd.selection} ></lightning-input>
+                      <div style="float: left;"> 
+                          <lightning-avatar variant="circle" src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"></lightning-avatar>
+                      </div>
+                      <div style= "margin-left: 40px;font-size: .90em; " >
+                              <lightning-tile label={teamadd.staff.JobSuite__Staff__c} >
+                                  <div class="slds-truncate"  title={teamadd.staff.JobSuite__Role__c}>{teamadd.staff.JobSuite__Role__c}</div>
+                              </lightning-tile>
+                      </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+        </div>
+        </div>
+        <div class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+          <button class="slds-button slds-button_brand" onclick={AddStafftoTask} >Save</button>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>
+
+
+<!-- ********************************Edit Task ************************************************ -->
+<template if:true={isTaskEdit}>
+  
+  <lightning-record-edit-form record-id={rowID} density="comfy" object-api-name="JobSuite__Job_Task__c" onsubmit ={TaskOnsubmit} onload={TaskOnLoad} onsuccess={TaskOnSuccess} >
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+      <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+      <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+          <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-1" class="slds-modal__title slds-hyphenate">Edit Task</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-01">
+          <lightning-layout multiple-rows>
+              <template if:false={isTaskLocked}>
+              <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+                <lightning-input-field field-name ="Name" label="Enter some text" aria-required="true" class="slds-p-horizontal_x-small "  required></lightning-input-field>
+              </lightning-layout-item>
+            </template>
+            <template if:true={isTaskLocked}>
+              <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+                <lightning-output-field field-name ="Name" aria-required="true" class="slds-p-horizontal_x-small" ></lightning-output-field>
+              </lightning-layout-item>
+            </template>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <div class="slds-form-element slds-p-horizontal_x-small">
+                <lightning-output-field field-name ="JobSuite__Job__c" class="slds-p-horizontal_x-small "></lightning-output-field>
+              </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Status__c" class="slds-p-horizontal_x-small " required></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__GL_Code__c" class="slds-p-horizontal_x-small "></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Start_Date__c" class="slds-p-horizontal_x-small " onchange={Editstartdatechanged}></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Revised_Due_Date__c" class="slds-p-horizontal_x-small " onchange={EditDueDateChanged} required></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Task_Start_Time_Text__c" class="slds-p-horizontal_x-small " ></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Task_End_Time_Text__c" class="slds-p-horizontal_x-small "></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Completion_Date__c" class="slds-p-horizontal_x-small "></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-output-field field-name ="JobSuite__Marked_Done__c" class="slds-p-horizontal_x-small "></lightning-output-field>
+            </lightning-layout-item>
+            <template if:false={isTaskLocked}>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Days__c" onchange={EditDaysChanged} class="slds-p-horizontal_x-small "></lightning-input-field>
+            </lightning-layout-item>
+          </template>
+          <template if:true={isTaskLocked}>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-output-field field-name ="JobSuite__Days__c" onchange={EditDaysChanged} class="slds-p-horizontal_x-small "></lightning-output-field>
+            </lightning-layout-item>
+          </template>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Task_Order__c" class="slds-p-horizontal_x-small "></lightning-input-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-output-field field-name ="JobSuite__Locked__c" class="slds-p-horizontal_x-small "></lightning-output-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-output-field field-name ="JobSuite__Report__c" class="slds-p-horizontal_x-small "></lightning-output-field>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" >
+              <lightning-input-field field-name ="JobSuite__Hours__c" class="slds-p-horizontal_x-small "></lightning-input-field>
+            </lightning-layout-item> 
+          </lightning-layout>
+        </div>
+        <div class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+          <button class="slds-button slds-button_brand"  >Save</button>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </lightning-record-edit-form>
+</template>
+
+  <!-- ********************************Insert Above Task ************************************************ -->
+<template if:true={isAboveInsert}>
+ <lightning-record-edit-form object-api-name="JobSuite__Job_Task__c" density="comfy" onsubmit ={TaskAboveOnsubmit}  onsuccess={TaskAboveOnSuccess} >
+  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+    <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+    <div class="slds-modal__container">
+      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+          <lightning-icon icon-name="utility:close"
+          alternative-text="close"
+          variant="inverse"
+          size="small" ></lightning-icon>
+        <span class="slds-assistive-text">Cancel and close</span>
+      </button>
+      <div class="slds-modal__header">
+        <h1 id="modal-heading-11" class="slds-modal__title slds-hyphenate">Insert Above Task</h1>
+      </div>
+      <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-001">
+       <lightning-input-field field-name="Name"  class="slds-size--1-of-2 slds-p-horizontal_x-small " required></lightning-input-field>
+       <lightning-input-field field-name="JobSuite__GL_Code__c"  class="slds-size--1-of-2 slds-p-horizontal_x-small "> </lightning-input-field>
+       <lightning-input-field field-name="JobSuite__Days__c"  class="slds-size--1-of-2 slds-p-horizontal_x-small "></lightning-input-field>
+       <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+       <label class="slds-form-element__label" for="text-input-id-1"> {tableHeaders.JobSuite__Job_Task__c.JobSuite__Schedule_Roles__c.label}</label>
+      <div class="slds-form-element__control">
+          <select class="slds-select" id="RolesList" multiple="" size="5" >
+                <option value="">--None--</option>
+              <template for:each = {RolesList} for:item="item">
+                <option key={item.Id} value={item.Name}>{item.Name}</option>
+             </template>
+            </select>
+        </div>
+      </div> 
+      </div>
+      <div class="slds-modal__footer"> 
+        <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal} style="padding: 10px;"></lightning-button>
+        <lightning-button  variant="brand" type="submit" label="Save"> </lightning-button> 
+      </div>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </lightning-record-edit-form>
+</template>
+
+<!-- ********************************Insert End Task ************************************************ -->
+<template if:true={isBelowInsert}>
+  <lightning-record-edit-form object-api-name="JobSuite__Job_Task__c" density="comfy" onsubmit ={TaskBelowOnsubmit}  onsuccess={TaskBelowOnSuccess} >
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+      <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+      <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+          <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-111" class="slds-modal__title slds-hyphenate">Insert Below Task</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-0011">
+         <lightning-input-field field-name="Name"  class="slds-size--1-of-2 slds-p-horizontal_x-small " required></lightning-input-field>
+         <lightning-input-field field-name="JobSuite__GL_Code__c" class="slds-size--1-of-2 slds-p-horizontal_x-small "> </lightning-input-field>
+         <lightning-input-field field-name="JobSuite__Days__c" class="slds-size--1-of-2 slds-p-horizontal_x-small "></lightning-input-field>
+         <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal_x-small">
+          <label class="slds-form-element__label" for="text-input-id-1"> {tableHeaders.JobSuite__Job_Task__c.JobSuite__Schedule_Roles__c.label}</label>
+          <div class="slds-form-element__control">
+            <select class="slds-select" id="RolesListBelow" multiple="" size="5" >
+                  <option value="">--None--</option>
+                <template for:each = {RolesList} for:item="item">
+                  <option key={item.Id} value={item.Name}>{item.Name}</option>
+               </template>
+              </select>
+          </div>
+        </div> 
+        </div>
+        <div class="slds-modal__footer"> 
+          <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal} style="padding: 10px;"></lightning-button>
+          <lightning-button  variant="brand" type="submit" label="Save"> </lightning-button> 
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </lightning-record-edit-form>
+</template>
+<!-- ********************************Log Time ************************************************ -->
+<template if:true={isTaskLogTime}>
+  <lightning-record-edit-form object-api-name="JobSuite__Timesheet_Entries__c" density="comfy" onsubmit ={LogTimeSubmit}  onsuccess={LogTimeSucess} >
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+      <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+      <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+          <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-112" class="slds-modal__title slds-hyphenate">Job Time</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium slds-grid slds-wrap" id="modal-content-id-0012">
+            <lightning-accordion allow-multiple-sections-open active-section-name={activesectionname}>
+                <lightning-accordion-section name="WatchSection" label="Watch Section"  class="slds-card" > 
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                            <lightning-input-field field-name ="JobSuite__Start_Watch__c" name="StartWatch" class="slds-p-horizontal_x-small frequired" onchange={TotalHrs}></lightning-input-field>
+                        </lightning-layout-item> 
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                            <lightning-input-field field-name ="JobSuite__End_Watch__c" name="EndWatch" class="slds-p-horizontal_x-small frequired" onchange={TotalHrs}></lightning-input-field>
+                        </lightning-layout-item>
+                        </lightning-layout>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="EntrySection" label="Entry Section"  class="slds-card" > 
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                          <label class="slds-form-element__label" for="text-input-id-1"> Job Name</label>
+                          <div class="slds-form-element__control slds-form-element">
+                              <p>{JobName}</p>
+                          </div>
+                        </lightning-layout-item> 
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small" >
+                          <label class="slds-form-element__label" for="text-input-id-1"> Task Name</label>
+                          <div class="slds-form-element__control slds-form-element">
+                              <p>{TaskName}</p>
+                          </div> 
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                          <label class="slds-form-element__label" for="text-input-id-1"> GL Code</label>
+                          <div class="slds-form-element__control slds-form-element">
+                              <p>{GLCodeName}</p>
+                          </div> 
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                          <label class="slds-form-element__label" for="text-input-id-1"> Total Hours Estimated</label>
+                          <div class="slds-form-element__control slds-form-element">
+                              <p>{TotalHours}</p>
+                          </div> 
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                            <lightning-input-field field-name ="JobSuite__Date__c"  class="slds-p-horizontal_x-small frequired" value={today}></lightning-input-field>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                          <label class="slds-form-element__label" for="text-input-id-1"> Total Hours Remaining</label>
+                          <div class="slds-form-element__control slds-form-element">
+                              <p>{RemainHours}</p>
+                          </div> 
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                            <lightning-input-field field-name ="JobSuite__Notes__c"  class="slds-p-horizontal_x-small frequired"></lightning-input-field>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                          <template if:true={isStartEnd}>
+                            <label class="slds-form-element__label" for="text-input-id-1"> Total Hours Worked </label>
+                            <div class="slds-form-element__control slds-form-element">
+                              <p>{TotalHoursWorked}</p>
+                            </div>
+                        </template>
+                      <template if:false={isStartEnd} >
+                        <lightning-input-field field-name ="JobSuite__Hours_Worked__c"  class="slds-p-horizontal_x-small frequired"></lightning-input-field>
+                      </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                      <label class="slds-form-element__label" for="text-input-id-1"> User</label>
+                      <div class="slds-form-element__control slds-form-element">
+                          <p>{UserName}</p>
+                      </div> 
+                    </lightning-layout-item>
+                        </lightning-layout>
+                </lightning-accordion-section>
+            </lightning-accordion>
+        </div>
+        <div class="slds-modal__footer"> 
+          <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal} style="padding: 10px;"></lightning-button>
+          <lightning-button  variant="brand" type="submit" label="Save"> </lightning-button> 
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </lightning-record-edit-form>
+</template>
+
+<!-- ********************************File Attach************************************************ -->
+<template if:true={isFileAttach}>
+  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large">
+    <lightning-spinner if:true={issave} alternative-text="Loading" size="medium"></lightning-spinner>
+    <div class="slds-modal__container">
+      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal}>
+          <lightning-icon icon-name="utility:close"
+          alternative-text="close"
+          variant="inverse"
+          size="small" ></lightning-icon>
+        <span class="slds-assistive-text">Cancel and close</span>
+      </button>
+      <div class="slds-modal__header">
+        <h1 id="modal-heading-0001" class="slds-modal__title slds-hyphenate">Attach File</h1>
+      </div>
+      <div class="slds-modal__content" id="modal-content-id-00001">
+        <lightning-layout multiple-rows>
+          <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+            <h1> <b> Please select the file. Note: Files must be attached to the files tab of the Job.</b> </h1>
+            <lightning-combobox  name="Files"
+                                  required="true"
+                                  label="Files"
+                                  value={JobFileValue}
+                                  placeholder="None"
+                                  options={JobFileList}
+                                  onchange={handleChangeJobfile} ></lightning-combobox>
+           </lightning-layout-item> 
+          </lightning-layout>
+      </div>
+      <div class="slds-modal__footer">
+        <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+        <button class="slds-button slds-button_brand" onclick={handleFileAttach} >Attach</button>
+      </div>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>
+</template>
